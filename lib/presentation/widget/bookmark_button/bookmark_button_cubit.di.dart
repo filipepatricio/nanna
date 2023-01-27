@@ -8,26 +8,57 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.d
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/switch_bookmark_state_use_case.di.dart';
+import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
+import 'package:better_informed_mobile/presentation/util/connection_state_aware_cubit_mixin.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 @injectable
-class BookmarkButtonCubit extends Cubit<BookmarkButtonState> {
+class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
+    with ConnectionStateAwareCubitMixin<BookmarkButtonState, BookmarkTypeData> {
   BookmarkButtonCubit(
     this._getBookmarkStateUseCase,
     this._setBookmarkStateUseCase,
     this._trackActivityUseCase,
     this._getBookmarkChangeStreamUseCase,
+    this._isInternetConnectionAvailableUseCase,
   ) : super(BookmarkButtonState.initializing());
 
   final GetBookmarkStateUseCase _getBookmarkStateUseCase;
   final SwitchBookmarkStateUseCase _setBookmarkStateUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final GetBookmarkChangeStreamUseCase _getBookmarkChangeStreamUseCase;
+  final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
 
   StreamSubscription? _notifierSubscription;
+
+  @override
+  IsInternetConnectionAvailableUseCase get isInternetConnectionAvailableUseCase =>
+      _isInternetConnectionAvailableUseCase;
+
+  @override
+  Future<void> onOffline(BookmarkTypeData initialData) async {
+    state.maybeMap(
+      idle: (state) => emit(BookmarkButtonState.offline(state.state)),
+      orElse: () => emit(BookmarkButtonState.offline(BookmarkState.notBookmarked())),
+    );
+    await _notifierSubscription?.cancel();
+  }
+
+  @override
+  Future<void> onOnline(BookmarkTypeData initialData) async {
+    emit(BookmarkButtonState.initializing());
+
+    final bookmarkState = await _getBookmarkStateUseCase(initialData);
+
+    if (!isClosed) {
+      emit(BookmarkButtonState.idle(initialData, bookmarkState));
+    }
+
+    _registerBookmarkChangeNotification(initialData);
+  }
 
   @override
   Future<void> close() {
@@ -36,15 +67,7 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState> {
   }
 
   Future<void> initialize(BookmarkTypeData data) async {
-    emit(BookmarkButtonState.initializing());
-
-    final bookmarkState = await _getBookmarkStateUseCase(data);
-
-    if (!isClosed) {
-      emit(BookmarkButtonState.idle(data, bookmarkState));
-    }
-
-    _registerBookmarkChangeNotification(data);
+    await initializeConnection(data);
   }
 
   void _registerBookmarkChangeNotification(BookmarkTypeData data) {

@@ -37,7 +37,6 @@ dependencies:
   flutter_secure_storage: 6.0.0
   firebase_core: 2.4.1
   firebase_messaging: 14.2.1
-  firebase_auth: 4.2.5
   sign_in_with_apple: 4.1.0
   google_sign_in: 5.4.2
   flutter_keyboard_visibility: 5.4.0

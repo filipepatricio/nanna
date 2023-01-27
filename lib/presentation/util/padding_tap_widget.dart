@@ -12,7 +12,7 @@ class PaddingTapWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final EdgeInsets tapPadding;
   final Widget child;
   final AlignmentDirectional alignment;
