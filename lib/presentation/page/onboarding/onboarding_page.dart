@@ -98,7 +98,7 @@ class OnboardingPage extends HookWidget {
                       ),
                       const Spacer(),
                       if (isLastPage)
-                        FilledButton.primary(
+                        InformedFilledButton.primary(
                           context: context,
                           text: LocaleKeys.common_continue.tr(),
                           onTap: () => _navigateToMainPage(context, cubit),

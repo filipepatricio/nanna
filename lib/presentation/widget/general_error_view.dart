@@ -53,7 +53,7 @@ class GeneralErrorView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.c),
           child: retryCallback != null
-              ? FilledButton.primary(
+              ? InformedFilledButton.primary(
                   context: context,
                   text: action,
                   onTap: retryCallback,

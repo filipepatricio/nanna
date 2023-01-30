@@ -78,7 +78,7 @@ class _DailyBriefFooter extends StatelessWidget {
     final actionText = callToAction.actionText;
 
     return preText != null
-        ? FilledButton.primary(
+        ? InformedFilledButton.primary(
             context: context,
             text: "$preText $actionText",
             onTap: context.goToExplore,

@@ -121,7 +121,7 @@ class TopicOwnerPage extends HookWidget {
                             const SizedBox(height: AppDimens.m),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-                              child: FilledButton.secondary(
+                              child: InformedFilledButton.secondary(
                                 context: context,
                                 text: LocaleKeys.topic_howWeCurateContent_label.tr(),
                                 trailing: const InformedSvg(
