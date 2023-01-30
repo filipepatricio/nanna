@@ -6,7 +6,7 @@ part 'article_with_background.dt.freezed.dart';
 
 @Freezed(toJson: false)
 class ArticleWithBackground with _$ArticleWithBackground {
-  factory ArticleWithBackground.image(MediaItemArticle article, ArticleImage image) = _$ArticleWithBackgroundImage;
+  factory ArticleWithBackground.image(MediaItemArticle article, ArticleImage image) = _ArticleWithBackgroundImage;
 
-  factory ArticleWithBackground.color(MediaItemArticle article, int colorIndex) = _$ArticleWithBackgroundColor;
+  factory ArticleWithBackground.color(MediaItemArticle article, int colorIndex) = _ArticleWithBackgroundColor;
 }
