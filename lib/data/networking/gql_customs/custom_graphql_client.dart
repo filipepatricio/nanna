@@ -7,6 +7,7 @@ class CustomGraphQlClient extends GraphQLClient {
     required this.generalExceptionMapper,
     required super.link,
     required super.cache,
+    super.defaultPolicies,
   });
 
   final CommonExceptionMapper generalExceptionMapper;
