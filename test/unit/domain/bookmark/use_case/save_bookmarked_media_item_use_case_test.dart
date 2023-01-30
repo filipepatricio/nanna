@@ -51,8 +51,8 @@ void main() {
       expect(
         capturedBookmark,
         isA<Bookmark>()
-          ..having((bookmark) => bookmark.id, 'id', bookmarkId)
-          ..having((bookmark) => bookmark.data, 'data', bookmark),
+            .having((bookmark) => bookmark.id, 'id', bookmarkId)
+            .having((bookmark) => bookmark.data, 'data', bookmark),
       );
 
       verify(saveArticleLocallyUseCase.fetchDetailsAndSave(article));
@@ -72,8 +72,8 @@ void main() {
       expect(
         capturedBookmark,
         isA<Bookmark>()
-          ..having((bookmark) => bookmark.id, 'id', bookmarkId)
-          ..having((bookmark) => bookmark.data, 'data', bookmark),
+            .having((bookmark) => bookmark.id, 'id', bookmarkId)
+            .having((bookmark) => bookmark.data, 'data', bookmark),
       );
 
       verify(saveTopicLocallyUseCase.save(topic));
@@ -108,8 +108,8 @@ void main() {
       expect(
         capturedBookmark,
         isA<Bookmark>()
-          ..having((bookmark) => bookmark.id, 'id', bookmarkId)
-          ..having((bookmark) => bookmark.data, 'data', bookmark),
+            .having((bookmark) => bookmark.id, 'id', bookmarkId)
+            .having((bookmark) => bookmark.data, 'data', bookmark),
       );
 
       verifyNever(articleRepository.getArticleHeader(any));
@@ -129,8 +129,8 @@ void main() {
       expect(
         capturedBookmark,
         isA<Bookmark>()
-          ..having((bookmark) => bookmark.id, 'id', bookmarkId)
-          ..having((bookmark) => bookmark.data, 'data', bookmark),
+            .having((bookmark) => bookmark.id, 'id', bookmarkId)
+            .having((bookmark) => bookmark.data, 'data', bookmark),
       );
 
       verifyNever(topicsRepository.getTopicBySlug(any));
