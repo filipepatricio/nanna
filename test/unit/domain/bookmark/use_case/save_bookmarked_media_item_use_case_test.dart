@@ -40,12 +40,13 @@ void main() {
     test('save article bookmark', () async {
       final article = TestData.article;
       const bookmarkId = 'bookmarkId';
-      const bookmark = BookmarkTypeData.article('slug', 'id');
+      const bookmarkType = BookmarkTypeData.article('slug', 'id');
+      final bookmark = BookmarkData.article(article);
 
       when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => true);
       when(articleRepository.getArticleHeader('slug')).thenAnswer((_) async => article);
 
-      await useCase.usingBookmarkType(bookmark, bookmarkId);
+      await useCase.usingBookmarkType(bookmarkType, bookmarkId);
 
       final capturedBookmark = verify(bookmarkLocalRepository.saveBookmark(captureAny)).captured.single;
       expect(
@@ -61,12 +62,13 @@ void main() {
     test('save topic bookmark', () async {
       final topic = TestData.topic;
       const bookmarkId = 'bookmarkId';
-      const bookmark = BookmarkTypeData.topic('slug', 'id');
+      const bookmarkType = BookmarkTypeData.topic('slug', 'id');
+      final bookmark = BookmarkData.topic(topic);
 
       when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => true);
       when(topicsRepository.getTopicBySlug('slug')).thenAnswer((_) async => topic);
 
-      await useCase.usingBookmarkType(bookmark, bookmarkId);
+      await useCase.usingBookmarkType(bookmarkType, bookmarkId);
 
       final capturedBookmark = verify(bookmarkLocalRepository.saveBookmark(captureAny)).captured.single;
       expect(
