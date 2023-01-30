@@ -16,6 +16,10 @@ const _socialShareOptions = {
 
 @LazySingleton(as: ShareRepository, env: defaultEnvs)
 class ShareRepositoryImpl implements ShareRepository {
+  const ShareRepositoryImpl(this._appConfig);
+
+  final AppConfig _appConfig;
+
   @override
   Future<List<ShareOption>> getShareOptions() async {
     final apps = await SocialShare.checkInstalledAppsForShare();
@@ -44,7 +48,7 @@ class ShareRepositoryImpl implements ShareRepository {
         await SocialShare.shareWhatsapp(text);
         break;
       case ShareOption.copyLink:
-        await SocialShare.copyToClipboard(text);
+        await SocialShare.copyToClipboard(text: text);
         break;
       default:
         await Share.share(text, subject: subject);
@@ -54,21 +58,23 @@ class ShareRepositoryImpl implements ShareRepository {
   @override
   Future<void> shareUsingInstagram(File foregroundFile, File? backgroundFile, String url) async {
     await SocialShare.shareInstagramStory(
-      foregroundFile.path,
-      backgroundImagePath: backgroundFile?.path,
+      appId: kIsAppleDevice ? _appConfig.facebookAppIdiOS : _appConfig.facebookAppIdAndroid,
       attributionURL: url,
-      backgroundBottomColor: AppColors.shareBackgroundBottomColor,
+      imagePath: foregroundFile.path,
+      backgroundResourcePath: backgroundFile?.path,
       backgroundTopColor: AppColors.shareBackgroundTopColor,
+      backgroundBottomColor: AppColors.shareBackgroundBottomColor,
     );
   }
 
   @override
   Future<void> shareFacebookStory(File foregroundFile, String url) async {
     await SocialShare.shareFacebookStory(
-      foregroundFile.path,
-      AppColors.shareBackgroundTopColor,
-      AppColors.shareBackgroundBottomColor,
-      url,
+      appId: kIsAppleDevice ? _appConfig.facebookAppIdiOS : _appConfig.facebookAppIdAndroid,
+      attributionURL: url,
+      imagePath: foregroundFile.path,
+      backgroundTopColor: AppColors.shareBackgroundTopColor,
+      backgroundBottomColor: AppColors.shareBackgroundBottomColor,
     );
   }
 }
