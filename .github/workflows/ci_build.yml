@@ -96,20 +96,21 @@ jobs:
         if: success()
         run: echo "::set-output name=result::true"
 
-  dart_code_metrics:
-    name: Dart code metrics
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-      - uses: actions/checkout@v3
-      - uses: dart-code-checker/dart-code-metrics-action@v3
-        with:
-          github_token: ${{ github.token }}
-          pull_request_comment: true
-          fatal_warnings: true
+  # //TODO: Uncomment when dart-code-metrics-action upgrades flutter to 3.7.0
+  # dart_code_metrics:
+  #   name: Dart code metrics
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Cancel previous runs
+  #       uses: styfle/cancel-workflow-action@0.11.0
+  #       with:
+  #         access_token: ${{ github.token }}
+  #     - uses: actions/checkout@v3
+  #     - uses: dart-code-checker/dart-code-metrics-action@v3
+  #       with:
+  #         github_token: ${{ github.token }}
+  #         pull_request_comment: true
+  #         fatal_warnings: true
 
   code_lint_test:
     needs: [set_slack_id, changes, commit_lint]

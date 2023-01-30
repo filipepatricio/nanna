@@ -2,11 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// ignore_for_file: deprecated_member_use
+
 import 'dart:math' as math;
 
 import 'package:better_informed_mobile/presentation/widget/text_selection_controls/text_selection_control_data.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
 
 // Read off from the output on iOS 12. This color does not vary with the
 // application's theme color.

@@ -197,6 +197,7 @@ class _InformedSelectableTextState extends State<InformedSelectableText>
         textAlign: widget.textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
         autofocus: false,
         forceLine: false,
+        // ignore: deprecated_member_use
         toolbarOptions: const ToolbarOptions(selectAll: true, copy: true),
         maxLines: widget.maxLines ?? defaultTextStyle.maxLines,
         selectionColor: selectionColor,
