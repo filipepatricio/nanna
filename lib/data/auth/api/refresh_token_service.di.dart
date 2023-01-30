@@ -42,6 +42,8 @@ class RefreshTokenService {
           variables: {
             'token': refreshToken,
           },
+          cacheRereadPolicy: CacheRereadPolicy.ignoreAll,
+          fetchPolicy: FetchPolicy.noCache,
         ),
       );
 

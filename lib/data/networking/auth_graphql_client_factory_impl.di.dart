@@ -29,6 +29,11 @@ class AuthGraphQLClientFactoryImpl implements AuthGraphQLClientFactory {
 
     final httpLink = HttpLink(_config.apiUrl, httpClient: client);
 
+    final policies = Policies(
+      fetch: FetchPolicy.noCache,
+      cacheReread: CacheRereadPolicy.ignoreAll,
+    );
+
     return CustomGraphQlClient(
       generalExceptionMapper: _generalExceptionMapper,
       cache: cache,
@@ -37,6 +42,13 @@ class AuthGraphQLClientFactoryImpl implements AuthGraphQLClientFactory {
           _appVersionLink,
           httpLink,
         ],
+      ),
+      defaultPolicies: DefaultPolicies(
+        mutate: policies,
+        query: policies,
+        subscribe: policies,
+        watchMutation: policies,
+        watchQuery: policies,
       ),
     );
   }
