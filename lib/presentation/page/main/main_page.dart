@@ -31,8 +31,9 @@ class MainPage extends HookWidget {
         navigate: (navigate) async {
           if (previousAppState.value == null) {
             await Future.delayed(const Duration(milliseconds: 250));
-            // ignore: use_build_context_synchronously
-            await _navigateToPath(context, navigate.path);
+            if (context.mounted) {
+              await _navigateToPath(context, navigate.path);
+            }
             return;
           }
 
@@ -40,15 +41,17 @@ class MainPage extends HookWidget {
           _resetNestedRouters();
 
           await Future.delayed(const Duration(milliseconds: 250));
-          // ignore: use_build_context_synchronously
-          await _navigateToPath(context, navigate.path);
+          if (context.mounted) {
+            await _navigateToPath(context, navigate.path);
+          }
         },
         multiNavigate: (navigate) async {
           if (previousAppState.value == null) {
             await Future.delayed(const Duration(milliseconds: 250));
             for (final path in navigate.path) {
-              // ignore: use_build_context_synchronously
-              await _navigateToPath(context, path);
+              if (context.mounted) {
+                await _navigateToPath(context, path);
+              }
             }
             return;
           }
@@ -58,8 +61,9 @@ class MainPage extends HookWidget {
 
           await Future.delayed(const Duration(milliseconds: 250));
           for (final path in navigate.path) {
-            // ignore: use_build_context_synchronously
-            await _navigateToPath(context, path);
+            if (context.mounted) {
+              await _navigateToPath(context, path);
+            }
           }
         },
         showReleaseNote: (state) => ReleaseNotePopup.show(

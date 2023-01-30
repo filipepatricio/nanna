@@ -184,7 +184,9 @@ class _NextPageButton extends StatelessWidget {
 
 Future<void> _navigateToMainPage(BuildContext context, OnboardingPageCubit cubit) async {
   await cubit.setOnboardingCompleted();
-  await context.router.replaceAll([
-    const MainPageRoute(),
-  ]);
+  if (context.mounted) {
+    await context.router.replaceAll(
+      [const MainPageRoute()],
+    );
+  }
 }
