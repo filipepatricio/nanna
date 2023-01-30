@@ -30,7 +30,7 @@ class InformedTheme {
       ThemeData(
         brightness: brightness,
         primarySwatch: AppColors.getMaterialColorFromColor(colors.textPrimary),
-        backgroundColor: colors.backgroundPrimary,
+        colorScheme: baseData.colorScheme.copyWith(background: colors.backgroundPrimary),
         scaffoldBackgroundColor: colors.backgroundPrimary,
         splashColor: kIsAppleDevice ? AppColors.transparent : null,
         highlightColor: kIsAppleDevice ? AppColors.transparent : null,

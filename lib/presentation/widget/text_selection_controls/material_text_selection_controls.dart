@@ -6,7 +6,6 @@ import 'dart:math' as math;
 
 import 'package:better_informed_mobile/presentation/widget/text_selection_controls/text_selection_control_data.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 const double _kHandleSize = 22.0;
 
