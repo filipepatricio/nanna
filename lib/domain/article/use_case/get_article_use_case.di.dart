@@ -10,6 +10,7 @@ class GetArticleUseCase {
   GetArticleUseCase(
     this._articleRepository,
   );
+
   final ArticleRepository _articleRepository;
 
   Future<Article> call(

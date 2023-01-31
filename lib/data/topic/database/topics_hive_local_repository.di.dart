@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/data/synchronization/database/entity/synchronizable_entity.hv.dart';
 import 'package:better_informed_mobile/data/topic/database/entity/topic_entity.hv.dart';
 import 'package:better_informed_mobile/data/topic/database/mapper/synchronziable_topic_entity_mapper.di.dart';
-import 'package:better_informed_mobile/domain/synchronization/synchronizable.dart';
+import 'package:better_informed_mobile/domain/synchronization/synchronizable.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/topics_local_repository.dart';
 import 'package:hive/hive.dart';
@@ -26,19 +26,24 @@ class TopicsHiveLocalRepository implements TopicsLocalRepository {
   }
 
   @override
-  Future<void> deleteTopic(String slug) async {
+  Future<void> delete(String slug) async {
     await _topicBox.delete(slug);
   }
 
   @override
-  Future<Synchronizable<Topic>?> loadTopic(String slug) async {
+  Future<Synchronizable<Topic>?> load(String slug) async {
     final entity = await _topicBox.get(slug);
     return entity != null ? _topicEntityMapper.to(entity) : null;
   }
 
   @override
-  Future<void> saveTopic(Synchronizable<Topic> topic) {
+  Future<void> save(Synchronizable<Topic> topic) {
     final entity = _topicEntityMapper.from(topic);
-    return _topicBox.put(topic.data.slug, entity);
+    return _topicBox.put(entity.dataId, entity);
+  }
+
+  @override
+  Future<List<String>> getAllIds() async {
+    return _topicBox.keys.cast<String>().toList();
   }
 }

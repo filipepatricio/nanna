@@ -1,12 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
-import 'package:better_informed_mobile/domain/synchronization/synchronizable.dart';
+import 'package:better_informed_mobile/domain/synchronization/synchronizable_repository.dart';
 
-abstract class ArticleLocalRepository {
-  Future<void> saveArticle(Synchronizable<Article> article);
-
-  Future<Synchronizable<Article>?> loadArticle(String slug);
-
-  Future<void> deleteArticle(String slug);
-
+abstract class ArticleLocalRepository implements SynchronizableRepository<Article> {
   Future<void> deleteAll();
 }

@@ -24,7 +24,7 @@ class RemoveBookmarkUseCase {
 
   Future<void> call(Bookmark bookmark) async {
     final bookmarkState = await _bookmarkRepository.removeBookmark(bookmark.id);
-    await _bookmarkLocalRepository.deleteBookmark(bookmark.id);
+    await _bookmarkLocalRepository.delete(bookmark.id);
 
     bookmark.data.mapOrNull(
       article: (data) {
