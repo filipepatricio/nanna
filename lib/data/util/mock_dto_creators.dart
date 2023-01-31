@@ -158,6 +158,8 @@ class MockDTO {
   /// Today's topics
   static BriefDTO currentBrief({DateTime? date}) => BriefDTO(
         'brief-id',
+        // unseenCount
+        3,
         // greeting
         HeadlineDTO('**👋 Moritz**, here are the topics of the day', null, null),
         // introduction - text max length: 150 chars
@@ -1322,6 +1324,7 @@ extension on TopicDTO {
 extension on BriefDTO {
   BriefDTO copyWith({
     String? id,
+    int? unseenCount,
     HeadlineDTO? greeting,
     BriefIntroductionDTO? introduction,
     String? date,
@@ -1330,6 +1333,7 @@ extension on BriefDTO {
   }) {
     return BriefDTO(
       id ?? this.id,
+      unseenCount ?? this.unseenCount,
       greeting ?? this.greeting,
       introduction ?? this.introduction,
       date ?? this.date,

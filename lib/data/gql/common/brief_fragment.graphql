@@ -4,6 +4,7 @@
 fragment briefFragment on Brief {
   __typename
   id
+  unseenCount
   greeting {
     headline
     message
