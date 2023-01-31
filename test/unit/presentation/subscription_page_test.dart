@@ -123,7 +123,7 @@ void main() {
       );
       expect(
         find.byWidgetPredicate(
-          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_button_standard.tr(),
+          (widget) => widget is InformedFilledButton && widget.text == LocaleKeys.subscription_button_standard.tr(),
         ),
         findsOneWidget,
       );
@@ -134,7 +134,7 @@ void main() {
       expect(
         find.byWidgetPredicate(
           (widget) =>
-              widget is FilledButton &&
+              widget is InformedFilledButton &&
               widget.text ==
                   LocaleKeys.subscription_button_trialText.tr(
                     args: [

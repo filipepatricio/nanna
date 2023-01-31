@@ -62,7 +62,7 @@ class SubscribeButton extends StatelessWidget {
         : LocaleKeys.subscription_button_standard.tr();
 
     if (mode == Brightness.dark) {
-      return FilledButton.primary(
+      return InformedFilledButton.primary(
         context: context,
         text: text,
         subtext: contentType == SubscriptionButtonContentType.full && plan.hasTrial
@@ -78,7 +78,7 @@ class SubscribeButton extends StatelessWidget {
       );
     }
 
-    return FilledButton.accent(
+    return InformedFilledButton.accent(
       context: context,
       text: text,
       subtext: contentType == SubscriptionButtonContentType.full && plan.hasTrial

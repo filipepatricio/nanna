@@ -109,7 +109,7 @@ class SettingsAccountBody extends HookWidget {
               AnimatedOpacity(
                 opacity: 1.0,
                 duration: const Duration(milliseconds: 250),
-                child: FilledButton.primary(
+                child: InformedFilledButton.primary(
                   context: context,
                   text: LocaleKeys.settings_save.tr(),
                   onTap: () => _onSaveButtonTap(isFirstNameFocused, isLastNameFocused),
@@ -133,7 +133,8 @@ class SettingsAccountBody extends HookWidget {
   }
 
   Future<void> _onDeleteAccountLinkTap(BuildContext context) async {
-    if (await InformedDialog.showDeleteAccount(context) == true) {
+    final deleteAccountConfirmed = await InformedDialog.showDeleteAccount(context);
+    if (deleteAccountConfirmed == true) {
       await cubit.deleteAccount();
     }
   }

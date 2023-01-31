@@ -9,12 +9,10 @@ class OnboardingStoreImpl extends OnboardingStore {
   OnboardingStoreImpl(
     this._database,
     this._onboardingVersionEntityMapper,
-    this._currentOnboardingVersion,
   );
 
   final OnboardingDatabase _database;
   final OnboardingVersionEntityMapper _onboardingVersionEntityMapper;
-  final OnboardingVersion _currentOnboardingVersion;
 
   static const deprecatedVersion = OnboardingVersion.v1;
 
@@ -44,5 +42,5 @@ class OnboardingStoreImpl extends OnboardingStore {
   }
 
   @override
-  OnboardingVersion get currentVersion => _currentOnboardingVersion;
+  OnboardingVersion get currentVersion => OnboardingVersion.v2;
 }

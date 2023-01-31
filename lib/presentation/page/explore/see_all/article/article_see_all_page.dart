@@ -155,12 +155,12 @@ class _ArticleList extends StatelessWidget {
                 children: [
                   article.map(
                     image: (data) => ArticleCover.medium(
-                      article: article.article,
-                      onTap: () => context.navigateToArticle(article.article),
+                      article: data.article,
+                      onTap: () => context.navigateToArticle(data.article),
                     ),
                     color: (data) => ArticleCover.medium(
-                      article: article.article,
-                      onTap: () => context.navigateToArticle(article.article),
+                      article: data.article,
+                      onTap: () => context.navigateToArticle(data.article),
                     ),
                   ),
                   const CardDivider.cover(),

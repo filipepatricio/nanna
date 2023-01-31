@@ -48,13 +48,13 @@ class SwitchAudioPopup extends StatelessWidget {
             style: AppTypography.b2Bold,
           ),
           const SizedBox(height: AppDimens.l),
-          FilledButton.primary(
+          InformedFilledButton.primary(
             context: context,
             text: tr(LocaleKeys.audio_switchAudio_deny),
             onTap: () => Navigator.pop(context, false),
           ),
           const SizedBox(height: AppDimens.m),
-          FilledButton.secondary(
+          InformedFilledButton.secondary(
             context: context,
             text: LocaleKeys.audio_switchAudio_approve.tr(),
             withOutline: true,

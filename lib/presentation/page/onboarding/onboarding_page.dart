@@ -98,7 +98,7 @@ class OnboardingPage extends HookWidget {
                       ),
                       const Spacer(),
                       if (isLastPage)
-                        FilledButton.primary(
+                        InformedFilledButton.primary(
                           context: context,
                           text: LocaleKeys.common_continue.tr(),
                           onTap: () => _navigateToMainPage(context, cubit),
@@ -184,7 +184,9 @@ class _NextPageButton extends StatelessWidget {
 
 Future<void> _navigateToMainPage(BuildContext context, OnboardingPageCubit cubit) async {
   await cubit.setOnboardingCompleted();
-  await context.router.replaceAll([
-    const MainPageRoute(),
-  ]);
+  if (context.mounted) {
+    await context.router.replaceAll(
+      [const MainPageRoute()],
+    );
+  }
 }

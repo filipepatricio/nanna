@@ -81,12 +81,11 @@ void main() {
     } catch (e) {
       expect(
         e,
-        isA<ServerErrorException>()
-          ..having(
-            (serverErrorException) => serverErrorException.originalException,
-            'originalException',
-            exception,
-          ),
+        isA<ServerErrorException>().having(
+          (serverErrorException) => serverErrorException.originalException,
+          'originalException',
+          exception,
+        ),
       );
     }
   });

@@ -3,8 +3,8 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
 
-class FilledButton extends StatelessWidget {
-  const FilledButton._({
+class InformedFilledButton extends StatelessWidget {
+  const InformedFilledButton._({
     required this.text,
     required this.fillColor,
     required this.disableColor,
@@ -19,7 +19,7 @@ class FilledButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  factory FilledButton.accent({
+  factory InformedFilledButton.accent({
     required BuildContext context,
     required String text,
     String? subtext,
@@ -29,7 +29,7 @@ class FilledButton extends StatelessWidget {
     Widget? leading,
     Widget? trailing,
   }) =>
-      FilledButton._(
+      InformedFilledButton._(
         text: text,
         subtext: subtext,
         isEnabled: isEnabled,
@@ -42,7 +42,7 @@ class FilledButton extends StatelessWidget {
         trailing: trailing,
       );
 
-  factory FilledButton.primary({
+  factory InformedFilledButton.primary({
     required BuildContext context,
     required String text,
     String? subtext,
@@ -52,7 +52,7 @@ class FilledButton extends StatelessWidget {
     Widget? leading,
     Widget? trailing,
   }) =>
-      FilledButton._(
+      InformedFilledButton._(
         text: text,
         subtext: subtext,
         isEnabled: isEnabled,
@@ -65,7 +65,7 @@ class FilledButton extends StatelessWidget {
         trailing: trailing,
       );
 
-  factory FilledButton.negative({
+  factory InformedFilledButton.negative({
     required String text,
     String? subtext,
     bool isEnabled = true,
@@ -74,7 +74,7 @@ class FilledButton extends StatelessWidget {
     Widget? leading,
     Widget? trailing,
   }) =>
-      FilledButton._(
+      InformedFilledButton._(
         text: text,
         subtext: subtext,
         isEnabled: isEnabled,
@@ -87,7 +87,7 @@ class FilledButton extends StatelessWidget {
         trailing: trailing,
       );
 
-  factory FilledButton.secondary({
+  factory InformedFilledButton.secondary({
     required BuildContext context,
     required String text,
     String? subtext,
@@ -96,7 +96,7 @@ class FilledButton extends StatelessWidget {
     Widget? trailing,
     bool withOutline = false,
   }) =>
-      FilledButton._(
+      InformedFilledButton._(
         text: text,
         subtext: subtext,
         isEnabled: true,

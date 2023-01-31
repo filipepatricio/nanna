@@ -52,7 +52,7 @@ class _ChangeSubscriptionPlansView extends HookWidget {
                 ValueListenableBuilder<SubscriptionPlan>(
                   valueListenable: selectedPlanNotifier,
                   builder: (context, selectedPlan, _) {
-                    return FilledButton.primary(
+                    return InformedFilledButton.primary(
                       context: context,
                       text: LocaleKeys.subscription_change_confirm.tr(),
                       onTap: cubit.purchase,

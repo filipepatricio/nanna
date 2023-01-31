@@ -89,7 +89,7 @@ class _SignInIdleView extends StatelessWidget {
                 ),
               ),
               if (keyboardVisible) ...[
-                FilledButton.primary(
+                InformedFilledButton.primary(
                   context: context,
                   isEnabled: isEmailValid,
                   text: LocaleKeys.common_continue.tr(),

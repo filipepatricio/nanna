@@ -77,6 +77,26 @@ class PurchaseExceptionResolver {
         return PurchaseConfigurationException(exception.message, exception.details);
       case PurchasesErrorCode.unsupportedError:
         return PurchaseUnsupportedException(exception.message, exception.details);
+      case PurchasesErrorCode.emptySubscriberAttributesError:
+        return EmptySubscriberAttributesErrorException(exception.message, exception.details);
+      case PurchasesErrorCode.productDiscountMissingIdentifierError:
+        return ProductDiscountMissingIdentifierErrorException(exception.message, exception.details);
+      case PurchasesErrorCode.productDiscountMissingSubscriptionGroupIdentifierError:
+        return ProductDiscountMissingSubscriptionGroupIdentifierErrorException(exception.message, exception.details);
+      case PurchasesErrorCode.customerInfoError:
+        return CustomerInfoErrorException(exception.message, exception.details);
+      case PurchasesErrorCode.systemInfoError:
+        return SystemInfoErrorException(exception.message, exception.details);
+      case PurchasesErrorCode.beginRefundRequestError:
+        return BeginRefundRequestErrorException(exception.message, exception.details);
+      case PurchasesErrorCode.productRequestTimeout:
+        return ProductRequestTimeoutException(exception.message, exception.details);
+      case PurchasesErrorCode.apiEndpointBlocked:
+        return ApiEndpointBlockedException(exception.message, exception.details);
+      case PurchasesErrorCode.invalidPromotionalOfferError:
+        return InvalidPromotionalOfferErrorException(exception.message, exception.details);
+      case PurchasesErrorCode.offlineConnectionError:
+        return OfflineConnectionErrorException(exception.message, exception.details);
     }
   }
 
