@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/domain/article/use_case/get_article_heade
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/synchronizable.dt.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/synchronize_with_remote_use_case.di.dart';
-import 'package:clock/clock.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -21,9 +20,6 @@ class SynchronizeArticleWithRemoteUseCase implements SynchronizeWithRemoteUsecas
     final header = await _getArticleHeaderUseCase(synchronizable.dataId);
     final article = await _getArticleUseCase(header);
 
-    return synchronizable.copyWith(
-      data: article,
-      synchronizedAt: clock.now(),
-    );
+    return synchronizable.synchronize(article);
   }
 }

@@ -10,13 +10,20 @@ abstract class SynchronizableEntityMapper<A, B>
 
   @override
   SynchronizableEntity<A> from(Synchronizable<B> data) {
-    final item = data.data;
+    final item = data.map(
+      synchronized: (data) => data.data,
+      notSynchronized: (_) => null,
+    );
+    final synchronizedAt = data.map(
+      synchronized: (data) => data.synchronizedAt,
+      notSynchronized: (_) => null,
+    );
 
     return createEntity(
       data: item != null ? dataMapper.from(item) : null,
       dataId: data.dataId,
       createdAt: data.createdAt.toIso8601String(),
-      synchronizedAt: data.synchronizedAt?.toIso8601String(),
+      synchronizedAt: synchronizedAt?.toIso8601String(),
       expirationDate: data.expirationDate.toIso8601String(),
     );
   }
@@ -26,13 +33,21 @@ abstract class SynchronizableEntityMapper<A, B>
     final item = data.data;
     final synchronizedAt = data.synchronizedAt;
 
-    return Synchronizable(
-      data: item != null ? dataMapper.to(item) : null,
-      dataId: data.dataId,
-      createdAt: DateTime.parse(data.createdAt),
-      synchronizedAt: synchronizedAt != null ? DateTime.parse(synchronizedAt) : null,
-      expirationDate: DateTime.parse(data.expirationDate),
-    );
+    if (item != null && synchronizedAt != null) {
+      return Synchronizable.synchronized(
+        data: dataMapper.to(item),
+        dataId: data.dataId,
+        createdAt: DateTime.parse(data.createdAt),
+        synchronizedAt: DateTime.parse(synchronizedAt),
+        expirationDate: DateTime.parse(data.expirationDate),
+      );
+    } else {
+      return Synchronizable.notSynchronized(
+        dataId: data.dataId,
+        createdAt: DateTime.parse(data.createdAt),
+        expirationDate: DateTime.parse(data.expirationDate),
+      );
+    }
   }
 
   SynchronizableEntity<A> createEntity({

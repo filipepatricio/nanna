@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 mixin ConnectionStateAwareCubitMixin<S, I> on Cubit<S> {
   abstract final IsInternetConnectionAvailableUseCase isInternetConnectionAvailableUseCase;
 
-  bool? _isOnline;
+  bool? isCurrentlyOnline;
   StreamSubscription<bool>? _connectionStateSubscription;
 
   @override
@@ -28,8 +28,8 @@ mixin ConnectionStateAwareCubitMixin<S, I> on Cubit<S> {
   }
 
   Future<void> _handleConnectionState(I initialData, bool isOnline) async {
-    if (_isOnline == isOnline) return;
-    _isOnline = isOnline;
+    if (isCurrentlyOnline == isOnline) return;
+    isCurrentlyOnline = isOnline;
 
     if (isOnline) {
       await onOnline(initialData);

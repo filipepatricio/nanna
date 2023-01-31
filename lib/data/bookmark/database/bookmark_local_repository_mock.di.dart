@@ -27,6 +27,11 @@ class BookmarkLocalRepositoryMock implements BookmarkLocalRepository {
   Future<void> saveSortOption(BookmarkSortConfigName sort) async {}
 
   @override
+  Future<List<Synchronizable<Bookmark>>> getAllBookmarks() async {
+    return [];
+  }
+
+  @override
   Future<List<String>> getAllIds() async {
     return [];
   }

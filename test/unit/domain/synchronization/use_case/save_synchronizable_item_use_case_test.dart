@@ -15,7 +15,7 @@ void main() {
   group('when there is not item saved', () {
     test('save the item without any changes', () async {
       final repository = MockSynchronizableRepository();
-      final item = Synchronizable.notSynchronized('id', Duration.zero);
+      final item = Synchronizable.createNotSynchronized('id', Duration.zero);
 
       when(repository.load(item.dataId)).thenAnswer((_) async => null);
       when(repository.save(item)).thenAnswer((_) async {});
@@ -30,8 +30,8 @@ void main() {
   group('when there is an item saved', () {
     test('save the item with the longest expiration date', () async {
       final repository = MockSynchronizableRepository<String>();
-      final item = Synchronizable.notSynchronized<String>('id', const Duration(days: 2));
-      final existingItem = Synchronizable.notSynchronized<String>('id', const Duration(days: 3));
+      final item = Synchronizable.createNotSynchronized<String>('id', const Duration(days: 2));
+      final existingItem = Synchronizable.createNotSynchronized<String>('id', const Duration(days: 3));
 
       when(repository.load(item.dataId)).thenAnswer((_) async => existingItem);
       when(repository.save(any)).thenAnswer((_) async {});
@@ -51,7 +51,7 @@ void main() {
         ),
       );
 
-      final item2 = Synchronizable.notSynchronized<String>('id', const Duration(days: 4));
+      final item2 = Synchronizable.createNotSynchronized<String>('id', const Duration(days: 4));
 
       when(repository.load(item2.dataId)).thenAnswer((_) async => existingItem);
 
@@ -73,12 +73,12 @@ void main() {
 
     test('save the item with the latest data', () async {
       final repository = MockSynchronizableRepository<String>();
-      final item = Synchronizable.synchronized<String>(
+      final item = Synchronizable.createSynchronized<String>(
         'data',
         'id',
         const Duration(days: 2),
       );
-      final existingItem = Synchronizable.notSynchronized<String>('id', Duration.zero);
+      final existingItem = Synchronizable.createNotSynchronized<String>('id', Duration.zero);
 
       when(repository.load(item.dataId)).thenAnswer((_) async => existingItem);
       when(repository.save(any)).thenAnswer((_) async {});
@@ -90,16 +90,16 @@ void main() {
         repository.save(
           argThat(
             isA<Synchronizable<String>>().having(
-              (s) => s.data,
+              (s) => s.maybeData,
               'data',
-              item.data,
+              item.maybeData,
             ),
           ),
         ),
       );
 
-      final item2 = Synchronizable.notSynchronized<String>('id', Duration.zero);
-      final existingItem2 = Synchronizable.synchronized<String>(
+      final item2 = Synchronizable.createNotSynchronized<String>('id', Duration.zero);
+      final existingItem2 = Synchronizable.createSynchronized<String>(
         'data',
         'id',
         const Duration(days: 2),
@@ -115,9 +115,9 @@ void main() {
         repository.save(
           argThat(
             isA<Synchronizable<String>>().having(
-              (s) => s.data,
+              (s) => s.maybeData,
               'data',
-              existingItem2.data,
+              existingItem2.maybeData,
             ),
           ),
         ),
