@@ -19,6 +19,7 @@ on:
       - 'dart-test.yaml'
 
 env:
+  JAVA_DISTRIBUTION: 'zulu'
   JAVA_VERSION: '12.x'
   RUBY_VERSION: '3.1'
 
@@ -48,6 +49,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
 
       - name: Decrypt Android keys
