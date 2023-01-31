@@ -5,6 +5,7 @@ on:
     branches: [main, develop]
 
 env:
+  JAVA_DISTRIBUTION: 'zulu'
   JAVA_VERSION: '12.x'
 
 jobs:
@@ -94,7 +95,7 @@ jobs:
       - name: Result
         id: result
         if: success()
-        run: echo "::set-output name=result::true"
+        run: echo "result=true" >> $GITHUB_OUTPUT
 
   # //TODO: Uncomment when dart-code-metrics-action upgrades flutter to 3.7.0
   # dart_code_metrics:
@@ -126,8 +127,9 @@ jobs:
           access_token: ${{ github.token }}
 
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v3
         with:
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
 
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
@@ -171,7 +173,7 @@ jobs:
       - name: Result
         id: result
         if: success()
-        run: echo "::set-output name=result::true"
+        run: echo "result=true" >> $GITHUB_OUTPUT
 
   build_android:
     needs: [set_slack_id, changes, commit_lint, code_lint_test]
@@ -228,7 +230,7 @@ jobs:
       - name: Result
         id: result
         if: success()
-        run: echo "::set-output name=result::true"
+        run: echo "result=true" >> $GITHUB_OUTPUT
 
   build_ios:
     needs: [set_slack_id, changes, commit_lint, code_lint_test]
@@ -289,7 +291,7 @@ jobs:
       - name: Result
         id: result
         if: success()
-        run: echo "::set-output name=result::true"
+        run: echo "result=true" >> $GITHUB_OUTPUT
 
   all_jobs_succeeded:
     needs: [changes, commit_lint, code_lint_test, build_android, build_ios]
