@@ -59,7 +59,7 @@ class ChangeSubscriptionPage extends HookWidget {
           snackbarController.showMessage(
             SnackbarMessage.simple(
               message: message ?? LocaleKeys.common_error_tryAgainLater.tr(),
-              type: SnackbarMessageType.negative,
+              type: SnackbarMessageType.error,
             ),
           );
         },

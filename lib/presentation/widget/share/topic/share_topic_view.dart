@@ -89,11 +89,7 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                     color: AppColors.categoriesTextPrimary,
                     fontSize: 64,
                     height: 1.1,
-                    fontWeight: FontWeight.lerp(
-                      FontWeight.w500,
-                      FontWeight.w600,
-                      0.5,
-                    ),
+                    fontWeight: AppTypography.w550,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 3,
@@ -132,11 +128,7 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                         style: AppTypography.h2Regular.copyWith(
                           color: AppColors.categoriesTextPrimary,
                           height: 1,
-                          fontWeight: FontWeight.lerp(
-                            FontWeight.w500,
-                            FontWeight.w600,
-                            0.5,
-                          ),
+                          fontWeight: AppTypography.w550,
                         ),
                       ),
                     ],

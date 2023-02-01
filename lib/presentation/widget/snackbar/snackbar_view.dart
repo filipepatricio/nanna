@@ -33,11 +33,15 @@ class SnackbarView extends HookWidget {
       [message],
     );
 
-    final backgroundColor = messageState.value?.backgroundColor(context) ?? AppColors.snackBarInformative;
-    final textColor = useMemoized(
-      () => backgroundColor.computeLuminance() > 0.5 ? AppColors.stateTextPrimary : AppColors.stateTextSecondary,
-      [backgroundColor],
-    );
+    final backgroundColor = messageState.value?.backgroundColor(context) ?? AppColors.snackBarInfo;
+    final textColor = messageState.value?.textColor() ?? AppColors.stateTextPrimary;
+    final subTextColor = messageState.value?.subTextColor() ?? AppColors.categoriesTextSecondary;
+
+    final text = messageState.value?.buildText(textColor);
+    final subText = messageState.value?.buildSubText(context, subTextColor);
+    final action = messageState.value?.buildAction(textColor, dismissAction);
+
+    if (text == null) return const SizedBox.shrink();
 
     return Container(
       padding: const EdgeInsets.fromLTRB(
@@ -51,52 +55,40 @@ class SnackbarView extends HookWidget {
         borderRadius: BorderRadius.circular(AppDimens.modalRadius),
         boxShadow: cardShadows,
       ),
-      child: Theme(
-        data: Theme.of(context).copyWith(
-          textTheme: Theme.of(context).textTheme.apply(bodyColor: textColor),
-        ),
-        child: LayoutBuilder(
-          builder: (context, constraints) => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final content = Column(
+            crossAxisAlignment: action == null ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: _maxHeight,
-                  maxWidth: constraints.maxWidth - 2 * innerPadding,
-                ),
-                child: messageState.value?.content(textColor),
-              ),
-              if (messageState.value != null) ...[
-                buildSnackbarAction(messageState.value!, textColor),
-              ]
+              text,
+              if (subText != null) ...[
+                const SizedBox(height: AppDimens.s),
+                subText,
+              ],
             ],
-          ),
-        ),
-      ),
-    );
-  }
+          );
 
-  Widget buildSnackbarAction(SnackbarMessage message, Color textColor) {
-    return message.map(
-      simple: (message) {
-        if (message.action == null) {
-          return const SizedBox.shrink();
-        }
-        return GestureDetector(
-          onTap: () {
-            dismissAction?.call();
-            message.action!.callback();
-          },
-          child: Text(
-            message.action!.label,
-            style: AppTypography.h4ExtraBold.copyWith(
-              color: textColor,
-              decoration: TextDecoration.underline,
+          return Container(
+            width: double.infinity,
+            constraints: BoxConstraints(
+              maxHeight: _maxHeight,
+              maxWidth: constraints.maxWidth - innerPadding,
             ),
-          ),
-        );
-      },
-      custom: (message) => const SizedBox.shrink(),
+            child: action == null
+                ? content
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(child: content),
+                      const SizedBox(width: AppDimens.m),
+                      action,
+                    ],
+                  ),
+          );
+        },
+      ),
     );
   }
 }
@@ -104,27 +96,92 @@ class SnackbarView extends HookWidget {
 extension on SnackbarMessage {
   Color backgroundColor(BuildContext context) {
     switch (type) {
-      case SnackbarMessageType.positive:
-        return AppColors.snackBarPositive;
-      case SnackbarMessageType.negative:
-        return AppColors.snackBarNegative;
-      case SnackbarMessageType.informative:
-        return AppColors.snackBarInformative;
+      case SnackbarMessageType.success:
+        return AppColors.snackBarSuccess;
+      case SnackbarMessageType.info:
+        return AppColors.snackBarInfo;
+      case SnackbarMessageType.warning:
+        return AppColors.snackBarWarning;
+      case SnackbarMessageType.error:
+        return AppColors.snackBarError;
       case SnackbarMessageType.subscription:
         return AppColors.of(context).blackWhiteSecondary;
     }
   }
 
-  Widget content(Color textColor) {
+  Color textColor() {
+    switch (type) {
+      case SnackbarMessageType.error:
+      case SnackbarMessageType.success:
+      case SnackbarMessageType.subscription:
+        return AppColors.stateTextSecondary;
+      case SnackbarMessageType.info:
+      case SnackbarMessageType.warning:
+        return AppColors.stateTextPrimary;
+    }
+  }
+
+  Color subTextColor() {
+    switch (type) {
+      case SnackbarMessageType.error:
+      case SnackbarMessageType.success:
+      case SnackbarMessageType.subscription:
+        return AppColors.stateTextSecondary;
+      case SnackbarMessageType.info:
+      case SnackbarMessageType.warning:
+        return AppColors.categoriesTextSecondary;
+    }
+  }
+
+  Widget buildText(Color color) {
     return map(
       simple: (simple) {
         return AutoSizeText(
           simple.message,
           maxLines: 2,
-          style: AppTypography.b2Regular.copyWith(color: textColor),
+          style: AppTypography.b2Medium.copyWith(
+            fontWeight: AppTypography.w550,
+            color: color,
+          ),
         );
       },
-      custom: (custom) => custom.message,
+    );
+  }
+
+  Widget? buildSubText(BuildContext context, Color color) {
+    return map(
+      simple: (simple) {
+        if (simple.subMessage == null) return null;
+
+        return AutoSizeText(
+          simple.subMessage!,
+          maxLines: 2,
+          style: AppTypography.sansTextSmallLausanne.copyWith(
+            color: color,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget? buildAction(Color textColor, VoidCallback? dismissAction) {
+    return map(
+      simple: (simple) {
+        if (simple.action == null) return null;
+
+        return GestureDetector(
+          onTap: () {
+            dismissAction?.call();
+            simple.action!.callback();
+          },
+          child: AutoSizeText(
+            simple.action!.label,
+            style: AppTypography.b2Medium.copyWith(
+              color: textColor,
+            ),
+          ),
+        );
+      },
     );
   }
 }

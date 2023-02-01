@@ -64,7 +64,7 @@ class BookmarkListView extends HookWidget {
           snackbarController.showMessage(
             SnackbarMessage.simple(
               message: tr(LocaleKeys.bookmark_removeBookmarkSuccess),
-              type: SnackbarMessageType.positive,
+              type: SnackbarMessageType.success,
               action: SnackbarAction(
                 label: tr(LocaleKeys.common_undo),
                 callback: () {

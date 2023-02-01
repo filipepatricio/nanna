@@ -56,7 +56,7 @@ class _TopicAppBar extends HookWidget {
             title: Text(
               isScrolled.value ? topic.strippedTitle : title,
               style: AppTypography.h4Medium.copyWith(
-                fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5),
+                fontWeight: AppTypography.w550,
                 height: 1.11,
                 color: isScrolled.value ? null : AppColors.stateTextSecondary,
               ),

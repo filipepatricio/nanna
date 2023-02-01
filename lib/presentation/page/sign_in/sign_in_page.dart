@@ -46,7 +46,7 @@ class SignInPage extends HookWidget {
     void showSnackbar(String message) => snackbarController.showMessage(
           SnackbarMessage.simple(
             message: message,
-            type: SnackbarMessageType.negative,
+            type: SnackbarMessageType.error,
           ),
         );
 

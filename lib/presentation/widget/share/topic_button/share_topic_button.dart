@@ -36,7 +36,7 @@ class ShareTopicButton extends HookWidget {
         snackbarController.showMessage(
           SnackbarMessage.simple(
             message: LocaleKeys.common_linkCopied.tr(),
-            type: SnackbarMessageType.positive,
+            type: SnackbarMessageType.success,
           ),
         );
       }

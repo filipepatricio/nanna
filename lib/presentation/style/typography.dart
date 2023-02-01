@@ -5,6 +5,8 @@ const _fontFamilyIvarHeadline = 'IvarHeadline';
 const _fontFamilyLausanne = 'Lausanne';
 
 class AppTypography {
+  static FontWeight get w550 => FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5)!;
+
   // Serif Title
   static const TextStyle serifTitleSmallIvar = TextStyle(
     fontWeight: FontWeight.w600,

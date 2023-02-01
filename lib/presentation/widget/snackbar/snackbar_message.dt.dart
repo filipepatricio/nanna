@@ -8,16 +8,12 @@ class SnackbarMessage with _$SnackbarMessage {
   factory SnackbarMessage.simple({
     required String message,
     required SnackbarMessageType type,
+    String? subMessage,
     SnackbarAction? action,
   }) = _SnackbarMessageSimple;
-
-  factory SnackbarMessage.custom({
-    required Widget message,
-    required SnackbarMessageType type,
-  }) = _SnackbarMessageCustom;
 }
 
-enum SnackbarMessageType { positive, negative, informative, subscription }
+enum SnackbarMessageType { info, success, warning, error, subscription }
 
 class SnackbarAction {
   SnackbarAction({

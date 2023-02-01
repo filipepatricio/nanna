@@ -35,7 +35,7 @@ class CategoryPreferenceFollowButton extends HookWidget {
           snackbarController.showMessage(
             SnackbarMessage.simple(
               message: message,
-              type: SnackbarMessageType.negative,
+              type: SnackbarMessageType.error,
             ),
           );
         },

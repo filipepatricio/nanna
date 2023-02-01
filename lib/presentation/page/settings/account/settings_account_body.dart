@@ -41,7 +41,7 @@ class SettingsAccountBody extends HookWidget {
           snackbarController.showMessage(
             SnackbarMessage.simple(
               message: message,
-              type: SnackbarMessageType.positive,
+              type: SnackbarMessageType.success,
             ),
           );
         },

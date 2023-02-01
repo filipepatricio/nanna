@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -7,11 +6,11 @@ import 'package:better_informed_mobile/presentation/page/media/article_app_bar.d
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_read_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
@@ -74,31 +73,10 @@ class PremiumArticleView extends HookWidget {
       cubit,
       (cubit, state, context) {
         state.mapOrNull(
-          freeArticlesWarning: (data) => snackbarController.showMessage(
-            SnackbarMessage.custom(
-              message: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AutoSizeText(
-                    data.message,
-                    maxLines: 2,
-                    style: AppTypography.b2Regular,
-                  ),
-                  GestureDetector(
-                    onTap: () => context.pushRoute(const SubscriptionPageRoute()),
-                    child: AutoSizeText(
-                      LocaleKeys.subscription_snackbar_link.tr(),
-                      maxLines: 1,
-                      style: AppTypography.b2Bold.copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              type: SnackbarMessageType.subscription,
-            ),
+          freeArticlesWarning: (data) => showFreeArticlesWarning(
+            context,
+            snackbarController,
+            data.message,
           ),
         );
       },
@@ -121,4 +99,18 @@ class PremiumArticleView extends HookWidget {
       ),
     );
   }
+}
+
+void showFreeArticlesWarning(BuildContext context, SnackbarController snackbarController, String message) {
+  snackbarController.showMessage(
+    SnackbarMessage.simple(
+      message: message,
+      subMessage: LocaleKeys.subscription_snackbar_link.tr(),
+      action: SnackbarAction(
+        label: 'Upgrade',
+        callback: () => context.pushRoute(const SubscriptionPageRoute()),
+      ),
+      type: SnackbarMessageType.subscription,
+    ),
+  );
 }
