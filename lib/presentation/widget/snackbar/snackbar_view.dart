@@ -139,6 +139,7 @@ extension on SnackbarMessage {
     return AutoSizeText(
       message,
       maxLines: 2,
+      textAlign: action != null ? TextAlign.start : TextAlign.center,
       style: AppTypography.b2Medium.copyWith(
         fontWeight: AppTypography.w550,
         color: color,
@@ -152,6 +153,7 @@ extension on SnackbarMessage {
     return AutoSizeText(
       subMessage!,
       maxLines: 2,
+      textAlign: action != null ? TextAlign.start : TextAlign.center,
       style: AppTypography.sansTextSmallLausanne.copyWith(
         color: color,
       ),
