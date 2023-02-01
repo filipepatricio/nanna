@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/data/bookmark/database/mapper/bookmark_so
 import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
+import 'package:better_informed_mobile/domain/synchronization/synchronizable.dt.dart';
 import 'package:hive/hive.dart';
 
 const _sortBoxName = 'bookmark_sort';
@@ -57,12 +58,12 @@ class BookmarkHiveLocalRepository implements BookmarkLocalRepository {
   }
 
   @override
-  Future<void> deleteBookmark(String id) async {
+  Future<void> delete(String id) async {
     // await _bookmarkBox.delete(id);
   }
 
   @override
-  Future<Bookmark?> loadBookmark(String id) async {
+  Future<Synchronizable<Bookmark>?> load(String id) async {
     // final entity = await _bookmarkBox.get(id);
     // if (entity == null) return null;
 
@@ -71,8 +72,14 @@ class BookmarkHiveLocalRepository implements BookmarkLocalRepository {
   }
 
   @override
-  Future<void> saveBookmark(Bookmark bookmark) async {
+  Future<void> save(Synchronizable<Bookmark> bookmark) async {
     // final entity = _bookmarkEntityMapper.from(bookmark);
     // await _bookmarkBox.put(entity.id, entity);
+  }
+
+  @override
+  Future<List<String>> getAllIds() async {
+    // return _bookmarkBox.keys.cast<String>().toList();
+    return [];
   }
 }

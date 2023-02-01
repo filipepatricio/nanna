@@ -12,12 +12,14 @@ class SynchronizableTopicEntityMapper extends SynchronizableEntityMapper<TopicEn
 
   @override
   SynchronizableEntity<TopicEntity> createEntity({
-    required TopicEntity data,
+    required TopicEntity? data,
+    required String dataId,
     required String createdAt,
-    required String synchronizedAt,
+    required String? synchronizedAt,
     required String expirationDate,
   }) {
     return SynchronizableTopicEntity(
+      dataId: dataId,
       data: data,
       createdAt: createdAt,
       synchronizedAt: synchronizedAt,

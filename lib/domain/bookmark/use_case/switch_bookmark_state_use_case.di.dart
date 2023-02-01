@@ -66,7 +66,7 @@ class SwitchBookmarkStateUseCase {
   Future<BookmarkState> _removeBookmark(String id, BookmarkTypeData data) async {
     _trackBookmarkRemoved(data);
     final state = await _bookmarkRepository.removeBookmark(id);
-    await _bookmarkLocalRepository.deleteBookmark(id);
+    await _bookmarkLocalRepository.delete(id);
 
     _bookmarkChangeNotifier.notify(
       BookmarkEvent(

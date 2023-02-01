@@ -8,6 +8,7 @@ part 'synchronizable_article_entity.hv.g.dart';
 @HiveType(typeId: HiveTypes.synchronizableArticleEntity)
 class SynchronizableArticleEntity extends SynchronizableEntity<ArticleEntity> {
   SynchronizableArticleEntity({
+    required super.dataId,
     required super.data,
     required super.createdAt,
     required super.synchronizedAt,

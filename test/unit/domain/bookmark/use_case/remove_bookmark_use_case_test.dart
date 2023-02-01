@@ -51,7 +51,7 @@ void main() {
     test('should remove bookmark from local repository', () async {
       await useCase(bookmark);
 
-      verify(bookmarkLocalRepository.deleteBookmark(bookmark.id));
+      verify(bookmarkLocalRepository.delete(bookmark.id));
     });
 
     test('should notify profile bookmark change notifier', () async {

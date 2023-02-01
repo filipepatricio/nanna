@@ -3,11 +3,9 @@ import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/domain/synchronization/synchronizable.dart';
-import 'package:clock/clock.dart';
+import 'package:better_informed_mobile/domain/synchronization/synchronizable.dt.dart';
+import 'package:better_informed_mobile/domain/synchronization/use_case/save_synchronizable_item_use_case.di.dart';
 import 'package:injectable/injectable.dart';
-
-const _daysToExpire = 7;
 
 @injectable
 class SaveArticleLocallyUseCase {
@@ -15,42 +13,35 @@ class SaveArticleLocallyUseCase {
     this._articleRepository,
     this._articleLocalRepository,
     this._getArticleUseCase,
+    this._saveSynchronizableItemUseCase,
   );
 
   final ArticleRepository _articleRepository;
   final ArticleLocalRepository _articleLocalRepository;
   final GetArticleUseCase _getArticleUseCase;
+  final SaveSynchronizableItemUseCase _saveSynchronizableItemUseCase;
 
-  Future<void> fetchAndSave(String slug) async {
+  Future<void> fetchAndSave(String slug, Duration timeToExpire) async {
+    final synchronizable = Synchronizable.notSynchronized<Article>(slug, timeToExpire);
+    await _saveSynchronizableItemUseCase(_articleLocalRepository, synchronizable);
+
     final header = await _articleRepository.getArticleHeader(slug);
 
-    await fetchDetailsAndSave(header);
+    await fetchDetailsAndSave(header, timeToExpire);
   }
 
-  Future<void> fetchDetailsAndSave(MediaItemArticle article) async {
+  Future<void> fetchDetailsAndSave(MediaItemArticle article, Duration timeToExpire) async {
+    final synchronizable = Synchronizable.notSynchronized<Article>(article.slug, timeToExpire);
+    await _saveSynchronizableItemUseCase(_articleLocalRepository, synchronizable);
+
     final fullArticle = await _getArticleUseCase(article);
 
-    await save(fullArticle);
+    await save(fullArticle, timeToExpire);
   }
 
-  Future<void> save(Article article) async {
-    await _articleLocalRepository.saveArticle(
-      _getSynchronizableArticle(article),
-    );
-  }
+  Future<void> save(Article article, Duration timeToExpire) async {
+    final synchronizable = Synchronizable.synchronized(article, article.metadata.slug, timeToExpire);
 
-  Synchronizable<Article> _getSynchronizableArticle(Article article) {
-    final syncDate = clock.now();
-
-    return Synchronizable(
-      data: article,
-      expirationDate: _getExpirationDate(syncDate),
-      synchronizedAt: syncDate,
-      createdAt: syncDate,
-    );
-  }
-
-  DateTime _getExpirationDate(DateTime syncDate) {
-    return syncDate.add(const Duration(days: _daysToExpire));
+    await _saveSynchronizableItemUseCase(_articleLocalRepository, synchronizable);
   }
 }
