@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_view.dart';
 import 'package:flutter/material.dart';
 
@@ -153,6 +153,9 @@ void main() {
           action: action,
         ),
       );
+      final snackbarOffline = SnackbarView(
+        message: SnackbarMessage.offline(),
+      );
 
       await tester.startApp(
         initialRoute: PlaceholderPageRoute(
@@ -186,6 +189,7 @@ void main() {
                       snackbarWarningSubAction,
                       snackbarErrorSubAction,
                       snackbarSubscriptionSubAction,
+                      snackbarOffline,
                     ].expand((item) => [item, const SizedBox(height: AppDimens.m)])
                   ],
                 ),

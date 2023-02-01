@@ -365,7 +365,11 @@
   },
   "noConnection": {
     "title": "No Connection",
-    "body": "You seem to be offline. Please check your network connection to load content"
+    "body": "You seem to be offline. Please check your network connection to load content",
+    "snackbar": {
+      "message": "You’re offline",
+      "subMessage": "You’ll need to be online to do that"
+    }
   },
   "update": {
     "title": "Update now",

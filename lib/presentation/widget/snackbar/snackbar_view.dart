@@ -3,11 +3,11 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/shadows.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _maxHeight = 96.0;
+const _maxHeight = 120.0;
 
 class SnackbarView extends HookWidget {
   const SnackbarView({
@@ -34,8 +34,8 @@ class SnackbarView extends HookWidget {
     );
 
     final backgroundColor = messageState.value?.backgroundColor(context) ?? AppColors.snackBarInfo;
-    final textColor = messageState.value?.textColor() ?? AppColors.stateTextPrimary;
-    final subTextColor = messageState.value?.subTextColor() ?? AppColors.categoriesTextSecondary;
+    final textColor = messageState.value?.textColor(context) ?? AppColors.stateTextPrimary;
+    final subTextColor = messageState.value?.subTextColor(context) ?? AppColors.categoriesTextSecondary;
 
     final text = messageState.value?.buildText(textColor);
     final subText = messageState.value?.buildSubText(context, subTextColor);
@@ -109,79 +109,69 @@ extension on SnackbarMessage {
     }
   }
 
-  Color textColor() {
+  Color textColor(BuildContext context) {
     switch (type) {
       case SnackbarMessageType.error:
       case SnackbarMessageType.success:
-      case SnackbarMessageType.subscription:
         return AppColors.stateTextSecondary;
       case SnackbarMessageType.info:
       case SnackbarMessageType.warning:
         return AppColors.stateTextPrimary;
+      case SnackbarMessageType.subscription:
+        return AppColors.of(context).blackWhitePrimary;
     }
   }
 
-  Color subTextColor() {
+  Color subTextColor(BuildContext context) {
     switch (type) {
       case SnackbarMessageType.error:
       case SnackbarMessageType.success:
-      case SnackbarMessageType.subscription:
         return AppColors.stateTextSecondary;
       case SnackbarMessageType.info:
       case SnackbarMessageType.warning:
         return AppColors.categoriesTextSecondary;
+      case SnackbarMessageType.subscription:
+        return AppColors.of(context).blackWhitePrimary;
     }
   }
 
   Widget buildText(Color color) {
-    return map(
-      simple: (simple) {
-        return AutoSizeText(
-          simple.message,
-          maxLines: 2,
-          style: AppTypography.b2Medium.copyWith(
-            fontWeight: AppTypography.w550,
-            color: color,
-          ),
-        );
-      },
+    return AutoSizeText(
+      message,
+      maxLines: 2,
+      style: AppTypography.b2Medium.copyWith(
+        fontWeight: AppTypography.w550,
+        color: color,
+      ),
     );
   }
 
   Widget? buildSubText(BuildContext context, Color color) {
-    return map(
-      simple: (simple) {
-        if (simple.subMessage == null) return null;
+    if (subMessage == null) return null;
 
-        return AutoSizeText(
-          simple.subMessage!,
-          maxLines: 2,
-          style: AppTypography.sansTextSmallLausanne.copyWith(
-            color: color,
-          ),
-        );
-      },
+    return AutoSizeText(
+      subMessage!,
+      maxLines: 2,
+      style: AppTypography.sansTextSmallLausanne.copyWith(
+        color: color,
+      ),
     );
   }
 
   Widget? buildAction(Color textColor, VoidCallback? dismissAction) {
-    return map(
-      simple: (simple) {
-        if (simple.action == null) return null;
+    if (action == null) return null;
 
-        return GestureDetector(
-          onTap: () {
-            dismissAction?.call();
-            simple.action!.callback();
-          },
-          child: AutoSizeText(
-            simple.action!.label,
-            style: AppTypography.b2Medium.copyWith(
-              color: textColor,
-            ),
-          ),
-        );
+    return GestureDetector(
+      onTap: () {
+        dismissAction?.call();
+        action!.callback();
       },
+      child: AutoSizeText(
+        action!.label,
+        style: AppTypography.b2Medium.copyWith(
+          color: textColor,
+        ),
+      ),
     );
   }
 }
