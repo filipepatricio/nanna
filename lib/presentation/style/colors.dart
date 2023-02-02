@@ -142,9 +142,10 @@ class AppColors {
   static const Color categoriesTextSecondary = _darkerGrey;
   static const Color categoriesBackgroundShowMeEverything = _white;
 
-  static const Color snackBarPositive = stateBackgroundSuccess;
-  static const Color snackBarNegative = stateBackgroundError;
-  static const Color snackBarInformative = _white;
+  static const Color snackBarSuccess = stateBackgroundSuccess;
+  static const Color snackBarWarning = stateBackgroundWarning;
+  static const Color snackBarError = stateBackgroundError;
+  static const Color snackBarInfo = _white;
 
   static const String shareBackgroundTopColor = "#FFFFFF";
   static const String shareBackgroundBottomColor = "#FFFFFF";

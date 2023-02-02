@@ -40,7 +40,7 @@ class InformedSliverCupertinoAppBar extends StatelessWidget {
             title,
             style: AppTypography.h4Medium.copyWith(
               color: textColor ?? AppColors.of(context).textPrimary,
-              fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5),
+              fontWeight: AppTypography.w550,
               height: 1.11,
             ),
           ),
@@ -93,7 +93,7 @@ class _LargeTitle extends StatelessWidget {
       title,
       style: AppTypography.h0Medium.copyWith(
         color: textColor ?? AppColors.of(context).textPrimary,
-        fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5),
+        fontWeight: AppTypography.w550,
         height: 1.1,
       ),
     );

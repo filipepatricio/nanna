@@ -1,12 +1,8 @@
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/platform_util.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as custom_tabs;
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -44,26 +40,14 @@ Future<void> _openWithAnyApp(String uri, OpenInAppBrowserErrorCallback? onError)
 }
 
 SnackbarMessage _browserErrorMessage(String uri, SnackbarController snackbarController) {
-  return SnackbarMessage.custom(
-    message: Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-            text: LocaleKeys.common_error_noBrowser.tr(),
-            style: AppTypography.b2Regular.copyWith(color: AppColors.stateTextSecondary),
-          ),
-          TextSpan(
-            text: uri,
-            style: AppTypography.b2Regular.copyWith(
-              color: AppColors.stateTextSecondary,
-              decoration: TextDecoration.underline,
-            ),
-            recognizer: TapGestureRecognizer()..onTap = () => _copyUriToClipboard(uri, snackbarController),
-          ),
-        ],
-      ),
+  return SnackbarMessage.simple(
+    message: LocaleKeys.common_error_noBrowser.tr(),
+    subMessage: uri,
+    action: SnackbarAction(
+      label: LocaleKeys.common_copy.tr(),
+      callback: () => _copyUriToClipboard(uri, snackbarController),
     ),
-    type: SnackbarMessageType.negative,
+    type: SnackbarMessageType.error,
   );
 }
 
@@ -72,7 +56,7 @@ void _copyUriToClipboard(String uri, SnackbarController snackbarController) {
   snackbarController.showMessage(
     SnackbarMessage.simple(
       message: tr(LocaleKeys.common_linkCopied),
-      type: SnackbarMessageType.positive,
+      type: SnackbarMessageType.success,
     ),
   );
 }
