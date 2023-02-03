@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/relax.dart';
 class Brief {
   const Brief({
     required this.id,
+    required this.unseenCount,
     required this.greeting,
     required this.introduction,
     required this.date,
@@ -15,6 +16,7 @@ class Brief {
   });
 
   final String id;
+  final int unseenCount;
   final Headline greeting;
   final BriefIntroduction? introduction;
   final DateTime date;

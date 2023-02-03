@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/common/dto/successful_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topics_from_editor_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topics_from_expert_dto.dt.dart';
@@ -43,4 +44,9 @@ class TopicsMockDataSource implements TopicsApiDataSource {
 
   @override
   Future<void> markTopicAsVisited(String slug) async {}
+
+  @override
+  Future<SuccessfulResponseDTO> markTopicAsSeen(String slug) async {
+    return SuccessfulResponseDTO(true);
+  }
 }

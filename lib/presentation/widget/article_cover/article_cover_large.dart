@@ -4,6 +4,7 @@ class _ArticleCoverLarge extends ArticleCover {
   const _ArticleCoverLarge({
     required this.article,
     required this.onTap,
+    required this.isNew,
     required this.showNote,
     required this.showRecommendedBy,
     Key? key,
@@ -11,6 +12,7 @@ class _ArticleCoverLarge extends ArticleCover {
 
   final MediaItemArticle article;
   final VoidCallback onTap;
+  final bool isNew;
   final bool showNote;
   final bool showRecommendedBy;
 
@@ -76,6 +78,7 @@ class _ArticleCoverLarge extends ArticleCover {
             ],
             ArticleMetadataRow(
               article: state.map(initializing: (_) => article, idle: (state) => state.article),
+              isNew: isNew,
             ),
           ],
         ),

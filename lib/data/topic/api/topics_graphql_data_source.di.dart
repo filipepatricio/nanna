@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/common/dto/successful_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/documents/__generated__/get_topic_by_slug.ast.gql.dart'
     as get_topic_by_slug;
 import 'package:better_informed_mobile/data/topic/api/documents/__generated__/get_topic_id_by_slug.ast.gql.dart'
@@ -6,6 +7,8 @@ import 'package:better_informed_mobile/data/topic/api/documents/__generated__/ge
     as get_topics_from_editor;
 import 'package:better_informed_mobile/data/topic/api/documents/__generated__/get_topics_from_expert.ast.gql.dart'
     as get_topics_from_expert;
+import 'package:better_informed_mobile/data/topic/api/documents/__generated__/mark_topic_as_seen.ast.gql.dart'
+    as mark_topic_as_seen;
 import 'package:better_informed_mobile/data/topic/api/documents/__generated__/mark_topic_as_visited.ast.gql.dart'
     as mark_topic_as_visited;
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
@@ -120,4 +123,25 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
           },
         ),
       );
+
+  @override
+  Future<SuccessfulResponseDTO> markTopicAsSeen(String slug) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: mark_topic_as_seen.document,
+        operationName: mark_topic_as_seen.markTopicAsSeen.name?.value,
+        variables: {
+          'slug': slug,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => SuccessfulResponseDTO.fromJson(raw),
+      rootKey: 'markTopicSeen',
+    );
+
+    return dto ?? SuccessfulResponseDTO(false);
+  }
 }

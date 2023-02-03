@@ -45,4 +45,10 @@ class TopicsApiRepository implements TopicsRepository {
 
   @override
   Future<void> markTopicAsVisited(String slug) => _topicsApiDataSource.markTopicAsVisited(slug);
+
+  @override
+  Future<bool> markTopicAsSeen(String slug) async {
+    final dto = await _topicsApiDataSource.markTopicAsSeen(slug);
+    return dto.successful;
+  }
 }

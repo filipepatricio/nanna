@@ -4,6 +4,7 @@
 fragment briefFragment on Brief {
   __typename
   id
+  unseenCount
   greeting {
     headline
     message
@@ -48,6 +49,7 @@ fragment briefFragment on Brief {
 
 fragment briefEntryFragment on BriefEntry {
   __typename
+  isNew
   style {
     backgroundColor
     type

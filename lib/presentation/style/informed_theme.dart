@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/cupertino.dart';
@@ -76,6 +77,16 @@ class InformedTheme {
           textTheme: CupertinoTextThemeData(
             primaryColor: colors.textPrimary,
           ),
+        ),
+        badgeTheme: baseData.badgeTheme.copyWith(
+          backgroundColor: AppColors.stateBackgroundError,
+          alignment: const AlignmentDirectional(AppDimens.l + AppDimens.xs, AppDimens.zero),
+          textStyle: AppTypography.sansTextNanoLausanne.copyWith(
+            height: 1.0,
+            leadingDistribution: TextLeadingDistribution.even,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: AppDimens.one),
+          largeSize: AppDimens.ml,
         ),
       );
 }

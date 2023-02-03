@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/common/dto/successful_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topics_from_editor_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topics_from_expert_dto.dt.dart';
@@ -12,4 +13,6 @@ abstract class TopicsApiDataSource {
   Future<String> getTopicId(String slug);
 
   Future<void> markTopicAsVisited(String slug);
+
+  Future<SuccessfulResponseDTO> markTopicAsSeen(String slug);
 }
