@@ -13,6 +13,8 @@ import 'package:better_informed_mobile/data/article/api/documents/__generated__/
     as get_other_topic_entries;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_related_content.ast.gql.dart'
     as get_related_content;
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/mark_article_as_seen.ast.gql.dart'
+    as mark_article_as_seen;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/update_article_audio_position.ast.gql.dart'
     as update_article_audio_position;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/update_article_content_progress.ast.gql.dart'
@@ -24,6 +26,7 @@ import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dt
 import 'package:better_informed_mobile/data/article/api/dto/update_article_progress_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/exception/article_exception_mapper_facade.di.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
+import 'package:better_informed_mobile/data/common/dto/successful_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/networking/gql_customs/gql_options_with_custom_exception_mapper.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
@@ -238,5 +241,26 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
 
     if (dto == null) throw Exception('Response for related content s is null');
     return dto;
+  }
+
+  @override
+  Future<SuccessfulResponseDTO> markArticleAsSeen(String slug) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: mark_article_as_seen.document,
+        operationName: mark_article_as_seen.markArticleAsSeen.name?.value,
+        variables: {
+          'slug': slug,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => SuccessfulResponseDTO.fromJson(raw),
+      rootKey: 'markArticleSeen',
+    );
+
+    return dto ?? SuccessfulResponseDTO(false);
   }
 }

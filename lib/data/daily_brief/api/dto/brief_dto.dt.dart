@@ -11,6 +11,7 @@ part 'brief_dto.dt.g.dart';
 class BriefDTO {
   const BriefDTO(
     this.id,
+    this.unseenCount,
     this.greeting,
     this.introduction,
     this.date,
@@ -22,6 +23,7 @@ class BriefDTO {
 
   final String id;
   final String date;
+  final int unseenCount;
   final HeadlineDTO greeting;
   final BriefIntroductionDTO? introduction;
   final List<BriefSectionDTO> sections;

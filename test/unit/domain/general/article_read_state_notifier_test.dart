@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
-import 'package:better_informed_mobile/domain/general/article_read_state_notifier.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/article_read_state_notifier.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../test_data.dart';

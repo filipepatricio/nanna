@@ -1,0 +1,5 @@
+mutation markArticleAsSeen($slug: String!) {
+    markArticleSeen(slug: $slug) {
+        successful
+    }
+}

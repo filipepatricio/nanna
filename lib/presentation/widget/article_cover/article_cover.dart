@@ -34,6 +34,7 @@ abstract class ArticleCover extends HookWidget {
   factory ArticleCover.large({
     required MediaItemArticle article,
     required VoidCallback onTap,
+    bool isNew = false,
     bool showNote = false,
     bool showRecommendedBy = false,
     Key? key,
@@ -41,6 +42,7 @@ abstract class ArticleCover extends HookWidget {
     return _ArticleCoverLarge(
       article: article,
       onTap: onTap,
+      isNew: isNew,
       showNote: showNote,
       showRecommendedBy: showRecommendedBy,
       key: key,
@@ -50,6 +52,7 @@ abstract class ArticleCover extends HookWidget {
   factory ArticleCover.medium({
     required MediaItemArticle article,
     required VoidCallback onTap,
+    bool isNew = false,
     bool showNote = true,
     bool showRecommendedBy = true,
     VoidCallback? onBookmarkTap,
@@ -58,6 +61,7 @@ abstract class ArticleCover extends HookWidget {
     return _ArticleCoverMedium(
       article: article,
       onTap: onTap,
+      isNew: isNew,
       showNote: showNote,
       showRecommendedBy: showRecommendedBy,
       onBookmarkTap: onBookmarkTap,

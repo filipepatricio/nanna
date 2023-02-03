@@ -4,7 +4,9 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -12,26 +14,39 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 class BriefEntryCover extends HookWidget {
   const BriefEntryCover({
-    required this.briefEntry,
+    required this.entry,
     required this.briefId,
+    required this.onVisibilityChanged,
     this.topicCardKey,
-    this.onVisibilityChanged,
     Key? key,
   }) : super(key: key);
 
-  final BriefEntry briefEntry;
+  final BriefEntry entry;
   final String briefId;
   final GlobalKey? topicCardKey;
-  final Function(VisibilityInfo)? onVisibilityChanged;
+  final Function(VisibilityInfo, BriefEntry) onVisibilityChanged;
 
   @override
   Widget build(BuildContext context) {
-    final item = briefEntry.item;
-    final style = briefEntry.style;
+    final cubit = useCubit<BriefEntryCoverCubit>();
+    final state = useCubitBuilder(cubit);
+    final stateBriefEntry = state.map(initializing: (_) => entry, idle: (state) => state.entry);
+    final item = stateBriefEntry.item;
+    final style = stateBriefEntry.style;
+    final isNew = stateBriefEntry.isNew;
+
+    useEffect(
+      () {
+        cubit.initialize(entry);
+      },
+      [cubit, entry],
+    );
 
     return VisibilityDetector(
-      key: Key(briefEntry.id),
-      onVisibilityChanged: onVisibilityChanged,
+      key: Key(entry.id),
+      onVisibilityChanged: (visibility) {
+        onVisibilityChanged(visibility, stateBriefEntry);
+      },
       child: item.map(
         article: (data) {
           switch (style.type) {
@@ -45,6 +60,7 @@ class BriefEntryCover extends HookWidget {
                       briefId: briefId,
                     );
                   },
+                  isNew: isNew,
                   showNote: true,
                   showRecommendedBy: false,
                 ),
@@ -62,6 +78,7 @@ class BriefEntryCover extends HookWidget {
                           briefId: briefId,
                         );
                       },
+                      isNew: isNew,
                       showNote: true,
                       showRecommendedBy: false,
                     );
@@ -74,6 +91,7 @@ class BriefEntryCover extends HookWidget {
                           briefId: briefId,
                         );
                       },
+                      isNew: isNew,
                       showNote: true,
                       showRecommendedBy: false,
                     );
@@ -92,6 +110,7 @@ class BriefEntryCover extends HookWidget {
                 topicPreview: (data) => TopicCover.large(
                   key: topicCardKey,
                   topic: data.topicPreview,
+                  isNew: isNew,
                   onTap: () async {
                     await context.navigateToTopic(
                       topicPreview: data.topicPreview,
