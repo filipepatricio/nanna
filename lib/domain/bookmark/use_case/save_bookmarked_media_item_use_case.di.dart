@@ -1,11 +1,9 @@
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/use_case/save_article_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/synchronizable.dt.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/save_synchronizable_item_use_case.di.dart';
@@ -45,7 +43,7 @@ class SaveBookmarkedMediaItemUseCase {
 
           await _saveSynchronizableItemUseCase(
             _bookmarkLocalRepository,
-            Synchronizable.synchronized(
+            Synchronizable.createSynchronized(
               Bookmark(
                 bookmarkId,
                 BookmarkData.article(
@@ -57,14 +55,14 @@ class SaveBookmarkedMediaItemUseCase {
             ),
           );
 
-          await _saveArticle(article);
+          await _saveArticleLocallyUseCase.fetchDetailsAndSave(article, bookmarkExpirationTime);
         },
         topic: (bookmark) async {
           final topic = await _topicsRepository.getTopicBySlug(bookmark.slug);
 
           await _saveSynchronizableItemUseCase(
             _bookmarkLocalRepository,
-            Synchronizable.synchronized(
+            Synchronizable.createSynchronized(
               Bookmark(
                 bookmarkId,
                 BookmarkData.topic(
@@ -86,7 +84,7 @@ class SaveBookmarkedMediaItemUseCase {
     if (await _hasActiveSubscriptionUseCase()) {
       await _saveSynchronizableItemUseCase(
         _bookmarkLocalRepository,
-        Synchronizable.synchronized(
+        Synchronizable.createSynchronized(
           Bookmark(
             bookmarkId,
             data,
@@ -97,16 +95,10 @@ class SaveBookmarkedMediaItemUseCase {
       );
 
       await data.map(
-        article: (bookmark) => _saveArticle(bookmark.article),
+        article: (bookmark) => _saveArticleLocallyUseCase.fetchDetailsAndSave(bookmark.article, bookmarkExpirationTime),
         topic: (bookmark) => _saveTopicLocallyUseCase.save(bookmark.topic, bookmarkExpirationTime),
         unknown: (_) async {},
       );
-    }
-  }
-
-  Future<void> _saveArticle(MediaItemArticle article) async {
-    if (article.type == ArticleType.premium) {
-      await _saveArticleLocallyUseCase.fetchDetailsAndSave(article, bookmarkExpirationTime);
     }
   }
 }

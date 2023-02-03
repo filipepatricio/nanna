@@ -23,16 +23,16 @@ void main() {
 
   test('should call synchronizeWithRemote for each unsynchronized element', () async {
     final allSynchronizableA = [
-      FakeSynchonizable<A>(isNotSynchronized: true),
-      FakeSynchonizable<A>(isExpired: true),
+      FakeNotSynchronized<A>(),
+      FakeSynchronizedExpired<A>(),
     ];
     final allSynchronizableB = [
-      FakeSynchonizable<B>(),
-      FakeSynchonizable<B>(isNotSynchronized: true),
+      FakeSynchronized<B>(),
+      FakeNotSynchronized<B>(),
     ];
     final allSynchronizableC = [
-      FakeSynchonizable<C>(isNotSynchronized: true),
-      FakeSynchonizable<C>(isNotSynchronized: true),
+      FakeNotSynchronized<C>(),
+      FakeNotSynchronized<C>(),
     ];
 
     final aGroup = groups[0] as SynchronizableGroup<A>;
@@ -59,17 +59,17 @@ void main() {
 
   test('should delete all expired elements', () async {
     final allSynchronizableA = [
-      FakeSynchonizable<A>(isExpired: true),
-      FakeSynchonizable<A>(isNotSynchronized: true),
-      FakeSynchonizable<A>(isExpired: true),
+      FakeSynchronizedExpired<A>(),
+      FakeNotSynchronized<A>(),
+      FakeSynchronizedExpired<A>(),
     ];
     final allSynchronizableB = [
-      FakeSynchonizable<B>(),
-      FakeSynchonizable<B>(isExpired: true),
+      FakeSynchronized<B>(),
+      FakeSynchronizedExpired<B>(),
     ];
     final allSynchronizableC = [
-      FakeSynchonizable<C>(isNotSynchronized: true),
-      FakeSynchonizable<C>(isNotSynchronized: true),
+      FakeNotSynchronized<C>(),
+      FakeNotSynchronized<C>(),
     ];
 
     final aGroup = groups[0] as SynchronizableGroup<A>;
@@ -96,18 +96,18 @@ void main() {
     verify(bGroup.repository.delete('b2'));
   });
 
-  test('should continie synchronization when element throws', () async {
+  test('should continue synchronization when element throws', () async {
     final allSynchronizableA = [
-      FakeSynchonizable<A>(isNotSynchronized: true),
-      FakeSynchonizable<A>(isExpired: true),
+      FakeNotSynchronized<A>(),
+      FakeSynchronizedExpired<A>(),
     ];
     final allSynchronizableB = [
-      FakeSynchonizable<B>(),
-      FakeSynchonizable<B>(isNotSynchronized: true),
+      FakeSynchronized<B>(),
+      FakeNotSynchronized<B>(),
     ];
     final allSynchronizableC = [
-      FakeSynchonizable<C>(isNotSynchronized: true),
-      FakeSynchonizable<C>(isNotSynchronized: true),
+      FakeNotSynchronized<C>(),
+      FakeNotSynchronized<C>(),
     ];
 
     final aGroup = groups[0] as SynchronizableGroup<A>;
@@ -135,21 +135,19 @@ void main() {
   });
 }
 
-class FakeSynchonizable<T> extends Fake implements Synchronizable<T> {
-  FakeSynchonizable({
-    bool isExpired = false,
-    bool isNotSynchronized = false,
-  })  : _isExpired = isExpired,
-        _isNotSynchronized = isNotSynchronized;
-
-  final bool _isExpired;
-  final bool _isNotSynchronized;
-
+class FakeNotSynchronized<T> extends Fake implements NotSynchronized<T> {
   @override
-  bool get isExpired => _isExpired;
+  bool get isExpired => false;
+}
 
+class FakeSynchronizedExpired<T> extends Fake implements Synchronized<T> {
   @override
-  bool get isNotSynchronized => _isNotSynchronized;
+  bool get isExpired => true;
+}
+
+class FakeSynchronized<T> extends Fake implements Synchronized<T> {
+  @override
+  bool get isExpired => false;
 }
 
 class A {}

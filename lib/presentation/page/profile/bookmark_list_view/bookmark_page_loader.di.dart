@@ -12,11 +12,13 @@ class BookmarkPageLoader implements NextPageLoader<Bookmark> {
     required this.filter,
     required this.sort,
     required this.order,
+    required this.remote,
   });
 
   final BookmarkFilter filter;
   final BookmarkSort sort;
   final BookmarkOrder order;
+  final bool remote;
   final GetPaginatedBookmarksUseCase _getPaginatedBookmarksUseCase;
 
   @override
@@ -27,6 +29,7 @@ class BookmarkPageLoader implements NextPageLoader<Bookmark> {
       filter: filter,
       sort: sort,
       order: order,
+      remote: remote,
     );
   }
 }
@@ -41,12 +44,14 @@ class BookmarkPaginationEngineProvider {
     required BookmarkFilter filter,
     required BookmarkSort sort,
     required BookmarkOrder order,
+    required bool remote,
   }) {
     final nextPageLoader = BookmarkPageLoader(
       _getPaginatedBookmarksUseCase,
       filter: filter,
       sort: sort,
       order: order,
+      remote: remote,
     );
 
     return PaginationEngine(nextPageLoader);

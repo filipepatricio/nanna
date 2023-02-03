@@ -42,7 +42,7 @@ class SynchronizeAllUseCase {
   ) async {
     if (synchronizable.isExpired) {
       await group.repository.delete(id);
-    } else if (synchronizable.isNotSynchronized) {
+    } else if (synchronizable is NotSynchronized<T>) {
       await _synchronizeWithRemote<T>(synchronizable, group);
     }
   }

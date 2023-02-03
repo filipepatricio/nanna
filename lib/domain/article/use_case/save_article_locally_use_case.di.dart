@@ -22,7 +22,7 @@ class SaveArticleLocallyUseCase {
   final SaveSynchronizableItemUseCase _saveSynchronizableItemUseCase;
 
   Future<void> fetchAndSave(String slug, Duration timeToExpire) async {
-    final synchronizable = Synchronizable.notSynchronized<Article>(slug, timeToExpire);
+    final synchronizable = Synchronizable.createNotSynchronized<Article>(slug, timeToExpire);
     await _saveSynchronizableItemUseCase(_articleLocalRepository, synchronizable);
 
     final header = await _articleRepository.getArticleHeader(slug);
@@ -31,7 +31,7 @@ class SaveArticleLocallyUseCase {
   }
 
   Future<void> fetchDetailsAndSave(MediaItemArticle article, Duration timeToExpire) async {
-    final synchronizable = Synchronizable.notSynchronized<Article>(article.slug, timeToExpire);
+    final synchronizable = Synchronizable.createNotSynchronized<Article>(article.slug, timeToExpire);
     await _saveSynchronizableItemUseCase(_articleLocalRepository, synchronizable);
 
     final fullArticle = await _getArticleUseCase(article);
@@ -40,7 +40,7 @@ class SaveArticleLocallyUseCase {
   }
 
   Future<void> save(Article article, Duration timeToExpire) async {
-    final synchronizable = Synchronizable.synchronized(article, article.metadata.slug, timeToExpire);
+    final synchronizable = Synchronizable.createSynchronized(article, article.metadata.slug, timeToExpire);
 
     await _saveSynchronizableItemUseCase(_articleLocalRepository, synchronizable);
   }

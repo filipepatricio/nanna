@@ -57,8 +57,8 @@ void main() {
           verify(saveSynchronizableItemUseCase(bookmarkLocalRepository, captureAny)).captured.single;
       expect(
         capturedBookmark,
-        isA<Synchronizable<Bookmark>>()
-            .having((synchronizable) => synchronizable.data?.id, 'data.id', bookmarkId)
+        isA<Synchronized<Bookmark>>()
+            .having((synchronizable) => synchronizable.data.id, 'data.id', bookmarkId)
             .having((synchronizable) => synchronizable.dataId, 'dataId', bookmarkId),
       );
 
@@ -79,8 +79,8 @@ void main() {
           verify(saveSynchronizableItemUseCase(bookmarkLocalRepository, captureAny)).captured.single;
       expect(
         capturedBookmark,
-        isA<Synchronizable<Bookmark>>()
-            .having((synchronizable) => synchronizable.data?.id, 'data.id', bookmarkId)
+        isA<Synchronized<Bookmark>>()
+            .having((synchronizable) => synchronizable.data.id, 'data.id', bookmarkId)
             .having((synchronizable) => synchronizable.dataId, 'dataId', bookmarkId),
       );
 
@@ -116,8 +116,8 @@ void main() {
           verify(saveSynchronizableItemUseCase(bookmarkLocalRepository, captureAny)).captured.single;
       expect(
         capturedBookmark,
-        isA<Synchronizable<Bookmark>>()
-            .having((synchronizable) => synchronizable.data?.id, 'data.id', bookmarkId)
+        isA<Synchronized<Bookmark>>()
+            .having((synchronizable) => synchronizable.data.id, 'data.id', bookmarkId)
             .having((synchronizable) => synchronizable.dataId, 'dataId', bookmarkId),
       );
 
@@ -138,8 +138,8 @@ void main() {
           verify(saveSynchronizableItemUseCase(bookmarkLocalRepository, captureAny)).captured.single;
       expect(
         capturedBookmark,
-        isA<Synchronizable<Bookmark>>()
-            .having((synchronizable) => synchronizable.data?.id, 'data.id', bookmarkId)
+        isA<Synchronized<Bookmark>>()
+            .having((synchronizable) => synchronizable.data.id, 'data.id', bookmarkId)
             .having((synchronizable) => synchronizable.dataId, 'dataId', bookmarkId),
       );
 

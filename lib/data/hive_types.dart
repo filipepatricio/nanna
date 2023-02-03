@@ -43,4 +43,5 @@ class HiveTypes {
   static const int activeSubscriptionManualPremiumEntity = 39;
   static const int subscriptionPlanEntity = 40;
   static const int subscriptionPlanTypeEntity = 41;
+  static const int synchronizableBookmarkEntity = 42;
 }
