@@ -49,6 +49,9 @@ const unsubscribeNotificationsPath = 'unsubscribe';
 const settingsPath = 'settings';
 const notificationsPath = 'notifications';
 const appearancePath = 'appearance';
+const interestsPath = 'interests';
+const accountPath = 'account';
+const subscriptionPath = 'subscription';
 
 @AdaptiveAutoRouter(
   routes: [
@@ -92,6 +95,8 @@ const mainPageRoute = CustomRoute(
     AutoRoute(path: settingsPath, page: SettingsMainPage),
     AutoRoute(path: notificationsPath, page: SettingsNotificationsPage),
     AutoRoute(path: appearancePath, page: SettingsAppearancePage),
+    AutoRoute(path: interestsPath, page: SettingsManageMyInterestsPage),
+    AutoRoute(path: accountPath, page: SettingsAccountPage),
   ],
 );
 
@@ -128,9 +133,9 @@ const dashboardTabRouter = CustomRoute(
         AutoRoute(path: settingsPath, page: SettingsMainPage),
         AutoRoute(path: notificationsPath, page: SettingsNotificationsPage),
         AutoRoute(path: appearancePath, page: SettingsAppearancePage),
-        AutoRoute(page: SettingsAccountPage),
-        AutoRoute(page: SettingsManageMyInterestsPage),
-        AutoRoute(page: SettingsSubscriptionPage),
+        AutoRoute(path: accountPath, page: SettingsAccountPage),
+        AutoRoute(path: interestsPath, page: SettingsManageMyInterestsPage),
+        AutoRoute(path: subscriptionPath, page: SettingsSubscriptionPage),
       ],
     ),
     RedirectRoute(path: '', redirectTo: topicsPath),

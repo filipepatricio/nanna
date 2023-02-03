@@ -14,6 +14,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
 
 final tabBarPageKey = GlobalKey();
+final tabBarScaffoldKey = GlobalKey<ScaffoldState>();
 
 class TabBarPage extends HookWidget {
   const TabBarPage({Key? key}) : super(key: key);
@@ -50,6 +51,7 @@ class TabBarPage extends HookWidget {
                   child: child,
                 );
               },
+              scaffoldKey: tabBarScaffoldKey,
               key: tabBarPageKey,
               animationDuration: Duration.zero,
               routes: const [

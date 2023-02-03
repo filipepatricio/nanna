@@ -122,10 +122,9 @@ class MainCubit extends Cubit<MainState> {
     }
 
     final articleIndex = uri.pathSegments.indexOf(articlePath);
+    final topicSlug = _findTopicSlug(path);
 
-    if (articleIndex > 0) {
-      final topicSlug = _findTopicSlug(path);
-
+    if (articleIndex >= 0) {
       if (topicSlug != null) {
         final topicSegment = uri.pathSegments.take(max(0, articleIndex)).join('/');
         final articleSegment = uri.pathSegments.skip(max(0, articleIndex)).join('/');
@@ -139,10 +138,14 @@ class MainCubit extends Cubit<MainState> {
           articleUri.toString(),
         ]);
       }
+
+      return MainState.navigate(const MainPageRoute().path + path);
     }
 
+    if (topicSlug != null) return MainState.navigate(const MainPageRoute().path + path);
+
     final finalPath = path.split('/');
-    if (tabsPaths.toSet().intersection(finalPath.toSet()).isNotEmpty) {
+    if (finalPath.length > 1) {
       return MainState.multiNavigate(
         [
           const MainPageRoute().path,
