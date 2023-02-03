@@ -100,9 +100,6 @@ class FakePushNotificationRepository extends Fake implements PushNotificationRep
   @override
   Future<bool> requestPermission() async => false;
 
-  // @override
-  // Future<void> openNotificationsSettings() async {}
-
   @override
   Future<bool> shouldOpenNotificationsSettings() async => false;
 
@@ -111,11 +108,6 @@ class FakePushNotificationRepository extends Fake implements PushNotificationRep
 
   @override
   Future<NotificationPreferences> getNotificationPreferences() async => TestData.notificationPreferences;
-
-  // @override
-  // Future<NotificationChannel> setNotificationChannel(String id, bool? pushEnabled, bool? emailEnabled) async {
-
-  // }
 
   @override
   void dispose() {}

@@ -19,7 +19,10 @@ class NewTag extends StatelessWidget {
       ),
       child: Text(
         LocaleKeys.common_new.tr(),
-        style: AppTypography.sansTextNanoLausanne.copyWith(height: 1),
+        style: AppTypography.sansTextNanoLausanne.copyWith(
+          color: AppColors.brandPrimary,
+          height: 1,
+        ),
       ),
     );
   }
