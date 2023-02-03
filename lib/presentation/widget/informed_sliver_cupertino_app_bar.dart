@@ -2,9 +2,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
-import 'package:better_informed_mobile/presentation/widget/cupertino_nav_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class InformedSliverCupertinoAppBar extends StatelessWidget {
@@ -32,9 +30,6 @@ class InformedSliverCupertinoAppBar extends StatelessWidget {
 
     return MultiSliver(
       children: [
-        /// TODO: In next flutter release original CupertinoSliverNavigationBar will expose [alwaysShowMiddle] arg
-        /// Then we can remove it
-        /// For now we use it's copied implementation
         CupertinoSliverNavigationBar(
           transitionBetweenRoutes: false,
           backgroundColor: backgroundColor ?? AppColors.of(context).backgroundPrimary,
@@ -45,7 +40,7 @@ class InformedSliverCupertinoAppBar extends StatelessWidget {
             title,
             style: AppTypography.h4Medium.copyWith(
               color: textColor ?? AppColors.of(context).textPrimary,
-              fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5),
+              fontWeight: AppTypography.w550,
               height: 1.11,
             ),
           ),
@@ -98,7 +93,7 @@ class _LargeTitle extends StatelessWidget {
       title,
       style: AppTypography.h0Medium.copyWith(
         color: textColor ?? AppColors.of(context).textPrimary,
-        fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5),
+        fontWeight: AppTypography.w550,
         height: 1.1,
       ),
     );

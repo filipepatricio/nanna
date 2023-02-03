@@ -81,7 +81,7 @@ class InformedDialog extends HookWidget {
         children: [
           Expanded(
             flex: 6,
-            child: FilledButton.secondary(
+            child: InformedFilledButton.secondary(
               context: context,
               text: LocaleKeys.common_cancel.tr(),
               onTap: () => Navigator.of(context, rootNavigator: true).pop(false),
@@ -90,7 +90,7 @@ class InformedDialog extends HookWidget {
           const Spacer(),
           Expanded(
             flex: 6,
-            child: FilledButton.negative(
+            child: InformedFilledButton.negative(
               text: LocaleKeys.settings_deleteAccount_delete.tr(),
               onTap: () => Navigator.of(context, rootNavigator: true).pop(true),
             ),

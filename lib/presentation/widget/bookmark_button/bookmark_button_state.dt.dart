@@ -21,6 +21,11 @@ class BookmarkButtonState with _$BookmarkButtonState {
     BookmarkTypeData data,
   ) = _BookmarkButtonStateSwitching;
 
+  @Implements<BuildState>()
+  factory BookmarkButtonState.offline(
+    BookmarkState state,
+  ) = _BookmarkButtonStateOffline;
+
   factory BookmarkButtonState.bookmarkAdded() = _BookmarkButtonStateBookmarkAdded;
 
   factory BookmarkButtonState.bookmarkRemoved() = _BookmarkButtonStateBookmarkedRemoved;

@@ -22,6 +22,7 @@ import '../../test_data.dart';
 import '../unit_test_utils.dart';
 
 void main() {
+  late DailyBriefPageCubit dailyBriefPageCubit;
   late MockTrackActivityUseCase trackActivityUseCase;
   late MockGetCurrentBriefUseCase getCurrentBriefUseCase;
   late MockGetPastBriefUseCase getPastBriefUseCase;
@@ -33,7 +34,8 @@ void main() {
   late MockIsOnboardingPaywallSeenUseCase isOnboardingPaywallSeenUseCase;
   late MockHasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
   late MockSetOnboardingPaywallSeenUseCase setOnboardingPaywallSeenUseCase;
-  late DailyBriefPageCubit dailyBriefPageCubit;
+  late MockMarkTopicAsSeenUseCase markTopicAsSeenUseCase;
+  late MockMarkArticleAsSeenUseCase markArticleAsSeenUseCase;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(
@@ -55,6 +57,8 @@ void main() {
     isOnboardingPaywallSeenUseCase = MockIsOnboardingPaywallSeenUseCase();
     hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
     setOnboardingPaywallSeenUseCase = MockSetOnboardingPaywallSeenUseCase();
+    markTopicAsSeenUseCase = MockMarkTopicAsSeenUseCase();
+    markArticleAsSeenUseCase = MockMarkArticleAsSeenUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -68,6 +72,8 @@ void main() {
       isOnboardingPaywallSeenUseCase,
       hasActiveSubscriptionUseCase,
       setOnboardingPaywallSeenUseCase,
+      markArticleAsSeenUseCase,
+      markTopicAsSeenUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});

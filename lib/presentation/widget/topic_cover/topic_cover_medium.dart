@@ -6,6 +6,7 @@ class _TopicCoverMedium extends TopicCover {
   const _TopicCoverMedium({
     required this.onTap,
     required this.topic,
+    required this.isNew,
     this.onBookmarkTap,
     Key? key,
   }) : super._(key: key);
@@ -13,6 +14,7 @@ class _TopicCoverMedium extends TopicCover {
   final VoidCallback? onTap;
   final VoidCallback? onBookmarkTap;
   final TopicPreview topic;
+  final bool isNew;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +58,7 @@ class _TopicCoverMedium extends TopicCover {
             _TopicCoverBar.medium(
               topic: topic,
               onBookmarkTap: onBookmarkTap,
+              isNew: isNew,
             ),
           ],
         ),

@@ -24,7 +24,7 @@ class AudioSpeedButton extends HookWidget {
     return UnconstrainedBox(
       child: Opacity(
         opacity: state.isEnabled ? 1.0 : 0.7,
-        child: FilledButton.secondary(
+        child: InformedFilledButton.secondary(
           context: context,
           text: LocaleKeys.audio_speed.tr(
             args: [state.currentSpeed],

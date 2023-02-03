@@ -8,7 +8,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/category_preference_follow_button/category_preference_follow_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/category_preference_follow_button/category_preference_follow_button_state.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -35,7 +35,7 @@ class CategoryPreferenceFollowButton extends HookWidget {
           snackbarController.showMessage(
             SnackbarMessage.simple(
               message: message,
-              type: SnackbarMessageType.negative,
+              type: SnackbarMessageType.error,
             ),
           );
         },

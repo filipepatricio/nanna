@@ -18,7 +18,7 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/modal_bottom_sheet.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_card.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscrption_links_footer.dart';
@@ -59,7 +59,7 @@ class ChangeSubscriptionPage extends HookWidget {
           snackbarController.showMessage(
             SnackbarMessage.simple(
               message: message ?? LocaleKeys.common_error_tryAgainLater.tr(),
-              type: SnackbarMessageType.negative,
+              type: SnackbarMessageType.error,
             ),
           );
         },

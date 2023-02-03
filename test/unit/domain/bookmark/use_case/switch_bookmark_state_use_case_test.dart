@@ -48,7 +48,7 @@ void main() {
 
       verifyNever(bookmarkRepository.bookmarkTopic(any));
       verifyNever(bookmarkRepository.removeBookmark(any));
-      verifyNever(bookmarkLocalRepository.deleteBookmark(id));
+      verifyNever(bookmarkLocalRepository.delete(id));
       verify(saveBookmarkedMediaItemUseCase.usingBookmarkType(type, id));
     });
 
@@ -69,7 +69,7 @@ void main() {
       verifyNever(bookmarkRepository.bookmarkArticle(any));
       verifyNever(bookmarkRepository.bookmarkTopic(any));
       verifyNever(saveBookmarkedMediaItemUseCase.usingBookmarkType(any, any));
-      verify(bookmarkLocalRepository.deleteBookmark(id));
+      verify(bookmarkLocalRepository.delete(id));
     });
   });
 
@@ -92,7 +92,7 @@ void main() {
 
       verifyNever(bookmarkRepository.bookmarkArticle(any));
       verifyNever(bookmarkRepository.removeBookmark(any));
-      verifyNever(bookmarkLocalRepository.deleteBookmark(id));
+      verifyNever(bookmarkLocalRepository.delete(id));
       verify(saveBookmarkedMediaItemUseCase.usingBookmarkType(type, id));
     });
 
@@ -113,7 +113,7 @@ void main() {
       verifyNever(bookmarkRepository.bookmarkArticle(any));
       verifyNever(bookmarkRepository.bookmarkTopic(any));
       verifyNever(saveBookmarkedMediaItemUseCase.usingBookmarkType(any, any));
-      verify(bookmarkLocalRepository.deleteBookmark(id));
+      verify(bookmarkLocalRepository.delete(id));
     });
   });
 }

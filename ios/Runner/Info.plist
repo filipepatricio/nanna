@@ -109,5 +109,7 @@
 		<true />
 		<key>com.claimsforce.segment.WRITE_KEY</key>
 		<string>$(SEGMENT_WRITE_KEY)</string>
-	</dict>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+</dict>
 </plist>

@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/data/update_article_progress_response.dart';
+import 'package:better_informed_mobile/domain/article/use_case/update_article_progress_state_notifier_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/domain/general/update_article_progress_state_notifier_use_case.di.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

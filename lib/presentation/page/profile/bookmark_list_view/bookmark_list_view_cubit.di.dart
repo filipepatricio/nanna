@@ -10,8 +10,10 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/add_bookmark_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/remove_bookmark_use_case.di.dart';
+import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_page_loader.di.dart';
+import 'package:better_informed_mobile/presentation/util/connection_state_aware_cubit_mixin.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -19,13 +21,15 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 @injectable
-class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
+class BookmarkListViewCubit extends Cubit<BookmarkListViewState>
+    with ConnectionStateAwareCubitMixin<BookmarkListViewState, BookmarkListOptions> {
   BookmarkListViewCubit(
     this._bookmarkPaginationEngineProvider,
     this._getBookmarkChangeStreamUseCase,
     this._removeBookmarkUseCase,
     this._addBookmarkUseCase,
     this._trackActivityUseCase,
+    this._isInternetConnectionAvailableUseCase,
   ) : super(BookmarkListViewState.initial());
 
   final BookmarkPaginationEngineProvider _bookmarkPaginationEngineProvider;
@@ -33,6 +37,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   final RemoveBookmarkUseCase _removeBookmarkUseCase;
   final AddBookmarkUseCase _addBookmarkUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
+  final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
 
   late PaginationEngine<Bookmark> _paginationEngine;
 
@@ -44,16 +49,23 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
     return super.close();
   }
 
-  Future<void> initialize(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) async {
-    emit(BookmarkListViewState.loading(filter));
+  @override
+  IsInternetConnectionAvailableUseCase get isInternetConnectionAvailableUseCase =>
+      _isInternetConnectionAvailableUseCase;
 
-    try {
-      final paginationState = await _initializePaginationEngine(filter, sort, order);
-      _handlePaginationState(paginationState);
-    } catch (e, s) {
-      Fimber.e('Loading bookmark list failed', ex: e, stacktrace: s);
-      emit(BookmarkListViewState.error());
-    }
+  @override
+  Future<void> onOffline(BookmarkListOptions initialData) async {
+    await _freshInitialization(initialData, false);
+  }
+
+  @override
+  Future<void> onOnline(BookmarkListOptions initialData) async {
+    await _freshInitialization(initialData, true);
+  }
+
+  Future<void> initialize(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) async {
+    final options = BookmarkListOptions(filter, sort, order);
+    await initializeConnection(options);
 
     _registerBookmarkChangeNotification(filter, sort, order);
   }
@@ -142,6 +154,23 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
     );
   }
 
+  Future<void> _freshInitialization(BookmarkListOptions initialData, bool remote) async {
+    emit(BookmarkListViewState.loading(initialData.filter));
+
+    try {
+      final paginationState = await _initializePaginationEngine(
+        initialData.filter,
+        initialData.sort,
+        initialData.order,
+        remote,
+      );
+      _handlePaginationState(paginationState);
+    } catch (e, s) {
+      Fimber.e('Loading bookmark list while offline failed', ex: e, stacktrace: s);
+      emit(BookmarkListViewState.error());
+    }
+  }
+
   void _trackBookmarkRemoveUndo(Bookmark bookmark) {
     bookmark.data.mapOrNull(
       article: (value) => _trackActivityUseCase.trackEvent(
@@ -174,7 +203,13 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
 
     if (filters.contains(filter)) {
       emit(BookmarkListViewState.loading(filter));
-      yield await _initializePaginationEngine(filter, sort, order);
+      final isOnline = isCurrentlyOnline ?? true;
+      yield await _initializePaginationEngine(
+        filter,
+        sort,
+        order,
+        isOnline,
+      );
     }
   }
 
@@ -182,11 +217,13 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
     BookmarkFilter filter,
     BookmarkSort sort,
     BookmarkOrder order,
+    bool remote,
   ) async {
     _paginationEngine = _bookmarkPaginationEngineProvider.get(
       filter: filter,
       sort: sort,
       order: order,
+      remote: remote,
     );
 
     return _paginationEngine.loadMore();
@@ -243,4 +280,12 @@ extension on BookmarkListViewState {
       orElse: () => throw Exception('Can not resolve filter at this state'),
     );
   }
+}
+
+class BookmarkListOptions {
+  BookmarkListOptions(this.filter, this.sort, this.order);
+
+  final BookmarkFilter filter;
+  final BookmarkSort sort;
+  final BookmarkOrder order;
 }

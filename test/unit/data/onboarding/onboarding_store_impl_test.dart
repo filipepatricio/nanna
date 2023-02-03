@@ -19,23 +19,17 @@ void main() {
     onboardingStore = OnboardingStoreImpl(
       onboardingDatabase,
       onboardingVersionEntityMapper,
-      currentVersion,
     );
   });
 
   test('currentVersion returns version passed in constructor', () {
-    final store1 = OnboardingStoreImpl(
-      onboardingDatabase,
-      onboardingVersionEntityMapper,
-      OnboardingVersion.v1,
-    );
+    final store1 = FakeOnboardingStoreImplV1();
 
     expect(store1.currentVersion, OnboardingVersion.v1);
 
     final store2 = OnboardingStoreImpl(
       onboardingDatabase,
       onboardingVersionEntityMapper,
-      OnboardingVersion.v2,
     );
 
     expect(store2.currentVersion, OnboardingVersion.v2);
@@ -144,4 +138,9 @@ void main() {
       expect(actual, null);
     });
   });
+}
+
+class FakeOnboardingStoreImplV1 extends Fake implements OnboardingStoreImpl {
+  @override
+  OnboardingVersion get currentVersion => OnboardingVersion.v1;
 }

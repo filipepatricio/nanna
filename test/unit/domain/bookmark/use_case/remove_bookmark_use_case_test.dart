@@ -51,7 +51,7 @@ void main() {
     test('should remove bookmark from local repository', () async {
       await useCase(bookmark);
 
-      verify(bookmarkLocalRepository.deleteBookmark(bookmark.id));
+      verify(bookmarkLocalRepository.delete(bookmark.id));
     });
 
     test('should notify profile bookmark change notifier', () async {
@@ -62,8 +62,8 @@ void main() {
       expect(
         captured,
         isA<BookmarkEvent>()
-          ..having((p0) => p0.state, 'state', BookmarkState.notBookmarked())
-          ..having((p0) => p0.data, 'data', BookmarkTypeData.article(article.slug, article.id)),
+            .having((p0) => p0.state, 'state', BookmarkState.notBookmarked())
+            .having((p0) => p0.data, 'data', BookmarkTypeData.article(article.slug, article.id)),
       );
     });
 

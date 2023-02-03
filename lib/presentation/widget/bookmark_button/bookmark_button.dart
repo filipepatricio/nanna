@@ -14,7 +14,7 @@ import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookm
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -86,7 +86,7 @@ class BookmarkButton extends HookWidget {
             snackbarController.showMessage(
               SnackbarMessage.simple(
                 message: tr(LocaleKeys.bookmark_addBookmarkSuccess),
-                type: SnackbarMessageType.positive,
+                type: SnackbarMessageType.success,
               ),
             );
           },
@@ -94,7 +94,7 @@ class BookmarkButton extends HookWidget {
             snackbarController.showMessage(
               SnackbarMessage.simple(
                 message: tr(LocaleKeys.bookmark_removeBookmarkSuccess),
-                type: SnackbarMessageType.positive,
+                type: SnackbarMessageType.success,
                 action: SnackbarAction(
                   label: tr(LocaleKeys.common_undo),
                   callback: () {
@@ -140,6 +140,15 @@ class BookmarkButton extends HookWidget {
                   state: state.state,
                   color: iconColor,
                   animationController: animationController,
+                  enabled: true,
+                  onTap: onTap,
+                ),
+                offline: (state) => _IdleButton(
+                  cubit: cubit,
+                  state: state.state,
+                  color: iconColor,
+                  animationController: animationController,
+                  enabled: false,
                   onTap: onTap,
                 ),
                 switching: (state) => _Loader(color: iconColor),
@@ -179,6 +188,7 @@ class _IdleButton extends StatelessWidget {
     required this.state,
     required this.color,
     required this.animationController,
+    required this.enabled,
     this.onTap,
     Key? key,
   }) : super(key: key);
@@ -187,20 +197,23 @@ class _IdleButton extends StatelessWidget {
   final BookmarkState state;
   final Color color;
   final AnimationController animationController;
+  final bool enabled;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return PaddingTapWidget(
-      onTap: () async {
-        await HapticFeedback.mediumImpact();
-        await animationController.forward();
-        await animationController.reverse();
-        if (onTap != null) {
-          return onTap?.call();
-        }
-        await cubit.switchState();
-      },
+      onTap: enabled
+          ? () async {
+              await HapticFeedback.mediumImpact();
+              await animationController.forward();
+              await animationController.reverse();
+              if (onTap != null) {
+                return onTap?.call();
+              }
+              await cubit.switchState();
+            }
+          : null,
       tapPadding: const EdgeInsets.all(AppDimens.m),
       child: state.icon(color),
     );

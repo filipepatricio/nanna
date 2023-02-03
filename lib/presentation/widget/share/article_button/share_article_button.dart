@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_options/share_options_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -34,7 +34,7 @@ class ShareArticleButton extends HookWidget {
         snackbarController.showMessage(
           SnackbarMessage.simple(
             message: LocaleKeys.common_linkCopied.tr(),
-            type: SnackbarMessageType.positive,
+            type: SnackbarMessageType.success,
           ),
         );
       }

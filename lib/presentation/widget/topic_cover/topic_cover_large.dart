@@ -4,11 +4,13 @@ class _TopicCoverLarge extends TopicCover {
   const _TopicCoverLarge({
     required this.topic,
     required this.onTap,
+    required this.isNew,
     Key? key,
   }) : super._(key: key);
 
   final TopicPreview topic;
   final VoidCallback? onTap;
+  final bool isNew;
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +87,7 @@ class _TopicCoverLarge extends TopicCover {
             ],
             _TopicCoverBar.large(
               topic: topic,
+              isNew: isNew,
             ),
           ],
         ),

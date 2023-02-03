@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_view.dart';
 import 'package:flutter/material.dart';

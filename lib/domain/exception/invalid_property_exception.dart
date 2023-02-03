@@ -1,0 +1,1 @@
+class InvalidPropertyException implements Exception {}

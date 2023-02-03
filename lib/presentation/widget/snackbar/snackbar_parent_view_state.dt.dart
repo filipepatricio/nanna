@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'snackbar_parent_view_state.dt.freezed.dart';

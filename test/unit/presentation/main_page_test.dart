@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/registered_push_token.dart';
@@ -7,8 +8,10 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/appearance/settings_appearance_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
+import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:clock/clock.dart';
@@ -36,151 +39,195 @@ void main() {
     );
   });
 
-  testWidgets('topic link navigates to topic page', (tester) async {
-    when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/topics/slug'));
+  group('handles applinks', () {
+    testWidgets('topic', (tester) async {
+      when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/topics/slug'));
 
-    await tester.startApp(
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
-      },
-    );
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+        },
+      );
 
-    expect(find.byType(TopicPage), findsOneWidget);
-    await tester.tap(find.byType(BackTextButton));
-    await tester.pumpAndSettle();
-    expect(find.byType(DailyBriefPage), findsOneWidget);
+      expect(find.byType(TopicPage), findsOneWidget);
+      expectDailyBriefTabSelected();
+    });
+
+    testWidgets('magic link', (tester) async {
+      when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/magic'));
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+        },
+      );
+
+      expect(find.byType(DailyBriefPage), findsOneWidget);
+    });
+
+    testWidgets('unsubscribe', (tester) async {
+      when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/unsubscribe'));
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+        },
+      );
+
+      expect(find.byType(SettingsNotificationsPage), findsOneWidget);
+      expectProfileTabSelected();
+    });
+
+    testWidgets('settings', (tester) async {
+      when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/settings'));
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+        },
+      );
+
+      expect(find.byType(SettingsMainPage), findsOneWidget);
+      expectDailyBriefTabSelected();
+    });
+
+    testWidgets('settings interests', (tester) async {
+      when(appLinkDataSource.getInitialAction())
+          .thenAnswer((_) async => Uri.parse('http://informed/settings/interests'));
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+        },
+      );
+
+      expect(find.byType(SettingsManageMyInterestsPage), findsOneWidget);
+      await tester.tap(find.byType(BackTextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(SettingsMainPage), findsOneWidget);
+      expectDailyBriefTabSelected();
+    });
+
+    testWidgets('article', (tester) async {
+      when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/articles/slug'));
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+        },
+      );
+
+      expect(find.byType(MediaItemPage), findsOneWidget);
+      expectDailyBriefTabSelected();
+    });
+
+    testWidgets('topic article', (tester) async {
+      final topic = TestData.topicWithEditorOwner;
+
+      when(appLinkDataSource.getInitialAction()).thenAnswer(
+        (_) async => Uri.parse(
+          'http://informed/topics/${topic.slug}/articles/${TestData.premiumArticleWithAudio.slug}',
+        ),
+      );
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+        },
+      );
+
+      expect(find.byType(MediaItemPage), findsOneWidget);
+      await tester.fling(find.byType(MediaItemPage), const Offset(0, -20000), 100);
+      await tester.pumpAndSettle();
+      expect(
+        find.byText(
+          LocaleKeys.article_moreFromTopic.tr(args: [topic.strippedTitle]),
+          skipOffstage: false,
+        ),
+        findsOneWidget,
+      );
+      await tester.tap(find.byType(BackTextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(TopicPage), findsOneWidget);
+      expectDailyBriefTabSelected();
+    });
+
+    testWidgets('subscribe', (tester) async {
+      when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/subscribe'));
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+        },
+      );
+
+      expect(find.byType(SubscriptionPage), findsOneWidget);
+      expectDailyBriefTabSelected();
+    });
   });
 
-  testWidgets('magic link does not navigate when session is active', (tester) async {
-    when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/magic'));
+  group('handles applinks to profile tab', () {
+    testWidgets('settings', (tester) async {
+      when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/profile/settings'));
 
-    await tester.startApp(
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
-      },
-    );
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+        },
+      );
 
-    expect(find.byType(DailyBriefPage), findsOneWidget);
+      expect(find.byType(SettingsMainPage), findsOneWidget);
+      expectProfileTabSelected();
+    });
+
+    testWidgets('settings appearance', (tester) async {
+      when(appLinkDataSource.getInitialAction())
+          .thenAnswer((_) async => Uri.parse('http://informed/profile/settings/appearance'));
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+        },
+      );
+
+      expect(find.byType(SettingsAppearancePage), findsOneWidget);
+      await tester.tap(find.byType(BackTextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(SettingsMainPage), findsOneWidget);
+      expectProfileTabSelected();
+    });
+
+    testWidgets('settings interests', (tester) async {
+      when(appLinkDataSource.getInitialAction())
+          .thenAnswer((_) async => Uri.parse('http://informed/profile/settings/interests'));
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+        },
+      );
+
+      expect(find.byType(SettingsManageMyInterestsPage), findsOneWidget);
+      await tester.tap(find.byType(BackTextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(SettingsMainPage), findsOneWidget);
+      expectProfileTabSelected();
+    });
   });
 
-  testWidgets('unsubscribe link navigates to notifications settings', (tester) async {
-    when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/unsubscribe'));
+  group('handles appsflyer deeplink', () {
+    testWidgets('subscribe', (tester) async {
+      when(deepLinkRepository.subscribeForDeepLink()).thenAnswer((_) => Stream.value('/subscribe'));
 
-    await tester.startApp(
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
-      },
-    );
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DeepLinkRepository>(() => deepLinkRepository);
+        },
+      );
 
-    expect(find.byType(SettingsNotificationsPage), findsOneWidget);
-  });
-
-  testWidgets('profile settings link navigates to settings', (tester) async {
-    when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/profile/settings'));
-
-    await tester.startApp(
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
-      },
-    );
-
-    expect(find.byType(SettingsMainPage), findsOneWidget);
-  });
-
-  testWidgets('profile appearance link navigates to appearance settings', (tester) async {
-    when(appLinkDataSource.getInitialAction())
-        .thenAnswer((_) async => Uri.parse('http://informed/profile/settings/appearance'));
-
-    await tester.startApp(
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
-      },
-    );
-
-    expect(find.byType(SettingsAppearancePage), findsOneWidget);
-  });
-  testWidgets('base settings link navigates to settings', (tester) async {
-    when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/settings'));
-
-    await tester.startApp(
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
-      },
-    );
-
-    expect(find.byType(SettingsMainPage), findsOneWidget);
-  });
-
-  testWidgets('article link navigates to article page', (tester) async {
-    when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/articles/slug'));
-
-    await tester.startApp(
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
-      },
-    );
-
-    expect(find.byType(MediaItemPage), findsOneWidget);
-    await tester.tap(find.byType(BackTextButton));
-    await tester.pumpAndSettle();
-    expect(find.byType(DailyBriefPage), findsOneWidget);
-  });
-
-  testWidgets('combined link navigates to topic and article pages', (tester) async {
-    final topic = TestData.topicWithEditorOwner;
-
-    when(appLinkDataSource.getInitialAction()).thenAnswer(
-      (_) async => Uri.parse(
-        'http://informed/topics/${topic.slug}/articles/${TestData.premiumArticleWithAudio.slug}',
-      ),
-    );
-
-    await tester.startApp(
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
-      },
-    );
-
-    expect(find.byType(MediaItemPage), findsOneWidget);
-    await tester.fling(find.byType(MediaItemPage), const Offset(0, -20000), 100);
-    await tester.pumpAndSettle();
-    expect(
-      find.byText(
-        LocaleKeys.article_moreFromTopic.tr(args: [topic.strippedTitle]),
-        skipOffstage: false,
-      ),
-      findsOneWidget,
-    );
-    await tester.tap(find.byType(BackTextButton));
-    await tester.pumpAndSettle();
-    expect(find.byType(TopicPage), findsOneWidget);
-    await tester.tap(find.byType(BackTextButton));
-    await tester.pumpAndSettle();
-    expect(find.byType(DailyBriefPage), findsOneWidget);
-  });
-
-  testWidgets('subscribe link navigates to subscription page', (tester) async {
-    when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/subscribe'));
-
-    await tester.startApp(
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
-      },
-    );
-
-    expect(find.byType(SubscriptionPage), findsOneWidget);
-  });
-
-  testWidgets('subscribe deep link navigates to subscription page', (tester) async {
-    when(deepLinkRepository.subscribeForDeepLink()).thenAnswer((_) => Stream.value('/subscribe'));
-
-    await tester.startApp(
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<DeepLinkRepository>(() => deepLinkRepository);
-      },
-    );
-
-    expect(find.byType(SubscriptionPage), findsOneWidget);
+      expect(find.byType(SubscriptionPage), findsOneWidget);
+      expectDailyBriefTabSelected();
+    });
   });
 
   group('handles incoming push navigation', () {
@@ -196,9 +243,7 @@ void main() {
       );
 
       expect(find.byType(MediaItemPage), findsOneWidget);
-      await tester.tap(find.byType(BackTextButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(DailyBriefPage), findsOneWidget);
+      expectDailyBriefTabSelected();
     });
 
     testWidgets('topic', (tester) async {
@@ -213,12 +258,10 @@ void main() {
       );
 
       expect(find.byType(TopicPage), findsOneWidget);
-      await tester.tap(find.byType(BackTextButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(DailyBriefPage), findsOneWidget);
+      expectDailyBriefTabSelected();
     });
 
-    testWidgets('article topic', (tester) async {
+    testWidgets('topic article', (tester) async {
       when(pushNotificationRepository.pushNotificationOpenStream()).thenAnswer(
         (_) => Stream.value(TestData.articleTopicPushNotification),
       );
@@ -233,9 +276,70 @@ void main() {
       await tester.tap(find.byType(BackTextButton));
       await tester.pumpAndSettle();
       expect(find.byType(TopicPage), findsOneWidget);
+      expectDailyBriefTabSelected();
+    });
+
+    testWidgets('settings notifications', (tester) async {
+      when(pushNotificationRepository.hasPermission()).thenAnswer((_) async => true);
+      when(pushNotificationRepository.pushNotificationOpenStream()).thenAnswer(
+        (_) => Stream.value(TestData.settingsNotificationsPushNotification),
+      );
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<PushNotificationRepository>(() => pushNotificationRepository);
+        },
+      );
+
+      expect(find.byType(SettingsNotificationsPage), findsOneWidget);
       await tester.tap(find.byType(BackTextButton));
       await tester.pumpAndSettle();
-      expect(find.byType(DailyBriefPage), findsOneWidget);
+      expect(find.byType(SettingsMainPage), findsOneWidget);
+      expectProfileTabSelected();
+    });
+
+    testWidgets('settings interests', (tester) async {
+      when(pushNotificationRepository.pushNotificationOpenStream()).thenAnswer(
+        (_) => Stream.value(TestData.settingsInterestsPushNotification),
+      );
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<PushNotificationRepository>(() => pushNotificationRepository);
+        },
+      );
+
+      expect(find.byType(SettingsManageMyInterestsPage), findsOneWidget);
+      await tester.tap(find.byType(BackTextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(SettingsMainPage), findsOneWidget);
+      expectProfileTabSelected();
+    });
+
+    testWidgets('settings appearance', (tester) async {
+      when(pushNotificationRepository.pushNotificationOpenStream()).thenAnswer(
+        (_) => Stream.value(TestData.settingsAppearancePushNotification),
+      );
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<PushNotificationRepository>(() => pushNotificationRepository);
+        },
+      );
+
+      expect(find.byType(SettingsAppearancePage), findsOneWidget);
+      await tester.tap(find.byType(BackTextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(SettingsMainPage), findsOneWidget);
+      expectProfileTabSelected();
     });
   });
+}
+
+void expectDailyBriefTabSelected() {
+  expect(tabBarScaffoldKey.currentContext?.tabsRouter.activeIndex, 0);
+}
+
+void expectProfileTabSelected() {
+  expect(tabBarScaffoldKey.currentContext?.tabsRouter.activeIndex, 2);
 }

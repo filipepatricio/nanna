@@ -28,6 +28,7 @@ class BriefDTOMapper implements Mapper<BriefDTO, Brief> {
 
     return Brief(
       id: data.id,
+      unseenCount: data.unseenCount,
       greeting: _headlineDTOMapper(data.greeting),
       introduction: introduction == null ? null : _introductionDTOMapper(introduction),
       date: DateTime.parse(data.date),

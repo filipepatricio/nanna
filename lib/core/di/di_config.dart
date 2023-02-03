@@ -10,7 +10,7 @@ import 'package:injectable/injectable.dart';
 )
 Future<GetIt> configureDependencies(String env) async {
   final getIt = GetIt.asNewInstance();
-  await $initGetIt(getIt, environment: env);
+  await getIt.init(environment: env);
   getIt.registerSingleton(getIt);
   return getIt;
 }

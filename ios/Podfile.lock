@@ -2,7 +2,7 @@ PODS:
   - Amplitude (8.14.0):
     - AnalyticsConnector (~> 1.0.0)
   - Analytics (4.1.6)
-  - AnalyticsConnector (1.0.0)
+  - AnalyticsConnector (1.0.1)
   - "app_settings (3.0.0+1)":
     - Flutter
   - app_tracking_transparency (0.0.1):
@@ -29,28 +29,21 @@ PODS:
   - device_info_plus (0.0.1):
     - Flutter
   - facebook_app_events (0.0.1):
-    - FBAudienceNetwork (~> 6.9.0)
-    - FBSDKCoreKit (~> 15.0.0)
+    - FBAudienceNetwork (~> 6.12)
+    - FBSDKCoreKit (~> 15.1)
     - Flutter
-  - FBAEMKit (15.0.0):
-    - FBSDKCoreKit_Basics (= 15.0.0)
-  - FBAudienceNetwork (6.9.0)
-  - FBSDKCoreKit (15.0.0):
-    - FBAEMKit (= 15.0.0)
-    - FBSDKCoreKit_Basics (= 15.0.0)
-  - FBSDKCoreKit_Basics (15.0.0)
-  - Firebase/Auth (10.3.0):
-    - Firebase/CoreOnly
-    - FirebaseAuth (~> 10.3.0)
+  - FBAEMKit (15.1.0):
+    - FBSDKCoreKit_Basics (= 15.1.0)
+  - FBAudienceNetwork (6.12.0)
+  - FBSDKCoreKit (15.1.0):
+    - FBAEMKit (= 15.1.0)
+    - FBSDKCoreKit_Basics (= 15.1.0)
+  - FBSDKCoreKit_Basics (15.1.0)
   - Firebase/CoreOnly (10.3.0):
     - FirebaseCore (= 10.3.0)
   - Firebase/Messaging (10.3.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 10.3.0)
-  - firebase_auth (4.2.5):
-    - Firebase/Auth (= 10.3.0)
-    - firebase_core
-    - Flutter
   - firebase_core (2.4.1):
     - Firebase/CoreOnly (= 10.3.0)
     - Flutter
@@ -58,26 +51,13 @@ PODS:
     - Firebase/Messaging (= 10.3.0)
     - firebase_core
     - Flutter
-  - FirebaseAuth (10.3.0):
-    - FirebaseCore (~> 10.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
-    - GoogleUtilities/Environment (~> 7.8)
-    - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - FirebaseCore (10.3.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/Logger (~> 7.8)
-  - FirebaseCoreInternal (10.3.0):
+  - FirebaseCoreInternal (10.4.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
-  - FirebaseFirestore (10.3.0):
-    - FirebaseFirestore/AutodetectLeveldb (= 10.3.0)
-  - FirebaseFirestore/AutodetectLeveldb (10.3.0):
-    - FirebaseFirestore/Base
-    - FirebaseFirestore/WithLeveldb
-  - FirebaseFirestore/Base (10.3.0)
-  - FirebaseFirestore/WithLeveldb (10.3.0):
-    - FirebaseFirestore/Base
-  - FirebaseInstallations (10.3.0):
+  - FirebaseInstallations (10.4.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
@@ -105,7 +85,7 @@ PODS:
     - OrderedSet (~> 5.0)
   - flutter_keyboard_visibility (0.0.1):
     - Flutter
-  - flutter_secure_storage (3.3.1):
+  - flutter_secure_storage (6.0.0):
     - Flutter
   - flutter_segment (3.12.1):
     - Analytics (= 4.1.6)
@@ -123,7 +103,7 @@ PODS:
   - google_sign_in_ios (0.0.1):
     - Flutter
     - GoogleSignIn (~> 6.2)
-  - GoogleDataTransport (9.2.0):
+  - GoogleDataTransport (9.2.1):
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
@@ -172,16 +152,17 @@ PODS:
   - OrderedSet (5.0.0)
   - package_info_plus (0.4.5):
     - Flutter
-  - path_provider_ios (0.0.1):
+  - path_provider_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - PromisesObjC (2.1.1)
-  - purchases_flutter (4.2.1):
+  - purchases_flutter (4.8.0):
     - Flutter
-    - PurchasesHybridCommon (= 4.2.1)
-  - PurchasesHybridCommon (4.2.1):
-    - RevenueCat (= 4.11.0)
+    - PurchasesHybridCommon (= 4.10.0)
+  - PurchasesHybridCommon (4.10.0):
+    - RevenueCat (= 4.17.2)
   - ReachabilitySwift (5.0.0)
-  - RevenueCat (4.11.0)
+  - RevenueCat (4.17.2)
   - Segment-Amplitude (3.3.2):
     - Amplitude (~> 8.3)
     - Analytics
@@ -191,17 +172,16 @@ PODS:
   - segment-appsflyer-ios/Main (6.8.0):
     - Analytics
     - AppsFlyerFramework (~> 6.8.0)
-  - Sentry (7.27.1):
-    - Sentry/Core (= 7.27.1)
-  - Sentry/Core (7.27.1)
+  - Sentry/HybridSDK (7.31.5)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry (~> 7.27.1)
+    - Sentry/HybridSDK (= 7.31.5)
   - share_plus (0.0.1):
     - Flutter
-  - shared_preferences_ios (0.0.1):
+  - shared_preferences_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - sign_in_with_apple (0.0.1):
     - Flutter
   - social_share (0.0.1):
@@ -229,10 +209,8 @@ DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - facebook_app_events (from `.symlinks/plugins/facebook_app_events/ios`)
   - Firebase/Messaging
-  - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
-  - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `10.3.0`)
   - Flutter (from `Flutter`)
   - flutter_custom_tabs (from `.symlinks/plugins/flutter_custom_tabs/ios`)
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
@@ -247,11 +225,11 @@ DEPENDENCIES:
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - launchdarkly_flutter_client_sdk (from `.symlinks/plugins/launchdarkly_flutter_client_sdk/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - purchases_flutter (from `.symlinks/plugins/purchases_flutter/ios`)
   - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
-  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - social_share (from `.symlinks/plugins/social_share/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -272,7 +250,6 @@ SPEC REPOS:
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
     - Firebase
-    - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreInternal
     - FirebaseInstallations
@@ -313,15 +290,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_info_plus/ios"
   facebook_app_events:
     :path: ".symlinks/plugins/facebook_app_events/ios"
-  firebase_auth:
-    :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_messaging:
     :path: ".symlinks/plugins/firebase_messaging/ios"
-  FirebaseFirestore:
-    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
-    :tag: 10.3.0
   Flutter:
     :path: Flutter
   flutter_custom_tabs:
@@ -350,16 +322,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/launchdarkly_flutter_client_sdk/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
-  path_provider_ios:
-    :path: ".symlinks/plugins/path_provider_ios/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/ios"
   purchases_flutter:
     :path: ".symlinks/plugins/purchases_flutter/ios"
   sentry_flutter:
     :path: ".symlinks/plugins/sentry_flutter/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
-  shared_preferences_ios:
-    :path: ".symlinks/plugins/shared_preferences_ios/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
   sign_in_with_apple:
     :path: ".symlinks/plugins/sign_in_with_apple/ios"
   social_share:
@@ -375,15 +347,10 @@ EXTERNAL SOURCES:
   wakelock:
     :path: ".symlinks/plugins/wakelock/ios"
 
-CHECKOUT OPTIONS:
-  FirebaseFirestore:
-    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
-    :tag: 10.3.0
-
 SPEC CHECKSUMS:
   Amplitude: bff4ceaad2a79e908682134d75dc862960594ea6
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
-  AnalyticsConnector: 4c386d5972ac9da86e22d668564dbbac97558754
+  AnalyticsConnector: eccd7e1cd3dd18e6bd09ac2506e37d4ed43ba3f4
   app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
   AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
@@ -393,33 +360,30 @@ SPEC CHECKSUMS:
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
-  facebook_app_events: f4bc499add4505400a23f1a47aba38e4980afcad
-  FBAEMKit: d8312d8451ead46282adc7f3565ffc4965e3a4a7
-  FBAudienceNetwork: 83096d73433759c10f9cf9b3bad5e5cff58694cb
-  FBSDKCoreKit: 81879058dd06208c0820fc713d054ca54903e8ba
-  FBSDKCoreKit_Basics: eebc9bb69a0e5d133b92dca53a20716227faa454
+  facebook_app_events: 1b116476dfbe0fbb66cb21419cf9a6f30b391057
+  FBAEMKit: c7f82b5145d446bcbbcd50485c032689032fc6a2
+  FBAudienceNetwork: e0fcc9091fced34910ed0b6da06f129db46ac9e6
+  FBSDKCoreKit: 7542746fc63a2a38dd6a865eeb54268341f37b83
+  FBSDKCoreKit_Basics: 92d6b26c0bed30ab09bbdd96dccaa26e6c9978d1
   Firebase: f92fc551ead69c94168d36c2b26188263860acd9
-  firebase_auth: 3bab991fe1df91c2f948156e9dee976e01a19ab9
   firebase_core: bf59c32d2e53814f558efa20840c1902fa2fe461
   firebase_messaging: ee597229fc260f8fa491fa8f2d4a32dfbfa406fa
-  FirebaseAuth: 0e415d29d846c1dce2fb641e46f35e9888d9bec6
   FirebaseCore: 988754646ab3bd4bdcb740f1bfe26b9f6c0d5f2a
-  FirebaseCoreInternal: 29b76f784d607df8b2a1259d73c3f04f1210137b
-  FirebaseFirestore: 501fa4f1fdf0e9a43cdcf3d3e65142e6a69cc3c1
-  FirebaseInstallations: e2f26126089dcf41e215f7b8925af8d953c7d602
+  FirebaseCoreInternal: e301297f4c15a17489e48ed722d733b1578e0c02
+  FirebaseInstallations: 36b38c733fd37e50857e5e8d74138648f466f18c
   FirebaseMessaging: e345b219fd15d325f0cf2fef28cb8ce00d851b3f
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_custom_tabs: 7a10a08686955cb748e5d26e0ae586d30689bf89
   flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
   flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
-  flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
+  flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
   flutter_segment: 367b7d9f7d74b3875198524ff4d24c381d93e317
   flutter_web_auth: c25208760459cec375a3c39f6a8759165ca0fa4d
-  fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
+  fluttertoast: eb263d302cc92e04176c053d2385237e9f43fad0
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in_ios: 4f85eb9f937450765c8573bb85fd8cd6a5af675c
-  GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
+  GoogleDataTransport: ea169759df570f4e37bdee1623ec32a7e64e67c4
   GoogleSignIn: 5651ce3a61e56ca864160e79b484cd9ed3f49b7a
   GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
@@ -427,32 +391,32 @@ SPEC CHECKSUMS:
   integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   LaunchDarkly: 44e1728319bd7693a2a619561a8237187406b920
-  launchdarkly_flutter_client_sdk: be0515d48a345356bc57c5495b1b553f85b21ea8
+  launchdarkly_flutter_client_sdk: 7e3a96fc687464a76492a1d681c8c109d89c3161
   LDSwiftEventSource: 1ac1b0986a07c5fe4f2c94d87f1d41f4de6ae727
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
-  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
-  purchases_flutter: 13f561706580dccea79396d9cfb02c7d88185d6e
-  PurchasesHybridCommon: 99e50f0429cd2a7f7495c867945b4f6ec3cd3f47
+  purchases_flutter: 68c500192f462e5e6c754cd93f8caa97668521aa
+  PurchasesHybridCommon: 2c254caadc6b50238a79902c01abec67353b5334
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  RevenueCat: daea606706c9d1a3182e89768bd80e664c49bce6
+  RevenueCat: ad2623febfb1303e90a9b77c796dd1b641547096
   Segment-Amplitude: 6c1e59c8c278a21029ba7a6a788fcb31b9233a2c
   segment-appsflyer-ios: 9b84c1b7f94bb7a3c5826c9214cd0630b831e208
-  Sentry: bc644307e2eb6a4c9c55cf117a80b895bb2a25a7
-  sentry_flutter: 649559f0512e00d3f6fc92cf51f74bc2fe68d1d3
+  Sentry: 4c9babff9034785067c896fd580b1f7de44da020
+  sentry_flutter: b10ae7a5ddcbc7f04648eeb2672b5747230172f1
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
-  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+  shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   social_share: 702a5e3842addd22db515aa9e1e00a4b80a0296d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
-  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
+  url_launcher_ios: ae1517e5e344f5544fb090b079e11f399dfbe4d2
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
 
-PODFILE CHECKSUM: 677735e6128ac27cbcbef41740b60f0bd5e8e103
+PODFILE CHECKSUM: 8604cf6743f7b070efc067514fce9c86aa706d4f
 
 COCOAPODS: 1.11.3

@@ -109,3 +109,43 @@ class PurchaseConfigurationException extends PurchaseException {
 class PurchaseUnsupportedException extends PurchaseException {
   PurchaseUnsupportedException(super.message, super.details);
 }
+
+class EmptySubscriberAttributesErrorException extends PurchaseException {
+  EmptySubscriberAttributesErrorException(super.message, super.details);
+}
+
+class ProductDiscountMissingIdentifierErrorException extends PurchaseException {
+  ProductDiscountMissingIdentifierErrorException(super.message, super.details);
+}
+
+class ProductDiscountMissingSubscriptionGroupIdentifierErrorException extends PurchaseException {
+  ProductDiscountMissingSubscriptionGroupIdentifierErrorException(super.message, super.details);
+}
+
+class CustomerInfoErrorException extends PurchaseException {
+  CustomerInfoErrorException(super.message, super.details);
+}
+
+class SystemInfoErrorException extends PurchaseException {
+  SystemInfoErrorException(super.message, super.details);
+}
+
+class BeginRefundRequestErrorException extends PurchaseException {
+  BeginRefundRequestErrorException(super.message, super.details);
+}
+
+class ProductRequestTimeoutException extends PurchaseException {
+  ProductRequestTimeoutException(super.message, super.details);
+}
+
+class ApiEndpointBlockedException extends PurchaseException {
+  ApiEndpointBlockedException(super.message, super.details);
+}
+
+class InvalidPromotionalOfferErrorException extends PurchaseException {
+  InvalidPromotionalOfferErrorException(super.message, super.details);
+}
+
+class OfflineConnectionErrorException extends PurchaseException {
+  OfflineConnectionErrorException(super.message, super.details);
+}

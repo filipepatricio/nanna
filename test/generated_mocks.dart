@@ -38,7 +38,9 @@ import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_audio_progress_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/mark_article_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/save_article_locally_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/update_article_progress_state_notifier_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_playback_state_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_position_seek_use_case.di.dart';
@@ -55,7 +57,6 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_up
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
-import 'package:better_informed_mobile/domain/general/update_article_progress_state_notifier_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
@@ -70,7 +71,11 @@ import 'package:better_informed_mobile/domain/subscription/use_case/has_active_s
 import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/set_onboarding_paywall_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/synchronization/synchronizable_repository.dart';
+import 'package:better_informed_mobile/domain/synchronization/use_case/save_synchronizable_item_use_case.di.dart';
+import 'package:better_informed_mobile/domain/synchronization/use_case/synchronize_with_remote_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/topics_repository.dart';
+import 'package:better_informed_mobile/domain/topic/use_case/mark_topic_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/save_topic_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
@@ -167,6 +172,11 @@ const _classes = [
   TopicsRepository,
   SaveArticleLocallyUseCase,
   SaveTopicLocallyUseCase,
+  SynchronizableRepository,
+  SynchronizeWithRemoteUsecase,
+  SaveSynchronizableItemUseCase,
+  MarkTopicAsSeenUseCase,
+  MarkArticleAsSeenUseCase
 ];
 
 @GenerateMocks(_classes)

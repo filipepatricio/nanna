@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/data/bookmark/database/bookmark_hive_local_repository.di.dart';
-import 'package:better_informed_mobile/data/bookmark/database/mapper/bookmark_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/bookmark/database/mapper/bookmark_sort_config_name_entity_mapper.di.dart';
+import 'package:better_informed_mobile/data/bookmark/database/mapper/synchronizable_bookmark_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/database/mapper/active_subscription_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/database/subscription_hive_local_repository.di.dart';
 import 'package:better_informed_mobile/data/user/database/mapper/user_entity_mapper.di.dart';
@@ -63,8 +63,11 @@ abstract class RepositoryModule {
   @preResolve
   Future<BookmarkLocalRepository> getBookmarkLocalRepository(
     BookmarkSortConfigNameEntityMapper bookmarkSortConfigNameEntityMapper,
-    BookmarkEntityMapper bookmarkEntityMapper,
+    SynchronizableBookmarkEntityMapper synchronizableBookmarkEntityMapper,
   ) {
-    return BookmarkHiveLocalRepository.create(bookmarkSortConfigNameEntityMapper, bookmarkEntityMapper);
+    return BookmarkHiveLocalRepository.create(
+      bookmarkSortConfigNameEntityMapper,
+      synchronizableBookmarkEntityMapper,
+    );
   }
 }

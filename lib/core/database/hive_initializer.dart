@@ -16,6 +16,7 @@ import 'package:better_informed_mobile/data/article/database/entity/publisher_en
 import 'package:better_informed_mobile/data/article/database/entity/synchronizable_article_entity.hv.dart';
 import 'package:better_informed_mobile/data/bookmark/database/entity/bookmark_data_entity.hv.dart';
 import 'package:better_informed_mobile/data/bookmark/database/entity/bookmark_entity.hv.dart';
+import 'package:better_informed_mobile/data/bookmark/database/entity/synchronizable_bookmark_entity.hv.dart';
 import 'package:better_informed_mobile/data/subscription/database/entity/active_subscription_entity.hv.dart';
 import 'package:better_informed_mobile/data/subscription/database/entity/subscription_plan_entity.hv.dart';
 import 'package:better_informed_mobile/data/subscription/database/entity/subscription_plan_type_entity.hv.dart';
@@ -72,4 +73,5 @@ Future<void> initializeHive() async {
   Hive.registerAdapter(ActiveSubscriptionManualPremiumEntityAdapter());
   Hive.registerAdapter(SubscriptionPlanEntityAdapter());
   Hive.registerAdapter(SubscriptionPlanTypeEntityAdapter());
+  Hive.registerAdapter(SynchronizableBookmarkEntityAdapter());
 }

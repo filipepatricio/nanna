@@ -11,7 +11,7 @@ import 'package:better_informed_mobile/presentation/widget/audio/player_banner/a
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -41,7 +41,7 @@ class SettingsAccountBody extends HookWidget {
           snackbarController.showMessage(
             SnackbarMessage.simple(
               message: message,
-              type: SnackbarMessageType.positive,
+              type: SnackbarMessageType.success,
             ),
           );
         },
@@ -109,7 +109,7 @@ class SettingsAccountBody extends HookWidget {
               AnimatedOpacity(
                 opacity: 1.0,
                 duration: const Duration(milliseconds: 250),
-                child: FilledButton.primary(
+                child: InformedFilledButton.primary(
                   context: context,
                   text: LocaleKeys.settings_save.tr(),
                   onTap: () => _onSaveButtonTap(isFirstNameFocused, isLastNameFocused),
@@ -133,7 +133,8 @@ class SettingsAccountBody extends HookWidget {
   }
 
   Future<void> _onDeleteAccountLinkTap(BuildContext context) async {
-    if (await InformedDialog.showDeleteAccount(context) == true) {
+    final deleteAccountConfirmed = await InformedDialog.showDeleteAccount(context);
+    if (deleteAccountConfirmed == true) {
       await cubit.deleteAccount();
     }
   }

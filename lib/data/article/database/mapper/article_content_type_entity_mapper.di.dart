@@ -13,7 +13,7 @@ class ArticleContentTypeEntityMapper extends BidirectionalMapper<ArticleContentT
   @override
   ArticleContentTypeEntity from(ArticleContentType data) {
     return ArticleContentTypeEntity(
-      name: _map[data.name]!,
+      name: _map[data]!,
     );
   }
 

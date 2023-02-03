@@ -3,10 +3,9 @@ name: CI Integration tests
 on:
   workflow_dispatch:
   schedule:
-  - cron: "0 21 * * THU"
+    - cron: '0 21 * * THU'
 
 env:
-  JAVA_VERSION: "12.x"
   RUBY_VERSION: '3.1'
   ACCESS_TOKEN: ${{ secrets.FIREBASE_TEST_LAB_API_ACCESS_TOKEN_PROD }}
 
@@ -60,12 +59,12 @@ jobs:
         if: failure()
         uses: 8398a7/action-slack@v3
         with:
-          icon_emoji: ":x:"
+          icon_emoji: ':x:'
           job_name: Integration Test - Android
           status: ${{ job.status }}
           fields: repo,author,job,took,workflow,pullRequest
-          if_mention: "failure"
-          channel: "C03HLNW54EN"
+          if_mention: 'failure'
+          channel: 'C03HLNW54EN'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
@@ -173,23 +172,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Download tests artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: ios-tests
+      - name: Download tests artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ios-tests
 
-    - name: Delete tests artifact
-      uses: geekyeggo/delete-artifact@v2
-      with:
-        name: ios-tests
+      - name: Delete tests artifact
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          name: ios-tests
 
-    - name: Run tests on Test Lab
-      uses: actions-hub/gcloud@master
-      env:
-        PROJECT_ID: frontend-production-328408
-        APPLICATION_CREDENTIALS: ${{secrets.FIREBASE_TEST_LAB_SERVICE_ACCOUNT_CREDENTIALS}}
-      with:
-        args: firebase test ios run --test="ios_tests.zip" --timeout=5m --device=model=iphone13pro,version=15.7 --results-dir=results
+      - name: Run tests on Test Lab
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: frontend-production-328408
+          APPLICATION_CREDENTIALS: ${{secrets.FIREBASE_TEST_LAB_SERVICE_ACCOUNT_CREDENTIALS}}
+        with:
+          args: firebase test ios run --test="ios_tests.zip" --timeout=5m --device=model=iphone13pro,version=15.7 --results-dir=results

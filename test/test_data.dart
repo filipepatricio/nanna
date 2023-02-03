@@ -328,6 +328,27 @@ class TestData {
     },
   );
 
+  static const settingsNotificationsRemoteMessage = RemoteMessage(
+    data: {
+      'actions': '[{"args":{"path":"profile/settings/notifications"},"type":"navigate_to"}]',
+      'meta': '{}',
+    },
+  );
+
+  static const setingsInterestsRemoteMessage = RemoteMessage(
+    data: {
+      'actions': '[{"args":{"path":"profile/settings/interests"},"type":"navigate_to"}]',
+      'meta': '{}',
+    },
+  );
+
+  static const setingsAppearanceRemoteMessage = RemoteMessage(
+    data: {
+      'actions': '[{"args":{"path":"profile/settings/appearance"},"type":"navigate_to"}]',
+      'meta': '{}',
+    },
+  );
+
   static IncomingPush get articlePushNotification => _incomingPushDTOMapper.call(
         _remoteMessageToIncomingPushDTOMapper.call(articleRemoteMessage),
       );
@@ -338,5 +359,17 @@ class TestData {
 
   static IncomingPush get articleTopicPushNotification => _incomingPushDTOMapper.call(
         _remoteMessageToIncomingPushDTOMapper.call(articleTopicRemoteMessage),
+      );
+
+  static IncomingPush get settingsNotificationsPushNotification => _incomingPushDTOMapper.call(
+        _remoteMessageToIncomingPushDTOMapper.call(settingsNotificationsRemoteMessage),
+      );
+
+  static IncomingPush get settingsInterestsPushNotification => _incomingPushDTOMapper.call(
+        _remoteMessageToIncomingPushDTOMapper.call(setingsInterestsRemoteMessage),
+      );
+
+  static IncomingPush get settingsAppearancePushNotification => _incomingPushDTOMapper.call(
+        _remoteMessageToIncomingPushDTOMapper.call(setingsAppearanceRemoteMessage),
       );
 }

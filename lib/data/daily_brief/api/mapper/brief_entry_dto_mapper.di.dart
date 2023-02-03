@@ -19,6 +19,7 @@ class BriefEntryDTOMapper implements Mapper<BriefEntryDTO, BriefEntry> {
     return BriefEntry(
       item: _briefEntryItemDTOMapper(data.item),
       style: _briefEntryStyleDTOMapper(data.style),
+      isNew: data.isNew,
     );
   }
 }

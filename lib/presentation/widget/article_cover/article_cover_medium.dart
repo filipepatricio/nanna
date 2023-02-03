@@ -4,6 +4,7 @@ class _ArticleCoverMedium extends ArticleCover {
   const _ArticleCoverMedium({
     required this.onTap,
     required this.article,
+    required this.isNew,
     required this.showNote,
     required this.showRecommendedBy,
     this.onBookmarkTap,
@@ -11,6 +12,7 @@ class _ArticleCoverMedium extends ArticleCover {
   }) : super._(key: key);
 
   final MediaItemArticle article;
+  final bool isNew;
   final bool showNote;
   final bool showRecommendedBy;
   final VoidCallback? onTap;
@@ -87,6 +89,7 @@ class _ArticleCoverMedium extends ArticleCover {
             const SizedBox(height: AppDimens.sl),
             ArticleMetadataRow(
               article: state.map(initializing: (_) => article, idle: (state) => state.article),
+              isNew: isNew,
               onBookmarkTap: onBookmarkTap,
             ),
           ],

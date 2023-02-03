@@ -33,6 +33,8 @@ class AppConfig {
     required this.appleStoreId,
     required this.datoCMSKey,
     required this.linkedinConfig,
+    required this.facebookAppIdiOS,
+    required this.facebookAppIdAndroid,
     this.segmentWriteKey,
     this.launchDarklyKey,
     this.appsFlyerKey,
@@ -50,6 +52,8 @@ class AppConfig {
   final String appleStoreId;
   final String datoCMSKey;
   final LinkedinConfig linkedinConfig;
+  final String facebookAppIdiOS;
+  final String facebookAppIdAndroid;
   final String? segmentWriteKey;
   final String? launchDarklyKey;
   final String? appsFlyerKey;
@@ -67,6 +71,8 @@ class AppConfig {
     appleStoreId: '',
     datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
     linkedinConfig: LinkedinConfig.dev(),
+    facebookAppIdiOS: '',
+    facebookAppIdAndroid: '',
     launchDarklyKey: 'mob-348e437c-2b6b-42f5-9a74-5599f33908c0',
     appsFlyerKey: 'dev_key',
     revenueCatKeyiOS: 'appl_lmbriZAQhIhAfDEMDIcCyaRwZjD',
@@ -83,6 +89,8 @@ class AppConfig {
     appleStoreId: '',
     datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
     linkedinConfig: LinkedinConfig.dev(),
+    facebookAppIdiOS: '',
+    facebookAppIdAndroid: '',
     revenueCatPremiumEntitlementId: 'premium',
   );
 
@@ -99,6 +107,8 @@ class AppConfig {
     appleStoreId: '1587844260',
     datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
     linkedinConfig: LinkedinConfig.staging(),
+    facebookAppIdiOS: '5582742288476971',
+    facebookAppIdAndroid: '1152910382298060',
     launchDarklyKey: 'mob-348e437c-2b6b-42f5-9a74-5599f33908c0',
     appsFlyerKey: 'MrhtK2n5TX5wZjYD7Goe4U',
     revenueCatKeyiOS: 'appl_lmbriZAQhIhAfDEMDIcCyaRwZjD',
@@ -117,6 +127,8 @@ class AppConfig {
     appleStoreId: '1577915307',
     datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
     linkedinConfig: LinkedinConfig.prod(),
+    facebookAppIdiOS: '525120512609664',
+    facebookAppIdAndroid: '345458011020663',
     launchDarklyKey: 'mob-15482f92-5c32-458a-a3c9-4323b6d03656',
     appsFlyerKey: 'MrhtK2n5TX5wZjYD7Goe4U',
     revenueCatKeyiOS: 'appl_vbotzvGRlvvfVSpOPubjlvxDApQ',

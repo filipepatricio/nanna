@@ -12,12 +12,14 @@ class SynchronizableArticleEntityMapper extends SynchronizableEntityMapper<Artic
 
   @override
   SynchronizableEntity<ArticleEntity> createEntity({
-    required ArticleEntity data,
+    required ArticleEntity? data,
+    required String dataId,
     required String createdAt,
-    required String synchronizedAt,
+    required String? synchronizedAt,
     required String expirationDate,
   }) {
     return SynchronizableArticleEntity(
+      dataId: dataId,
       data: data,
       createdAt: createdAt,
       synchronizedAt: synchronizedAt,

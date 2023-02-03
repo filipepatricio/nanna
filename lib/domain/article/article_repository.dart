@@ -33,5 +33,7 @@ abstract class ArticleRepository {
 
   Stream<String> get freeArticlesLeftWarningStream;
 
+  Future<bool> markArticleAsSeen(String slug);
+
   void dispose();
 }

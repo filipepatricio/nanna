@@ -5,20 +5,24 @@ abstract class _TopicCoverBar extends StatelessWidget {
 
   factory _TopicCoverBar.large({
     required TopicPreview topic,
+    required bool isNew,
     Key? key,
   }) =>
       _TopicCoverBarLarge(
         topic: topic,
+        isNew: isNew,
         key: key,
       );
 
   factory _TopicCoverBar.medium({
     required TopicPreview topic,
+    required bool isNew,
     VoidCallback? onBookmarkTap,
     Key? key,
   }) =>
       _TopicCoverBarMedium(
         topic: topic,
+        isNew: isNew,
         onBookmarkTap: onBookmarkTap,
         key: key,
       );
@@ -36,10 +40,12 @@ abstract class _TopicCoverBar extends StatelessWidget {
 class _TopicCoverBarLarge extends _TopicCoverBar {
   const _TopicCoverBarLarge({
     required this.topic,
+    required this.isNew,
     Key? key,
   }) : super._(key: key);
 
   final TopicPreview topic;
+  final bool isNew;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +53,10 @@ class _TopicCoverBarLarge extends _TopicCoverBar {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        if (isNew) ...[
+          const NewTag(),
+          const SizedBox(width: AppDimens.s),
+        ],
         Expanded(
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
@@ -68,12 +78,14 @@ class _TopicCoverBarLarge extends _TopicCoverBar {
 class _TopicCoverBarMedium extends _TopicCoverBar {
   const _TopicCoverBarMedium({
     required this.topic,
+    required this.isNew,
     this.onBookmarkTap,
     Key? key,
   }) : super._(key: key);
 
   final TopicPreview topic;
   final VoidCallback? onBookmarkTap;
+  final bool isNew;
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +93,10 @@ class _TopicCoverBarMedium extends _TopicCoverBar {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        if (isNew) ...[
+          const NewTag(),
+          const SizedBox(width: AppDimens.s),
+        ],
         Expanded(
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
