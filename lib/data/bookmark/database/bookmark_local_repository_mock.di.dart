@@ -35,4 +35,15 @@ class BookmarkLocalRepositoryMock implements BookmarkLocalRepository {
   Future<List<String>> getAllIds() async {
     return [];
   }
+
+  @override
+  Future<void> deleteAll() async {}
+
+  @override
+  Future<DateTime?> loadLastSynchronizationTime() async {
+    return null;
+  }
+
+  @override
+  Future<void> saveSynchronizationTime(DateTime synchronizedAt) async {}
 }
