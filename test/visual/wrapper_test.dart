@@ -28,7 +28,9 @@ import 'tests/share_article_view_visual_test.dart' as share_article_view_visual_
 import 'tests/share_quote_view_visual_test.dart' as share_quote_view_visual_test;
 import 'tests/share_topic_view_visual_test.dart' as share_topic_view_visual_test;
 import 'tests/sign_in_page_visual_test.dart' as sign_in_page_visual_test;
+import 'tests/snackbar_view_visual_test.dart' as snackbar_view_visual_test;
 import 'tests/subscription_page_visual_test.dart' as subscription_page_visual_test;
+import 'tests/subscription_success_page_visual_test.dart' as subscription_success_page_visual_test;
 import 'tests/switch_audio_popup_visual_test.dart' as switch_audio_popup_visual_test;
 import 'tests/topic_owner_page_visual_test.dart' as topic_owner_page_visual_test;
 import 'tests/topic_page_visual_test.dart' as topic_page_visual_test;
@@ -68,7 +70,9 @@ void main() {
   group('topic_page_visual_test', topic_page_visual_test.main);
   group('topics_see_all_page_visual_test', topics_see_all_page_visual_test.main);
   group('release_note_popup_visual_test', release_note_popup_visual_test.main);
+  group('snackbar_view_visual_test', snackbar_view_visual_test.main);
   group('subscription_page_visual_test', subscription_page_visual_test.main);
+  group('subscription_success_page_visual_test', subscription_success_page_visual_test.main);
   group('settings_subscription_page_visual_test', settings_subscription_page_visual_test.main);
   group('change_subscription_page_visual_test', change_subscription_page_visual_test.main);
   group('audio_page_visual_test', audio_page_visual_test.main);
