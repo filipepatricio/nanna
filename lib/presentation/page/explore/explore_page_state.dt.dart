@@ -15,7 +15,7 @@ class ExplorePageState with _$ExplorePageState {
   ) = _ExplorePageStateIdle;
 
   @Implements<BuildState>()
-  factory ExplorePageState.error() = _ExplorePageStateError;
+  factory ExplorePageState.error(String title, String message) = _ExplorePageStateError;
 
   @Implements<BuildState>()
   factory ExplorePageState.search() = _ExplorePageStateSearch;

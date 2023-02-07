@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
+import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_should_update_explore_stream_use_case.di.dart';
@@ -53,6 +54,9 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   Future<void> initialize() async {
     emit(ExplorePageState.initialLoading());
 
+    await _exploreContentSubscription?.cancel();
+    await _shouldUpdateExploreSubscription?.cancel();
+
     _exploreContentSubscription = _getExploreContentUseCase.highlightedContentStream.listen((content) async {
       final idleState = await _processAndEmitExploreContent(content);
       state.maybeMap(
@@ -65,23 +69,32 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     _shouldUpdateExploreSubscription = _getShouldUpdateExploreStreamUseCase().listen((_) {
       state.mapOrNull(
         idle: (_) => loadExplorePageData(),
+        error: (_) => loadExplorePageData(),
       );
     });
 
-    try {
-      await _showTutorialSnackBar();
-    } catch (e, s) {
-      Fimber.e('Loading explore area failed', ex: e, stacktrace: s);
-      emit(ExplorePageState.error());
-    }
+    await _showTutorialSnackBar();
+    await loadExplorePageData();
   }
 
   Future<void> loadExplorePageData() async {
     try {
       await _fetchExploreContent();
+    } on NoInternetConnectionException {
+      emit(
+        ExplorePageState.error(
+          LocaleKeys.noConnection_error_title.tr(),
+          LocaleKeys.noConnection_error_message.tr(),
+        ),
+      );
     } catch (e, s) {
       Fimber.e('Loading explore area failed', ex: e, stacktrace: s);
-      emit(ExplorePageState.error());
+      emit(
+        ExplorePageState.error(
+          LocaleKeys.common_error_title.tr(),
+          LocaleKeys.common_error_body.tr(),
+        ),
+      );
     }
   }
 

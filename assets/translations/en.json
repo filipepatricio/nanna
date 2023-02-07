@@ -370,6 +370,10 @@
     "snackbar": {
       "message": "You’re offline",
       "subMessage": "You’ll need to be online to do that"
+    },
+    "error": {
+      "title": "Could not load content",
+      "message": "Check your internet connection"
     }
   },
   "update": {
