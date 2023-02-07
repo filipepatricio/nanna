@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state_ext.dart';
@@ -52,6 +53,7 @@ class AudioFloatingControlButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final snackbarController = useSnackbarController();
     final imageUrl = useArticleImageUrl(
       article,
       AppDimens.articleAudioCoverSize,
@@ -104,7 +106,7 @@ class AudioFloatingControlButton extends HookWidget {
               borderRadius: BorderRadius.circular(AppDimens.xl),
             )
           : null,
-      onPressed: state.getAction(cubit),
+      onPressed: state.getAction(cubit, snackbarController),
       backgroundColor: (color ?? AppColors.of(context).backgroundSecondary).withAlpha(state.imageAlpha),
       child: Stack(
         alignment: Alignment.center,

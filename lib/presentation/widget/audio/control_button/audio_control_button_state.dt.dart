@@ -29,6 +29,9 @@ class AudioControlButtonState with _$AudioControlButtonState {
     required AudioItem audioItem,
   }) = _AudioControlButtonStatePaused;
 
+  @Implements<BuildState>()
+  factory AudioControlButtonState.offline() = _AudioControlButtonStateOffline;
+
   factory AudioControlButtonState.showSwitchAudioPopup() = _$AudioControlButtonStateShowSwitchAudioPopup;
 
   factory AudioControlButtonState.needsSubscription() = _$AudioControlButtonStateNeedsSubscription;
