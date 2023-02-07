@@ -38,6 +38,7 @@ import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_audio_progress_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_free_articles_left_warning_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/mark_article_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/save_article_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/update_article_progress_state_notifier_use_case.di.dart';
@@ -57,6 +58,7 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_up
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
+import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
@@ -176,7 +178,9 @@ const _classes = [
   SynchronizeWithRemoteUsecase,
   SaveSynchronizableItemUseCase,
   MarkTopicAsSeenUseCase,
-  MarkArticleAsSeenUseCase
+  MarkArticleAsSeenUseCase,
+  GetFreeArticlesLeftWarningStreamUseCase,
+  IsInternetConnectionAvailableUseCase,
 ];
 
 @GenerateMocks(_classes)

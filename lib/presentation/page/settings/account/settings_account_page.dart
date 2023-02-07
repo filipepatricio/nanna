@@ -49,7 +49,7 @@ class SettingsAccountPage extends HookWidget {
             originalData: data.original,
           ),
           error: (value) => Center(
-            child: GeneralErrorView(
+            child: ErrorView(
               title: LocaleKeys.common_error_title.tr(),
               content: LocaleKeys.common_error_body.tr(),
               retryCallback: () {
@@ -58,7 +58,7 @@ class SettingsAccountPage extends HookWidget {
             ),
           ),
           offline: (value) => Center(
-            child: GeneralErrorView(
+            child: ErrorView(
               title: LocaleKeys.noConnection_error_title.tr(),
               content: LocaleKeys.noConnection_error_message.tr(),
               retryCallback: () {

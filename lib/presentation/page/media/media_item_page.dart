@@ -2,13 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/media/article_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/free_article/free_article_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
@@ -86,7 +87,13 @@ class MediaItemPage extends HookWidget {
                 cubit.initialize(article, slug, topicId, topicSlug, briefId);
               },
             ),
-            geoblocked: (_) => const _ErrorGeoBlocked(),
+            offline: (data) => _ErrorNoConnection(
+              article: data.article,
+              onTryAgain: () {
+                cubit.initialize(article, slug, topicId, topicSlug, briefId);
+              },
+            ),
+            geoblocked: (_) => const _ErrorGeoblocked(),
             orElse: Container.new,
           ),
         ),
@@ -98,8 +105,7 @@ class MediaItemPage extends HookWidget {
 class _LoadingContent extends StatelessWidget {
   const _LoadingContent({
     this.color,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Color? color;
 
@@ -121,8 +127,7 @@ class _ErrorContent extends StatelessWidget {
   const _ErrorContent({
     required this.onTryAgain,
     this.article,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final MediaItemArticle? article;
   final VoidCallback onTryAgain;
@@ -148,7 +153,7 @@ class _ErrorContent extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.only(bottom: AppDimens.xxxc),
         child: Center(
-          child: GeneralErrorView(
+          child: ErrorView(
             title: LocaleKeys.article_error_title.tr(),
             content: LocaleKeys.article_error_body.tr(),
             action: article != null ? LocaleKeys.article_openSourceUrl.tr() : LocaleKeys.common_tryAgain.tr(),
@@ -162,20 +167,49 @@ class _ErrorContent extends StatelessWidget {
   }
 }
 
-class _ErrorGeoBlocked extends StatelessWidget {
-  const _ErrorGeoBlocked({Key? key}) : super(key: key);
+class _ErrorGeoblocked extends StatelessWidget {
+  const _ErrorGeoblocked();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const InformedAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-        child: GeneralErrorView(
-          title: LocaleKeys.article_geoblockedError_title.tr(),
-          content: LocaleKeys.article_geoblockedError_content.tr(),
-          action: LocaleKeys.article_geoblockedError_action.tr(),
-          retryCallback: context.popRoute,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: ErrorView(
+            title: LocaleKeys.article_geoblockedError_title.tr(),
+            content: LocaleKeys.article_geoblockedError_content.tr(),
+            action: LocaleKeys.article_geoblockedError_action.tr(),
+            retryCallback: context.popRoute,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ErrorNoConnection extends StatelessWidget {
+  const _ErrorNoConnection({
+    required this.onTryAgain,
+    this.article,
+  });
+
+  final VoidCallback onTryAgain;
+  final MediaItemArticle? article;
+
+  @override
+  Widget build(BuildContext context) {
+    final article = this.article;
+
+    return Scaffold(
+      appBar: article != null ? ArticleAppBar(article: article) : const InformedAppBar() as PreferredSizeWidget,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: ErrorView.offline(
+            retryCallback: onTryAgain,
+          ),
         ),
       ),
     );

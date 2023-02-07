@@ -52,7 +52,7 @@ class SettingsNotificationsPage extends HookWidget {
           ),
           notificationSettingsLoaded: (data) => SettingsNotificationsBody(groups: data),
           error: (title, message) => Center(
-            child: GeneralErrorView(
+            child: ErrorView(
               title: title,
               content: message,
               retryCallback: () {

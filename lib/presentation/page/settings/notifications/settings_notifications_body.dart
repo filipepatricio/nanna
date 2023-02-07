@@ -43,7 +43,7 @@ class SettingsNotificationsBody extends HookWidget {
                         Radius.circular(AppDimens.s),
                       ),
                     ),
-                    child: GeneralErrorView(
+                    child: ErrorView(
                       title: LocaleKeys.settings_notifications_noPermissionTitle.tr(),
                       content: LocaleKeys.settings_notifications_noPermissionContent.tr(),
                       action: LocaleKeys.settings_notifications_noPermissionAction.tr(),

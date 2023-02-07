@@ -63,7 +63,7 @@ void main() {
         captured,
         isA<BookmarkEvent>()
             .having((p0) => p0.state, 'state', BookmarkState.notBookmarked())
-            .having((p0) => p0.data, 'data', BookmarkTypeData.article(article.slug, article.id)),
+            .having((p0) => p0.data, 'data', BookmarkTypeData.article(article.slug, article.id, article.type)),
       );
     });
 

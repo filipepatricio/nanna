@@ -43,7 +43,7 @@ class SettingsManageMyInterestsPage extends HookWidget {
             cubit: cubit,
           ),
           error: (title, message) => Center(
-            child: GeneralErrorView(
+            child: ErrorView(
               title: title,
               content: message,
               retryCallback: () {

@@ -23,7 +23,7 @@ class ErrorView extends StatelessWidget {
         retryCallback: retryCallback,
       );
 
-  factory ErrorView.noConnection({
+  factory ErrorView.offline({
     required VoidCallback retryCallback,
   }) =>
       ErrorView(
@@ -49,7 +49,7 @@ class ErrorView extends StatelessWidget {
       children: [
         if (svg != null) ...[
           InformedSvg(svg),
-          const SizedBox(height: AppDimens.l),
+          const SizedBox(height: AppDimens.sl),
         ],
         Text.rich(
           textAlign: TextAlign.center,

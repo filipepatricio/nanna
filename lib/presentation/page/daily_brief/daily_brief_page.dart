@@ -179,9 +179,7 @@ class _DailyBriefPage extends HookWidget {
                     ),
                     error: (_) => SliverFillRemaining(
                       child: Center(
-                        child: GeneralErrorView(
-                          title: LocaleKeys.common_error_title.tr(),
-                          content: LocaleKeys.common_error_body.tr(),
+                        child: ErrorView.general(
                           retryCallback: cubit.loadBriefs,
                         ),
                       ),

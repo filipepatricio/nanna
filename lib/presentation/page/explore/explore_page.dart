@@ -122,7 +122,7 @@ class ExplorePage extends HookWidget {
                       ),
                       error: (state) => SliverFillRemaining(
                         child: Center(
-                          child: GeneralErrorView(
+                          child: ErrorView(
                             title: state.title,
                             content: state.message,
                             retryCallback: () async {

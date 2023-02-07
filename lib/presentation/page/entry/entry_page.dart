@@ -44,10 +44,7 @@ class EntryPage extends HookWidget {
     return Scaffold(
       body: state.maybeMap(
         error: (_) => Center(
-          child: GeneralErrorView(
-            title: LocaleKeys.common_error_title.tr(),
-            content: LocaleKeys.common_error_body.tr(),
-            action: LocaleKeys.common_tryAgain.tr(),
+          child: ErrorView.general(
             retryCallback: () => cubit.initialize(),
           ),
         ),

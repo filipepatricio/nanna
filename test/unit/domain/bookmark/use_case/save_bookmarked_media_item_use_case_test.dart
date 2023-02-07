@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
@@ -46,7 +47,7 @@ void main() {
     test('save article bookmark', () async {
       final article = TestData.article;
       const bookmarkId = 'bookmarkId';
-      const bookmarkType = BookmarkTypeData.article('slug', 'id');
+      const bookmarkType = BookmarkTypeData.article('slug', 'id', ArticleType.premium);
 
       when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => true);
       when(articleRepository.getArticleHeader('slug')).thenAnswer((_) async => article);
@@ -89,7 +90,7 @@ void main() {
 
     test('skip for unsubscribed user', () async {
       const bookmarkId = 'bookmarkId';
-      const bookmark = BookmarkTypeData.article('slug', 'id');
+      const bookmark = BookmarkTypeData.article('slug', 'id', ArticleType.premium);
 
       when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => false);
 

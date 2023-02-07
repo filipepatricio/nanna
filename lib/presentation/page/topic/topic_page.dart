@@ -104,9 +104,7 @@ class _TopicPage extends StatelessWidget {
           error: (_) => Padding(
             padding: const EdgeInsets.only(bottom: AppDimens.xxxc),
             child: Center(
-              child: GeneralErrorView(
-                title: LocaleKeys.common_error_title.tr(),
-                content: LocaleKeys.common_error_body.tr(),
+              child: ErrorView.general(
                 retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
               ),
             ),
