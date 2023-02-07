@@ -9,4 +9,10 @@ abstract class BookmarkLocalRepository implements SynchronizableRepository<Bookm
   Future<void> saveSortOption(BookmarkSortConfigName sort);
 
   Future<List<Synchronizable<Bookmark>>> getAllBookmarks();
+
+  Future<void> deleteAll();
+
+  Future<void> saveSynchronizationTime(DateTime synchronizedAt);
+
+  Future<DateTime?> loadLastSynchronizationTime();
 }
