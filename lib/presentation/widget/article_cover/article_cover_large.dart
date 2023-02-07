@@ -45,7 +45,7 @@ class _ArticleCoverLarge extends ArticleCover {
               _ArticleAspectRatioCover(
                 article: article,
                 coverColor: article.category.color,
-                aspectRatio: _articleLargeCoverAspectRatio,
+                aspectRatio: AppDimens.articleLargeCoverAspectRatio,
                 width: double.infinity,
               ),
               const SizedBox(height: AppDimens.m),

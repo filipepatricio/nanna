@@ -5,6 +5,8 @@ import 'package:better_informed_mobile/domain/synchronization/use_case/save_sync
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/topics_local_repository.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/image_precache/image_precache_broadcaster.di.dart';
+import 'package:better_informed_mobile/domain/util/image_precache/image_precache_data.dt.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -14,12 +16,14 @@ class SaveTopicLocallyUseCase {
     this._getTopicBySlugUseCase,
     this._saveArticleLocallyUseCase,
     this._saveSynchronizableItemUseCase,
+    this._imagePrecacheBroadcaster,
   );
 
   final TopicsLocalRepository _topicsLocalRepository;
   final GetTopicBySlugUseCase _getTopicBySlugUseCase;
   final SaveArticleLocallyUseCase _saveArticleLocallyUseCase;
   final SaveSynchronizableItemUseCase _saveSynchronizableItemUseCase;
+  final ImagePrecacheBroadcaster _imagePrecacheBroadcaster;
 
   Future<void> fetchAndSave(String slug, Duration timeToExpire) async {
     final synchronizable = Synchronizable.createNotSynchronized<Topic>(slug, timeToExpire);
@@ -32,6 +36,8 @@ class SaveTopicLocallyUseCase {
 
   Future<void> save(Topic topic, Duration timeToExpire) async {
     final synchronizable = Synchronizable.createSynchronized(topic, topic.slug, timeToExpire);
+
+    _imagePrecacheBroadcaster.broadcast(ImagePrecacheData.topic(topic));
 
     await _prefetchAllArticles(topic, timeToExpire);
     await _saveSynchronizableItemUseCase(_topicsLocalRepository, synchronizable);

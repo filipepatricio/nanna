@@ -21,7 +21,7 @@ class _ArticleCoverMedium extends ArticleCover {
   @override
   Widget build(BuildContext context) {
     final coverWidth = useMemoized(
-      () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
+      () => AppDimens.coverSize(context, AppDimens.coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
     );
 
@@ -73,7 +73,7 @@ class _ArticleCoverMedium extends ArticleCover {
                 _ArticleAspectRatioCover(
                   article: article,
                   coverColor: article.category.color,
-                  aspectRatio: _articleSmallCoverAspectRatio,
+                  aspectRatio: AppDimens.articleSmallCoverAspectRatio,
                   width: coverWidth,
                 ),
               ],

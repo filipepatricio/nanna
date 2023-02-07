@@ -5,6 +5,8 @@ import 'package:better_informed_mobile/domain/article/use_case/get_article_use_c
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/synchronization/synchronizable.dt.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/save_synchronizable_item_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/image_precache/image_precache_broadcaster.di.dart';
+import 'package:better_informed_mobile/domain/util/image_precache/image_precache_data.dt.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -14,12 +16,14 @@ class SaveArticleLocallyUseCase {
     this._articleLocalRepository,
     this._getArticleUseCase,
     this._saveSynchronizableItemUseCase,
+    this._imagePrecacheBroadcaster,
   );
 
   final ArticleRepository _articleRepository;
   final ArticleLocalRepository _articleLocalRepository;
   final GetArticleUseCase _getArticleUseCase;
   final SaveSynchronizableItemUseCase _saveSynchronizableItemUseCase;
+  final ImagePrecacheBroadcaster _imagePrecacheBroadcaster;
 
   Future<void> fetchAndSave(String slug, Duration timeToExpire) async {
     final synchronizable = Synchronizable.createNotSynchronized<Article>(slug, timeToExpire);
@@ -41,6 +45,8 @@ class SaveArticleLocallyUseCase {
 
   Future<void> save(Article article, Duration timeToExpire) async {
     final synchronizable = Synchronizable.createSynchronized(article, article.metadata.slug, timeToExpire);
+
+    _imagePrecacheBroadcaster.broadcast(ImagePrecacheData.article(article.metadata));
 
     await _saveSynchronizableItemUseCase(_articleLocalRepository, synchronizable);
   }
