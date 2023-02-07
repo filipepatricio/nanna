@@ -30,6 +30,9 @@ class DailyBriefPageState with _$DailyBriefPageState {
   @Implements<BuildState>()
   factory DailyBriefPageState.error() = _DailyBriefPageStateError;
 
+  @Implements<BuildState>()
+  factory DailyBriefPageState.offline() = _DailyBriefPageStateOffline;
+
   factory DailyBriefPageState.showTutorialToast(String text) = _DailyBriefPageStateShowTutorialToast;
 
   factory DailyBriefPageState.shouldShowTopicCardTutorialCoachMark() =

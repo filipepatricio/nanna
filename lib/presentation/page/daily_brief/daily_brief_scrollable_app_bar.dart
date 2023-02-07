@@ -13,8 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class DailyBriefScrollableAppBar extends HookWidget {
-  const DailyBriefScrollableAppBar({
+class DailyBriefAppBar extends HookWidget {
+  const DailyBriefAppBar({
     required this.scrollController,
     required this.briefDate,
     required this.pastDays,

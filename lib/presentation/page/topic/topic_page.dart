@@ -16,7 +16,7 @@ import 'package:better_informed_mobile/presentation/widget/audio/player_banner/a
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_shadow.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
-import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';

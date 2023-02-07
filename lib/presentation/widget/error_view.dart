@@ -49,7 +49,7 @@ class ErrorView extends StatelessWidget {
       children: [
         if (svg != null) ...[
           InformedSvg(svg),
-          const SizedBox(height: AppDimens.sl),
+          const SizedBox(height: AppDimens.s),
         ],
         Text.rich(
           textAlign: TextAlign.center,

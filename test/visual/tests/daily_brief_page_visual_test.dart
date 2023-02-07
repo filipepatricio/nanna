@@ -73,6 +73,22 @@ void main() {
   );
 
   visualTest(
+    '${DailyBriefPage}_(offline)',
+    (tester) async {
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(
+            () => FakeDailyBriefPageCubit(
+              state: DailyBriefPageState.offline(),
+            ),
+          );
+        },
+      );
+      await tester.matchGoldenFile();
+    },
+  );
+
+  visualTest(
     '${DailyBriefPage}_(tutorial_snack_bar)',
     (tester) async {
       await tester.startApp(
@@ -126,11 +142,17 @@ void main() {
 }
 
 class FakeDailyBriefPageCubit extends Fake implements DailyBriefPageCubit {
-  @override
-  DailyBriefPageState get state => DailyBriefPageState.error();
+  FakeDailyBriefPageCubit({
+    DailyBriefPageState? state,
+  }) : _state = state ?? DailyBriefPageState.error();
+
+  final DailyBriefPageState _state;
 
   @override
-  Stream<DailyBriefPageState> get stream => Stream.value(DailyBriefPageState.error());
+  DailyBriefPageState get state => _state;
+
+  @override
+  Stream<DailyBriefPageState> get stream => Stream.value(state);
 
   @override
   Future<void> initialize() async {}
