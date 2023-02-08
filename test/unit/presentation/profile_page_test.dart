@@ -9,15 +9,10 @@ import '../../generated_mocks.mocks.dart';
 import '../unit_test_utils.dart';
 
 void main() {
-  late MockGetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
-
-  setUp(() {
-    getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
-  });
-
   testWidgets(
     'banner is shown for free users',
     (tester) async {
+      final getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
       when(getActiveSubscriptionUseCase.call()).thenAnswer((_) async => ActiveSubscription.free());
       when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(ActiveSubscription.free()));
 
