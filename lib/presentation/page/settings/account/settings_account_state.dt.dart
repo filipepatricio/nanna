@@ -17,5 +17,8 @@ class SettingsAccountState with _$SettingsAccountState {
   const factory SettingsAccountState.updating(SettingsAccountData original, SettingsAccountData data) =
       SettingsAccountStateUpdating;
 
+  @Implements<BuildState>()
+  const factory SettingsAccountState.error(String title, String message) = SettingsAccountStateError;
+
   const factory SettingsAccountState.showMessage(String message) = SettingsAccountStateShowMessage;
 }

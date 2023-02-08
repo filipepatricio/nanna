@@ -3,7 +3,6 @@ import 'dart:core';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_list_area/article_list_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
@@ -119,12 +118,14 @@ class ExplorePage extends HookWidget {
                         scrollController: scrollController,
                         searchHistory: state.searchHistory,
                       ),
-                      error: (_) => SliverFillRemaining(
+                      error: (state) => SliverFillRemaining(
                         child: Center(
                           child: GeneralErrorView(
-                            title: LocaleKeys.common_error_title.tr(),
-                            content: LocaleKeys.common_error_body.tr(),
-                            retryCallback: cubit.initialize,
+                            title: state.title,
+                            content: state.message,
+                            retryCallback: () async {
+                              await cubit.initialize();
+                            },
                           ),
                         ),
                       ),

@@ -2,10 +2,14 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart'
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_category_use_case.di.dart';
+import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
+import 'package:better_informed_mobile/generated/local_keys.g.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/next_category_item_page_loader.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
 const _paginationLimit = 10;
@@ -16,8 +20,10 @@ class CategoryPageCubit extends Cubit<CategoryPageState> {
     this._getCategoryItemsUseCase,
     this._trackActivityUseCase,
   ) : super(CategoryPageState.loading());
+
   final GetCategoryItemsUseCase _getCategoryItemsUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
+
   late NextCategoryItemPageLoader _nextCategoryItemPageLoader;
   late PaginationEngine<CategoryItem> _paginationEngine;
   late String _categorySlug;
@@ -35,7 +41,24 @@ class CategoryPageCubit extends Cubit<CategoryPageState> {
       emit(CategoryPageState.withPagination(items));
       _trackActivityUseCase.trackEvent(AnalyticsEvent.categoryPageScrolled(categorySlug, 0));
     } else {
-      await loadNextPage();
+      try {
+        await loadNextPage();
+      } on NoInternetConnectionException {
+        emit(
+          CategoryPageState.error(
+            LocaleKeys.noConnection_error_title.tr(),
+            LocaleKeys.noConnection_error_message.tr(),
+          ),
+        );
+      } catch (e, s) {
+        emit(
+          CategoryPageState.error(
+            LocaleKeys.common_error_title.tr(),
+            LocaleKeys.common_error_body.tr(),
+          ),
+        );
+        Fimber.e('Querying category page failed', ex: e, stacktrace: s);
+      }
     }
   }
 
