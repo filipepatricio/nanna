@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/analytics/use_case/identify_analytics_user_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
-import 'package:better_informed_mobile/domain/categories/use_case/get_onboarding_categories_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/use_case/get_preferable_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/unauthorized_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/onboarding/use_case/is_onboarding_seen_use_case.di.dart';
@@ -24,7 +24,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     this._initializeAttributionUseCase,
     this._isOnboardingSeenUseCase,
     this._saveReleaseNoteIfFirstRunUseCase,
-    this._getOnboardingCategoriesUseCase,
+    this._getPreferableCategoriesUseCase,
     this._identifyAnalyticsUserUseCase,
     this._initializePurchasesUseCase,
   ) : super(EntryPageState.idle());
@@ -34,7 +34,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
   final InitializeAttributionUseCase _initializeAttributionUseCase;
   final IsOnboardingSeenUseCase _isOnboardingSeenUseCase;
   final SaveReleaseNoteIfFirstRunUseCase _saveReleaseNoteIfFirstRunUseCase;
-  final GetOnboardingCategoriesUseCase _getOnboardingCategoriesUseCase;
+  final GetPreferableCategoriesUseCase _getPreferableCategoriesUseCase;
   final IdentifyAnalyticsUserUseCase _identifyAnalyticsUserUseCase;
   final InitializePurchasesUseCase _initializePurchasesUseCase;
 
@@ -90,7 +90,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
 
   Future<void> _preFetchCategories() async {
     try {
-      await _getOnboardingCategoriesUseCase();
+      await _getPreferableCategoriesUseCase();
     } catch (e, s) {
       Fimber.e('Pre-fetching onboarding categories failed', ex: e, stacktrace: s);
     }

@@ -3,8 +3,8 @@ import 'package:better_informed_mobile/data/categories/api/documents/__generated
     as get_category;
 import 'package:better_informed_mobile/data/categories/api/documents/__generated__/get_featured_categories.ast.gql.dart'
     as get_featured_categories;
-import 'package:better_informed_mobile/data/categories/api/documents/__generated__/get_onboarding_categories.ast.gql.dart'
-    as get_onboarding_categories;
+import 'package:better_informed_mobile/data/categories/api/documents/__generated__/get_preferable_categories.ast.gql.dart'
+    as get_preferable_categories;
 import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_with_items_dto.dt.dart';
@@ -24,18 +24,18 @@ class CategoriesGraphqlDataSource implements CategoriesDataSource {
   final GraphQLResponseResolver _responseResolver;
 
   @override
-  Future<CategoriesDTO> getOnboardingCategories() async {
+  Future<CategoriesDTO> getPreferableCategories() async {
     final result = await _client.query(
       QueryOptions(
-        document: get_onboarding_categories.document,
-        operationName: get_onboarding_categories.getOnboardingCategories.name?.value,
+        document: get_preferable_categories.document,
+        operationName: get_preferable_categories.getPreferableCategories.name?.value,
       ),
     );
 
     final dto = _responseResolver.resolve(
       result,
       (raw) {
-        final categoriesRaw = raw['getOnboardingCategories'] as List<dynamic>;
+        final categoriesRaw = raw['getPreferableCategories'] as List<dynamic>;
         final categories =
             categoriesRaw.map((json) => CategoryDTO.fromJson(json as Map<String, dynamic>)).toList(growable: false);
         return CategoriesDTO(categories);

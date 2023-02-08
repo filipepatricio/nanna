@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attr
 import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
-import 'package:better_informed_mobile/domain/categories/use_case/get_onboarding_categories_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/use_case/get_preferable_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/onboarding/data/onboarding_version.dart';
 import 'package:better_informed_mobile/domain/onboarding/use_case/get_seen_onboarding_version_use_case.di.dart';
 import 'package:better_informed_mobile/domain/onboarding/use_case/set_onboarding_seen_use_case.di.dart';
@@ -36,7 +36,7 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   final InitializeAttributionUseCase _initializeAttributionUseCase;
   final RequestTrackingPermissionUseCase _requestTrackingPermissionUseCase;
   final GetSeenOnboardingVersionUseCase _getSeenOnboardingVersionUseCase;
-  final GetOnboardingCategoriesUseCase _getCurrentOnboardingCategoriesUseCase;
+  final GetPreferableCategoriesUseCase _getCurrentOnboardingCategoriesUseCase;
   final UpdatePreferredCategoriesUseCase _updatePreferredCategoriesUseCase;
 
   StreamSubscription? _onboardingCategoriesStreamSubscription;

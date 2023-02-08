@@ -23,8 +23,8 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
   final StreamController<List<Category>> _categoryStreamController = BehaviorSubject<List<Category>>.seeded([]);
 
   @override
-  Future<List<Category>> getOnboardingCategories() async {
-    final dto = await _categoriesDataSource.getOnboardingCategories();
+  Future<List<Category>> getPreferableCategories() async {
+    final dto = await _categoriesDataSource.getPreferableCategories();
     return dto.categories.map<Category>(_categoryDTOMapper).toList();
   }
 
