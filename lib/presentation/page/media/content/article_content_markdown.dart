@@ -10,11 +10,13 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class ArticleContentMarkdown extends HookWidget {
   const ArticleContentMarkdown({
     required this.markdown,
+    required this.categoryColor,
     required this.shareTextCallback,
     Key? key,
   }) : super(key: key);
 
   final String markdown;
+  final Color categoryColor;
   final ShareTextCallback shareTextCallback;
 
   @override
@@ -38,6 +40,7 @@ class ArticleContentMarkdown extends HookWidget {
           'h5': HeadingsPaddingBuilder(),
           'h6': HeadingsPaddingBuilder(),
         },
+        quoteDecorationColor: categoryColor,
       ),
     );
   }
