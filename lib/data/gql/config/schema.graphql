@@ -62,6 +62,9 @@ type Article {
   """Denotes if locked icon should be shown for article"""
   locked: Boolean!
 
+  """Meta information about article"""
+  metaInformation: ArticleMetaInformation!
+
   """The editor's note"""
   note: String
 
@@ -122,6 +125,11 @@ type ArticleKind {
   name: String!
 }
 
+"""Meta information about article"""
+type ArticleMetaInformation {
+  imageUrl: String!
+}
+
 """User's progress in article"""
 type ArticleProgress {
   """Position in article's audio in seconds"""
@@ -144,6 +152,9 @@ enum ArticleProgressState {
 type ArticlesExploreArea implements ExploreArea {
   articles(pagination: PaginationInput): [Article]!
 
+  """The background color to be used for styling"""
+  backgroundColor: HexColor
+
   """The area's description"""
   description: String
 
@@ -165,6 +176,9 @@ type ArticlesExploreArea implements ExploreArea {
 
 type ArticlesListExploreArea implements ExploreArea {
   articles(pagination: PaginationInput): [Article]!
+
+  """The background color to be used for styling"""
+  backgroundColor: HexColor
 
   """The area's description"""
   description: String
@@ -313,9 +327,6 @@ type Brief {
   """The number of entries in this brief"""
   numberOfEntries: Int!
 
-  """The number of topics in this brief"""
-  numberOfTopics: Int!
-
   """
   A status message with call to action to be shown at the end of the brief
   """
@@ -324,12 +335,15 @@ type Brief {
   """Top level sections of which this brief is made"""
   sections: [BriefSection]
 
-  """The topics mentioned in this brief"""
-  topics: [Topic]
+  """The total count of unseen entries in this brief"""
+  unseenCount: Int!
 }
 
 """An entry of the brief"""
 type BriefEntry {
+  """Has an entry been seen by a user"""
+  isNew: Boolean!
+
   """Target Item of the brief entry"""
   item: BriefEntryItem!
 
@@ -606,6 +620,11 @@ type HighlightedTopicsExploreArea implements ExploreArea {
   topics(pagination: PaginationInput): [Topic]!
 }
 
+"""Response for marking entity seen"""
+type MarkEntitySeenResponse {
+  successful: Boolean!
+}
+
 """Response for markTopicVisited mutation"""
 type MarkTopicVisitedResponse {
   successful: Boolean!
@@ -640,57 +659,6 @@ type Publisher {
   name: String!
 }
 
-"""A collection of related articles"""
-type ReadingList {
-  """Articles on the list"""
-  articles: [Article] @deprecated(reason: "Use ReadingList.entries instead")
-
-  """Entries of the reading list"""
-  entries: [ReadingListEntry]
-
-  """Number of entries of the reading list"""
-  entryCount: Int!
-
-  """The database ID"""
-  id: UUID!
-
-  """The reading list's name"""
-  name: String!
-
-  """The approximated time it takes to read all articles on this list"""
-  timeToRead: Int
-}
-
-"""An entry on the reading list"""
-type ReadingListEntry {
-  """The media item"""
-  item: ReadingListMediaItem!
-
-  """The editor's note"""
-  note: String
-
-  """The visual styling of the item"""
-  style: ReadingListEntryStyle
-
-  """The URL for sharing this item"""
-  url: String!
-}
-
-"""Visual styling information for the reading list entry"""
-type ReadingListEntryStyle {
-  color: HexColor!
-  type: ReadingListEntryStyleType!
-}
-
-"""Types of entry styles available"""
-enum ReadingListEntryStyleType {
-  ARTICLE_COVER_WITH_BIG_IMAGE
-  ARTICLE_COVER_WITHOUT_IMAGE
-}
-
-"""A media item referenced in the read list entries"""
-union ReadingListMediaItem = Article
-
 """Payload returned when refreshing the token"""
 type RefreshPayload {
   errorMessage: String
@@ -719,6 +687,12 @@ type RootMutationType {
 
   """Soft delete user account (GDPR сompliant)"""
   deleteAccount: DeleteAccountResponse
+
+  """Mark article as seen by user"""
+  markArticleSeen(slug: String!): MarkEntitySeenResponse
+
+  """Mark topic as seen by user"""
+  markTopicSeen(slug: String!): MarkEntitySeenResponse
 
   """Mark topic as visited by user"""
   markTopicVisited(slug: String!): MarkTopicVisitedResponse
@@ -833,7 +807,7 @@ type RootQueryType {
   getNotificationPreferences: [ChannelCategory]
 
   """Categories that can be selected as preferred"""
-  getOnboardingCategories: [Category]
+  getOnboardingCategories: [Category] @deprecated(reason: "Use getPreferableCategories instead")
 
   """Returns other entries in current Brief minus given Article"""
   getOtherBriefEntries(articleSlug: String!, briefId: UUID): [BriefEntryItem]
@@ -843,6 +817,9 @@ type RootQueryType {
 
   """Get last dates with their briefs (if available)"""
   getPastDaysBriefs: [DatedBrief]
+
+  """Categories that can be selected as preferred"""
+  getPreferableCategories: [Category]
 
   """Get content related to given article"""
   getRelatedContent(pagination: PaginationInput = {limit: 10, offset: 0}, slug: String!): [CategoryItem]
@@ -914,6 +891,9 @@ type SignInPayload {
 }
 
 type SmallTopicsExploreArea implements ExploreArea {
+  """The background color to be used for styling"""
+  backgroundColor: HexColor
+
   """The area's description"""
   description: String
 
@@ -1029,9 +1009,6 @@ type Topic {
   """Information about publishers of topic articles"""
   publisherInformation: TopicPublisherInformation! @deprecated(reason: "Use contentMeta field instead")
 
-  """The reading list relevant for this topic"""
-  readingList: ReadingList!
-
   """The topic's slug to be used in friendly URLs"""
   slug: String!
 
@@ -1081,7 +1058,7 @@ type TopicEntry {
   url: String!
 }
 
-"""Visual styling information for the reading list entry"""
+"""Visual styling information for the topic entry"""
 type TopicEntryStyle {
   color: HexColor!
   type: TopicEntryStyleType!
@@ -1116,6 +1093,9 @@ type TopicPublisherInformation {
 }
 
 type TopicsExploreArea implements ExploreArea {
+  """The background color to be used for styling"""
+  backgroundColor: HexColor
+
   """The area's description"""
   description: String
 

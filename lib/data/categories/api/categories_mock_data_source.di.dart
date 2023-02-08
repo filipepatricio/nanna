@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: CategoriesDataSource, env: mockEnvs)
 class CategoriesMockDataSource implements CategoriesDataSource {
   @override
-  Future<CategoriesDTO> getOnboardingCategories() async => MockDTO.categories;
+  Future<CategoriesDTO> getPreferableCategories() async => MockDTO.categories;
 
   @override
   Future<CategoriesDTO> getFeaturedCategories() async => MockDTO.categories;
