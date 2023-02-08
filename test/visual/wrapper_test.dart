@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'tests/app_connectivity_dialog_visual_test.dart' as app_connectivity_dialog_visual_test;
 import 'tests/app_update_dialog_visual_test.dart' as app_update_dialog_visual_test;
+import 'tests/article_cover_visual_test.dart' as article_cover_visual_test;
 import 'tests/article_paywall_view_visual_test.dart' as article_paywall_view_visual_test;
 import 'tests/articles_see_all_page_visual_test.dart' as articles_see_all_page_visual_test;
 import 'tests/audio_page_visual_test.dart' as audio_page_visual_test;
@@ -44,6 +45,7 @@ void main() {
     themeMode = AdaptiveThemeMode.light;
   });
   group('switch_audio_popup_visual_test', switch_audio_popup_visual_test.main);
+  group('article_cover_visual_test', article_cover_visual_test.main);
   group('article_paywall_view_visual_test', article_paywall_view_visual_test.main);
   group('app_update_dialog_visual_test', app_update_dialog_visual_test.main);
   group('app_connectivity_dialog_visual_test', app_connectivity_dialog_visual_test.main);

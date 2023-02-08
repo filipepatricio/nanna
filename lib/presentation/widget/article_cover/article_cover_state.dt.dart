@@ -10,7 +10,8 @@ class ArticleCoverState with _$ArticleCoverState {
   factory ArticleCoverState.initializing() = _ArticleCoverStateInitializing;
 
   @Implements<BuildState>()
-  factory ArticleCoverState.idle(
-    MediaItemArticle article,
-  ) = _ArticleCoverStateIdle;
+  factory ArticleCoverState.idle(MediaItemArticle article) = _ArticleCoverStateIdle;
+
+  @Implements<BuildState>()
+  factory ArticleCoverState.offline(MediaItemArticle article) = _ArticleCoverStateOffline;
 }
