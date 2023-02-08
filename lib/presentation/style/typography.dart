@@ -4,9 +4,11 @@ const _fontFamilyIvarText = 'IvarText';
 const _fontFamilyIvarHeadline = 'IvarHeadline';
 const _fontFamilyLausanne = 'Lausanne';
 
-class AppTypography {
-  static final w550 = FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5);
+extension TextStyleExt on TextStyle {
+  TextStyle get w550 => copyWith(fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5));
+}
 
+class AppTypography {
   // Serif Title
   static const TextStyle serifTitleSmallIvar = TextStyle(
     fontWeight: FontWeight.w600,

@@ -38,9 +38,8 @@ class InformedAppBar extends HookWidget implements PreferredSizeWidget {
           ? null
           : Text(
               title,
-              style: AppTypography.h4Medium.copyWith(
+              style: AppTypography.h4Medium.w550.copyWith(
                 color: AppColors.of(context).textPrimary,
-                fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5),
                 height: 1.11,
               ),
             ),

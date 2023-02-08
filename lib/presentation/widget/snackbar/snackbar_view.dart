@@ -140,8 +140,7 @@ extension on SnackbarMessage {
       message,
       maxLines: 2,
       textAlign: action != null ? TextAlign.start : TextAlign.center,
-      style: AppTypography.b2Medium.copyWith(
-        fontWeight: AppTypography.w550,
+      style: AppTypography.b2Medium.w550.copyWith(
         color: color,
       ),
     );
