@@ -26,6 +26,7 @@ class TopicsSeeAllPage extends HookWidget {
     required this.areaId,
     required this.title,
     required this.referred,
+    required this.areaBackgroundColor,
     this.topics,
     Key? key,
   }) : super(key: key);
@@ -33,6 +34,7 @@ class TopicsSeeAllPage extends HookWidget {
   final String areaId;
   final String title;
   final List<TopicPreview>? topics;
+  final Color? areaBackgroundColor;
   final ExploreAreaReferred referred;
 
   @override
@@ -70,6 +72,7 @@ class TopicsSeeAllPage extends HookWidget {
                 pageStorageKey: pageStorageKey,
                 scrollController: scrollController,
                 state: state,
+                areaBackgroundColor: areaBackgroundColor,
               ),
             ),
           ),
@@ -85,6 +88,7 @@ class _Body extends StatelessWidget {
     required this.state,
     required this.scrollController,
     required this.pageStorageKey,
+    required this.areaBackgroundColor,
     Key? key,
   }) : super(key: key);
 
@@ -92,22 +96,28 @@ class _Body extends StatelessWidget {
   final TopicsSeeAllPageState state;
   final ScrollController scrollController;
   final PageStorageKey pageStorageKey;
+  final Color? areaBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
     return state.map(
-      loading: (_) => _LoadingView(title: title),
+      loading: (_) => _LoadingView(
+        title: title,
+        areaBackgroundColor: areaBackgroundColor,
+      ),
       withPagination: (state) => _TopicList(
         pageStorageKey: pageStorageKey,
         topics: state.topics,
         scrollController: scrollController,
         title: title,
+        areaBackgroundColor: areaBackgroundColor,
       ),
       loadingMore: (state) => _TopicList(
         pageStorageKey: pageStorageKey,
         topics: state.topics,
         scrollController: scrollController,
         title: title,
+        areaBackgroundColor: areaBackgroundColor,
         withLoader: true,
       ),
       allLoaded: (state) => _TopicList(
@@ -115,6 +125,7 @@ class _Body extends StatelessWidget {
         topics: state.topics,
         scrollController: scrollController,
         title: title,
+        areaBackgroundColor: areaBackgroundColor,
       ),
     );
   }
@@ -126,6 +137,7 @@ class _TopicList extends StatelessWidget {
     required this.topics,
     required this.scrollController,
     required this.title,
+    required this.areaBackgroundColor,
     this.withLoader = false,
     Key? key,
   }) : super(key: key);
@@ -134,6 +146,7 @@ class _TopicList extends StatelessWidget {
   final List<TopicPreview> topics;
   final ScrollController scrollController;
   final String title;
+  final Color? areaBackgroundColor;
   final bool withLoader;
 
   @override
@@ -143,7 +156,10 @@ class _TopicList extends StatelessWidget {
       controller: scrollController,
       physics: const BottomBouncingScrollPhysics(),
       slivers: [
-        _AppBar(title: title),
+        _AppBar(
+          title: title,
+          backgroundColor: areaBackgroundColor,
+        ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
@@ -172,16 +188,23 @@ class _TopicList extends StatelessWidget {
 }
 
 class _LoadingView extends StatelessWidget {
-  const _LoadingView({required this.title});
+  const _LoadingView({
+    required this.title,
+    required this.areaBackgroundColor,
+  });
 
   final String title;
+  final Color? areaBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       physics: const BottomBouncingScrollPhysics(),
       slivers: [
-        _AppBar(title: title),
+        _AppBar(
+          title: title,
+          backgroundColor: areaBackgroundColor,
+        ),
         const SliverPadding(
           padding: EdgeInsets.symmetric(vertical: AppDimens.m),
           sliver: SliverToBoxAdapter(
@@ -196,9 +219,11 @@ class _LoadingView extends StatelessWidget {
 class _AppBar extends StatelessWidget {
   const _AppBar({
     required this.title,
+    required this.backgroundColor,
   });
 
   final String title;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +233,7 @@ class _AppBar extends StatelessWidget {
         text: tr(LocaleKeys.explore_title),
       ),
       title: title,
-      backgroundColor: AppColors.of(context).buttonAccentBackground,
+      backgroundColor: backgroundColor ?? AppColors.brandAccent,
       textColor: AppColors.light.textPrimary,
     );
   }

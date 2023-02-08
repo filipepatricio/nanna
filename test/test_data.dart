@@ -43,6 +43,7 @@ import 'package:better_informed_mobile/data/subscription/api/mapper/subscription
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
@@ -67,6 +68,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 class TestData {
   const TestData._();
+
+  static final _colorMapper = ColorDTOMapper();
 
   static final _mediaItemMapper = MediaItemDTOMapper(
     ArticleImageDTOMapper(),
@@ -123,6 +126,7 @@ class TestData {
     ExploreContentAreaDTOMapper(
       _articleToMediaItemMapper,
       _topicPreviewMapper,
+      _colorMapper,
     ),
   );
 

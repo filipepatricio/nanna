@@ -747,6 +747,7 @@ class MockDTO {
     'By Publisher',
     'This is description',
     _mockedPillIcon,
+    null,
     false,
     true,
     [
@@ -763,6 +764,7 @@ class MockDTO {
     'By Publisher',
     'This is description',
     _mockedPillIcon,
+    null,
     false,
     true,
     [
@@ -778,6 +780,7 @@ class MockDTO {
     'explore-topics-id',
     'Hot topics',
     _mockedPillIcon,
+    null,
     false,
     true,
     [
@@ -793,6 +796,7 @@ class MockDTO {
     'explore-topics-id',
     'Hot topics',
     _mockedPillIcon,
+    null,
     false,
     true,
     [
@@ -808,7 +812,7 @@ class MockDTO {
     'explore-highlighted-topics-id',
     'Trending news',
     'Discover other topics of interest',
-    'DFBFFF',
+    '#DFBFFF',
     _mockedPillIcon,
     false,
     false,
@@ -825,7 +829,7 @@ class MockDTO {
     'explore-highlighted-topics-id',
     'Trending news',
     'Discover other topics of interest',
-    'DFBFFF',
+    '#DFBFFF',
     _mockedPillIcon,
     false,
     false,
@@ -842,6 +846,7 @@ class MockDTO {
     'explore-small-topics-id',
     'More topics',
     'Discover other topics of interest',
+    null,
     _mockedPillIcon,
     false,
     false,
@@ -858,6 +863,7 @@ class MockDTO {
     'explore-small-topics-id',
     'More topics',
     'Discover other topics of interest',
+    null,
     _mockedPillIcon,
     false,
     false,
@@ -875,6 +881,7 @@ class MockDTO {
     'Some more articles',
     'Those are articles in the list',
     _mockedPillIcon,
+    null,
     false,
     false,
     [
@@ -891,6 +898,7 @@ class MockDTO {
     'Some more articles',
     'Those are articles in the list',
     _mockedPillIcon,
+    null,
     false,
     false,
     [

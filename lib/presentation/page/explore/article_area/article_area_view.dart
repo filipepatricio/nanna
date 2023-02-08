@@ -73,6 +73,7 @@ extension on BuildContext {
         areaId: area.id,
         title: area.title,
         entries: area.articles,
+        areaBackgroundColor: area.backgroundColor != null ? Color(area.backgroundColor!) : null,
         referred: isHighlighted ? ExploreAreaReferred.highlightedStream : ExploreAreaReferred.stream,
       ),
     );

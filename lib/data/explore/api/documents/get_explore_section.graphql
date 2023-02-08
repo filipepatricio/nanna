@@ -19,6 +19,7 @@ query getExploreSection {
 
     ... on ArticlesExploreArea {
       description
+      backgroundColor
       articles {
         ...articleFragment
       }
@@ -26,12 +27,14 @@ query getExploreSection {
 
     ... on ArticlesListExploreArea {
       description
+      backgroundColor
       articles {
         ...articleFragment
       }
     }
 
     ... on TopicsExploreArea {
+      backgroundColor
       topics {
         ...topicPreviewFragment
       }
@@ -39,6 +42,7 @@ query getExploreSection {
 
     ... on SmallTopicsExploreArea {
       description
+      backgroundColor
       topics {
         ...topicPreviewFragment
       }
