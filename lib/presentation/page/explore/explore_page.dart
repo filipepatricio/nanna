@@ -122,12 +122,15 @@ class ExplorePage extends HookWidget {
                       ),
                       error: (state) => SliverFillRemaining(
                         child: Center(
-                          child: ErrorView(
-                            title: state.title,
-                            content: state.message,
-                            retryCallback: () async {
-                              await cubit.initialize();
-                            },
+                          child: ErrorView.general(
+                            retryCallback: cubit.initialize,
+                          ),
+                        ),
+                      ),
+                      offline: (state) => SliverFillRemaining(
+                        child: Center(
+                          child: ErrorView.offline(
+                            retryCallback: cubit.initialize,
                           ),
                         ),
                       ),

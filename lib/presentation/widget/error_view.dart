@@ -27,8 +27,8 @@ class ErrorView extends StatelessWidget {
     required VoidCallback retryCallback,
   }) =>
       ErrorView(
-        title: LocaleKeys.noConnection_screen_title.tr(),
-        content: LocaleKeys.noConnection_screen_body.tr(),
+        title: LocaleKeys.noConnection_errorView_title.tr(),
+        content: LocaleKeys.noConnection_errorView_body.tr(),
         retryCallback: retryCallback,
         svgPath: AppVectorGraphics.error,
       );

@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/presentation/page/settings/account/settin
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
-import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -49,21 +49,13 @@ class SettingsAccountPage extends HookWidget {
             originalData: data.original,
           ),
           error: (value) => Center(
-            child: ErrorView(
-              title: LocaleKeys.common_error_title.tr(),
-              content: LocaleKeys.common_error_body.tr(),
-              retryCallback: () {
-                cubit.initialize();
-              },
+            child: ErrorView.general(
+              retryCallback: cubit.initialize,
             ),
           ),
           offline: (value) => Center(
-            child: ErrorView(
-              title: LocaleKeys.noConnection_error_title.tr(),
-              content: LocaleKeys.noConnection_error_message.tr(),
-              retryCallback: () {
-                cubit.initialize();
-              },
+            child: ErrorView.offline(
+              retryCallback: cubit.initialize,
             ),
           ),
           orElse: () => const SizedBox.shrink(),

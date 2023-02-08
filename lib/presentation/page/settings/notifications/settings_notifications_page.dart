@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/presentation/page/settings/notifications/
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_state.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
-import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -51,13 +51,14 @@ class SettingsNotificationsPage extends HookWidget {
             onRequestPermissionTap: cubit.requestPermission,
           ),
           notificationSettingsLoaded: (data) => SettingsNotificationsBody(groups: data),
-          error: (title, message) => Center(
-            child: ErrorView(
-              title: title,
-              content: message,
-              retryCallback: () {
-                cubit.initialize();
-              },
+          error: () => Center(
+            child: ErrorView.general(
+              retryCallback: cubit.initialize,
+            ),
+          ),
+          offline: () => Center(
+            child: ErrorView.offline(
+              retryCallback: cubit.initialize,
             ),
           ),
           orElse: SizedBox.shrink,

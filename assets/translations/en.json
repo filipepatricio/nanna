@@ -379,11 +379,7 @@
       "message": "You’re offline",
       "subMessage": "You’ll need to be online to do that"
     },
-    "error": {
-      "title": "Could not load content",
-      "message": "Check your internet connection"
-    },
-    "screen": {
+    "errorView": {
       "title": "Could not load content",
       "body": "Check your internet connection",
       "action": "Retry"
