@@ -1,11 +1,13 @@
 import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart' as d;
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ArticleImage extends HookWidget {
   const ArticleImage({
@@ -60,10 +62,20 @@ class ArticleImage extends HookWidget {
                 color: darkeningMode == DarkeningMode.solid ? AppColors.overlay : null,
               ),
             ),
-            errorWidget: (_, __, ___) => Container(
-              color: cardColor ?? AppColors.overlay,
-              width: width,
-              height: height,
+            errorWidget: (_, __, ___) => Stack(
+              children: [
+                Container(
+                  color: AppColors.of(context).backgroundSecondary,
+                  width: width,
+                  height: height,
+                ),
+                Center(
+                  child: SvgPicture.asset(
+                    AppVectorGraphics.offline,
+                    color: AppColors.of(context).iconSecondary,
+                  ),
+                ),
+              ],
             ),
             placeholder: (context, _) => LoadingShimmer.defaultColor(
               width: width,

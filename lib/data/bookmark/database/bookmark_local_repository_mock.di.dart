@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
@@ -33,7 +34,7 @@ class BookmarkLocalRepositoryMock implements BookmarkLocalRepository {
 
   @override
   Future<List<String>> getAllIds() async {
-    return [];
+    return MockDTO.bookmarkList.bookmarks.map((bookmark) => bookmark.id).toList();
   }
 
   @override

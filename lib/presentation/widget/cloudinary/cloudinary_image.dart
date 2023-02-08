@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_config.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -8,6 +9,7 @@ import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart'
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 
 export 'cloudinary_config.dart';
 
@@ -30,6 +32,7 @@ class CloudinaryImage extends HookWidget {
     this.darkeningMode = DarkeningMode.none,
     Key? key,
   }) : super(key: key);
+
   final String publicId;
   final double width;
   final double height;
@@ -73,10 +76,20 @@ class CloudinaryImage extends HookWidget {
         ),
         foregroundDecoration: darkeningDecoration,
       ),
-      errorWidget: (_, __, ___) => Container(
-        color: AppColors.overlay,
-        width: width,
-        height: height,
+      errorWidget: (_, __, ___) => Stack(
+        children: [
+          Container(
+            color: AppColors.of(context).backgroundSecondary,
+            width: width,
+            height: height,
+          ),
+          Center(
+            child: SvgPicture.asset(
+              AppVectorGraphics.offline,
+              color: AppColors.of(context).iconSecondary,
+            ),
+          ),
+        ],
       ),
       placeholder: (context, _) => showLoadingShimmer
           ? const LoadingShimmer.defaultColor()
