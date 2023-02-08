@@ -12,30 +12,35 @@ query getExploreArea($id: String!, $limit: Int!, $offset: Int!) {
     isPreferred
 
     ... on ArticlesExploreArea {
+      backgroundColor
       articles(pagination: { limit: $limit, offset: $offset }) {
         ...articleFragment
       }
     }
 
     ... on ArticlesListExploreArea {
+      backgroundColor
       articles(pagination: { limit: $limit, offset: $offset }) {
         ...articleFragment
       }
     }
 
     ... on TopicsExploreArea {
+      backgroundColor
       topics(pagination: { limit: $limit, offset: $offset }) {
         ...topicPreviewFragment
       }
     }
 
     ... on SmallTopicsExploreArea {
+      backgroundColor
       topics(pagination: { limit: $limit, offset: $offset }) {
         ...topicPreviewFragment
       }
     }
 
     ... on HighlightedTopicsExploreArea {
+      backgroundColor
       topics(pagination: { limit: $limit, offset: $offset }) {
         ...topicPreviewFragment
         entryCount

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -19,6 +21,7 @@ void main() {
             areaId: area.id,
             title: area.title,
             topics: area.topics,
+            areaBackgroundColor: area.backgroundColor != null ? Color(area.backgroundColor!) : null,
             referred: ExploreAreaReferred.stream,
           )
         ],
