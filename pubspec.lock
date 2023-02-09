@@ -757,8 +757,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/flutter_markdown"
-      ref: "version/0-7-1"
-      resolved-ref: "91c9069b125610cf78fdc0f3fe3448cf29f9576f"
+      ref: "version/0-7-2"
+      resolved-ref: "64e52a1fa0f057402e92519867cce185c351a44b"
       url: "https://github.com/dawidkiteo/packages.git"
     source: git
     version: "0.6.13"

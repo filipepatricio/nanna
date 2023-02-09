@@ -51,6 +51,7 @@ class ArticleContentView extends HookWidget {
               article: article,
               child: ArticleContentMarkdown(
                 markdown: article.content.content,
+                categoryColor: article.metadata.category.color ?? AppColors.brandAccent,
                 shareTextCallback: (quote) {
                   showQuoteEditor(
                     context,
