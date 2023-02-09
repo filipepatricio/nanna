@@ -29,3 +29,12 @@ class ActiveSubscription with _$ActiveSubscription {
     DateTime? expirationDate,
   ) = ActiveSubscriptionManualPremium;
 }
+
+extension IsPremium on ActiveSubscription {
+  bool get isPremium => !isFree;
+
+  bool get isFree => maybeMap(
+        free: (_) => true,
+        orElse: () => false,
+      );
+}

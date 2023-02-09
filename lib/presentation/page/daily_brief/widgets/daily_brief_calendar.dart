@@ -11,13 +11,6 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-enum _CalendarItemType {
-  normal,
-  selected,
-  disable,
-  current,
-}
-
 class DailyBriefCalendar extends StatelessWidget {
   const DailyBriefCalendar({
     required this.isVisible,
@@ -103,32 +96,14 @@ class _CalendarItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isConnected = context.watch<IsConnected>();
     final type = useState(_CalendarItemType.normal);
-
-    BoxDecoration? itemDecoration() {
-      if (type.value == _CalendarItemType.selected) {
-        return BoxDecoration(
-          color: AppColors.of(context).buttonPrimaryBackground,
-          borderRadius: BorderRadius.circular(AppDimens.c),
-        );
-      }
-
-      if (type.value == _CalendarItemType.current) {
-        return BoxDecoration(
-          border: Border.all(
-            color: AppColors.of(context).buttonAccentBackground,
-          ),
-          borderRadius: BorderRadius.circular(AppDimens.c),
-        );
-      }
-
-      return null;
-    }
 
     useEffect(
       () {
         if (pastDay.date.isSameDateAs(selectedBriefDate)) {
           type.value = _CalendarItemType.selected;
+
           return;
         }
 
@@ -142,53 +117,106 @@ class _CalendarItem extends HookWidget {
           return;
         }
 
+        // TODO: Remove when we start storing daily briefs locally
+        if (!isConnected) {
+          type.value = _CalendarItemType.disable;
+          return;
+        }
+
         type.value = _CalendarItemType.normal;
       },
-      [selectedBriefDate, pastDay, isInLoadingState],
+      [selectedBriefDate, pastDay, isInLoadingState, isConnected],
     );
 
     return GestureDetector(
       onTap: type.value == _CalendarItemType.disable ? null : onTap,
-      child: ColorFiltered(
-        colorFilter: ColorFilter.mode(
-          AppColors.of(context).textSecondary,
-          type.value == _CalendarItemType.disable ? BlendMode.srcIn : BlendMode.dst,
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: AppDimens.l - AppDimens.xxs,
-                width: AppDimens.xl,
-                child: Center(
-                  child: Text(
-                    DateFormat(DateFormat.ABBR_WEEKDAY).format(pastDay.date),
-                    style: AppTypography.subH2Medium,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: AppDimens.l - AppDimens.xxs,
+              width: AppDimens.xl,
+              child: Center(
+                child: Text(
+                  DateFormat(DateFormat.ABBR_WEEKDAY).format(pastDay.date),
+                  style: AppTypography.subH2Medium.copyWith(
+                    color: type.value.weekdayColor(context),
                   ),
                 ),
               ),
-              Container(
-                width: AppDimens.xl,
-                height: AppDimens.xl,
-                alignment: Alignment.center,
-                decoration: itemDecoration(),
-                child: Text(
-                  DateFormat(DateFormat.DAY).format(pastDay.date),
-                  style: type.value == _CalendarItemType.selected
-                      ? AppTypography.h4Bold.copyWith(
-                          color: AppColors.of(context).buttonPrimaryText,
-                          height: AppDimens.zero,
-                        )
-                      : AppTypography.b2Medium.copyWith(
-                          height: AppDimens.zero,
-                        ),
-                ),
+            ),
+            Container(
+              width: AppDimens.xl,
+              height: AppDimens.xl,
+              alignment: Alignment.center,
+              decoration: type.value.itemDecoration(context),
+              child: Text(
+                DateFormat(DateFormat.DAY).format(pastDay.date),
+                style: type.value == _CalendarItemType.selected
+                    ? AppTypography.h4Bold.copyWith(
+                        height: AppDimens.zero,
+                        color: type.value.dayColor(context),
+                      )
+                    : AppTypography.b2Medium.copyWith(
+                        height: AppDimens.zero,
+                        color: type.value.dayColor(context),
+                      ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
+  }
+}
+
+enum _CalendarItemType {
+  normal,
+  selected,
+  disable,
+  current,
+}
+
+extension on _CalendarItemType {
+  Color dayColor(BuildContext context) {
+    switch (this) {
+      case _CalendarItemType.selected:
+        return AppColors.of(context).buttonPrimaryText;
+      case _CalendarItemType.disable:
+        return AppColors.of(context).textTertiary;
+
+      default:
+        return AppColors.of(context).textPrimary;
+    }
+  }
+
+  Color weekdayColor(BuildContext context) {
+    switch (this) {
+      case _CalendarItemType.disable:
+        return AppColors.of(context).textTertiary;
+      default:
+        return AppColors.of(context).textPrimary;
+    }
+  }
+
+  BoxDecoration? itemDecoration(BuildContext context) {
+    switch (this) {
+      case _CalendarItemType.selected:
+        return BoxDecoration(
+          color: AppColors.of(context).buttonPrimaryBackground,
+          borderRadius: BorderRadius.circular(AppDimens.c),
+        );
+      case _CalendarItemType.current:
+        return BoxDecoration(
+          border: Border.all(
+            color: AppColors.brandAccent,
+          ),
+          borderRadius: BorderRadius.circular(AppDimens.c),
+        );
+
+      default:
+        return null;
+    }
   }
 }

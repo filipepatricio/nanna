@@ -3,30 +3,11 @@ import 'package:better_informed_mobile/domain/subscription/data/article_paywall_
 import 'package:better_informed_mobile/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
-import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker_state.dt.dart';
 import 'package:mockito/mockito.dart';
-
-class FakeAppConnectivityCheckerCubit extends Fake implements AppConnectivityCheckerCubit {
-  @override
-  AppConnectivityCheckerState get state => const AppConnectivityCheckerState.notConnected();
-
-  @override
-  Stream<AppConnectivityCheckerState> get stream => Stream.value(const AppConnectivityCheckerState.notConnected());
-
-  @override
-  Future<void> initialize() async {}
-
-  @override
-  Future<bool> checkIsConnected() async => true;
-
-  @override
-  Future<void> close() async {}
-}
 
 class FakeAppUpdateCheckerCubit extends Fake implements AppUpdateCheckerCubit {
   @override

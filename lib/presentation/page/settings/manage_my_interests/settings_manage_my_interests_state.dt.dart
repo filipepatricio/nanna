@@ -15,10 +15,10 @@ class SettingsManageMyInterestsState with _$SettingsManageMyInterestsState {
   ) = SettingsManageMyInterestsStateLoaded;
 
   @Implements<BuildState>()
-  const factory SettingsManageMyInterestsState.error(
-    String title,
-    String message,
-  ) = SettingsManageMyInterestsStateError;
+  const factory SettingsManageMyInterestsState.error() = SettingsManageMyInterestsStateError;
+
+  @Implements<BuildState>()
+  const factory SettingsManageMyInterestsState.offline() = SettingsManageMyInterestsStateOffline;
 
   const factory SettingsManageMyInterestsState.showMessage(String message) = SettingsManageMyInterestsStateShowMessage;
 }

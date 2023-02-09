@@ -19,5 +19,8 @@ class CategoryPageState with _$CategoryPageState {
   factory CategoryPageState.allLoaded(List<CategoryItem> items) = _CategoryPageStateAllLoaded;
 
   @Implements<BuildState>()
-  const factory CategoryPageState.error(String title, String message) = _CategoryPageStateError;
+  const factory CategoryPageState.error() = _CategoryPageStateError;
+
+  @Implements<BuildState>()
+  const factory CategoryPageState.offline() = _CategoryPageStateOffline;
 }

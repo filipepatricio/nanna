@@ -36,19 +36,9 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
       final user = await _getUserUseCase();
       await _setAccountData(user);
     } on NoInternetConnectionException {
-      emit(
-        SettingsAccountState.error(
-          LocaleKeys.noConnection_error_title.tr(),
-          LocaleKeys.noConnection_error_message.tr(),
-        ),
-      );
+      emit(const SettingsAccountState.offline());
     } catch (e, s) {
-      emit(
-        SettingsAccountState.error(
-          LocaleKeys.common_error_title.tr(),
-          LocaleKeys.common_error_body.tr(),
-        ),
-      );
+      emit(const SettingsAccountState.error());
       Fimber.e('Querying user failed', ex: e, stacktrace: s);
     }
   }

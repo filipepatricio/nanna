@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_state_use_case.di.dart';
@@ -18,7 +19,8 @@ void main() {
   test('returns article bookmark state for article type data', () async {
     const slug = 'article-slug';
     const articleId = '1111-1111';
-    const typeData = BookmarkTypeData.article(slug, articleId);
+    const type = ArticleType.premium;
+    const typeData = BookmarkTypeData.article(slug, articleId, type);
     final expected = BookmarkState.bookmarked('0000-0000');
 
     when(repository.getArticleBookmarkState(slug)).thenAnswer((_) async => expected);

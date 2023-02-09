@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/generated/local_keys.g.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -7,30 +7,30 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:better_informed_mobile/presentation/widget/no_connection_banner/no_connection_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
-class SliverSearchAppBar extends StatelessWidget {
-  const SliverSearchAppBar({
+class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const SearchAppBar({
     required this.explorePageCubit,
     required this.searchTextEditingController,
     required this.searchViewCubit,
+    this.isConnected = true,
     Key? key,
   }) : super(key: key);
 
   final ExplorePageCubit explorePageCubit;
   final TextEditingController searchTextEditingController;
   final SearchViewCubit searchViewCubit;
+  final bool isConnected;
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-      pinned: true,
-      centerTitle: false,
+    return AppBar(
       elevation: 0,
-      expandedHeight: AppDimens.appBarHeight,
+      centerTitle: false,
       titleSpacing: AppDimens.pageHorizontalMargin,
       actions: [
         _CancelButton(
@@ -43,8 +43,14 @@ class SliverSearchAppBar extends StatelessWidget {
         searchViewCubit: searchViewCubit,
         searchTextEditingController: searchTextEditingController,
       ),
+      bottom: isConnected ? null : const NoConnectionBanner(),
     );
   }
+
+  @override
+  Size get preferredSize => Size.fromHeight(
+        kToolbarHeight + (isConnected ? 0 : NoConnectionBanner.appBarHeight),
+      );
 }
 
 class _SearchBar extends HookWidget {

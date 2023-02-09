@@ -8,14 +8,15 @@ import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_v
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_list_tile.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
+import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
-import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -25,7 +26,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-part 'profile_empty_page.dart';
+part 'bookmark_empty_page.dart';
+part 'free_user_banner.dart';
 
 typedef OnSortConfigChanged = Function(BookmarkSortConfigName configName);
 
@@ -35,6 +37,7 @@ class BookmarkListView extends HookWidget {
     required this.sortConfigName,
     required this.onSortConfigChanged,
     required this.scrollController,
+    required this.hasActiveSubscription,
     Key? key,
   })  : sortConfig = bookmarkConfigMap[sortConfigName]!,
         super(key: key);
@@ -44,6 +47,7 @@ class BookmarkListView extends HookWidget {
   final BookmarkSortConfigName sortConfigName;
   final BookmarkSortConfig sortConfig;
   final OnSortConfigChanged onSortConfigChanged;
+  final bool hasActiveSubscription;
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +67,14 @@ class BookmarkListView extends HookWidget {
         bookmarkRemoved: (state) {
           snackbarController.showMessage(
             SnackbarMessage.simple(
-              message: tr(LocaleKeys.bookmark_removeBookmarkSuccess),
-              type: SnackbarMessageType.success,
+              message: state.bookmark.data.maybeMap(
+                article: (_) => LocaleKeys.bookmark_removeArticle.tr(),
+                topic: (_) => LocaleKeys.bookmark_removeTopic.tr(),
+                orElse: () => '',
+              ),
+              type: SnackbarMessageType.info,
               action: SnackbarAction(
-                label: tr(LocaleKeys.common_undo),
+                label: LocaleKeys.common_undo.tr(),
                 callback: () {
                   cubit.undoRemovingBookmark(state.bookmark, state.index);
                 },
@@ -85,50 +93,53 @@ class BookmarkListView extends HookWidget {
     );
 
     return VisibilityDetector(
-      onVisibilityChanged: (_) {
-        snackbarController.discardMessage();
-      },
+      onVisibilityChanged: (_) => snackbarController.discardMessage(),
       key: const Key('bookmark_list'),
       child: NextPageLoadExecutor(
         enabled: state.shouldListen,
         onNextPageLoad: cubit.loadNextPage,
         scrollController: scrollController,
-        child: InformedAnimatedSwitcher(
-          child: state.maybeMap(
-            initial: (_) => const SizedBox.shrink(),
-            error: (_) => Center(
-              child: GeneralErrorView(
-                title: LocaleKeys.common_error_title.tr(),
-                content: LocaleKeys.common_error_body.tr(),
-                retryCallback: cubit.loadNextPage,
+        child: Column(
+          children: [
+            if (!hasActiveSubscription) const FreeUserBanner(),
+            Expanded(
+              child: InformedAnimatedSwitcher(
+                child: state.maybeMap(
+                  initial: (_) => const SizedBox.shrink(),
+                  error: (_) => Center(
+                    child: ErrorView.general(
+                      retryCallback: cubit.loadNextPage,
+                    ),
+                  ),
+                  loading: (_) => const BookmarkLoadingView(),
+                  empty: (state) => _BookmarkEmptyView(filter: filter),
+                  idle: (state) => _Idle(
+                    cubit: cubit,
+                    bookmarks: state.bookmarks,
+                    sortConfig: sortConfig,
+                    scrollController: scrollController,
+                    onSortConfigChanged: onSortConfigChanged,
+                  ),
+                  loadMore: (state) => _Idle(
+                    cubit: cubit,
+                    bookmarks: state.bookmarks,
+                    sortConfig: sortConfig,
+                    scrollController: scrollController,
+                    onSortConfigChanged: onSortConfigChanged,
+                    withLoader: true,
+                  ),
+                  allLoaded: (state) => _Idle(
+                    cubit: cubit,
+                    bookmarks: state.bookmarks,
+                    sortConfig: sortConfig,
+                    scrollController: scrollController,
+                    onSortConfigChanged: onSortConfigChanged,
+                  ),
+                  orElse: () => const SizedBox.shrink(),
+                ),
               ),
             ),
-            loading: (_) => const BookmarkLoadingView(),
-            empty: (_) => _BookmarkEmptyView(filter: filter),
-            idle: (state) => _Idle(
-              cubit: cubit,
-              bookmarks: state.bookmarks,
-              sortConfig: sortConfig,
-              scrollController: scrollController,
-              onSortConfigChanged: onSortConfigChanged,
-            ),
-            loadMore: (state) => _Idle(
-              cubit: cubit,
-              bookmarks: state.bookmarks,
-              sortConfig: sortConfig,
-              scrollController: scrollController,
-              onSortConfigChanged: onSortConfigChanged,
-              withLoader: true,
-            ),
-            allLoaded: (state) => _Idle(
-              cubit: cubit,
-              bookmarks: state.bookmarks,
-              sortConfig: sortConfig,
-              scrollController: scrollController,
-              onSortConfigChanged: onSortConfigChanged,
-            ),
-            orElse: () => const SizedBox.shrink(),
-          ),
+          ],
         ),
       ),
     );
@@ -143,8 +154,7 @@ class _Idle extends StatelessWidget {
     required this.scrollController,
     required this.onSortConfigChanged,
     this.withLoader = false,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final BookmarkListViewCubit cubit;
   final List<Bookmark> bookmarks;

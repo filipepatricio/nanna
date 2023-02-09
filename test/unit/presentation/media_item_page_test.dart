@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -193,14 +194,14 @@ void main() {
 class FakeBookmarkButtonCubit extends Fake implements BookmarkButtonCubit {
   @override
   BookmarkButtonState get state => BookmarkButtonState.idle(
-        const BookmarkTypeData.article('', ''),
+        const BookmarkTypeData.article('', '', ArticleType.premium),
         BookmarkState.notBookmarked(),
       );
 
   @override
   Stream<BookmarkButtonState> get stream => Stream.value(
         BookmarkButtonState.idle(
-          const BookmarkTypeData.article('', ''),
+          const BookmarkTypeData.article('', '', ArticleType.premium),
           BookmarkState.notBookmarked(),
         ),
       );

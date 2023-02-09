@@ -29,4 +29,7 @@ class MediaItemState with _$MediaItemState {
 
   @Implements<BuildState>()
   const factory MediaItemState.emptyError({MediaItemArticle? article}) = _MediaItemStateEmptyError;
+
+  @Implements<BuildState>()
+  const factory MediaItemState.offline({MediaItemArticle? article}) = _MediaItemStateOffline;
 }

@@ -1,13 +1,7 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 
-enum ShareOption {
-  instagram,
-  facebook,
-  whatsapp,
-  copyLink,
-  more,
-}
+enum ShareOption { instagram, facebook, whatsapp, copyLink, more }
 
 extension ShareExtension on ShareOption {
   String getText() {

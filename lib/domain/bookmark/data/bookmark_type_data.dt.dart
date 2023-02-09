@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bookmark_type_data.dt.freezed.dart';
@@ -6,7 +7,8 @@ part 'bookmark_type_data.dt.freezed.dart';
 class BookmarkTypeData with _$BookmarkTypeData {
   const factory BookmarkTypeData.article(
     String slug,
-    String articleId, [
+    String articleId,
+    ArticleType type, [
     String? topicId,
     String? briefId,
   ]) = _BookmarkTypeDataArticle;

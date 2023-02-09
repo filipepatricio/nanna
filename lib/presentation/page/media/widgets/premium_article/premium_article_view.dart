@@ -89,6 +89,7 @@ class PremiumArticleView extends HookWidget {
         briefId: briefId,
         topicId: topicId,
         actionsBarColorModeNotifier: actionsBarColorModeNotifier,
+        isConnected: context.watch<IsConnected>(),
       ),
       body: ScrollsToTop(
         onScrollsToTop: (_) => mainController.animateToStart(),

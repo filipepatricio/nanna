@@ -3,16 +3,17 @@ import 'dart:core';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_list_area/article_list_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pills_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_history_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/explore/search/sliver_search_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/explore/small_topics_area/small_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_loading_section.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -20,7 +21,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
-import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
@@ -73,6 +74,15 @@ class ExplorePage extends HookWidget {
     );
 
     return Scaffold(
+      appBar: state.maybeMap(
+        error: (_) => AppBar(),
+        orElse: () => SearchAppBar(
+          explorePageCubit: cubit,
+          searchTextEditingController: searchTextEditingController,
+          searchViewCubit: searchViewCubit,
+          isConnected: context.watch<IsConnected>(),
+        ),
+      ),
       body: TabBarListener(
         scrollController: scrollController,
         currentPage: context.routeData,
@@ -96,14 +106,6 @@ class ExplorePage extends HookWidget {
                   ),
                   slivers: [
                     state.maybeMap(
-                      error: (_) => const SliverAppBar(),
-                      orElse: () => SliverSearchAppBar(
-                        explorePageCubit: cubit,
-                        searchTextEditingController: searchTextEditingController,
-                        searchViewCubit: searchViewCubit,
-                      ),
-                    ),
-                    state.maybeMap(
                       initialLoading: (_) => const _LoadingSection(),
                       idle: (state) => _ItemList(
                         items: state.items,
@@ -120,12 +122,15 @@ class ExplorePage extends HookWidget {
                       ),
                       error: (state) => SliverFillRemaining(
                         child: Center(
-                          child: GeneralErrorView(
-                            title: state.title,
-                            content: state.message,
-                            retryCallback: () async {
-                              await cubit.initialize();
-                            },
+                          child: ErrorView.general(
+                            retryCallback: cubit.initialize,
+                          ),
+                        ),
+                      ),
+                      offline: (state) => SliverFillRemaining(
+                        child: Center(
+                          child: ErrorView.offline(
+                            retryCallback: cubit.initialize,
                           ),
                         ),
                       ),
@@ -176,19 +181,22 @@ class _ItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) => items[index].map(
-          pills: (item) => ExplorePillsAreaView(
-            categories: item.categories,
+    return SliverPadding(
+      padding: const EdgeInsets.only(top: AppDimens.s),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) => items[index].map(
+            pills: (item) => ExplorePillsAreaView(
+              categories: item.categories,
+            ),
+            stream: (item) => _Area(
+              area: item.area,
+              orderIndex: index,
+            ),
           ),
-          stream: (item) => _Area(
-            area: item.area,
-            orderIndex: index,
-          ),
+          childCount: items.length,
+          addAutomaticKeepAlives: false,
         ),
-        childCount: items.length,
-        addAutomaticKeepAlives: false,
       ),
     );
   }

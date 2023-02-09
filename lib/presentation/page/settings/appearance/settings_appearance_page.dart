@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -15,7 +15,8 @@ class SettingsAppearancePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: InformedCupertinoAppBar(
+      appBar: InformedAppBar(
+        isConnected: context.watch<IsConnected>(),
         leading: BackTextButton(
           text: LocaleKeys.settings_settings.tr(),
         ),

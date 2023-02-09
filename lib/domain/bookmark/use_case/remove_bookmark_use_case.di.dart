@@ -29,7 +29,7 @@ class RemoveBookmarkUseCase {
     bookmark.data.mapOrNull(
       article: (data) {
         _analyticsRepository.event(AnalyticsEvent.articleBookmarkRemoved(data.article.id));
-        final bookmarkTypeData = BookmarkTypeData.article(data.article.slug, data.article.id);
+        final bookmarkTypeData = BookmarkTypeData.article(data.article.slug, data.article.id, data.article.type);
         _profileBookmarkChangeNotifier.notify(
           BookmarkEvent(
             data: bookmarkTypeData,

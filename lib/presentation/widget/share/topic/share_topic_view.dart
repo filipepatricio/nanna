@@ -85,11 +85,10 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
               children: [
                 Text(
                   topic.strippedTitle,
-                  style: AppTypography.h1Headline.copyWith(
+                  style: AppTypography.h1Headline.w550.copyWith(
                     color: AppColors.categoriesTextPrimary,
                     fontSize: 64,
                     height: 1.1,
-                    fontWeight: AppTypography.w550,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 3,
@@ -125,10 +124,9 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                       const TextSpan(text: ' '),
                       TextSpan(
                         text: topic.curationInfo.curator.name,
-                        style: AppTypography.h2Regular.copyWith(
+                        style: AppTypography.h2Regular.w550.copyWith(
                           color: AppColors.categoriesTextPrimary,
                           height: 1,
-                          fontWeight: AppTypography.w550,
                         ),
                       ),
                     ],

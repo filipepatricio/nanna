@@ -27,7 +27,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     this._getSearchHistoryUseCase,
     this._removeSearchHistoryQueryUseCase,
     this._getShouldUpdateExploreStreamUseCase,
-  ) : super(ExplorePageState.initialLoading());
+  ) : super(const ExplorePageState.initialLoading());
 
   final GetExploreContentUseCase _getExploreContentUseCase;
   final GetFeaturedCategoriesUseCase _getFeaturedCategoriesUseCase;
@@ -52,7 +52,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   }
 
   Future<void> initialize() async {
-    emit(ExplorePageState.initialLoading());
+    emit(const ExplorePageState.initialLoading());
 
     await _exploreContentSubscription?.cancel();
     await _shouldUpdateExploreSubscription?.cancel();
@@ -81,20 +81,10 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     try {
       await _fetchExploreContent();
     } on NoInternetConnectionException {
-      emit(
-        ExplorePageState.error(
-          LocaleKeys.noConnection_error_title.tr(),
-          LocaleKeys.noConnection_error_message.tr(),
-        ),
-      );
+      emit(const ExplorePageState.offline());
     } catch (e, s) {
       Fimber.e('Loading explore area failed', ex: e, stacktrace: s);
-      emit(
-        ExplorePageState.error(
-          LocaleKeys.common_error_title.tr(),
-          LocaleKeys.common_error_body.tr(),
-        ),
-      );
+      emit(const ExplorePageState.error());
     }
   }
 
@@ -126,7 +116,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   }
 
   Future<void> startTyping() async {
-    emit(ExplorePageState.startTyping());
+    emit(const ExplorePageState.startTyping());
     final searchHistory = await _getSearchHistoryUseCase.call();
     if (searchHistory.isNotEmpty) {
       emit(ExplorePageState.searchHistory(searchHistory));
@@ -134,18 +124,18 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   }
 
   Future<void> search() async {
-    emit(ExplorePageState.startSearching());
-    emit(ExplorePageState.search());
+    emit(const ExplorePageState.startSearching());
+    emit(const ExplorePageState.search());
   }
 
   Future<void> explore() async {
-    emit(ExplorePageState.startExploring());
+    emit(const ExplorePageState.startExploring());
     emit(_latestIdleState);
   }
 
   Future<void> removeSearchHistoryQuery(String query) async {
     final searchHistory = await _removeSearchHistoryQueryUseCase(query);
-    emit(ExplorePageState.searchHistoryUpdated());
+    emit(const ExplorePageState.searchHistoryUpdated());
     await _checkSearchHistory(searchHistory);
   }
 
@@ -153,7 +143,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     if (searchHistory.isNotEmpty) {
       emit(ExplorePageState.searchHistory(searchHistory));
     } else {
-      emit(ExplorePageState.startExploring());
+      emit(const ExplorePageState.startExploring());
       emit(_latestIdleState);
     }
   }

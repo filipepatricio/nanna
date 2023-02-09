@@ -18,5 +18,8 @@ class SettingsNotificationsState with _$SettingsNotificationsState {
       _SettingsNotificationsStateLoaded;
 
   @Implements<BuildState>()
-  factory SettingsNotificationsState.error(String title, String message) = _SettingsNotificationsStateError;
+  factory SettingsNotificationsState.error() = _SettingsNotificationsStateError;
+
+  @Implements<BuildState>()
+  factory SettingsNotificationsState.offline() = _SettingsNotificationsStateOffline;
 }

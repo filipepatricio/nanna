@@ -7,10 +7,10 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/informed_theme.dart';
 import 'package:better_informed_mobile/presentation/util/device_type.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -65,6 +65,42 @@ class InformedApp extends HookWidget {
       return Provider.value(
         value: getIt,
         child: RestartAppWidget(
+          child: AppConnectivityChecker(
+            child: Builder(
+              builder: (context) {
+                final MainRouter router = mainRouter ?? MainRouter();
+
+                return AdaptiveTheme(
+                  light: InformedTheme.light,
+                  dark: InformedTheme.dark,
+                  initial: initialThemeMode,
+                  builder: (lightTheme, darkTheme) {
+                    return MaterialApp.router(
+                      debugShowCheckedModeBanner: false,
+                      theme: lightTheme,
+                      darkTheme: darkTheme,
+                      routeInformationParser: router.defaultRouteParser(),
+                      routerDelegate: router.delegate(),
+                      builder: (context, child) {
+                        final mediaQuery = MediaQuery.of(context);
+                        return NoScrollGlow(
+                          child: responsiveBuilder(mediaQuery, child),
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Provider.value(
+      value: getIt,
+      child: RestartAppWidget(
+        child: AppConnectivityChecker(
           child: Builder(
             builder: (context) {
               final MainRouter router = mainRouter ?? MainRouter();
@@ -75,11 +111,20 @@ class InformedApp extends HookWidget {
                 initial: initialThemeMode,
                 builder: (lightTheme, darkTheme) {
                   return MaterialApp.router(
-                    debugShowCheckedModeBanner: false,
+                    localizationsDelegates: context.localizationDelegates,
+                    supportedLocales: context.supportedLocales,
+                    locale: context.locale,
                     theme: lightTheme,
                     darkTheme: darkTheme,
                     routeInformationParser: router.defaultRouteParser(),
-                    routerDelegate: router.delegate(),
+                    routerDelegate: router.delegate(
+                      navigatorObservers: () => [
+                        // To solve issue with Hero animations in tab navigation - https://github.com/Milad-Akarie/auto_route_library/issues/418#issuecomment-997704836
+                        HeroController(),
+                        getIt<MainNavigationObserver>(),
+                        SentryNavigatorObserver(),
+                      ],
+                    ),
                     builder: (context, child) {
                       final mediaQuery = MediaQuery.of(context);
                       return NoScrollGlow(
@@ -91,47 +136,6 @@ class InformedApp extends HookWidget {
               );
             },
           ),
-        ),
-      );
-    }
-
-    return Provider.value(
-      value: getIt,
-      child: RestartAppWidget(
-        child: Builder(
-          builder: (context) {
-            final MainRouter router = mainRouter ?? MainRouter();
-
-            return AdaptiveTheme(
-              light: InformedTheme.light,
-              dark: InformedTheme.dark,
-              initial: initialThemeMode,
-              builder: (lightTheme, darkTheme) {
-                return MaterialApp.router(
-                  localizationsDelegates: context.localizationDelegates,
-                  supportedLocales: context.supportedLocales,
-                  locale: context.locale,
-                  theme: lightTheme,
-                  darkTheme: darkTheme,
-                  routeInformationParser: router.defaultRouteParser(),
-                  routerDelegate: router.delegate(
-                    navigatorObservers: () => [
-                      // To solve issue with Hero animations in tab navigation - https://github.com/Milad-Akarie/auto_route_library/issues/418#issuecomment-997704836
-                      HeroController(),
-                      getIt<MainNavigationObserver>(),
-                      SentryNavigatorObserver(),
-                    ],
-                  ),
-                  builder: (context, child) {
-                    final mediaQuery = MediaQuery.of(context);
-                    return NoScrollGlow(
-                      child: responsiveBuilder(mediaQuery, child),
-                    );
-                  },
-                );
-              },
-            );
-          },
         ),
       ),
     );

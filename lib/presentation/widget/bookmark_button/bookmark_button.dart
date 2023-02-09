@@ -34,7 +34,7 @@ class BookmarkButton extends HookWidget {
     VoidCallback? onTap,
     Key? key,
   }) : this._(
-          BookmarkTypeData.article(article.slug, article.id, topicId, briefId),
+          BookmarkTypeData.article(article.slug, article.id, article.type, topicId, briefId),
           color: color,
           iconSize: iconSize,
           onTap: onTap,
@@ -82,24 +82,22 @@ class BookmarkButton extends HookWidget {
       cubit,
       (cubit, state, context) {
         state.mapOrNull(
-          bookmarkAdded: (_) {
+          bookmarkAdded: (state) {
             snackbarController.showMessage(
               SnackbarMessage.simple(
-                message: tr(LocaleKeys.bookmark_addBookmarkSuccess),
+                message: state.message,
                 type: SnackbarMessageType.success,
               ),
             );
           },
-          bookmarkRemoved: (value) {
+          bookmarkRemoved: (state) {
             snackbarController.showMessage(
               SnackbarMessage.simple(
-                message: tr(LocaleKeys.bookmark_removeBookmarkSuccess),
-                type: SnackbarMessageType.success,
+                message: state.message,
+                type: SnackbarMessageType.info,
                 action: SnackbarAction(
-                  label: tr(LocaleKeys.common_undo),
-                  callback: () {
-                    cubit.switchState(fromUndo: true);
-                  },
+                  label: LocaleKeys.common_undo.tr(),
+                  callback: () => cubit.switchState(fromUndo: true),
                 ),
               ),
             );

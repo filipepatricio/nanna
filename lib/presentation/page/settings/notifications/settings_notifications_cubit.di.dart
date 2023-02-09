@@ -4,10 +4,8 @@ import 'package:better_informed_mobile/domain/push_notification/use_case/has_not
 import 'package:better_informed_mobile/domain/push_notification/use_case/open_notifications_settings_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/request_notification_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/should_open_notifications_settings_use_case.di.dart';
-import 'package:better_informed_mobile/generated/local_keys.g.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_state.dt.dart';
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
@@ -34,19 +32,9 @@ class SettingsNotificationCubit extends Cubit<SettingsNotificationsState> {
       final hasPermission = await _hasNotificationPermissionUseCase();
       await _getNotificationPreferences(hasPermission);
     } on NoInternetConnectionException {
-      emit(
-        SettingsNotificationsState.error(
-          LocaleKeys.noConnection_error_title.tr(),
-          LocaleKeys.noConnection_error_message.tr(),
-        ),
-      );
+      emit(SettingsNotificationsState.offline());
     } catch (e, s) {
-      emit(
-        SettingsNotificationsState.error(
-          LocaleKeys.common_error_title.tr(),
-          LocaleKeys.common_error_body.tr(),
-        ),
-      );
+      emit(SettingsNotificationsState.error());
       Fimber.e('Getting notification preferences failed', ex: e, stacktrace: s);
     }
   }

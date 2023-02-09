@@ -38,9 +38,8 @@ class InformedSliverCupertinoAppBar extends StatelessWidget {
           leading: leading ?? BackTextButton(color: textColor ?? AppColors.of(context).textPrimary),
           middle: Text(
             title,
-            style: AppTypography.h4Medium.copyWith(
+            style: AppTypography.h4Medium.w550.copyWith(
               color: textColor ?? AppColors.of(context).textPrimary,
-              fontWeight: AppTypography.w550,
               height: 1.11,
             ),
           ),
@@ -91,9 +90,8 @@ class _LargeTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: AppTypography.h0Medium.copyWith(
+      style: AppTypography.h0Medium.w550.copyWith(
         color: textColor ?? AppColors.of(context).textPrimary,
-        fontWeight: AppTypography.w550,
         height: 1.1,
       ),
     );
