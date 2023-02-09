@@ -1,7 +1,5 @@
 part of 'topic_cover.dart';
 
-const _coverSizeToScreenWidthFactor = 0.35;
-
 class _TopicCoverMedium extends TopicCover {
   const _TopicCoverMedium({
     required this.onTap,
@@ -19,7 +17,7 @@ class _TopicCoverMedium extends TopicCover {
   @override
   Widget build(BuildContext context) {
     final coverSize = useMemoized(
-      () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
+      () => AppDimens.coverSize(context, AppDimens.coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
     );
     final ownersNote = topic.ownersNote;

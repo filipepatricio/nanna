@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_navigation_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/maybe_register_push_notification_token_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/use_case/get_current_release_note_use_case.di.dart';
+import 'package:better_informed_mobile/domain/synchronization/use_case/run_initial_bookmark_sync_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/synchronize_all_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dt.dart';
@@ -27,6 +28,7 @@ class MainCubit extends Cubit<MainState> {
     this._getCurrentReleaseNoteUseCase,
     this._usePaidSubscriptionChangeStreamUseCase,
     this._synchronizeAllUseCase,
+    this._runIntitialBookmarkSyncUseCase,
   ) : super(const MainState.init());
 
   final GetTokenExpirationStreamUseCase _getTokenExpirationStreamUseCase;
@@ -36,6 +38,7 @@ class MainCubit extends Cubit<MainState> {
   final GetCurrentReleaseNoteUseCase _getCurrentReleaseNoteUseCase;
   final UsePaidSubscriptionChangeStreamUseCase _usePaidSubscriptionChangeStreamUseCase;
   final SynchronizeAllUseCase _synchronizeAllUseCase;
+  final RunIntitialBookmarkSyncUseCase _runIntitialBookmarkSyncUseCase;
 
   StreamSubscription? _incomingPushNavigationSubscription;
   StreamSubscription? _tokenExpirationSubscription;
@@ -63,6 +66,7 @@ class MainCubit extends Cubit<MainState> {
 
     unawaited(_maybeRegisterPushNotificationTokenUseCase());
     unawaited(_getReleaseNote());
+    unawaited(_runIntitialBookmarkSyncUseCase());
     unawaited(_synchronizeAllUseCase());
   }
 

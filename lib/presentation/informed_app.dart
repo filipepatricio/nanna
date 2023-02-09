@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/style/informed_theme.dart';
 import 'package:better_informed_mobile/presentation/util/device_type.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker.dart';
+import 'package:better_informed_mobile/presentation/widget/image_precaching_view/image_precaching_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
@@ -84,7 +85,12 @@ class InformedApp extends HookWidget {
                       builder: (context, child) {
                         final mediaQuery = MediaQuery.of(context);
                         return NoScrollGlow(
-                          child: responsiveBuilder(mediaQuery, child),
+                          child: responsiveBuilder(
+                            mediaQuery,
+                            ImagePrecachingView(
+                              child: child!,
+                            ),
+                          ),
                         );
                       },
                     );
@@ -128,7 +134,12 @@ class InformedApp extends HookWidget {
                     builder: (context, child) {
                       final mediaQuery = MediaQuery.of(context);
                       return NoScrollGlow(
-                        child: responsiveBuilder(mediaQuery, child),
+                        child: responsiveBuilder(
+                          mediaQuery,
+                          ImagePrecachingView(
+                            child: child!,
+                          ),
+                        ),
                       );
                     },
                   );
