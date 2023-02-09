@@ -2,12 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_articles_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_categories_slide/onboarding_categories_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_notifications_slide/onboarding_notifications_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_publishers_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/informed_theme.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -20,13 +20,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 final List<Widget> _pageList = [
   const OnboardingPublishersSlide(),
-  const OnboardingArticlesSlide(),
   const OnboardingCategoriesSlide(),
   const OnboardingNotificationsSlide(),
 ];
 
-const _notificationSlide = 3;
-const _trackingSlide = 3;
+const _notificationSlide = 2;
+const _trackingSlide = 2;
 
 class OnboardingPage extends HookWidget {
   @override
@@ -55,67 +54,70 @@ class OnboardingPage extends HookWidget {
       },
     );
 
-    return Scaffold(
-      body: SafeArea(
-        top: false,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 20,
-              child: PageView(
-                controller: controller,
-                onPageChanged: (index) {
-                  cubit.trackOnboardingPage(index);
-                  pageIndex.value = index;
-                },
-                children: _pageList,
+    return AnnotatedRegion(
+      value: InformedTheme.systemUIOverlayStyleLight,
+      child: Scaffold(
+        body: SafeArea(
+          top: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                flex: 20,
+                child: PageView(
+                  controller: controller,
+                  onPageChanged: (index) {
+                    cubit.trackOnboardingPage(index);
+                    pageIndex.value = index;
+                  },
+                  children: _pageList,
+                ),
               ),
-            ),
-            const Spacer(flex: 1),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  PageDotIndicator(
-                    pageCount: _pageList.length,
-                    controller: controller,
-                  ),
-                  const SizedBox(height: AppDimens.m),
-                  Row(
-                    children: [
-                      AnimatedOpacity(
-                        duration: const Duration(milliseconds: AppAnimation.skipButton),
-                        opacity: pageIndex.value == _pageList.length - 1 ? 0 : 1,
-                        child: AbsorbPointer(
-                          absorbing: pageIndex.value == _pageList.length - 1,
-                          child: _SkipButton(
-                            cubit: cubit,
-                            controller: controller,
+              const Spacer(flex: 1),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    PageDotIndicator(
+                      pageCount: _pageList.length,
+                      controller: controller,
+                    ),
+                    const SizedBox(height: AppDimens.m),
+                    Row(
+                      children: [
+                        AnimatedOpacity(
+                          duration: const Duration(milliseconds: AppAnimation.skipButton),
+                          opacity: pageIndex.value == _pageList.length - 1 ? 0 : 1,
+                          child: AbsorbPointer(
+                            absorbing: pageIndex.value == _pageList.length - 1,
+                            child: _SkipButton(
+                              cubit: cubit,
+                              controller: controller,
+                            ),
                           ),
                         ),
-                      ),
-                      const Spacer(),
-                      if (isLastPage)
-                        InformedFilledButton.primary(
-                          context: context,
-                          text: LocaleKeys.common_continue.tr(),
-                          onTap: () => _navigateToMainPage(context, cubit),
-                        )
-                      else
-                        _NextPageButton(
-                          cubit: cubit,
-                          controller: controller,
-                          currentPage: pageIndex.value,
-                        ),
-                    ],
-                  ),
-                ],
+                        const Spacer(),
+                        if (isLastPage)
+                          InformedFilledButton.primary(
+                            context: context,
+                            text: LocaleKeys.common_continue.tr(),
+                            onTap: () => _navigateToMainPage(context, cubit),
+                          )
+                        else
+                          _NextPageButton(
+                            cubit: cubit,
+                            controller: controller,
+                            currentPage: pageIndex.value,
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: AppDimens.m),
-          ],
+              const SizedBox(height: AppDimens.m),
+            ],
+          ),
         ),
       ),
     );
