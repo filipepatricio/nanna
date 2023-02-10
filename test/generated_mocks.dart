@@ -39,6 +39,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_audio_progress_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_free_articles_left_warning_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/load_local_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/mark_article_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/save_article_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/update_article_progress_state_notifier_use_case.di.dart';
@@ -181,6 +182,7 @@ const _classes = [
   MarkArticleAsSeenUseCase,
   GetFreeArticlesLeftWarningStreamUseCase,
   IsInternetConnectionAvailableUseCase,
+  LoadLocalArticleUseCase,
 ];
 
 @GenerateMocks(_classes)

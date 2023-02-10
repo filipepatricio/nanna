@@ -37,15 +37,21 @@ class _ArticleCoverSmall extends ArticleCover {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _ArticleSquareCover(
+              _ArticleSquareImageCover(
                 article: article,
                 coverColor: article.category.color,
                 dimension: constraints.maxWidth,
+                available: state.maybeMap(offline: (_) => false, orElse: () => true),
               ),
               const SizedBox(height: AppDimens.sl),
               Expanded(
-                child: ArticleProgressOpacity(
-                  article: state.map(initializing: (_) => article, idle: (state) => state.article),
+                child: _ArticleOpacity(
+                  article: state.map(
+                    initializing: (_) => article,
+                    idle: (state) => state.article,
+                    offline: (state) => state.article,
+                  ),
+                  available: state.maybeMap(offline: (_) => false, orElse: () => true),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -65,7 +71,11 @@ class _ArticleCoverSmall extends ArticleCover {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ArticleTimeReadLabel(
-                    article: state.map(initializing: (_) => article, idle: (state) => state.article),
+                    article: state.map(
+                      initializing: (_) => article,
+                      idle: (state) => state.article,
+                      offline: (state) => state.article,
+                    ),
                   ),
                   const Spacer(),
                   BookmarkButton.article(article: article),

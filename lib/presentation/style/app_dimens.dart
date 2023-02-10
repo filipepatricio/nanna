@@ -238,4 +238,7 @@ class AppDimens {
 
   /// 20.0
   static const publisherLogoSize = 20.0;
+
+  /// 40%
+  static const unavailableItemOpacity = 0.4;
 }

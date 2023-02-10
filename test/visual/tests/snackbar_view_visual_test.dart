@@ -1,8 +1,5 @@
-import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_view.dart';
-import 'package:flutter/material.dart';
 
 import '../visual_test_utils.dart';
 
@@ -158,44 +155,30 @@ void main() {
       );
 
       await tester.startApp(
-        initialRoute: PlaceholderPageRoute(
-          child: Material(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(
-                  AppDimens.m,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ...[
-                      snackbarSuccess,
-                      snackbarInfo,
-                      snackbarWarning,
-                      snackbarError,
-                      snackbarSubscription,
-                      snackbarSuccessSub,
-                      snackbarInfoSub,
-                      snackbarWarningSub,
-                      snackbarErrorSub,
-                      snackbarSubscriptionSub,
-                      snackbarSuccessAction,
-                      snackbarInfoAction,
-                      snackbarWarningAction,
-                      snackbarErrorAction,
-                      snackbarSubscriptionAction,
-                      snackbarSuccessSubAction,
-                      snackbarInfoSubAction,
-                      snackbarWarningSubAction,
-                      snackbarErrorSubAction,
-                      snackbarSubscriptionSubAction,
-                      snackbarOffline,
-                    ].expand((item) => [item, const SizedBox(height: AppDimens.m)])
-                  ],
-                ),
-              ),
-            ),
-          ),
+        initialRoute: placeholderRouteWrapper(
+          children: [
+            snackbarSuccess,
+            snackbarInfo,
+            snackbarWarning,
+            snackbarError,
+            snackbarSubscription,
+            snackbarSuccessSub,
+            snackbarInfoSub,
+            snackbarWarningSub,
+            snackbarErrorSub,
+            snackbarSubscriptionSub,
+            snackbarSuccessAction,
+            snackbarInfoAction,
+            snackbarWarningAction,
+            snackbarErrorAction,
+            snackbarSubscriptionAction,
+            snackbarSuccessSubAction,
+            snackbarInfoSubAction,
+            snackbarWarningSubAction,
+            snackbarErrorSubAction,
+            snackbarSubscriptionSubAction,
+            snackbarOffline,
+          ],
         ),
       );
       await tester.matchGoldenFile();

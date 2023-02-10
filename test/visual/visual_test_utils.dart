@@ -4,6 +4,8 @@ import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -200,3 +202,28 @@ extension StartAppExtension on WidgetTester {
 }
 
 typedef VisualTestCallback = Future<void> Function(WidgetTester widgetTester);
+
+PageRouteInfo<dynamic> placeholderRouteWrapper({
+  required List<Widget> children,
+  EdgeInsets? padding,
+}) {
+  return PlaceholderPageRoute(
+    child: Material(
+      child: SnackbarParentView(
+        child: Padding(
+          padding: padding ?? const EdgeInsets.all(AppDimens.m),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ...children.expand(
+                  (item) => [item, const SizedBox(height: AppDimens.m)],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
