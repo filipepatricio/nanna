@@ -42,16 +42,22 @@ class _ArticleCoverLarge extends ArticleCover {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (article.hasImage) ...[
-              _ArticleAspectRatioCover(
+              _ArticleAspectRatioImageCover(
                 article: article,
                 coverColor: article.category.color,
-                aspectRatio: _articleLargeCoverAspectRatio,
+                aspectRatio: AppDimens.articleLargeCoverAspectRatio,
                 width: double.infinity,
+                available: state.maybeMap(offline: (_) => false, orElse: () => true),
               ),
               const SizedBox(height: AppDimens.m),
             ],
-            ArticleProgressOpacity(
-              article: state.map(initializing: (_) => article, idle: (state) => state.article),
+            _ArticleOpacity(
+              article: state.map(
+                initializing: (_) => article,
+                idle: (state) => state.article,
+                offline: (state) => state.article,
+              ),
+              available: state.maybeMap(offline: (_) => false, orElse: () => true),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -69,15 +75,27 @@ class _ArticleCoverLarge extends ArticleCover {
             ),
             const SizedBox(height: AppDimens.m),
             if (articleNote != null && article.shouldShowArticleCoverNote && showNote) ...[
-              OwnersNote(
-                note: articleNote,
-                showRecommendedBy: showRecommendedBy,
-                curationInfo: article.curationInfo,
+              _ArticleOpacity(
+                article: state.map(
+                  initializing: (_) => article,
+                  idle: (state) => state.article,
+                  offline: (state) => state.article,
+                ),
+                available: state.maybeMap(offline: (_) => false, orElse: () => true),
+                child: OwnersNote(
+                  note: articleNote,
+                  showRecommendedBy: showRecommendedBy,
+                  curationInfo: article.curationInfo,
+                ),
               ),
               const SizedBox(height: AppDimens.m),
             ],
             ArticleMetadataRow(
-              article: state.map(initializing: (_) => article, idle: (state) => state.article),
+              article: state.map(
+                initializing: (_) => article,
+                idle: (state) => state.article,
+                offline: (state) => state.article,
+              ),
               isNew: isNew,
             ),
           ],

@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_b
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/brief_not_initialized_exception.dart';
+import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
@@ -81,6 +82,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   StreamSubscription? _dataRefreshSubscription;
   StreamSubscription? _currentBriefSubscription;
   StreamSubscription? _shouldUpdateBriefSubscription;
+  StreamSubscription? _itemPreviewTrackerSubscription;
 
   List<TargetFocus> targets = <TargetFocus>[];
 
@@ -95,25 +97,29 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     await _currentBriefSubscription?.cancel();
     await _shouldUpdateBriefSubscription?.cancel();
     await _trackItemController.close();
+    await _itemPreviewTrackerSubscription?.cancel();
     await super.close();
   }
 
   Future<void> initialize() async {
     await loadBriefs();
 
-    _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((currentBriefWrapper) {
+    _currentBriefSubscription ??= _getCurrentBriefUseCase.stream.listen((currentBriefWrapper) {
       _briefsWrapper = currentBriefWrapper;
       _updateIdleState(preCacheImages: true);
     });
 
-    _dataRefreshSubscription = _incomingPushDataRefreshStreamUseCase().listen((event) {
+    _dataRefreshSubscription ??= _incomingPushDataRefreshStreamUseCase().listen((event) {
       Fimber.d('Incoming push - refreshing daily brief');
       loadBriefs();
     });
 
-    _shouldUpdateBriefSubscription = _getShouldUpdateBriefStreamUseCase().listen((_) => _refetchBriefs());
+    _shouldUpdateBriefSubscription ??= _getShouldUpdateBriefStreamUseCase().listen((_) => _refetchBriefs());
 
-    _initializeItemPreviewTracker();
+    _itemPreviewTrackerSubscription ??= itemPreviewTrackerStream.listen((item) {
+      _markEntryAsSeen(item.entry);
+      _trackActivityUseCase.trackEvent(item.event);
+    });
 
     if (await _shouldUsePaidSubscriptionsUseCase()) {
       if (!(await _hasActiveSubscriptionUseCase()) && !(await _isOnboardingPaywallSeenUseCase())) {
@@ -132,18 +138,24 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   }
 
   Future<void> _refetchBriefs() async {
-    _briefsWrapper = await _getCurrentBriefUseCase();
-    _selectedBrief ??= _briefsWrapper.currentBrief;
+    try {
+      _briefsWrapper = await _getCurrentBriefUseCase();
+      _selectedBrief ??= _briefsWrapper.currentBrief;
 
-    final todaysBriefSelected = _selectedBrief == _briefsWrapper.currentBrief;
+      final todaysBriefSelected = _selectedBrief == _briefsWrapper.currentBrief;
 
-    if (todaysBriefSelected) {
-      _selectedBrief = _briefsWrapper.currentBrief;
-    } else {
-      _selectedBrief = await _getPastDaysBriefUseCase(_selectedBrief!.date);
+      if (todaysBriefSelected) {
+        _selectedBrief = _briefsWrapper.currentBrief;
+      } else {
+        _selectedBrief = await _getPastDaysBriefUseCase(_selectedBrief!.date);
+      }
+
+      _updateIdleState();
+    } on NoInternetConnectionException {
+      emit(DailyBriefPageState.offline());
+    } catch (e) {
+      rethrow;
     }
-
-    _updateIdleState();
   }
 
   Future<void> loadBriefs() async {
@@ -153,6 +165,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       _briefsWrapper = await _getCurrentBriefUseCase();
       _selectedBrief = _briefsWrapper.currentBrief;
       _updateIdleState(preCacheImages: true);
+    } on NoInternetConnectionException {
+      emit(DailyBriefPageState.offline());
     } catch (e, s) {
       Fimber.e('Loading briefs failed', ex: e, stacktrace: s);
       emit(DailyBriefPageState.error());
@@ -263,39 +277,34 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     if (!isClosed) _trackItemController.add(visibilityEvent);
   }
 
-  void _initializeItemPreviewTracker() {
-    _trackItemController.stream
-        .groupBy(
-          (event) => event.entry.id,
-          durationSelector: (grouped) => grouped.debounceTime(_trackEventTotalBufferTime * 2),
-        )
-        .flatMap(
-          (stream) => stream
-              .bufferTime(_trackEventBufferTime)
-              .scan<Queue<List<_ItemVisibilityEvent>>>(
-                (accumulated, buffered, index) {
-                  accumulated.add(buffered);
-                  if (accumulated.length > _requiredEventsCount) {
-                    accumulated.removeFirst();
-                  }
+  // ignore: library_private_types_in_public_api
+  Stream<_ItemVisibilityEvent> get itemPreviewTrackerStream => _trackItemController.stream
+      .groupBy(
+        (event) => event.entry.id,
+        durationSelector: (grouped) => grouped.debounceTime(_trackEventTotalBufferTime * 2),
+      )
+      .flatMap(
+        (stream) => stream
+            .bufferTime(_trackEventBufferTime)
+            .scan<Queue<List<_ItemVisibilityEvent>>>(
+              (accumulated, buffered, index) {
+                accumulated.add(buffered);
+                if (accumulated.length > _requiredEventsCount) {
+                  accumulated.removeFirst();
+                }
 
-                  return accumulated;
-                },
-                Queue(),
-              )
-              .where((queue) => queue.length == _requiredEventsCount)
-              .where((queue) => queue.expand((events) => events).every((event) => event.visible))
-              .where((queue) => queue.isNotEmpty)
-              .where((queue) => queue.expand((events) => events).isNotEmpty)
-              .map((queue) => queue.expand((events) => events).first)
-              .distinct(),
-        )
-        .distinct()
-        .listen((item) {
-      _markEntryAsSeen(item.entry);
-      _trackActivityUseCase.trackEvent(item.event);
-    });
-  }
+                return accumulated;
+              },
+              Queue(),
+            )
+            .where((queue) => queue.length == _requiredEventsCount)
+            .where((queue) => queue.expand((events) => events).every((event) => event.visible))
+            .where((queue) => queue.isNotEmpty)
+            .where((queue) => queue.expand((events) => events).isNotEmpty)
+            .map((queue) => queue.expand((events) => events).first)
+            .distinct(),
+      )
+      .distinct();
 
   Future<void> _markEntryAsSeen(BriefEntry entry) async {
     if (entry.isNew) {

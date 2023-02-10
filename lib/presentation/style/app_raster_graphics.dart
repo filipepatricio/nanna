@@ -29,7 +29,4 @@ class AppRasterGraphics {
 
   // Onboarding
   static const String onboardingPublishers = 'assets/raster_graphics/onboarding_publishers.jpg';
-  static const String onboardingPublishersDark = 'assets/raster_graphics/onboarding_publishers_dark.jpg';
-  static const String onboardingEditorialProcess = 'assets/raster_graphics/onboarding_editorial_process.png';
-  static const String onboardingEditorialProcessDark = 'assets/raster_graphics/onboarding_editorial_process_dark.png';
 }

@@ -12,7 +12,9 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
+import '../../generated_mocks.mocks.dart';
 import '../../test_data.dart';
 import '../visual_test_utils.dart';
 
@@ -44,6 +46,9 @@ void main() {
   });
 
   visualTest('${MediaItemPage}_(free_articles_warning)', (tester) async {
+    final useCase = MockGetFreeArticlesLeftWarningStreamUseCase();
+    when(useCase.call()).thenAnswer((_) => Stream.value(TestData.freeArticlesLeftWarning));
+
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [
@@ -51,9 +56,7 @@ void main() {
         ],
       ),
       dependencyOverride: (getIt) async {
-        getIt.registerFactory<GetFreeArticlesLeftWarningStreamUseCase>(
-          () => FakeGetFreeArticlesLeftWarningStreamUseCase(),
-        );
+        getIt.registerFactory<GetFreeArticlesLeftWarningStreamUseCase>(() => useCase);
       },
     );
     await tester.matchGoldenFile();
@@ -70,8 +73,6 @@ void main() {
   });
 
   visualTest('${MediaItemPage}_(error)', (tester) async {
-    final cubit = FakeMediaItemPageCubit();
-
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [
@@ -79,7 +80,25 @@ void main() {
         ],
       ),
       dependencyOverride: (getIt) async {
-        getIt.registerFactory<MediaItemCubit>(() => cubit);
+        getIt.registerFactory<MediaItemCubit>(() => FakeMediaItemCubit());
+      },
+    );
+    await tester.matchGoldenFile();
+  });
+
+  visualTest('${MediaItemPage}_(offline)', (tester) async {
+    await tester.startApp(
+      initialRoute: MainPageRoute(
+        children: [
+          MediaItemPageRoute(slug: TestData.article.slug),
+        ],
+      ),
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<MediaItemCubit>(
+          () => FakeMediaItemCubit(
+            state: MediaItemState.offline(article: TestData.article),
+          ),
+        );
       },
     );
     await tester.matchGoldenFile();
@@ -140,12 +159,18 @@ class FakeGetArticleUseCase extends Fake implements GetArticleUseCase {
   Future<Article> call(MediaItemArticle article, {bool refreshMetadata = false}) => throw ArticleGeoblockedException();
 }
 
-class FakeMediaItemPageCubit extends Fake implements MediaItemCubit {
-  @override
-  MediaItemState get state => MediaItemState.error(TestData.article);
+class FakeMediaItemCubit extends Fake implements MediaItemCubit {
+  FakeMediaItemCubit({
+    MediaItemState? state,
+  }) : _state = state ?? MediaItemState.error(TestData.article);
+
+  final MediaItemState _state;
 
   @override
-  Stream<MediaItemState> get stream => Stream.value(MediaItemState.error(TestData.article));
+  MediaItemState get state => _state;
+
+  @override
+  Stream<MediaItemState> get stream => Stream.value(_state);
 
   @override
   Future<void> initialize(_, __, ___, ____, _____) async {}
@@ -212,11 +237,4 @@ class FakePremiumArticleViewCubitFromTopic extends FakePremiumArticleViewCubitFr
 
   @override
   String get topicTitle => TestData.topic.strippedTitle;
-}
-
-class FakeGetFreeArticlesLeftWarningStreamUseCase extends Fake implements GetFreeArticlesLeftWarningStreamUseCase {
-  @override
-  Stream<String> call() => TestData.freeArticlesLeftWarning != null
-      ? Stream.value('This is your last free article this month.')
-      : const Stream.empty();
 }

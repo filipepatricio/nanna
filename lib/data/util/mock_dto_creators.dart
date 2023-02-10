@@ -587,7 +587,7 @@ class MockDTO {
 
   static final articleContentMarkdown = ArticleContentDTO(
     ArticleContentTextDTO(
-      '# Novak Djokovic is no doubt _spending his time detained in an immigration hotel_ in Melbourne doing yoga and tai chi, stretching, meditating and adhering to every facet of the strict training regimen that has helped him become the world\'s No. 1 tennis player.\r\n\r\nOn the streets below, Serbian supporters are staging a candlelight vigil and serenading him amid visa-limbo while lawyers fight a deportation order that would deny Djokovic the chance to compete for a 10th Australian Open title and, with it, a men\'s-record 21st Grand Slam title.\r\n\r\nFrom abroad, Serbian President Aleksandar Vucic has decried what he called a "political witch hunt" conducted against his country\'s revered native son. Djokovic\'s father, Srdjan, meantime, told Serbian supporters that Australia was crucifying his son, saying: "Jesus was crucified on the cross . . . but he is still alive among us. They are trying to crucify and belittle Novak and throw him to his knees."\r\n\r\nUntil Monday, when a federal court is expected to end the diplomatic incident that has taken on circuslike theatrics, Djokovic must remain in the hotel.\r\n\r\nYet if his career has proved anything, it is that Djokovic\'s determination to chart his own course - at least in terms of his physical training and mental preparation - is the essence of his dominance in tennis.\r\n\r\n## And if allowed to enter the country to contest the Australian Open, he may turn this politically charged period in exile - which he could have avoided by following the vaccine mandate that applies to all players, officials and fans at this year\'s tournament - into a yet another "go-against-the grain" triumph.\\r\\nMonday\'s hearing will be held one week before the tournament\'s Jan. 17 start.\r\n\r\nDjokovic was detained at Melbourne\'s airport overnight Wednesday as Australian border officials reviewed his visa and qualifications for a medical exemption to Australia\'s strict covid vaccination requirements.\r\n\r\nHe was one of "a handful" among 26 applicants granted an exemption by Tennis Australia and the government of the state of Victoria to compete in the tournament.\r\n\r\nThe rationale for Djokovic\'s exemption, which was granted in consultation by medical authorities who reviewed applicants without knowing their identity, was a previous covid infection, the Guardian reported.\r\n\r\nBut Australia\'s national standard for medical proof that a visitor to the country cannot be vaccinated, which is enforced at the border, is higher.\r\n\r\nDjokovic has acknowledged contracting covid in summer 2020, after taking part in a short-lived exhibition he staged in Serbia and Croatia amid minimal precautions. It is unclear if he contracted covid more recently.\r\n\r\nWith 20 Grand Slams and the men\'s record-holder for weeks atop the world ranking, Djokovic, 34, is quite possibly the greatest to ever play tennis.\r\n\r\nTwo qualities in particular set the 6-2, 170-pound Djokovic apart: A fanatical adherence to a strict gluten-free diet and a program of stretching and exercise that has transformed his otherwise unremarkable physique (much like Tom Brady) into a purpose-built, pliable winning machine.\r\n\r\nAnd profound self-belief and self-determination that have pulled him from the brink of defeat in countless high-stakes matches. Djokovic\'s inner belief is arguably his greatest asset, but it doesn\'t necessarily mesh with decision-making for the greater good - such as complying with vaccine mandates amid a global pandemic.\r\n\r\nAs a tennis player, Djokovic has no discernible weakness. He has forged himself, over years of training, into an uncommonly complete player. His defense is as much a weapon as his offense. His return of serve is without peer, complemented by a highly effective serve.\r\n\r\nWith the foot speed, reach and flexibility to blast winners even if badly out of position, he covers virtually every inch of the court, sapping opponents\' will in the process.\r\n\r\nAnd he has mastered the mental game, whether that means summoning his best when most players would be at their breaking point or breaking the momentum of unfavorable spells with a bathroom break or call for a trainer.\r\n\r\nNone of these attributes was bestowed. They are not gifts, but the product of relentless work.\\r\\nDjokovic has been chasing tennis perfection since childhood - the past two decades, in the form of Roger Federer and Rafael Nadal, champions who are elder by five-plus years, in the case of Federer, and 11 months, in the case of Nadal.\r\n\r\nFederer had won 16 Grand Slam singles titles, and Nadal had won nine by the time Djokovic claimed his second (at the 2011 Australian Open). But over the decade since, Djokovic has closed the gap with breathtaking efficiency, winning eight of the 13 majors contested since July 2018, to make it a three-way tie for a men\'s record 20 major titles.\r\n\r\nBut Djokovic has yet to close the gap in fans\' affection. He has been forever a third wheel in the sport\'s love affair with Federer and Nadal.\r\n\r\nIn his early career, Djokovic made himself difficult for many to cheer, outside of his devoted following in the Balkans. His tactics smacked of gamesmanship, at times. And he got off on a bad foot with the highly partisan crowd at the U.S. Open, chiding them for not showing due respect.\r\n\r\nYet last September, amid the most gutting defeat of his career - as his pursuit of the rare calendar-year Grand Slam was scuttled by a straight-sets loss to Daniil Medvedev in the U.S. Open final - Djokovic wept with a pathos that won hearts.\r\n\r\nAfterward, he spoke unabashedly about what it meant to feel the crowd\'s embrace. "I felt something I never felt in my life here in New York," Djokovic said. "I did not expect anything. But the amount of support and energy and love I got from the crowd was something that I\'ll remember forever. I mean, that\'s the reason on the changeover I just teared up. The emotion, the energy was so strong. I mean, it\'s as strong as winning 21 Grand Slams. That\'s how I felt, honestly. I felt very, very special."\r\n\r\nIf Djokovic\'s deportation is overturned Monday, he will enter the Australian Open as the tournament\'s nine-time and defending champion, the world No. 1 and a heavy favorite. But he will face significant unknowns, starting with his opening match.\r\n\r\nHow will he be received by fans at Melbourne Park, given the national outcry that erupted when he posted the news Tuesday that he had been granted a medical exemption to the tournament\'s vaccine requirement? Will the inevitable boos shouted by some be drowned out by the vociferous cheers of his Serbian supporters? If the crowd is split, can Djokovic still perform at his best?\r\n\r\nAsked after his victory in the 2021 Australian Open how it felt to be criticized so often, Djokovic said: "Of course it hurts. I\'m a human being like yourself, like anybody else. I have emotions. I don\'t enjoy when somebody attacks me in the media openly and stuff. . . . But I think I\'ve developed a thick skin over the years to just dodge those things and focus on what matters to me the most."',
+      '# Novak Djokovic is no doubt _spending his time detained in an immigration hotel_ in Melbourne doing yoga and tai chi, stretching, meditating and adhering to every facet of the strict training regimen that has helped him become the world\'s No. 1 tennis player.\r\n\r\n> On the streets below, Serbian supporters are staging a candlelight vigil and serenading him amid visa-limbo while lawyers fight a deportation order that would deny Djokovic the chance to compete for a 10th Australian Open title and, with it, a men\'s-record 21st Grand Slam title.\r\n\r\nFrom abroad, Serbian President Aleksandar Vucic has decried what he called a "political witch hunt" conducted against his country\'s revered native son. Djokovic\'s father, Srdjan, meantime, told Serbian supporters that Australia was crucifying his son, saying: "Jesus was crucified on the cross . . . but he is still alive among us. They are trying to crucify and belittle Novak and throw him to his knees."\r\n\r\nUntil Monday, when a federal court is expected to end the diplomatic incident that has taken on circuslike theatrics, Djokovic must remain in the hotel.\r\n\r\nYet if his career has proved anything, it is that Djokovic\'s determination to chart his own course - at least in terms of his physical training and mental preparation - is the essence of his dominance in tennis.\r\n\r\n## And if allowed to enter the country to contest the Australian Open, he may turn this politically charged period in exile - which he could have avoided by following the vaccine mandate that applies to all players, officials and fans at this year\'s tournament - into a yet another "go-against-the grain" triumph.\\r\\nMonday\'s hearing will be held one week before the tournament\'s Jan. 17 start.\r\n\r\nDjokovic was detained at Melbourne\'s airport overnight Wednesday as Australian border officials reviewed his visa and qualifications for a medical exemption to Australia\'s strict covid vaccination requirements.\r\n\r\nHe was one of "a handful" among 26 applicants granted an exemption by Tennis Australia and the government of the state of Victoria to compete in the tournament.\r\n\r\nThe rationale for Djokovic\'s exemption, which was granted in consultation by medical authorities who reviewed applicants without knowing their identity, was a previous covid infection, the Guardian reported.\r\n\r\nBut Australia\'s national standard for medical proof that a visitor to the country cannot be vaccinated, which is enforced at the border, is higher.\r\n\r\nDjokovic has acknowledged contracting covid in summer 2020, after taking part in a short-lived exhibition he staged in Serbia and Croatia amid minimal precautions. It is unclear if he contracted covid more recently.\r\n\r\nWith 20 Grand Slams and the men\'s record-holder for weeks atop the world ranking, Djokovic, 34, is quite possibly the greatest to ever play tennis.\r\n\r\nTwo qualities in particular set the 6-2, 170-pound Djokovic apart: A fanatical adherence to a strict gluten-free diet and a program of stretching and exercise that has transformed his otherwise unremarkable physique (much like Tom Brady) into a purpose-built, pliable winning machine.\r\n\r\nAnd profound self-belief and self-determination that have pulled him from the brink of defeat in countless high-stakes matches. Djokovic\'s inner belief is arguably his greatest asset, but it doesn\'t necessarily mesh with decision-making for the greater good - such as complying with vaccine mandates amid a global pandemic.\r\n\r\nAs a tennis player, Djokovic has no discernible weakness. He has forged himself, over years of training, into an uncommonly complete player. His defense is as much a weapon as his offense. His return of serve is without peer, complemented by a highly effective serve.\r\n\r\nWith the foot speed, reach and flexibility to blast winners even if badly out of position, he covers virtually every inch of the court, sapping opponents\' will in the process.\r\n\r\nAnd he has mastered the mental game, whether that means summoning his best when most players would be at their breaking point or breaking the momentum of unfavorable spells with a bathroom break or call for a trainer.\r\n\r\nNone of these attributes was bestowed. They are not gifts, but the product of relentless work.\\r\\nDjokovic has been chasing tennis perfection since childhood - the past two decades, in the form of Roger Federer and Rafael Nadal, champions who are elder by five-plus years, in the case of Federer, and 11 months, in the case of Nadal.\r\n\r\nFederer had won 16 Grand Slam singles titles, and Nadal had won nine by the time Djokovic claimed his second (at the 2011 Australian Open). But over the decade since, Djokovic has closed the gap with breathtaking efficiency, winning eight of the 13 majors contested since July 2018, to make it a three-way tie for a men\'s record 20 major titles.\r\n\r\nBut Djokovic has yet to close the gap in fans\' affection. He has been forever a third wheel in the sport\'s love affair with Federer and Nadal.\r\n\r\nIn his early career, Djokovic made himself difficult for many to cheer, outside of his devoted following in the Balkans. His tactics smacked of gamesmanship, at times. And he got off on a bad foot with the highly partisan crowd at the U.S. Open, chiding them for not showing due respect.\r\n\r\nYet last September, amid the most gutting defeat of his career - as his pursuit of the rare calendar-year Grand Slam was scuttled by a straight-sets loss to Daniil Medvedev in the U.S. Open final - Djokovic wept with a pathos that won hearts.\r\n\r\nAfterward, he spoke unabashedly about what it meant to feel the crowd\'s embrace. "I felt something I never felt in my life here in New York," Djokovic said. "I did not expect anything. But the amount of support and energy and love I got from the crowd was something that I\'ll remember forever. I mean, that\'s the reason on the changeover I just teared up. The emotion, the energy was so strong. I mean, it\'s as strong as winning 21 Grand Slams. That\'s how I felt, honestly. I felt very, very special."\r\n\r\nIf Djokovic\'s deportation is overturned Monday, he will enter the Australian Open as the tournament\'s nine-time and defending champion, the world No. 1 and a heavy favorite. But he will face significant unknowns, starting with his opening match.\r\n\r\nHow will he be received by fans at Melbourne Park, given the national outcry that erupted when he posted the news Tuesday that he had been granted a medical exemption to the tournament\'s vaccine requirement? Will the inevitable boos shouted by some be drowned out by the vociferous cheers of his Serbian supporters? If the crowd is split, can Djokovic still perform at his best?\r\n\r\nAsked after his victory in the 2021 Australian Open how it felt to be criticized so often, Djokovic said: "Of course it hurts. I\'m a human being like yourself, like anybody else. I have emotions. I don\'t enjoy when somebody attacks me in the media openly and stuff. . . . But I think I\'ve developed a thick skin over the years to just dodge those things and focus on what matters to me the most."',
       ArticleContentTypeDTO.markdown,
     ),
     // credits
@@ -747,6 +747,7 @@ class MockDTO {
     'By Publisher',
     'This is description',
     _mockedPillIcon,
+    null,
     false,
     true,
     [
@@ -763,6 +764,7 @@ class MockDTO {
     'By Publisher',
     'This is description',
     _mockedPillIcon,
+    null,
     false,
     true,
     [
@@ -778,6 +780,7 @@ class MockDTO {
     'explore-topics-id',
     'Hot topics',
     _mockedPillIcon,
+    null,
     false,
     true,
     [
@@ -793,6 +796,7 @@ class MockDTO {
     'explore-topics-id',
     'Hot topics',
     _mockedPillIcon,
+    null,
     false,
     true,
     [
@@ -808,7 +812,7 @@ class MockDTO {
     'explore-highlighted-topics-id',
     'Trending news',
     'Discover other topics of interest',
-    'DFBFFF',
+    '#DFBFFF',
     _mockedPillIcon,
     false,
     false,
@@ -825,7 +829,7 @@ class MockDTO {
     'explore-highlighted-topics-id',
     'Trending news',
     'Discover other topics of interest',
-    'DFBFFF',
+    '#DFBFFF',
     _mockedPillIcon,
     false,
     false,
@@ -842,6 +846,7 @@ class MockDTO {
     'explore-small-topics-id',
     'More topics',
     'Discover other topics of interest',
+    null,
     _mockedPillIcon,
     false,
     false,
@@ -858,6 +863,7 @@ class MockDTO {
     'explore-small-topics-id',
     'More topics',
     'Discover other topics of interest',
+    null,
     _mockedPillIcon,
     false,
     false,
@@ -875,6 +881,7 @@ class MockDTO {
     'Some more articles',
     'Those are articles in the list',
     _mockedPillIcon,
+    null,
     false,
     false,
     [
@@ -891,6 +898,7 @@ class MockDTO {
     'Some more articles',
     'Those are articles in the list',
     _mockedPillIcon,
+    null,
     false,
     false,
     [

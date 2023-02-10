@@ -39,11 +39,10 @@ class ShareArticleViewContent extends StatelessWidget {
             Expanded(
               child: Text(
                 article.publisher.name,
-                style: AppTypography.b1Medium.copyWith(
+                style: AppTypography.b1Medium.w550.copyWith(
                   color: AppColors.categoriesTextPrimary,
                   height: 1,
                   fontSize: 24,
-                  fontWeight: AppTypography.w550,
                 ),
               ),
             ),
@@ -52,11 +51,10 @@ class ShareArticleViewContent extends StatelessWidget {
         const SizedBox(height: AppDimens.m),
         Text(
           article.strippedTitle,
-          style: AppTypography.articleQuote.copyWith(
+          style: AppTypography.articleQuote.w550.copyWith(
             color: AppColors.categoriesTextPrimary,
             fontSize: 36,
             height: 1.1,
-            fontWeight: AppTypography.w550,
           ),
           maxLines: titleMaxLines,
           overflow: TextOverflow.ellipsis,

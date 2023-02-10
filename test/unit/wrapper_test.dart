@@ -44,6 +44,8 @@ import 'domain/release_notes/use_case/save_release_note_if_first_run_use_case_te
     as save_release_note_if_first_run_use_case_test;
 import 'domain/subscription/use_case/get_article_paywall_preferred_plan_use_case_test.dart'
     as get_article_paywall_preferred_plan_use_case_test;
+import 'domain/synchronization/use_case/run_initial_bookmark_sync_use_case_test.dart'
+    as run_initial_bookmark_sync_use_case_test;
 import 'domain/synchronization/use_case/synchroniza_all_use_case_test.dart' as synchroniza_all_use_case_test;
 import 'presentation/app_connectivity_checker_test.dart' as app_connectivity_checker_test;
 import 'presentation/app_update_checker_test.dart' as app_update_checker_test;
@@ -105,6 +107,7 @@ void main() {
   group('remove_bookmark_use_case_test', remove_bookmark_use_case_test.main);
   group('save_bookmarked_media_item_use_case_test', save_bookmarked_media_item_use_case_test.main);
   group('synchroniza_all_use_case_test', synchroniza_all_use_case_test.main);
+  group('run_initial_bookmark_sync_use_case_test', run_initial_bookmark_sync_use_case_test.main);
 
   // Presentation
   group('app_connectivity_checker_test', app_connectivity_checker_test.main);

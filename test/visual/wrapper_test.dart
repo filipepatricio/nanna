@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'tests/app_connectivity_dialog_visual_test.dart' as app_connectivity_dialog_visual_test;
 import 'tests/app_update_dialog_visual_test.dart' as app_update_dialog_visual_test;
+import 'tests/article_cover_visual_test.dart' as article_cover_visual_test;
 import 'tests/article_paywall_view_visual_test.dart' as article_paywall_view_visual_test;
 import 'tests/articles_see_all_page_visual_test.dart' as articles_see_all_page_visual_test;
 import 'tests/audio_page_visual_test.dart' as audio_page_visual_test;
@@ -28,7 +29,9 @@ import 'tests/share_article_view_visual_test.dart' as share_article_view_visual_
 import 'tests/share_quote_view_visual_test.dart' as share_quote_view_visual_test;
 import 'tests/share_topic_view_visual_test.dart' as share_topic_view_visual_test;
 import 'tests/sign_in_page_visual_test.dart' as sign_in_page_visual_test;
+import 'tests/snackbar_view_visual_test.dart' as snackbar_view_visual_test;
 import 'tests/subscription_page_visual_test.dart' as subscription_page_visual_test;
+import 'tests/subscription_success_page_visual_test.dart' as subscription_success_page_visual_test;
 import 'tests/switch_audio_popup_visual_test.dart' as switch_audio_popup_visual_test;
 import 'tests/topic_owner_page_visual_test.dart' as topic_owner_page_visual_test;
 import 'tests/topic_page_visual_test.dart' as topic_page_visual_test;
@@ -42,6 +45,7 @@ void main() {
     themeMode = AdaptiveThemeMode.light;
   });
   group('switch_audio_popup_visual_test', switch_audio_popup_visual_test.main);
+  group('article_cover_visual_test', article_cover_visual_test.main);
   group('article_paywall_view_visual_test', article_paywall_view_visual_test.main);
   group('app_update_dialog_visual_test', app_update_dialog_visual_test.main);
   group('app_connectivity_dialog_visual_test', app_connectivity_dialog_visual_test.main);
@@ -68,7 +72,9 @@ void main() {
   group('topic_page_visual_test', topic_page_visual_test.main);
   group('topics_see_all_page_visual_test', topics_see_all_page_visual_test.main);
   group('release_note_popup_visual_test', release_note_popup_visual_test.main);
+  group('snackbar_view_visual_test', snackbar_view_visual_test.main);
   group('subscription_page_visual_test', subscription_page_visual_test.main);
+  group('subscription_success_page_visual_test', subscription_success_page_visual_test.main);
   group('settings_subscription_page_visual_test', settings_subscription_page_visual_test.main);
   group('change_subscription_page_visual_test', change_subscription_page_visual_test.main);
   group('audio_page_visual_test', audio_page_visual_test.main);

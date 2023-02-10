@@ -156,6 +156,15 @@ class AppDimens {
   /// 322
   static const articleSmallImageCoverHeight = 322;
 
+  //// 0.35
+  static const coverSizeToScreenWidthFactor = 0.35;
+
+  /// 343/228
+  static const articleLargeCoverAspectRatio = 343 / 228;
+
+  /// 128/128
+  static const articleSmallCoverAspectRatio = 128 / 128;
+
   /// 45
   static const topicViewStackedCardsDividerHeight = 45.0;
 
@@ -229,4 +238,7 @@ class AppDimens {
 
   /// 20.0
   static const publisherLogoSize = 20.0;
+
+  /// 40%
+  static const unavailableItemOpacity = 0.4;
 }

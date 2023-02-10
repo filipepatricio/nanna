@@ -35,19 +35,6 @@ class InformedDialog extends HookWidget {
 
   static String get restorePurchaseDialogRouteName => 'RestorePurchaseDialog';
 
-  static Future<void> showNoConnection(
-    BuildContext context, {
-    required OnWillPopFunction onWillPop,
-  }) {
-    return show<void>(
-      context,
-      routeName: noConnectionDialogRouteName,
-      title: LocaleKeys.noConnection_title.tr(),
-      text: LocaleKeys.noConnection_body.tr(),
-      onWillPop: onWillPop,
-    );
-  }
-
   static Future<void> showAppUpdate(
     BuildContext context, {
     required OnWillPopFunction onWillPop,

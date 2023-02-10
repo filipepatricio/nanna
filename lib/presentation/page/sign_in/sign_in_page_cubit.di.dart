@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/domain/auth/use_case/subscribe_for_magic_
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di.dart';
 import 'package:better_informed_mobile/domain/onboarding/use_case/is_onboarding_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/synchronization/use_case/run_initial_bookmark_sync_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -26,6 +27,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._initializeFeatureFlagsUseCase,
     this._initializeAttributionUseCase,
     this._signInUseCase,
+    this._runIntitialBookmarkSyncUseCase,
   ) : super(SignInPageState.idle(false));
 
   final IsEmailValidUseCase _isEmailValidUseCase;
@@ -35,6 +37,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   final InitializeFeatureFlagsUseCase _initializeFeatureFlagsUseCase;
   final InitializeAttributionUseCase _initializeAttributionUseCase;
   final SignInUseCase _signInUseCase;
+  final RunIntitialBookmarkSyncUseCase _runIntitialBookmarkSyncUseCase;
 
   StreamSubscription? _magicLinkSubscription;
   late String _email;
@@ -148,6 +151,8 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     if (isOnboardingSeen) {
       _initializeAttributionUseCase().ignore();
     }
+
+    _runIntitialBookmarkSyncUseCase().ignore();
 
     emit(SignInPageState.success(isOnboardingSeen));
   }

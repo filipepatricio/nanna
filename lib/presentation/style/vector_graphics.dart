@@ -1,15 +1,8 @@
 class AppVectorGraphics {
   const AppVectorGraphics._();
 
-  static const String onboardingSlideOne = 'assets/vector_graphics/onboarding_slide_one.svg';
-  static const String onboardingSlideTwo = 'assets/vector_graphics/onboarding_slide_two.svg';
-  static const String tracking = 'assets/vector_graphics/tracking.svg';
   static const String happySun = 'assets/vector_graphics/happy_sun.svg';
-  static const String happyGreenSun = 'assets/vector_graphics/happy_green_sun_ic.svg';
-  static const String notes = 'assets/vector_graphics/notes_ic.svg';
-  static const String megaphone = 'assets/vector_graphics/megaphone_ic.svg';
   static const String fullArrowRight = 'assets/vector_graphics/full_arrow_right_ic.svg';
-  static const String flag = 'assets/vector_graphics/flag.svg';
 
   static const String explore = 'assets/vector_graphics/explore_ic.svg';
   static const String today = 'assets/vector_graphics/today_ic.svg';
@@ -72,6 +65,7 @@ class AppVectorGraphics {
   static const String chevronDown = 'assets/vector_graphics/chevron_down.svg';
   static const String noImage = 'assets/vector_graphics/no_image.svg';
   static const String visitedCheckmark = 'assets/vector_graphics/read_checkmark.svg';
+  static const String offline = 'assets/vector_graphics/offline.svg';
 
   static const String bookmarkFilled = 'assets/vector_graphics/bookmark_filled.svg';
   static const String bookmarkOutline = 'assets/vector_graphics/bookmark_outline.svg';
@@ -90,6 +84,7 @@ class AppVectorGraphics {
   static const String igStory = 'assets/vector_graphics/ig_story.svg';
   static const String copy = 'assets/vector_graphics/copy.svg';
   static const String more = 'assets/vector_graphics/more.svg';
+  static const String error = 'assets/vector_graphics/error.svg';
 
   static const String fakePlayButton = 'assets/vector_graphics/fake_play_button.svg';
 }

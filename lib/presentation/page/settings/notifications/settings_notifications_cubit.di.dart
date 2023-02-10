@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/get_notification_preferences_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/has_notification_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/open_notifications_settings_use_case.di.dart';
@@ -27,8 +28,15 @@ class SettingsNotificationCubit extends Cubit<SettingsNotificationsState> {
   Future<void> initialize() async {
     emit(SettingsNotificationsState.loading());
 
-    final hasPermission = await _hasNotificationPermissionUseCase();
-    await _getNotificationPreferences(hasPermission);
+    try {
+      final hasPermission = await _hasNotificationPermissionUseCase();
+      await _getNotificationPreferences(hasPermission);
+    } on NoInternetConnectionException {
+      emit(SettingsNotificationsState.offline());
+    } catch (e, s) {
+      emit(SettingsNotificationsState.error());
+      Fimber.e('Getting notification preferences failed', ex: e, stacktrace: s);
+    }
   }
 
   Future<void> requestPermission() async {
@@ -46,15 +54,11 @@ class SettingsNotificationCubit extends Cubit<SettingsNotificationsState> {
   }
 
   Future<void> _getNotificationPreferences(bool hasNotificationsPermission) async {
-    try {
-      final preferences = await _getNotificationPreferencesUseCase();
-      if (hasNotificationsPermission) {
-        emit(SettingsNotificationsState.notificationSettingsLoaded(preferences.groups));
-      } else {
-        emit(SettingsNotificationsState.noPermission(preferences.groups));
-      }
-    } catch (e, s) {
-      Fimber.e('Getting notification preferences failed', ex: e, stacktrace: s);
+    final preferences = await _getNotificationPreferencesUseCase();
+    if (hasNotificationsPermission) {
+      emit(SettingsNotificationsState.notificationSettingsLoaded(preferences.groups));
+    } else {
+      emit(SettingsNotificationsState.noPermission(preferences.groups));
     }
   }
 }

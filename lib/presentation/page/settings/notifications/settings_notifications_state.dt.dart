@@ -16,4 +16,10 @@ class SettingsNotificationsState with _$SettingsNotificationsState {
   @Implements<BuildState>()
   factory SettingsNotificationsState.notificationSettingsLoaded(List<NotificationPreferencesGroup> groups) =
       _SettingsNotificationsStateLoaded;
+
+  @Implements<BuildState>()
+  factory SettingsNotificationsState.error() = _SettingsNotificationsStateError;
+
+  @Implements<BuildState>()
+  factory SettingsNotificationsState.offline() = _SettingsNotificationsStateOffline;
 }

@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/selection_controller_bundle.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_rich_text.dart';
 import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
@@ -22,6 +23,7 @@ class InformedMarkdownBody extends StatelessWidget {
     this.markdownImageBuilder,
     this.useTextHighlight = true,
     this.bulletPadding,
+    this.quoteDecorationColor = AppColors.brandAccent,
     Key? key,
   })  : selectable = false,
         selectionControllers = null,
@@ -42,6 +44,7 @@ class InformedMarkdownBody extends StatelessWidget {
     this.markdownImageBuilder,
     this.useTextHighlight = true,
     this.bulletPadding,
+    this.quoteDecorationColor = AppColors.brandAccent,
     Key? key,
   })  : selectable = true,
         super(key: key);
@@ -56,6 +59,7 @@ class InformedMarkdownBody extends StatelessWidget {
   final Color highlightColor;
   final int? maxLines;
   final TextAlign textAlignment;
+  final Color quoteDecorationColor;
   final Map<String, MarkdownPaddingBuilder>? paddingBuilders;
   final ShareTextCallback? shareTextCallback;
   final SelectionControllerBundle? selectionControllers;
@@ -88,6 +92,21 @@ class InformedMarkdownBody extends StatelessWidget {
         strong: strongStyle,
         listBullet: baseStyle,
         listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s),
+        blockquote: AppTypography.serifTitleSmallIvar,
+        blockquoteDecoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              color: quoteDecorationColor,
+              width: 1.5,
+            ),
+          ),
+        ),
+        blockquotePadding: const EdgeInsets.only(
+          left: AppDimens.m,
+          right: AppDimens.zero,
+          top: AppDimens.zero,
+          bottom: AppDimens.zero,
+        ),
       ),
       paddingBuilders: paddingBuilders ?? <String, MarkdownPaddingBuilder>{},
       bulletBuilder: (index, style) => MarkdownBullet(padding: bulletPadding),

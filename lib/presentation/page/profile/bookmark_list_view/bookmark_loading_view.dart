@@ -3,7 +3,7 @@ import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart'
 import 'package:flutter/material.dart';
 
 class BookmarkLoadingView extends StatelessWidget {
-  const BookmarkLoadingView({Key? key}) : super(key: key);
+  const BookmarkLoadingView({super.key});
 
   @override
   Widget build(BuildContext context) {

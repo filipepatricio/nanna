@@ -86,11 +86,13 @@ void main() {
 }
 
 class FakeErrorExplorePageCubit extends Fake implements ExplorePageCubit {
-  @override
-  ExplorePageState get state => ExplorePageState.error();
+  final _state = const ExplorePageState.error();
 
   @override
-  Stream<ExplorePageState> get stream => Stream.value(ExplorePageState.error());
+  ExplorePageState get state => _state;
+
+  @override
+  Stream<ExplorePageState> get stream => Stream.value(_state);
 
   @override
   Future<void> initialize() async {}

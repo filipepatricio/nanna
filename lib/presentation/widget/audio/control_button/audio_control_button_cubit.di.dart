@@ -11,6 +11,8 @@ import 'package:better_informed_mobile/domain/audio/use_case/pause_audio_use_cas
 import 'package:better_informed_mobile/domain/audio/use_case/play_audio_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/prepare_audio_track_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
+import 'package:better_informed_mobile/presentation/util/connection_state_aware_cubit_mixin.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -28,6 +30,7 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
     this._trackArticleAudioPositionUseCase,
     this._audioPositionStreamUseCase,
     this._getArticleAudioProgressUseCase,
+    this._isInternetConnectionAvailableUseCase,
   );
 
   final PrepareArticleAudioTrackUseCase _prepareAudioTrackUseCase;
@@ -38,6 +41,7 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
   final TrackArticleAudioPositionUseCase _trackArticleAudioPositionUseCase;
   final AudioPositionStreamUseCase _audioPositionStreamUseCase;
   final GetArticleAudioProgressUseCase _getArticleAudioProgressUseCase;
+  final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
 
   MediaItemArticle? _article;
   String? _imageUrl;
@@ -59,6 +63,7 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
         _trackArticleAudioPositionUseCase,
         _audioPositionStreamUseCase,
         _getArticleAudioProgressUseCase,
+        _isInternetConnectionAvailableUseCase,
       );
     }
 
@@ -71,13 +76,14 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
       _trackArticleAudioPositionUseCase,
       _audioPositionStreamUseCase,
       _getArticleAudioProgressUseCase,
+      _isInternetConnectionAvailableUseCase,
       _article!,
       _imageUrl,
     );
   }
 }
 
-abstract class AudioControlButtonCubit extends Cubit<AudioControlButtonState> {
+abstract class AudioControlButtonCubit extends Cubit<AudioControlButtonState> with ConnectionStateAwareCubitMixin {
   AudioControlButtonCubit(
     this._prepareAudioTrackUseCase,
     this._playAudioUseCase,
@@ -87,6 +93,7 @@ abstract class AudioControlButtonCubit extends Cubit<AudioControlButtonState> {
     this._trackArticleAudioPositionUseCase,
     this._audioPositionStreamUseCase,
     this._getArticleAudioProgressUseCase,
+    this._isInternetConnectionAvailableUseCase,
   ) : super(AudioControlButtonState.loading());
 
   final PrepareArticleAudioTrackUseCase _prepareAudioTrackUseCase;
@@ -97,13 +104,29 @@ abstract class AudioControlButtonCubit extends Cubit<AudioControlButtonState> {
   final TrackArticleAudioPositionUseCase _trackArticleAudioPositionUseCase;
   final AudioPositionStreamUseCase _audioPositionStreamUseCase;
   final GetArticleAudioProgressUseCase _getArticleAudioProgressUseCase;
+  final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
+
+  @override
+  IsInternetConnectionAvailableUseCase get isInternetConnectionAvailableUseCase =>
+      _isInternetConnectionAvailableUseCase;
 
   StreamSubscription? _audioPlaybackSubscription;
   StreamSubscription? _audioPositionSubscription;
 
   var _currentPosition = Duration.zero;
 
+  @override
+  Future<void> onOffline(initialData) async {
+    state.maybeMap(
+      playing: (_) {},
+      paused: (_) {},
+      orElse: () => emit(AudioControlButtonState.offline()),
+    );
+  }
+
   Future<void> initialize() async {
+    await initializeConnection(null);
+
     await _audioPositionSubscription?.cancel();
     _audioPositionSubscription = _audioPositionStreamUseCase().listen((audioPosition) {
       _currentPosition = audioPosition.position;
@@ -132,6 +155,7 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
     TrackArticleAudioPositionUseCase trackArticleAudioPositionUseCase,
     AudioPositionStreamUseCase audioPositionStreamUseCase,
     GetArticleAudioProgressUseCase getArticleAudioProgressUseCase,
+    IsInternetConnectionAvailableUseCase isInternetConnectionAvailableUseCase,
   ) : super(
           prepareAudioTrackUseCase,
           playAudioUseCase,
@@ -141,10 +165,11 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
           trackArticleAudioPositionUseCase,
           audioPositionStreamUseCase,
           getArticleAudioProgressUseCase,
+          isInternetConnectionAvailableUseCase,
         );
 
   @override
-  Future<void> initialize() async {
+  Future<void> onOnline(initialData) async {
     await _audioPlaybackSubscription?.cancel();
     _audioPlaybackSubscription = _audioPlaybackStateStreamUseCase().listen((playbackState) {
       final newButtonState = playbackState.map(
@@ -156,6 +181,10 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
       );
       emit(newButtonState);
     });
+  }
+
+  @override
+  Future<void> initialize() async {
     await super.initialize();
   }
 
@@ -206,6 +235,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
     TrackArticleAudioPositionUseCase trackArticleAudioPositionUseCase,
     AudioPositionStreamUseCase audioPositionStreamUseCase,
     GetArticleAudioProgressUseCase getArticleAudioProgressUseCase,
+    IsInternetConnectionAvailableUseCase isInternetConnectionAvailableUseCase,
     this._article,
     this._imageUrl,
   ) : super(
@@ -217,13 +247,14 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
           trackArticleAudioPositionUseCase,
           audioPositionStreamUseCase,
           getArticleAudioProgressUseCase,
+          isInternetConnectionAvailableUseCase,
         );
 
   final MediaItemArticle _article;
   final String? _imageUrl;
 
   @override
-  Future<void> initialize() async {
+  Future<void> onOnline(initialData) async {
     await _audioPlaybackSubscription?.cancel();
     _audioPlaybackSubscription = _audioPlaybackStateStreamUseCase().listen((playbackState) {
       final newButtonState = playbackState.map(
@@ -239,7 +270,10 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
         emit(newButtonState);
       }
     });
+  }
 
+  @override
+  Future<void> initialize() async {
     await super.initialize();
   }
 

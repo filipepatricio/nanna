@@ -110,6 +110,31 @@ class InformedFilledButton extends StatelessWidget {
         withOutline: withOutline,
       );
 
+  factory InformedFilledButton.color({
+    required String text,
+    required Color fillColor,
+    required Color disableColor,
+    required Color textColor,
+    String? subtext,
+    bool isEnabled = true,
+    bool isLoading = false,
+    VoidCallback? onTap,
+    Widget? leading,
+    Widget? trailing,
+  }) =>
+      InformedFilledButton._(
+        text: text,
+        subtext: subtext,
+        isEnabled: isEnabled,
+        onTap: onTap,
+        fillColor: fillColor,
+        disableColor: disableColor,
+        textColor: textColor,
+        isLoading: isLoading,
+        leading: leading,
+        trailing: trailing,
+      );
+
   final String text;
   final String? subtext;
   final bool isEnabled;

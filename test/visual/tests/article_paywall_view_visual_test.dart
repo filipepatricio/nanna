@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/subscription/use_case/get_article_
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/content/article_content_markdown.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +38,7 @@ void main() {
                   article: article,
                   child: ArticleContentMarkdown(
                     markdown: article.shortText,
+                    categoryColor: article.metadata.category.color ?? AppColors.brandAccent,
                     shareTextCallback: (_) {},
                   ),
                 ),
@@ -77,6 +79,7 @@ void main() {
                   article: article,
                   child: ArticleContentMarkdown(
                     markdown: article.shortText,
+                    categoryColor: article.metadata.category.color ?? AppColors.brandAccent,
                     shareTextCallback: (_) {},
                   ),
                 ),

@@ -7,7 +7,9 @@ import 'package:better_informed_mobile/domain/article/exception/article_geoblock
 import 'package:better_informed_mobile/domain/article/use_case/get_article_header_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
+import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/trade_topid_id_for_slug_use_case.di.dart';
@@ -27,6 +29,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     this._tradeTopicIdForSlugUseCase,
     this._getActiveSubscriptionUseCase,
     this._shouldUsePaidSubscriptionsUseCase,
+    this._isInternetConnectionAvailableUseCase,
   ) : super(const MediaItemState.initializing());
 
   final GetArticleUseCase _getArticleUseCase;
@@ -35,8 +38,10 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   final TradeTopicIdForSlugUseCase _tradeTopicIdForSlugUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
   final ShouldUsePaidSubscriptionsUseCase _shouldUsePaidSubscriptionsUseCase;
+  final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
 
   late MediaItemArticle _currentArticle;
+  late String? _topicSlug;
   late String? _topicId;
   late String? _briefId;
 
@@ -47,12 +52,8 @@ class MediaItemCubit extends Cubit<MediaItemState> {
 
   @override
   Future<void> close() async {
-    await Future.wait(
-      [
-        _activeSubscriptionSub?.cancel(),
-        super.close(),
-      ].whereType(),
-    );
+    await _activeSubscriptionSub?.cancel();
+    await super.close();
   }
 
   Future<void> initialize(
@@ -68,26 +69,32 @@ class MediaItemCubit extends Cubit<MediaItemState> {
       return;
     }
 
+    _topicSlug = topicSlug;
+
     _topicId = topicId;
     _briefId = briefId;
 
+    await _initializeArticle(article, slug);
+  }
+
+  Future<void> _initializeArticle(MediaItemArticle? article, String? slug) async {
     if (article != null) {
-      await _initializeWithArticle(article, topicId);
+      await _initializeWithMetadata(article, topicId);
     } else if (slug != null) {
-      await _initializeWithSlug(slug, topicSlug);
+      await _initializeWithSlug(slug, _topicSlug);
     }
 
     await _setupSubscriptionListener();
   }
 
-  Future<void> _initializeWithArticle(MediaItemArticle article, String? topicId) async {
+  Future<void> _initializeWithMetadata(MediaItemArticle article, String? topicId) async {
     _currentArticle = article;
+    emit(MediaItemState.loading(article.category.color));
+
     _trackActivityUseCase.trackPage(AnalyticsPage.article(article.id, topicId));
 
-    emit(MediaItemState.loading(_currentArticle.category.color));
-
     if (article.type == ArticleType.free) {
-      emit(MediaItemState.idleFree(article));
+      await _loadFreeArticle(article);
       return;
     }
 
@@ -104,11 +111,13 @@ class MediaItemCubit extends Cubit<MediaItemState> {
       await _trackWithTopicSlug(article.id, topicSlug);
 
       if (article.type == ArticleType.free) {
-        emit(MediaItemState.idleFree(article));
+        await _loadFreeArticle(article);
         return;
       }
 
       await _loadPremiumArticle(article);
+    } on NoInternetConnectionException {
+      emit(MediaItemState.offline(article: _currentArticle));
     } catch (e, s) {
       Fimber.e('Fetching article header failed', ex: e, stacktrace: s);
       emit(const MediaItemState.emptyError());
@@ -124,6 +133,14 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     }
   }
 
+  Future<void> _loadFreeArticle(MediaItemArticle article) async {
+    if (await _isInternetConnectionAvailableUseCase()) {
+      emit(MediaItemState.idleFree(article));
+    } else {
+      emit(MediaItemState.offline(article: article));
+    }
+  }
+
   Future<void> _loadPremiumArticle(MediaItemArticle article) async {
     try {
       final fullArticle = await _getArticleUseCase(article);
@@ -131,9 +148,11 @@ class MediaItemCubit extends Cubit<MediaItemState> {
       emit(MediaItemState.idlePremium(fullArticle));
     } on ArticleGeoblockedException {
       emit(const MediaItemState.geoblocked());
+    } on NoInternetConnectionException {
+      emit(MediaItemState.offline(article: article));
     } catch (e, s) {
       Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
-      emit(MediaItemState.error(_currentArticle));
+      emit(MediaItemState.error(article));
     }
   }
 
@@ -170,10 +189,12 @@ class MediaItemCubit extends Cubit<MediaItemState> {
       } on ArticleGeoblockedException {
         shouldRefresh = false;
         emit(const MediaItemState.geoblocked());
+      } on NoInternetConnectionException {
+        emit(MediaItemState.offline(article: article));
       } catch (e, s) {
         shouldRefresh = false;
         Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
-        emit(MediaItemState.error(_currentArticle));
+        emit(MediaItemState.error(article));
       }
     }
   }

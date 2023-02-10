@@ -9,6 +9,9 @@ import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_cha
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/switch_bookmark_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/util/article_type_extension.dart';
 import 'package:better_informed_mobile/presentation/util/connection_state_aware_cubit_mixin.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -24,6 +27,7 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
     this._trackActivityUseCase,
     this._getBookmarkChangeStreamUseCase,
     this._isInternetConnectionAvailableUseCase,
+    this._hasActiveSubscriptionUseCase,
   ) : super(BookmarkButtonState.initializing());
 
   final GetBookmarkStateUseCase _getBookmarkStateUseCase;
@@ -31,6 +35,7 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
   final TrackActivityUseCase _trackActivityUseCase;
   final GetBookmarkChangeStreamUseCase _getBookmarkChangeStreamUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
+  final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
 
   StreamSubscription? _notifierSubscription;
 
@@ -107,14 +112,40 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
             if (fromUndo == true) {
               _trackBookmarkRemoveUndo(state.data);
             } else {
-              emit(BookmarkButtonState.bookmarkAdded());
+              _emitBookmarkAdded(state.data);
             }
           },
-          notBookmarked: (_) => emit(BookmarkButtonState.bookmarkRemoved()),
+          notBookmarked: (_) => emit(
+            BookmarkButtonState.bookmarkRemoved(
+              tr(
+                state.data.map(
+                  article: (_) => LocaleKeys.bookmark_removeArticle,
+                  topic: (_) => LocaleKeys.bookmark_removeTopic,
+                ),
+              ),
+            ),
+          ),
         );
 
         emit(BookmarkButtonState.idle(state.data, bookmarkState));
       },
+    );
+  }
+
+  Future<void> _emitBookmarkAdded(BookmarkTypeData bookmarkType) async {
+    final hasActiveSubscription = await _hasActiveSubscriptionUseCase();
+    emit(
+      BookmarkButtonState.bookmarkAdded(
+        tr(
+          bookmarkType.map(
+            article: (type) => hasActiveSubscription && type.type.isPremium
+                ? LocaleKeys.bookmark_addArticleSubscribed
+                : LocaleKeys.bookmark_addArticle,
+            topic: (type) =>
+                hasActiveSubscription ? LocaleKeys.bookmark_addTopicSubscribed : LocaleKeys.bookmark_addTopic,
+          ),
+        ),
+      ),
     );
   }
 

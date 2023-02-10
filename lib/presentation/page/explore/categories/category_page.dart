@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all_load_more_indicator.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
@@ -15,6 +16,7 @@ import 'package:better_informed_mobile/presentation/widget/audio/player_banner/a
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/category_preference_follow_button/category_preference_follow_button.dart';
+import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_sliver_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
@@ -95,6 +97,30 @@ class CategoryPage extends HookWidget {
                   ),
                   allLoaded: (state) => _List(
                     items: state.items,
+                  ),
+                  error: (value) => SliverPadding(
+                    padding: const EdgeInsets.symmetric(vertical: AppDimens.xl),
+                    sliver: SliverToBoxAdapter(
+                      child: Center(
+                        child: ErrorView.general(
+                          retryCallback: () {
+                            cubit.initialize(category.slug, category.items);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  offline: (value) => SliverPadding(
+                    padding: const EdgeInsets.symmetric(vertical: AppDimens.xl),
+                    sliver: SliverToBoxAdapter(
+                      child: Center(
+                        child: ErrorView.offline(
+                          retryCallback: () {
+                            cubit.initialize(category.slug, category.items);
+                          },
+                        ),
+                      ),
+                    ),
                   ),
                   orElse: () => const SliverToBoxAdapter(),
                 ),

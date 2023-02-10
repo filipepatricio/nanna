@@ -28,7 +28,7 @@ import 'package:better_informed_mobile/presentation/widget/audio/player_banner/a
 import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/curation/curation_info_view.dart';
-import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/owners_note.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
@@ -128,7 +128,7 @@ class _DailyBriefPage extends HookWidget {
                 ),
                 slivers: [
                   state.maybeMap(
-                    idle: (state) => DailyBriefScrollableAppBar(
+                    idle: (state) => DailyBriefAppBar(
                       showCalendar: state.showCalendar,
                       scrollController: scrollController,
                       briefDate: state.selectedBrief.date,
@@ -136,7 +136,7 @@ class _DailyBriefPage extends HookWidget {
                       showAppBarTitle: state.showAppBarTitle,
                       cubit: cubit,
                     ),
-                    loadingPastDay: (state) => DailyBriefScrollableAppBar(
+                    loadingPastDay: (state) => DailyBriefAppBar(
                       showCalendar: true,
                       scrollController: scrollController,
                       briefDate: state.selectedPastDay.date,
@@ -179,10 +179,15 @@ class _DailyBriefPage extends HookWidget {
                     ),
                     error: (_) => SliverFillRemaining(
                       child: Center(
-                        child: GeneralErrorView(
-                          title: LocaleKeys.common_error_title.tr(),
-                          content: LocaleKeys.common_error_body.tr(),
+                        child: ErrorView.general(
                           retryCallback: cubit.loadBriefs,
+                        ),
+                      ),
+                    ),
+                    offline: (_) => SliverFillRemaining(
+                      child: Center(
+                        child: ErrorView.offline(
+                          retryCallback: cubit.initialize,
                         ),
                       ),
                     ),

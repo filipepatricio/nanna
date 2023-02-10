@@ -39,7 +39,7 @@ class PaginationEngine<T> {
   }
 
   PaginationEngineState<T> _onDataLoaded(List<T> data, int requestedLimit) {
-    final allLoaded = data.length < requestedLimit;
+    final allLoaded = data.length != requestedLimit;
     _data.addAll(data);
 
     return PaginationEngineState(

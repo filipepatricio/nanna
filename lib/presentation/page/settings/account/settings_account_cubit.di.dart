@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/auth/use_case/sign_out_use_case.di.dart';
+import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/data/user.dart';
 import 'package:better_informed_mobile/domain/user/use_case/delete_account_use_case.di.dart';
@@ -34,7 +35,10 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     try {
       final user = await _getUserUseCase();
       await _setAccountData(user);
+    } on NoInternetConnectionException {
+      emit(const SettingsAccountState.offline());
     } catch (e, s) {
+      emit(const SettingsAccountState.error());
       Fimber.e('Querying user failed', ex: e, stacktrace: s);
     }
   }

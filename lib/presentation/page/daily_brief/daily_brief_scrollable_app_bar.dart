@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_past_days.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -7,12 +8,13 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
+import 'package:better_informed_mobile/presentation/widget/no_connection_banner/no_connection_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class DailyBriefScrollableAppBar extends HookWidget {
-  const DailyBriefScrollableAppBar({
+class DailyBriefAppBar extends HookWidget {
+  const DailyBriefAppBar({
     required this.scrollController,
     required this.briefDate,
     required this.pastDays,
@@ -77,9 +79,12 @@ class DailyBriefScrollableAppBar extends HookWidget {
             top: topPadding + AppDimens.sl,
             left: AppDimens.pageHorizontalMargin,
             right: AppDimens.pageHorizontalMargin,
+            bottom: context.watch<IsConnected>() ? AppDimens.zero : AppDimens.m,
           ),
           child: AnimatedOpacity(
-            duration: const Duration(milliseconds: AppAnimation.opacityDuration),
+            duration: const Duration(
+              milliseconds: AppAnimation.opacityDuration,
+            ),
             opacity: !showAppBarTitle ? 1 : 0,
             child: BriefDate(
               briefDate: briefDate,
@@ -91,6 +96,7 @@ class DailyBriefScrollableAppBar extends HookWidget {
           ),
         ),
       ),
+      bottom: context.watch<IsConnected>() ? null : const NoConnectionBanner(),
     );
   }
 }

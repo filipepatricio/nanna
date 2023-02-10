@@ -326,6 +326,11 @@
       "topics": "Deep Dives",
       "articles": "Articles"
     },
+    "banner": {
+      "title": "Take every article with you, wherever you go.",
+      "body": "Subscribe to informed and every article you save is downloaded to your device for offline reading.",
+      "action": "See plans"
+    },
     "emptyPage": {
       "title": "Nothing saved yet\n",
       "noAll": "When you save an article or Deep Dive, you'll find it here.",
@@ -354,8 +359,12 @@
     "author": "By {}"
   },
   "bookmark": {
-    "addBookmarkSuccess": "Saved to your Profile",
-    "removeBookmarkSuccess": "Removed from your Profile",
+    "addArticleSubscribed": "Downloading article to your Profile",
+    "addTopicSubscribed": "Downloading Deep Dive to your Profile",
+    "addArticle": "Article added to your Profile",
+    "addTopic": "Deep Dive added to your Profile",
+    "removeArticle": "Article removed from your Profile",
+    "removeTopic": "Deep Dive removed from your Profile",
     "sortBy": "Sort by",
     "bookmarkSortConfig": {
       "lastAdded": "Last Added",
@@ -365,11 +374,15 @@
     }
   },
   "noConnection": {
-    "title": "No Connection",
-    "body": "You seem to be offline. Please check your network connection to load content",
+    "banner": "No internet connection",
     "snackbar": {
       "message": "You’re offline",
       "subMessage": "You’ll need to be online to do that"
+    },
+    "errorView": {
+      "title": "Could not load content",
+      "body": "Check your internet connection",
+      "action": "Retry"
     }
   },
   "update": {

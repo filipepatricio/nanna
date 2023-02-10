@@ -14,5 +14,11 @@ class SettingsManageMyInterestsState with _$SettingsManageMyInterestsState {
     List<CategoryPreference> categoryPreferences,
   ) = SettingsManageMyInterestsStateLoaded;
 
+  @Implements<BuildState>()
+  const factory SettingsManageMyInterestsState.error() = SettingsManageMyInterestsStateError;
+
+  @Implements<BuildState>()
+  const factory SettingsManageMyInterestsState.offline() = SettingsManageMyInterestsStateOffline;
+
   const factory SettingsManageMyInterestsState.showMessage(String message) = SettingsManageMyInterestsStateShowMessage;
 }

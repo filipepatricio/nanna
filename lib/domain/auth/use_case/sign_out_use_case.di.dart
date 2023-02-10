@@ -1,11 +1,14 @@
 import 'package:better_informed_mobile/data/auth/api/refresh_token_service.di.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
+import 'package:better_informed_mobile/domain/article/article_local_repository.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/article_read_state_notifier.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
+import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
+import 'package:better_informed_mobile/domain/topic/topics_local_repository.dart';
 import 'package:better_informed_mobile/domain/user/user_local_repository.dart';
 import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:get_it/get_it.dart';
@@ -23,6 +26,9 @@ class SignOutUseCase {
     this._purchasesRepository,
     this._articleRepository,
     this._userLocalRepository,
+    this._articleLocalRepository,
+    this._topicsLocalRepository,
+    this._bookmarkLocalRepository,
     this._getIt,
   );
   final AuthStore _authStore;
@@ -34,6 +40,9 @@ class SignOutUseCase {
   final PurchasesRepository _purchasesRepository;
   final ArticleRepository _articleRepository;
   final UserLocalRepository _userLocalRepository;
+  final ArticleLocalRepository _articleLocalRepository;
+  final TopicsLocalRepository _topicsLocalRepository;
+  final BookmarkLocalRepository _bookmarkLocalRepository;
   final GetIt _getIt;
 
   Future<void> call() async {
@@ -41,6 +50,10 @@ class SignOutUseCase {
     _pushNotificationRepository.dispose();
     _purchasesRepository.dispose();
     _articleRepository.dispose();
+
+    await _articleLocalRepository.deleteAll();
+    await _topicsLocalRepository.deleteAll();
+    await _bookmarkLocalRepository.deleteAll();
 
     await _userLocalRepository.deleteUser();
     await _pushNotificationStore.clear();

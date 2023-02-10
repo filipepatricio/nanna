@@ -7,31 +7,34 @@ part 'explore_page_state.dt.freezed.dart';
 @Freezed(toJson: false)
 class ExplorePageState with _$ExplorePageState {
   @Implements<BuildState>()
-  factory ExplorePageState.initialLoading() = _ExplorePageStateInitialLoading;
+  const factory ExplorePageState.initialLoading() = _ExplorePageStateInitialLoading;
 
   @Implements<BuildState>()
-  factory ExplorePageState.idle(
+  const factory ExplorePageState.idle(
     List<ExploreItem> items,
   ) = _ExplorePageStateIdle;
 
   @Implements<BuildState>()
-  factory ExplorePageState.error() = _ExplorePageStateError;
+  const factory ExplorePageState.error() = _ExplorePageStateError;
 
   @Implements<BuildState>()
-  factory ExplorePageState.search() = _ExplorePageStateSearch;
+  const factory ExplorePageState.offline() = _ExplorePageStateOffline;
 
   @Implements<BuildState>()
-  factory ExplorePageState.searchHistory(List<String> searchHistory) = _ExplorePageStateSearchHistory;
+  const factory ExplorePageState.search() = _ExplorePageStateSearch;
 
-  factory ExplorePageState.searchHistoryUpdated() = _ExplorePageStateSearchHistoryUpdated;
+  @Implements<BuildState>()
+  const factory ExplorePageState.searchHistory(List<String> searchHistory) = _ExplorePageStateSearchHistory;
 
-  factory ExplorePageState.searchHistoryQueryTapped(String query) = _ExplorePageStateSearchHistoryQueryTapped;
+  const factory ExplorePageState.searchHistoryUpdated() = _ExplorePageStateSearchHistoryUpdated;
 
-  factory ExplorePageState.startTyping() = _ExplorePageStateStartTyping;
+  const factory ExplorePageState.searchHistoryQueryTapped(String query) = _ExplorePageStateSearchHistoryQueryTapped;
 
-  factory ExplorePageState.startSearching() = _ExplorePageStateStartSearching;
+  const factory ExplorePageState.startTyping() = _ExplorePageStateStartTyping;
 
-  factory ExplorePageState.startExploring() = _ExplorePageStateStartExploring;
+  const factory ExplorePageState.startSearching() = _ExplorePageStateStartSearching;
 
-  factory ExplorePageState.showTutorialToast(String text) = _ExplorePageStateShowTutorialToast;
+  const factory ExplorePageState.startExploring() = _ExplorePageStateStartExploring;
+
+  const factory ExplorePageState.showTutorialToast(String text) = _ExplorePageStateShowTutorialToast;
 }

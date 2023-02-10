@@ -4,7 +4,8 @@ import 'package:better_informed_mobile/presentation/page/settings/account/settin
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,8 @@ class SettingsAccountPage extends HookWidget {
     );
 
     return Scaffold(
-      appBar: InformedCupertinoAppBar(
+      appBar: InformedAppBar(
+        isConnected: context.watch<IsConnected>(),
         leading: BackTextButton(
           text: LocaleKeys.settings_settings.tr(),
         ),
@@ -45,6 +47,16 @@ class SettingsAccountPage extends HookWidget {
             state: state,
             modifiedData: data.data,
             originalData: data.original,
+          ),
+          error: (value) => Center(
+            child: ErrorView.general(
+              retryCallback: cubit.initialize,
+            ),
+          ),
+          offline: (value) => Center(
+            child: ErrorView.offline(
+              retryCallback: cubit.initialize,
+            ),
           ),
           orElse: () => const SizedBox.shrink(),
         ),

@@ -21,7 +21,7 @@ class _ArticleCoverMedium extends ArticleCover {
   @override
   Widget build(BuildContext context) {
     final coverWidth = useMemoized(
-      () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
+      () => AppDimens.coverSize(context, AppDimens.coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
     );
 
@@ -52,8 +52,13 @@ class _ArticleCoverMedium extends ArticleCover {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: ArticleProgressOpacity(
-                    article: state.map(initializing: (_) => article, idle: (state) => state.article),
+                  child: _ArticleOpacity(
+                    article: state.map(
+                      initializing: (_) => article,
+                      idle: (state) => state.article,
+                      offline: (state) => state.article,
+                    ),
+                    available: state.maybeMap(offline: (_) => false, orElse: () => true),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -70,25 +75,38 @@ class _ArticleCoverMedium extends ArticleCover {
                   ),
                 ),
                 const SizedBox(width: AppDimens.m),
-                _ArticleAspectRatioCover(
+                _ArticleAspectRatioImageCover(
                   article: article,
                   coverColor: article.category.color,
-                  aspectRatio: _articleSmallCoverAspectRatio,
+                  aspectRatio: AppDimens.articleSmallCoverAspectRatio,
                   width: coverWidth,
+                  available: state.maybeMap(offline: (_) => false, orElse: () => true),
                 ),
               ],
             ),
             if (articleNote != null && article.shouldShowArticleCoverNote && showNote) ...[
               const SizedBox(height: AppDimens.m),
-              OwnersNote(
-                note: articleNote,
-                showRecommendedBy: showRecommendedBy,
-                curationInfo: article.curationInfo,
+              _ArticleOpacity(
+                article: state.map(
+                  initializing: (_) => article,
+                  idle: (state) => state.article,
+                  offline: (state) => state.article,
+                ),
+                available: state.maybeMap(offline: (_) => false, orElse: () => true),
+                child: OwnersNote(
+                  note: articleNote,
+                  showRecommendedBy: showRecommendedBy,
+                  curationInfo: article.curationInfo,
+                ),
               ),
             ],
             const SizedBox(height: AppDimens.sl),
             ArticleMetadataRow(
-              article: state.map(initializing: (_) => article, idle: (state) => state.article),
+              article: state.map(
+                initializing: (_) => article,
+                idle: (state) => state.article,
+                offline: (state) => state.article,
+              ),
               isNew: isNew,
               onBookmarkTap: onBookmarkTap,
             ),

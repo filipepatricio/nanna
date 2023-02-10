@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_sort_option_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/store_last_selected_sort_option_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -21,7 +22,9 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   final StoreLastSelectedSortOptionUseCase _storeLastSelectedSortOptionUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
 
-  StreamSubscription? _activeSubscriptionSub;
+  late bool _hasActiveSubscription;
+
+  StreamSubscription<ActiveSubscription>? _activeSubscriptionSub;
 
   @override
   Future<void> close() async {
@@ -31,12 +34,21 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
 
   Future<void> initialize() async {
     final sortConfig = await _getBookmarkSortOptionUseCase();
-    emit(ProfilePageState.idle(BookmarkFilter.all, sortConfig));
+    _hasActiveSubscription = (await _getActiveSubscriptionUseCase()).isPremium;
 
-    _activeSubscriptionSub = _getActiveSubscriptionUseCase.stream.listen((event) async {
+    emit(ProfilePageState.idle(BookmarkFilter.all, sortConfig, _hasActiveSubscription));
+
+    _activeSubscriptionSub = _getActiveSubscriptionUseCase.stream.listen((subscription) async {
+      _hasActiveSubscription = subscription.isPremium;
+
       state.mapOrNull(
         idle: (state) {
-          emit(state.copyWith(version: state.version + 1));
+          emit(
+            state.copyWith(
+              version: state.version + 1,
+              hasActiveSubscription: _hasActiveSubscription,
+            ),
+          );
         },
       );
     });

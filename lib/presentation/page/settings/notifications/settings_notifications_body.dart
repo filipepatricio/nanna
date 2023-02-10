@@ -8,7 +8,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
-import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -43,7 +43,7 @@ class SettingsNotificationsBody extends HookWidget {
                         Radius.circular(AppDimens.s),
                       ),
                     ),
-                    child: GeneralErrorView(
+                    child: ErrorView(
                       title: LocaleKeys.settings_notifications_noPermissionTitle.tr(),
                       content: LocaleKeys.settings_notifications_noPermissionContent.tr(),
                       action: LocaleKeys.settings_notifications_noPermissionAction.tr(),

@@ -62,6 +62,7 @@ class SmallTopicsAreaView extends HookWidget {
           areaId: area.id,
           title: area.title,
           topics: area.topics,
+          areaBackgroundColor: area.backgroundColor != null ? Color(area.backgroundColor!) : null,
           referred: ExploreAreaReferred.highlightedStream,
         ),
       );
