@@ -503,6 +503,8 @@ class MockDTO {
     'Location, Location, Location: Investing in Real Estate in the Metaverse',
     // note
     null,
+    // isNoteCollapsible
+    false,
     // type
     ArticleTypeDTO.free,
     // kind
@@ -558,6 +560,15 @@ class MockDTO {
     slug: 'slug-premium',
     type: ArticleTypeDTO.premium,
     image: _articleImageCloudinary,
+    locked: true,
+  );
+
+  static final premiumArticleNoteCollapsible = _freeArticle.copyWith(
+    id: 'id-premium-collapsible',
+    slug: 'slug-premium-collapsible',
+    type: ArticleTypeDTO.premium,
+    image: _articleImageCloudinary,
+    isNoteCollapsible: true,
     locked: true,
   );
 
@@ -1158,6 +1169,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
     String? title,
     String? strippedTitle,
     String? note,
+    bool? isNoteCollapsible,
     String? credits,
     ArticleTypeDTO? type,
     ArticleKindDTO? kind,
@@ -1182,6 +1194,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       title ?? this.title,
       strippedTitle ?? this.strippedTitle,
       note ?? this.note,
+      isNoteCollapsible ?? this.isNoteCollapsible,
       type ?? this.type,
       kind ?? this.kind,
       publicationDate ?? this.publicationDate,
@@ -1208,6 +1221,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       title,
       strippedTitle,
       note,
+      isNoteCollapsible,
       type,
       kind,
       publicationDate,
@@ -1234,6 +1248,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       title,
       strippedTitle,
       note,
+      isNoteCollapsible,
       type,
       kind,
       publicationDate,

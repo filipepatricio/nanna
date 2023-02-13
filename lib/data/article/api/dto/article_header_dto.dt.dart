@@ -19,6 +19,7 @@ class ArticleHeaderDTO {
     this.title,
     this.strippedTitle,
     this.note,
+    this.isNoteCollapsible,
     this.type,
     this.kind,
     this.publicationDate,
@@ -44,6 +45,7 @@ class ArticleHeaderDTO {
   final String title;
   final String strippedTitle;
   final String? note;
+  final bool isNoteCollapsible;
   final ArticleTypeDTO type;
   final ArticleKindDTO? kind;
   final String? publicationDate;
