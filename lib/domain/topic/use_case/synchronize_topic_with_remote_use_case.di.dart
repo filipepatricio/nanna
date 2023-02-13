@@ -30,6 +30,7 @@ class SynchronizeTopicWithRemoteUseCase extends SynchronizeWithRemoteUsecase<Top
         .where((element) => element.type == ArticleType.premium)
         .map(
           (article) => Synchronizable<Article>.notSynchronized(
+            data: null,
             dataId: article.slug,
             expirationDate: synchronizable.expirationDate,
             createdAt: synchronizable.createdAt,

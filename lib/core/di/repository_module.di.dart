@@ -33,6 +33,16 @@ abstract class RepositoryModule {
   //   return TopicsHiveLocalRepository.create(topicEntityMapper);
   // }
 
+  // @dev
+  // @test
+  // @prod
+  // @Environment(integrationProdTestName)
+  // @Environment(integrationStageTestName)
+  // @preResolve
+  // Future<ArticleProgressLocalRepository> getTopicsLocalRepository(SynchronizableArticleProgressEntityMapper mapper) {
+  //   return ArticleProgressHiveLocalRepository.create(mapper);
+  // }
+
   @dev
   @test
   @prod

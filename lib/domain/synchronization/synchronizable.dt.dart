@@ -14,6 +14,7 @@ class Synchronizable<T> with _$Synchronizable<T> {
   }) = Synchronized<T>;
 
   factory Synchronizable.notSynchronized({
+    required T? data,
     required String dataId,
     required DateTime createdAt,
     required DateTime expirationDate,
@@ -33,10 +34,15 @@ class Synchronizable<T> with _$Synchronizable<T> {
     );
   }
 
-  static Synchronizable<T> createNotSynchronized<T>(String dataId, Duration timeToExpire) {
+  static Synchronizable<T> createNotSynchronized<T>(
+    String dataId,
+    Duration timeToExpire, [
+    T? data,
+  ]) {
     final date = clock.now();
 
     return Synchronizable<T>.notSynchronized(
+      data: data,
       dataId: dataId,
       createdAt: date,
       expirationDate: date.add(timeToExpire),
@@ -44,13 +50,6 @@ class Synchronizable<T> with _$Synchronizable<T> {
   }
 
   bool get isExpired => expirationDate.isBefore(clock.now());
-
-  T? get maybeData {
-    return map(
-      synchronized: (synchronized) => synchronized.data,
-      notSynchronized: (_) => null,
-    );
-  }
 
   DateTime? get maybeSynchronizedAt {
     return map(

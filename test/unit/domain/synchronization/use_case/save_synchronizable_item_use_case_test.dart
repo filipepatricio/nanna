@@ -90,9 +90,9 @@ void main() {
         repository.save(
           argThat(
             isA<Synchronizable<String>>().having(
-              (s) => s.maybeData,
+              (s) => s.data,
               'data',
-              item.maybeData,
+              item.data,
             ),
           ),
         ),
@@ -115,9 +115,9 @@ void main() {
         repository.save(
           argThat(
             isA<Synchronizable<String>>().having(
-              (s) => s.maybeData,
+              (s) => s.data,
               'data',
-              existingItem2.maybeData,
+              existingItem2.data,
             ),
           ),
         ),

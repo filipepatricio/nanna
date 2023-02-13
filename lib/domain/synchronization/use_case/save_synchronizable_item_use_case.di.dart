@@ -20,7 +20,7 @@ class SaveSynchronizableItemUseCase {
   Synchronizable<T> _mergeData<T>(Synchronizable<T> item, Synchronizable<T> existingItem) {
     final longerExpirationDate =
         item.expirationDate.isAfter(existingItem.expirationDate) ? item.expirationDate : existingItem.expirationDate;
-    final data = item.maybeData ?? existingItem.maybeData;
+    final data = item.data ?? existingItem.data;
     final synchronizedAt = item.maybeSynchronizedAt ?? existingItem.maybeSynchronizedAt;
 
     if (data != null && synchronizedAt != null) {
@@ -33,6 +33,7 @@ class SaveSynchronizableItemUseCase {
       );
     } else {
       return Synchronizable.notSynchronized(
+        data: data,
         dataId: existingItem.dataId,
         createdAt: existingItem.createdAt,
         expirationDate: longerExpirationDate,
