@@ -24,6 +24,7 @@ import 'package:better_informed_mobile/presentation/util/images.dart';
 import 'package:better_informed_mobile/presentation/util/markdown_util.dart';
 import 'package:better_informed_mobile/presentation/util/platform_util.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/accent_border_container.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
@@ -32,6 +33,7 @@ import 'package:better_informed_mobile/presentation/widget/curation/curation_inf
 import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
@@ -84,6 +86,7 @@ class _DailyBriefPage extends HookWidget {
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
     final cloudinaryProvider = useCloudinaryProvider();
+    final snackbarController = useSnackbarController();
 
     useEffect(
       () {
@@ -105,12 +108,24 @@ class _DailyBriefPage extends HookWidget {
             );
           }
         },
+        hasBeenUpdated: () {
+          snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: LocaleKeys.dailyBrief_refreshSnackBar_message.tr(),
+              type: SnackbarMessageType.info,
+              action: SnackbarAction(
+                label: LocaleKeys.dailyBrief_refreshSnackBar_action.tr(),
+                callback: () => cubit.refetchBriefs(),
+              ),
+            ),
+          );
+        },
       );
     });
 
     useOnAppLifecycleStateChange((previous, current) {
       if (current == AppLifecycleState.resumed) {
-        cubit.refetchBriefs();
+        cubit.shouldRefreshBrief();
       }
     });
 

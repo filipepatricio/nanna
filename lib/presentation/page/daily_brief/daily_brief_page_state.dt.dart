@@ -50,4 +50,6 @@ class DailyBriefPageState with _$DailyBriefPageState {
       _DailyBriefPageStatePreCacheImages;
 
   factory DailyBriefPageState.showPaywall() = _DailyBriefPageStateShowPaywall;
+
+  factory DailyBriefPageState.hasBeenUpdated() = _DailyBriefPageStateHasBeenUpdated;
 }

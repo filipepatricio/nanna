@@ -80,6 +80,10 @@
       "byLine": "Curated by",
       "name": "informed",
       "bio": "We are a group of dedicated journalists who have written for a variety of respected publications and bring decades of combined experience. Although we have different backgrounds, we believe in a common cause: breaking through filter bubbles and providing readers with the facts and variety of perspectives they need to understand a complex world."
+    },
+    "refreshSnackBar": {
+      "message": "Your Daily Brief has new updates",
+      "action": "Refresh"
     }
   },
   "date": {

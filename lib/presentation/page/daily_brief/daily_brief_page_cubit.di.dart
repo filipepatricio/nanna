@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:better_informed_mobile/data/push_notification/badge_push_notificaiton.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/mark_article_as_seen_use_case.di.dart';
@@ -24,6 +25,7 @@ import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/main.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -31,9 +33,12 @@ import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 const _minVisibilityToTrack = 0.9;
@@ -77,6 +82,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
   late BriefsWrapper _briefsWrapper;
+  late SharedPreferences _sharedPreferences;
   Brief? _selectedBrief;
 
   StreamSubscription? _dataRefreshSubscription;
@@ -102,7 +108,25 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   }
 
   Future<void> initialize() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
     await loadBriefs();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      final reasonValue = message.data[reasonKey];
+      if (reasonValue == null) {
+        return;
+      }
+
+      final reason = BadgeCountReason.values.firstWhere((e) => e.value == reasonValue);
+
+      switch (reason) {
+        case BadgeCountReason.briefEntriesUpdated:
+          emit(DailyBriefPageState.hasBeenUpdated());
+          break;
+        default:
+          break;
+      }
+    });
 
     _currentBriefSubscription ??= _getCurrentBriefUseCase.stream.listen((currentBriefWrapper) {
       _briefsWrapper = currentBriefWrapper;
@@ -129,6 +153,13 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
+  void shouldRefreshBrief() {
+    final shouldRefreshBrief = _sharedPreferences.get(shouldRefreshBriefKey);
+    if (shouldRefreshBrief != null && shouldRefreshBrief == true) {
+      emit(DailyBriefPageState.hasBeenUpdated());
+    }
+  }
+
   Future<void> initializeTutorialSnackBar() async {
     final isDailyBriefTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     if (!isDailyBriefTutorialStepSeen) {
@@ -150,7 +181,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
         _selectedBrief = await _getPastDaysBriefUseCase(_selectedBrief!.date);
       }
 
-      _updateIdleState();
+      await _updateIdleState();
     } on NoInternetConnectionException {
       emit(DailyBriefPageState.offline());
     } catch (e) {
@@ -164,7 +195,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     try {
       _briefsWrapper = await _getCurrentBriefUseCase();
       _selectedBrief = _briefsWrapper.currentBrief;
-      _updateIdleState(preCacheImages: true);
+      await _updateIdleState(preCacheImages: true);
     } on NoInternetConnectionException {
       emit(DailyBriefPageState.offline());
     } catch (e, s) {
@@ -173,7 +204,9 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
-  void _updateIdleState({bool preCacheImages = false}) {
+  Future<void> _updateIdleState({bool preCacheImages = false}) async {
+    await FlutterAppBadger.removeBadge();
+    await _sharedPreferences.setBool(shouldRefreshBriefKey, false);
     if (_selectedBrief != null) {
       emit(
         DailyBriefPageState.idle(
@@ -243,7 +276,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       ),
     );
 
-    _updateIdleState(preCacheImages: true);
+    await _updateIdleState(preCacheImages: true);
   }
 
   void trackRelaxPage() {
