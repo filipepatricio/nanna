@@ -150,7 +150,10 @@ class _DailyBriefPage extends HookWidget {
                       showAppBarTitle: state.showAppBarTitle,
                       cubit: cubit,
                     ),
-                    orElse: () => const SliverToBoxAdapter(),
+                    orElse: () => DailyBriefAppBar.disabled(
+                      scrollController: scrollController,
+                      cubit: cubit,
+                    ),
                   ),
                   state.maybeMap(
                     idle: (state) => SliverPinnedHeader(
@@ -174,7 +177,7 @@ class _DailyBriefPage extends HookWidget {
                         isInLoadingState: true,
                       ),
                     ),
-                    orElse: SliverAppBar.new,
+                    orElse: SliverToBoxAdapter.new,
                   ),
                   state.maybeMap(
                     idle: (state) => _IdleContent(

@@ -21,8 +21,22 @@ class DailyBriefAppBar extends HookWidget {
     required this.cubit,
     required this.showCalendar,
     required this.showAppBarTitle,
+    this.enabled = true,
     Key? key,
   }) : super(key: key);
+
+  DailyBriefAppBar.disabled({
+    required ScrollController scrollController,
+    required DailyBriefPageCubit cubit,
+  }) : this(
+          scrollController: scrollController,
+          cubit: cubit,
+          briefDate: DateTime.now(),
+          pastDays: BriefPastDays([]),
+          showAppBarTitle: true,
+          showCalendar: false,
+          enabled: false,
+        );
 
   final ScrollController scrollController;
   final DateTime briefDate;
@@ -30,6 +44,7 @@ class DailyBriefAppBar extends HookWidget {
   final DailyBriefPageCubit cubit;
   final bool showCalendar;
   final bool showAppBarTitle;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +74,7 @@ class DailyBriefAppBar extends HookWidget {
       pinned: true,
       centerTitle: true,
       elevation: showCalendar ? 0 : 1.0,
+      toolbarHeight: kToolbarHeight,
       expandedHeight: AppDimens.appBarHeight,
       title: AnimatedOpacity(
         duration: const Duration(milliseconds: AppAnimation.opacityDuration),
@@ -71,31 +87,33 @@ class DailyBriefAppBar extends HookWidget {
           onTap: () => cubit.toggleCalendar(!showCalendar),
         ),
       ),
-      flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.pin,
-        background: Container(
-          color: AppColors.of(context).backgroundPrimary,
-          padding: EdgeInsets.only(
-            top: topPadding + AppDimens.sl,
-            left: AppDimens.pageHorizontalMargin,
-            right: AppDimens.pageHorizontalMargin,
-            bottom: context.watch<IsConnected>() ? AppDimens.zero : AppDimens.m,
-          ),
-          child: AnimatedOpacity(
-            duration: const Duration(
-              milliseconds: AppAnimation.opacityDuration,
-            ),
-            opacity: !showAppBarTitle ? 1 : 0,
-            child: BriefDate(
-              briefDate: briefDate,
-              isTitle: false,
-              showCalendar: showCalendar,
-              showCalendarButton: pastDays.days.isNotEmpty,
-              onTap: () => cubit.toggleCalendar(!showCalendar),
-            ),
-          ),
-        ),
-      ),
+      flexibleSpace: enabled
+          ? FlexibleSpaceBar(
+              collapseMode: CollapseMode.pin,
+              background: Container(
+                color: AppColors.of(context).backgroundPrimary,
+                padding: EdgeInsets.only(
+                  top: topPadding + AppDimens.sl,
+                  left: AppDimens.pageHorizontalMargin,
+                  right: AppDimens.pageHorizontalMargin,
+                  bottom: context.watch<IsConnected>() ? AppDimens.zero : AppDimens.m,
+                ),
+                child: AnimatedOpacity(
+                  duration: const Duration(
+                    milliseconds: AppAnimation.opacityDuration,
+                  ),
+                  opacity: !showAppBarTitle ? 1 : 0,
+                  child: BriefDate(
+                    briefDate: briefDate,
+                    isTitle: false,
+                    showCalendar: showCalendar,
+                    showCalendarButton: pastDays.days.isNotEmpty,
+                    onTap: () => cubit.toggleCalendar(!showCalendar),
+                  ),
+                ),
+              ),
+            )
+          : null,
       bottom: context.watch<IsConnected>() ? null : const NoConnectionBanner(),
     );
   }
@@ -119,34 +137,42 @@ class BriefDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            DateFormatUtil.currentBriefDate(briefDate),
-            style: isTitle ? AppTypography.h4Medium.copyWith(height: 2) : AppTypography.sansTitleLargeLausanne,
-          ),
-          Visibility(
-            visible: showCalendarButton,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: AppDimens.s,
-                top: isTitle ? AppDimens.s : AppDimens.zero,
-              ),
-              child: AnimatedRotation(
-                turns: showCalendar ? 0.5 : 1,
-                duration: const Duration(milliseconds: AppAnimation.calendarBriefDuration),
-                child: InformedSvg(
-                  AppVectorGraphics.chevronDown,
-                  color: Theme.of(context).iconTheme.color,
-                  height: isTitle ? AppDimens.m : AppDimens.l,
-                ),
-              ),
+    final shouldUseBottomPadding = !context.watch<IsConnected>() && !isTitle;
+
+    return Padding(
+      padding: shouldUseBottomPadding ? const EdgeInsets.only(bottom: AppDimens.s) : EdgeInsets.zero,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              DateFormatUtil.currentBriefDate(briefDate),
+              style: isTitle ? AppTypography.h4Medium.copyWith(height: 2) : AppTypography.sansTitleLargeLausanne,
             ),
-          ),
-        ],
+            AnimatedSize(
+              duration: const Duration(milliseconds: 200),
+              child: showCalendarButton
+                  ? Padding(
+                      padding: EdgeInsets.only(
+                        left: AppDimens.s,
+                        top: isTitle ? AppDimens.s : AppDimens.zero,
+                      ),
+                      child: AnimatedRotation(
+                        turns: showCalendar ? 0.5 : 1,
+                        duration: const Duration(milliseconds: AppAnimation.calendarBriefDuration),
+                        child: InformedSvg(
+                          AppVectorGraphics.chevronDown,
+                          color: Theme.of(context).iconTheme.color,
+                          height: isTitle ? AppDimens.m : AppDimens.l,
+                        ),
+                      ),
+                    )
+                  : null,
+            ),
+          ],
+        ),
       ),
     );
   }

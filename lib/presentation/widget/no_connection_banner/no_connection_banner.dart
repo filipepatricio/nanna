@@ -9,7 +9,6 @@ class NoConnectionBanner extends HookWidget implements PreferredSizeWidget {
   const NoConnectionBanner({super.key});
 
   static const height = 34.0;
-  static const appBarHeight = height - AppDimens.s;
 
   @override
   Size get preferredSize => const Size(double.infinity, height);
@@ -17,6 +16,7 @@ class NoConnectionBanner extends HookWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: height,
       color: AppColors.stateTextPrimary,
       padding: const EdgeInsets.all(AppDimens.s),
       child: Center(
