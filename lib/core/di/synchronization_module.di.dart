@@ -1,5 +1,8 @@
 import 'package:better_informed_mobile/domain/article/article_local_repository.dart';
+import 'package:better_informed_mobile/domain/article/article_progress_local_repository.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
+import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
+import 'package:better_informed_mobile/domain/article/use_case/synchroniza_article_progress_with_remote_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/synchronize_article_with_remote_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
@@ -16,8 +19,10 @@ abstract class SynchronizationModule {
     BookmarkLocalRepository bookmarkLocalRepository,
     TopicsLocalRepository topicsLocalRepository,
     ArticleLocalRepository articleLocalRepository,
+    ArticleProgressLocalRepository articleProgressLocalRepository,
     SynchronizeTopicWithRemoteUseCase synchronizeTopicWithRemoteUseCase,
     SynchronizeArticleWithRemoteUseCase synchronizeArticleWithRemoteUseCase,
+    SynchronizaArticleProgressWithRemoteUseCase synchronizaArticleProgressWithRemoteUseCase,
   ) {
     return [
       SynchronizableGroup<Bookmark>(
@@ -31,6 +36,10 @@ abstract class SynchronizationModule {
       SynchronizableGroup<Article>(
         articleLocalRepository,
         synchronizeArticleWithRemoteUseCase,
+      ),
+      SynchronizableGroup<ArticleProgress>(
+        articleProgressLocalRepository,
+        synchronizaArticleProgressWithRemoteUseCase,
       ),
     ];
   }

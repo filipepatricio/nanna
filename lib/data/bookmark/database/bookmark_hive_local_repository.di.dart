@@ -2,6 +2,7 @@
 
 import 'package:better_informed_mobile/data/bookmark/database/entity/bookmark_entity.hv.dart';
 import 'package:better_informed_mobile/data/bookmark/database/entity/bookmark_sort_config_name_entity.dart';
+import 'package:better_informed_mobile/data/bookmark/database/entity/synchronizable_bookmark_entity.hv.dart';
 import 'package:better_informed_mobile/data/bookmark/database/mapper/bookmark_sort_config_name_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/bookmark/database/mapper/synchronizable_bookmark_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/synchronization/database/entity/synchronizable_entity.hv.dart';
@@ -10,6 +11,7 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
 import 'package:better_informed_mobile/domain/synchronization/synchronizable.dt.dart';
 import 'package:hive/hive.dart';
+import 'package:rxdart/rxdart.dart';
 
 const _miscellaneousBoxName = 'bookmark_sort';
 const _sortKey = 'entity';
@@ -61,53 +63,49 @@ class BookmarkHiveLocalRepository implements BookmarkLocalRepository {
 
   @override
   Future<DateTime?> loadLastSynchronizationTime() async {
-    // final entity = _miscellaneousBox.get(_synchronizationTimeKey);
-    // if (entity == null) return null;
+    final entity = _miscellaneousBox.get(_synchronizationTimeKey);
+    if (entity == null) return null;
 
-    // return DateTime.parse(entity);
-    return DateTime.now();
+    return DateTime.parse(entity);
   }
 
   @override
   Future<void> saveSynchronizationTime(DateTime synchronizedAt) async {
-    // await _miscellaneousBox.put(_synchronizationTimeKey, synchronizedAt.toIso8601String());
+    await _miscellaneousBox.put(_synchronizationTimeKey, synchronizedAt.toIso8601String());
   }
 
   @override
   Future<void> delete(String id) async {
-    // await _bookmarkBox.delete(id);
+    await _bookmarkBox.delete(id);
   }
 
   @override
   Future<Synchronizable<Bookmark>?> load(String id) async {
-    // final entity = await _bookmarkBox.get(id);
-    // if (entity == null) return null;
+    final entity = await _bookmarkBox.get(id);
+    if (entity == null) return null;
 
-    // return _synchronizableBookmarkEntityMapper.to(entity);
-    return null;
+    return _synchronizableBookmarkEntityMapper.to(entity);
   }
 
   @override
   Future<void> save(Synchronizable<Bookmark> bookmark) async {
-    // final entity = _synchronizableBookmarkEntityMapper.from(bookmark);
-    // await _bookmarkBox.put(entity.dataId, entity);
+    final entity = _synchronizableBookmarkEntityMapper.from(bookmark);
+    await _bookmarkBox.put(entity.dataId, entity);
   }
 
   @override
   Future<List<Synchronizable<Bookmark>>> getAllBookmarks() async {
-    // final keys = _bookmarkBox.keys;
-    // final entities = await Stream.fromIterable(keys)
-    //     .asyncMap((value) => _bookmarkBox.get(value))
-    //     .whereType<SynchronizableBookmarkEntity>()
-    //     .toList();
-    // return entities.map(_synchronizableBookmarkEntityMapper.to).toList();
-    return [];
+    final keys = _bookmarkBox.keys;
+    final entities = await Stream.fromIterable(keys)
+        .asyncMap((value) => _bookmarkBox.get(value))
+        .whereType<SynchronizableBookmarkEntity>()
+        .toList();
+    return entities.map(_synchronizableBookmarkEntityMapper.to).toList();
   }
 
   @override
   Future<List<String>> getAllIds() async {
-    // return _bookmarkBox.keys.cast<String>().toList();
-    return [];
+    return _bookmarkBox.keys.cast<String>().toList();
   }
 
   @override
