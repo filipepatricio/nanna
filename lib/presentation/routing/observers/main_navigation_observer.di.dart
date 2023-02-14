@@ -19,7 +19,12 @@ class MainNavigationObserver extends AutoRouterObserver {
   @override
   void didPop(Route route, Route? previousRoute) {
     switch (route.settings.name) {
-      case TopicPage.name:
+      case MediaItemPageRoute.name:
+        final args = route.settings.arguments as MediaItemPageRouteArgs;
+        if (args.briefId != null) {
+          _updateBriefNotifierUseCase();
+        }
+        break;
       case SubscriptionPageRoute.name:
       case SubscriptionSuccessPageRoute.name:
         _updateBriefNotifierUseCase();

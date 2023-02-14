@@ -114,7 +114,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       loadBriefs();
     });
 
-    _shouldUpdateBriefSubscription ??= _getShouldUpdateBriefStreamUseCase().listen((_) => _refetchBriefs());
+    _shouldUpdateBriefSubscription ??= _getShouldUpdateBriefStreamUseCase().listen((_) => refetchBriefs());
 
     _itemPreviewTrackerSubscription ??= itemPreviewTrackerStream.listen((item) {
       _markEntryAsSeen(item.entry);
@@ -137,7 +137,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
-  Future<void> _refetchBriefs() async {
+  Future<void> refetchBriefs() async {
     try {
       _briefsWrapper = await _getCurrentBriefUseCase();
       _selectedBrief ??= _briefsWrapper.currentBrief;
