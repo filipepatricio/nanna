@@ -15,11 +15,12 @@ class _ArticleCoverMedium extends ArticleCover {
   final bool isNew;
   final bool showNote;
   final bool showRecommendedBy;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
   final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
+    final snackbarController = useSnackbarController();
     final coverWidth = useMemoized(
       () => AppDimens.coverSize(context, AppDimens.coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
@@ -43,7 +44,10 @@ class _ArticleCoverMedium extends ArticleCover {
       ),
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: onTap,
+        onTap: () => state.maybeMap(
+          offline: (_) => snackbarController.showMessage(SnackbarMessage.offline()),
+          orElse: onTap,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,

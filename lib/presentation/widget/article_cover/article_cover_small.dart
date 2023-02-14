@@ -7,11 +7,12 @@ class _ArticleCoverSmall extends ArticleCover {
     Key? key,
   }) : super._(key: key);
 
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
   final MediaItemArticle article;
 
   @override
   Widget build(BuildContext context) {
+    final snackbarController = useSnackbarController();
     final height = useMemoized(
       () => AppDimens.smallCardHeight(context),
       [MediaQuery.of(context).size],
@@ -29,7 +30,10 @@ class _ArticleCoverSmall extends ArticleCover {
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: onTap,
+      onTap: () => state.maybeMap(
+        offline: (_) => snackbarController.showMessage(SnackbarMessage.offline()),
+        orElse: onTap,
+      ),
       child: SizedBox(
         height: height,
         child: LayoutBuilder(
