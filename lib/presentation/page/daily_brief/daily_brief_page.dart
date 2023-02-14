@@ -108,6 +108,12 @@ class _DailyBriefPage extends HookWidget {
       );
     });
 
+    useOnAppLifecycleStateChange((previous, current) {
+      if (current == AppLifecycleState.resumed) {
+        cubit.refetchBriefs();
+      }
+    });
+
     return Scaffold(
       body: TabBarListener(
         currentPage: context.routeData,
