@@ -138,16 +138,16 @@ class BookmarkButton extends HookWidget {
                   state: state.state,
                   color: iconColor,
                   animationController: animationController,
-                  enabled: true,
                   onTap: onTap,
                 ),
                 offline: (state) => _IdleButton(
                   cubit: cubit,
                   state: state.state,
-                  color: iconColor,
+                  color: iconColor.withOpacity(AppDimens.offlineIconOpacity),
                   animationController: animationController,
-                  enabled: false,
-                  onTap: onTap,
+                  onTap: () => snackbarController.showMessage(
+                    SnackbarMessage.offline(),
+                  ),
                 ),
                 switching: (state) => _Loader(color: iconColor),
                 orElse: () => const SizedBox.shrink(),
@@ -186,7 +186,6 @@ class _IdleButton extends StatelessWidget {
     required this.state,
     required this.color,
     required this.animationController,
-    required this.enabled,
     this.onTap,
     Key? key,
   }) : super(key: key);
@@ -195,23 +194,20 @@ class _IdleButton extends StatelessWidget {
   final BookmarkState state;
   final Color color;
   final AnimationController animationController;
-  final bool enabled;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return PaddingTapWidget(
-      onTap: enabled
-          ? () async {
-              await HapticFeedback.mediumImpact();
-              await animationController.forward();
-              await animationController.reverse();
-              if (onTap != null) {
-                return onTap?.call();
-              }
-              await cubit.switchState();
-            }
-          : null,
+      onTap: () async {
+        await HapticFeedback.mediumImpact();
+        await animationController.forward();
+        await animationController.reverse();
+        if (onTap != null) {
+          return onTap?.call();
+        }
+        await cubit.switchState();
+      },
       tapPadding: const EdgeInsets.all(AppDimens.m),
       child: state.icon(color),
     );
