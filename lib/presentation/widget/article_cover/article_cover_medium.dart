@@ -103,7 +103,7 @@ class _ArticleCoverMedium extends ArticleCover {
               ),
             ],
             const SizedBox(height: AppDimens.sl),
-            ArticleMetadataRow(
+            _ArticleCoverMetadataRow(
               article: state.map(
                 initializing: (_) => article,
                 idle: (state) => state.article,

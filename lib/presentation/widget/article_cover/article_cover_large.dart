@@ -92,7 +92,7 @@ class _ArticleCoverLarge extends ArticleCover {
               ),
               const SizedBox(height: AppDimens.m),
             ],
-            ArticleMetadataRow(
+            _ArticleCoverMetadataRow(
               article: state.map(
                 initializing: (_) => article,
                 idle: (state) => state.article,

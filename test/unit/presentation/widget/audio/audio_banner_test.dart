@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/domain/audio/use_case/prepare_audio_track
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/audio/audio_page.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -53,7 +53,7 @@ void main() {
 
     final pauseButton = find.descendant(
       of: find.byType(AudioPlayerBanner),
-      matching: find.byType(AudioFloatingControlButton),
+      matching: find.byType(AudioControlButton),
     );
     expect(pauseButton, findsOneWidget);
     expect(
@@ -69,7 +69,7 @@ void main() {
 
     final playButton = find.descendant(
       of: find.byType(AudioPlayerBanner),
-      matching: find.byType(AudioFloatingControlButton),
+      matching: find.byType(AudioControlButton),
     );
     expect(playButton, findsOneWidget);
     expect(

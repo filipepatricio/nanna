@@ -70,7 +70,7 @@ class _TopicAppBar extends HookWidget {
               ShareTopicButton(
                 key: const Key('share-topic-button'),
                 topic: topic.asPreview,
-                iconColor: isScrolled.value ? null : AppColors.stateTextSecondary,
+                color: isScrolled.value ? null : AppColors.stateTextSecondary,
               ),
               const SizedBox(width: AppDimens.m),
             ],

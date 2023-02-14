@@ -9,7 +9,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
 import 'package:flutter/material.dart';
@@ -151,11 +151,11 @@ class _ArticleHeader extends StatelessWidget {
                     if (article.hasAudioVersion)
                       SizedBox(
                         height: AppDimens.xxl,
-                        child: AudioFloatingControlButton(
+                        child: AudioControlButton(
                           article: article,
                           elevation: 0,
-                          color: AppColors.stateTextPrimary,
-                          mode: AudioFloatingControlButtonMode.white,
+                          backgroundColor: AppColors.stateTextPrimary,
+                          mode: AudioControlButtonMode.white,
                           imageHeight: AppDimens.xl,
                           progressSize: AppDimens.xxl,
                           showProgress: false,

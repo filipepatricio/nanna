@@ -30,10 +30,7 @@ class _AudioPageAppBar extends StatelessWidget implements PreferredSizeWidget {
           alignment: Alignment.center,
           child: ShareArticleButton(
             article: article,
-            buttonBuilder: (context) => InformedSvg(
-              AppVectorGraphics.share,
-              color: iconColor,
-            ),
+            color: iconColor,
           ),
         ),
         const SizedBox(width: AppDimens.ml),
