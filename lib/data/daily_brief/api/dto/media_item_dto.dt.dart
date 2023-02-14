@@ -24,6 +24,7 @@ class MediaItemDTO with _$MediaItemDTO {
     String title,
     String strippedTitle,
     String? note,
+    bool isNoteCollapsible,
     ArticleTypeDTO type,
     ArticleKindDTO? kind,
     String? publicationDate,

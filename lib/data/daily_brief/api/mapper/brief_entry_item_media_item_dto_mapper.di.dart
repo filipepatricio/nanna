@@ -44,6 +44,7 @@ class BriefEntryMediaItemDTOMapper implements Mapper<BriefEntryItemDTO, MediaIte
           title: data.title,
           strippedTitle: data.strippedTitle,
           note: data.note,
+          isNoteCollapsible: data.isNoteCollapsible,
           timeToRead: data.timeToRead,
           type: _articleTypeDTOMapper(data.type),
           kind: kind != null ? _articleKindDTOMapper(kind) : null,

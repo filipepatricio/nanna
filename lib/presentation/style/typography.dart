@@ -6,6 +6,8 @@ const _fontFamilyLausanne = 'Lausanne';
 
 extension TextStyleExt on TextStyle {
   TextStyle get w550 => copyWith(fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5));
+
+  double get lineHeight => fontSize! * (height ?? 1);
 }
 
 class AppTypography {

@@ -18,6 +18,7 @@ class MediaItem with _$MediaItem {
     required String title,
     required String strippedTitle,
     required String? note,
+    required bool isNoteCollapsible,
     required ArticleType type,
     required ArticleKind? kind,
     required int? timeToRead,

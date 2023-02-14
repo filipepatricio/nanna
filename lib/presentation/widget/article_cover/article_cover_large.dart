@@ -84,8 +84,10 @@ class _ArticleCoverLarge extends ArticleCover {
                 available: state.maybeMap(offline: (_) => false, orElse: () => true),
                 child: OwnersNote(
                   note: articleNote,
+                  isNoteCollapsible: article.isNoteCollapsible,
                   showRecommendedBy: showRecommendedBy,
                   curationInfo: article.curationInfo,
+                  onTap: onTap,
                 ),
               ),
               const SizedBox(height: AppDimens.m),

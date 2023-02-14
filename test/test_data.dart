@@ -251,6 +251,8 @@ class TestData {
   static AudioFile get audioFile => _audioFileMapper(MockDTO.audioFile);
 
   static MediaItemArticle get article => _mediaItemMapper(MockDTO.topic.entries.first.item) as MediaItemArticle;
+  static MediaItemArticle get premiumArticleNoteCollapsible =>
+      _mediaItemMapper(MockDTO.premiumArticleNoteCollapsible.asMediaItem) as MediaItemArticle;
 
   static MediaItemArticle get premiumArticleWithoutImage =>
       _mediaItemMapper(MockDTO.premiumArticleWithoutImage.asMediaItem) as MediaItemArticle;
