@@ -42,9 +42,8 @@ class _ArticleCoverLarge extends ArticleCover {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (article.hasImage) ...[
-              _ArticleAspectRatioImageCover(
+              _ArticleCoverImage.aspectRatio(
                 article: article,
-                coverColor: article.category.color,
                 aspectRatio: AppDimens.articleLargeCoverAspectRatio,
                 width: double.infinity,
                 available: state.maybeMap(offline: (_) => false, orElse: () => true),

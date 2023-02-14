@@ -1,55 +1,44 @@
 part of '../article_cover.dart';
 
-class _ArticleSquareImageCover extends StatelessWidget {
-  const _ArticleSquareImageCover({
+class _ArticleCoverImage extends StatelessWidget {
+  const _ArticleCoverImage.square({
     required this.article,
-    required this.coverColor,
     required this.dimension,
     this.available = false,
-  });
+  })  : aspectRatio = null,
+        width = null;
 
-  final MediaItemArticle article;
-  final Color? coverColor;
-  final double dimension;
-  final bool available;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: dimension,
-      child: _ArticleImageCover(
-        article: article,
-        coverColor: coverColor,
-        available: available,
-      ),
-    );
-  }
-}
-
-class _ArticleAspectRatioImageCover extends StatelessWidget {
-  const _ArticleAspectRatioImageCover({
+  const _ArticleCoverImage.aspectRatio({
     required this.article,
-    required this.coverColor,
     required this.aspectRatio,
     required this.width,
     this.available = true,
-  });
+  }) : dimension = null;
 
   final MediaItemArticle article;
-  final Color? coverColor;
-  final double aspectRatio;
-  final double width;
+  final double? aspectRatio;
+  final double? dimension;
+  final double? width;
   final bool available;
 
   @override
   Widget build(BuildContext context) {
+    if (dimension != null) {
+      return SizedBox.square(
+        dimension: dimension,
+        child: _CoverImage(
+          article: article,
+          available: available,
+        ),
+      );
+    }
+
     return SizedBox(
       width: width,
       child: AspectRatio(
-        aspectRatio: aspectRatio,
-        child: _ArticleImageCover(
+        aspectRatio: aspectRatio!,
+        child: _CoverImage(
           article: article,
-          coverColor: coverColor,
           available: available,
         ),
       ),
@@ -57,15 +46,13 @@ class _ArticleAspectRatioImageCover extends StatelessWidget {
   }
 }
 
-class _ArticleImageCover extends StatelessWidget {
-  const _ArticleImageCover({
+class _CoverImage extends StatelessWidget {
+  const _CoverImage({
     required this.article,
-    required this.coverColor,
     required this.available,
   });
 
   final MediaItemArticle article;
-  final Color? coverColor;
   final bool available;
 
   @override
@@ -82,7 +69,7 @@ class _ArticleImageCover extends StatelessWidget {
                   children: [
                     ArticleImage(
                       image: article.image!,
-                      cardColor: coverColor,
+                      cardColor: article.category.color,
                       darkeningMode: darkeningMode,
                     ),
                     if (article.locked)
@@ -97,7 +84,7 @@ class _ArticleImageCover extends StatelessWidget {
                   ],
                 )
               : ArticleNoImageView(
-                  color: coverColor,
+                  color: article.category.color,
                   locked: article.locked,
                 ),
         ),

@@ -25,7 +25,7 @@ part 'article_cover_large.dart';
 part 'article_cover_medium.dart';
 part 'article_cover_small.dart';
 part 'article_opacity.dart';
-part 'content/article_image_cover.dart';
+part 'content/article_cover_image.dart';
 part 'content/article_cover_metadata_row.dart';
 part 'content/article_cover_audio_button.dart';
 

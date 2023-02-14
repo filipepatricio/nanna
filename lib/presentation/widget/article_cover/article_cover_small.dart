@@ -37,9 +37,8 @@ class _ArticleCoverSmall extends ArticleCover {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _ArticleSquareImageCover(
+              _ArticleCoverImage.square(
                 article: article,
-                coverColor: article.category.color,
                 dimension: constraints.maxWidth,
                 available: state.maybeMap(offline: (_) => false, orElse: () => true),
               ),

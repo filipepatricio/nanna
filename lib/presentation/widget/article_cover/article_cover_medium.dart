@@ -75,9 +75,8 @@ class _ArticleCoverMedium extends ArticleCover {
                   ),
                 ),
                 const SizedBox(width: AppDimens.m),
-                _ArticleAspectRatioImageCover(
+                _ArticleCoverImage.aspectRatio(
                   article: article,
-                  coverColor: article.category.color,
                   aspectRatio: AppDimens.articleSmallCoverAspectRatio,
                   width: coverWidth,
                   available: state.maybeMap(offline: (_) => false, orElse: () => true),
