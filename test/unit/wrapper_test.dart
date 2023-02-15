@@ -46,6 +46,7 @@ import 'domain/release_notes/use_case/get_current_release_note_use_case_test.dar
     as get_current_release_note_use_case_test;
 import 'domain/release_notes/use_case/save_release_note_if_first_run_use_case_test.dart'
     as save_release_note_if_first_run_use_case_test;
+import 'domain/subscription/data/subscription_plan_group_test.dart' as subscription_plan_group_test;
 import 'domain/subscription/use_case/get_article_paywall_preferred_plan_use_case_test.dart'
     as get_article_paywall_preferred_plan_use_case_test;
 import 'domain/synchronization/use_case/run_initial_bookmark_sync_use_case_test.dart'
@@ -117,6 +118,7 @@ void main() {
     'synchroniza_article_progress_with_remote_use_case_test',
     synchroniza_article_progress_with_remote_use_case_test.main,
   );
+  group('subscription_plan_group_test', subscription_plan_group_test.main);
 
   // Presentation
   group('app_connectivity_checker_test', app_connectivity_checker_test.main);

@@ -9,6 +9,8 @@ class SubscriptionPlan {
     required this.description,
     required this.price,
     required this.priceString,
+    required this.monthlyPrice,
+    required this.monthlyPriceString,
     required this.trialDays,
     required this.reminderDays,
     required this.offeringId,
@@ -22,6 +24,8 @@ class SubscriptionPlan {
   final String description;
   final double price;
   final String priceString;
+  final double monthlyPrice;
+  final String monthlyPriceString;
   final int trialDays;
   final int reminderDays;
   final int discountPercentage;

@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/data/subscription/api/dto/offering_dto.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -14,6 +15,8 @@ class SubscriptionPlanMapper implements Mapper<OfferingDTO, List<SubscriptionPla
     final offering = dto.offering;
 
     for (final package in offering.availablePackages) {
+      final format = NumberFormat.compactSimpleCurrency(name: package.storeProduct.currencyCode);
+
       plans.add(
         SubscriptionPlan(
           type: fromPackageType(package.packageType),
@@ -21,6 +24,8 @@ class SubscriptionPlanMapper implements Mapper<OfferingDTO, List<SubscriptionPla
           description: package.storeProduct.description,
           price: package.storeProduct.price,
           priceString: package.storeProduct.priceString,
+          monthlyPrice: package.monthlyPrice,
+          monthlyPriceString: format.format(package.monthlyPrice),
           trialDays: dto.isFirstTimeSubscriber ? package.trialDays : 0,
           reminderDays: dto.isFirstTimeSubscriber ? package.reminderDays : 0,
           discountPercentage: package.discountPercentage(offering),
@@ -86,6 +91,35 @@ extension on Package {
         break;
     }
     return storeProduct.price * factor;
+  }
+
+  double get monthlyPrice {
+    var factor = 1.0;
+
+    switch (packageType) {
+      case PackageType.monthly:
+        factor = 1;
+        break;
+      case PackageType.weekly:
+        factor = 0.25;
+        break;
+      case PackageType.sixMonth:
+        factor = 6;
+        break;
+      case PackageType.threeMonth:
+        factor = 3;
+        break;
+      case PackageType.twoMonth:
+        factor = 2;
+        break;
+      case PackageType.annual:
+        factor = 12;
+        break;
+      default:
+        break;
+    }
+
+    return storeProduct.price / factor;
   }
 
   int discountPercentage(Offering offering) =>

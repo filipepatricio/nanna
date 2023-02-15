@@ -5,17 +5,20 @@ class SubscriptionPlansView extends HookWidget {
     required this.cubit,
     required this.openInBrowser,
     required this.trialViewMode,
+    required this.planGroup,
+    required this.selectedPlan,
     Key? key,
   }) : super(key: key);
 
   final SubscriptionPageCubit cubit;
   final OpenInBrowserFunction openInBrowser;
   final bool trialViewMode;
+  final SubscriptionPlanGroup planGroup;
+  final SubscriptionPlan selectedPlan;
 
   @override
   Widget build(BuildContext context) {
     final state = useCubitBuilder(cubit);
-    final selectedPlanNotifier = useValueNotifier<SubscriptionPlan>(cubit.selectedPlan);
 
     return CustomScrollView(
       physics: getPlatformScrollPhysics(),
@@ -40,36 +43,26 @@ class SubscriptionPlansView extends HookWidget {
                   const SubscriptionBenefits(),
                 ],
                 const SizedBox(height: AppDimens.l),
-                ...cubit.plans
+                ...planGroup.plans
                     .map(
-                      (plan) => ValueListenableBuilder<SubscriptionPlan>(
-                        valueListenable: selectedPlanNotifier,
-                        builder: (context, value, child) {
-                          return SubscriptionPlanCard(
-                            plan: plan,
-                            isSelected: value == plan,
-                            onPlanPressed: (SubscriptionPlan plan) {
-                              selectedPlanNotifier.value = plan;
-                              cubit.selectPlan(plan);
-                            },
-                          );
+                      (plan) => SubscriptionPlanCard(
+                        plan: plan,
+                        isSelected: selectedPlan == plan,
+                        highestMonthlyCostPlan: planGroup.highestMonthlyCostPlan,
+                        onPlanPressed: (SubscriptionPlan plan) {
+                          cubit.selectPlan(plan);
                         },
                       ),
                     )
                     .withDividers(divider: const SizedBox(height: AppDimens.m)),
                 const SizedBox(height: AppDimens.xl),
-                ValueListenableBuilder<SubscriptionPlan>(
-                  valueListenable: selectedPlanNotifier,
-                  builder: (context, selectedPlan, child) {
-                    return SubscribeButton.dark(
-                      plan: selectedPlan,
-                      onPurchasePressed: (_) => cubit.purchase(),
-                      isLoading: state.maybeMap(
-                        processing: (_) => true,
-                        orElse: () => false,
-                      ),
-                    );
-                  },
+                SubscribeButton.dark(
+                  plan: selectedPlan,
+                  onPurchasePressed: (_) => cubit.purchase(),
+                  isLoading: state.maybeMap(
+                    processing: (_) => true,
+                    orElse: () => false,
+                  ),
                 ),
                 if (defaultTargetPlatform.isApple) ...[
                   const SizedBox(height: AppDimens.m),
@@ -87,15 +80,10 @@ class SubscriptionPlansView extends HookWidget {
           hasScrollBody: false,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: ValueListenableBuilder<SubscriptionPlan>(
-              valueListenable: selectedPlanNotifier,
-              builder: (context, value, child) {
-                return SubscriptionLinksFooter(
-                  subscriptionPlan: value,
-                  onRestorePressed: cubit.restorePurchase,
-                  openInBrowser: openInBrowser,
-                );
-              },
+            child: SubscriptionLinksFooter(
+              subscriptionPlan: selectedPlan,
+              onRestorePressed: cubit.restorePurchase,
+              openInBrowser: openInBrowser,
             ),
           ),
         ),

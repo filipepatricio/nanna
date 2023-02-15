@@ -78,7 +78,7 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
 
     final state = planPack.map(
       singleTrial: (pack) => ArticlePaywallState.trial(pack.plan, false),
-      multiple: (pack) => ArticlePaywallState.multiplePlans(pack.plans, false),
+      multiple: (pack) => ArticlePaywallState.multiplePlans(pack.planGroup, false),
     );
 
     emit(state);

@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/subscription/change_subscription/change_subscription_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/subscription/change_subscription/change_subscription_page_cubit.di.dart';
@@ -31,7 +32,7 @@ class FakeChangeSubscriptionPageCubit extends Fake implements ChangeSubscription
   final SubscriptionPlan selectedPlan = TestData.subscriptionPlansWithoutTrial.last;
 
   final idle = ChangeSubscriptionPageState.idle(
-    plans: TestData.subscriptionPlansWithoutTrial,
+    planGroup: SubscriptionPlanGroup(plans: TestData.subscriptionPlansWithoutTrial),
     subscription: TestData.activeSubscriptionTrial,
   );
 
