@@ -22,6 +22,7 @@ void main() {
 
       final audioButton = find.byKey(Key('audio_button_${TestData.premiumArticleWithAudio.slug}'));
       expect(audioButton, findsOneWidget);
+
       expect(
         find.descendant(
           of: audioButton,
@@ -33,8 +34,6 @@ void main() {
       await tester.tap(audioButton);
       await tester.pumpAndSettle();
 
-      // final pauseButton = find.byType(AudioControlButton);
-      // expect(pauseButton, findsOneWidget);
       expect(
         find.descendant(
           of: audioButton,

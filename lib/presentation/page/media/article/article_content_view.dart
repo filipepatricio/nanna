@@ -149,8 +149,8 @@ class _ArticleHeader extends StatelessWidget {
                       ),
                     ),
                     if (article.hasAudioVersion)
-                      SizedBox(
-                        height: AppDimens.xxl,
+                      Padding(
+                        padding: const EdgeInsets.only(right: AppDimens.s),
                         child: AudioControlButton(
                           article: article,
                           elevation: 0,
@@ -158,6 +158,7 @@ class _ArticleHeader extends StatelessWidget {
                           mode: AudioControlButtonMode.white,
                           imageHeight: AppDimens.xl,
                           progressSize: AppDimens.xxl,
+                          dimension: AppDimens.xxl,
                           showProgress: false,
                         ),
                       )

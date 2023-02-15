@@ -27,6 +27,7 @@ class AudioControlButton extends HookWidget {
     this.mode = AudioControlButtonMode.colored,
     this.progressBarColor,
     this.showProgress = true,
+    this.dimension,
     super.key,
   }) : iconColor = null;
 
@@ -40,7 +41,8 @@ class AudioControlButton extends HookWidget {
     this.showProgress = true,
     super.key,
   })  : article = null,
-        iconColor = null;
+        iconColor = null,
+        dimension = null;
 
   const AudioControlButton.audioPage({
     this.iconColor,
@@ -51,8 +53,9 @@ class AudioControlButton extends HookWidget {
         imageHeight = AppDimens.audioViewControlButtonSize * 0.7,
         mode = AudioControlButtonMode.white,
         progressBarColor = backgroundColor,
-        progressSize = 0.0,
-        article = null;
+        article = null,
+        progressSize = AppDimens.audioViewControlButtonSize,
+        dimension = AppDimens.audioViewControlButtonSize;
 
   final MediaItemArticle? article;
   final double? elevation;
@@ -63,6 +66,7 @@ class AudioControlButton extends HookWidget {
   final AudioControlButtonMode mode;
   final Color? progressBarColor;
   final bool showProgress;
+  final double? dimension;
 
   @override
   Widget build(BuildContext context) {
@@ -107,50 +111,53 @@ class AudioControlButton extends HookWidget {
 
     return Opacity(
       opacity: state.maybeMap(offline: (_) => AppDimens.offlineIconOpacity, orElse: () => 1),
-      child: FloatingActionButton(
-        heroTag: null,
-        elevation: elevation,
-        highlightElevation: elevation,
-        shape: article == null
-            ? RoundedRectangleBorder(
-                side: BorderSide(
-                  color: mode == AudioControlButtonMode.colored
-                      ? AppColors.of(context).backgroundSecondary
-                      : AppColors.of(context).blackWhiteSecondary,
-                ),
-                borderRadius: BorderRadius.circular(AppDimens.xl),
-              )
-            : null,
-        onPressed: state.getAction(cubit, snackbarController),
-        backgroundColor: (backgroundColor ?? AppColors.of(context).backgroundSecondary).withAlpha(state.imageAlpha),
-        child: Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
-          children: [
-            Center(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: state.imagePath.contains('play') ? AppDimens.xxs : AppDimens.zero,
-                ),
-                child: InformedSvg(
-                  state.imagePath,
-                  height: imageHeight,
-                  color: iconColor ??
-                      (mode == AudioControlButtonMode.colored
-                          ? AppColors.of(context).iconPrimary.withAlpha(state.imageAlpha)
-                          : AppColors.stateTextSecondary),
+      child: SizedBox.square(
+        dimension: dimension,
+        child: FloatingActionButton(
+          heroTag: null,
+          elevation: elevation,
+          highlightElevation: elevation,
+          shape: article == null
+              ? RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: mode == AudioControlButtonMode.colored
+                        ? AppColors.of(context).backgroundSecondary
+                        : AppColors.of(context).blackWhiteSecondary,
+                  ),
+                  borderRadius: BorderRadius.circular(AppDimens.xl),
+                )
+              : null,
+          onPressed: state.getAction(cubit, snackbarController),
+          backgroundColor: (backgroundColor ?? AppColors.of(context).backgroundSecondary).withAlpha(state.imageAlpha),
+          child: Stack(
+            alignment: Alignment.center,
+            clipBehavior: Clip.none,
+            children: [
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: state.imagePath.contains('play') ? AppDimens.xxs : AppDimens.zero,
+                  ),
+                  child: InformedSvg(
+                    state.imagePath,
+                    height: imageHeight,
+                    color: iconColor ??
+                        (mode == AudioControlButtonMode.colored
+                            ? AppColors.of(context).iconPrimary.withAlpha(state.imageAlpha)
+                            : AppColors.stateTextSecondary),
+                  ),
                 ),
               ),
-            ),
-            if (article != null)
-              CurrentAudioFloatingProgress(
-                progressSize: progressSize,
-                progress: state.progress,
-                audioProgressType: state.audioProgressType,
-                progressBarColor: progressBarColor ?? AppColors.of(context).textPrimary,
-                showProgress: showProgress,
-              ),
-          ],
+              if (article != null)
+                CurrentAudioFloatingProgress(
+                  progressSize: progressSize,
+                  progress: state.progress,
+                  audioProgressType: state.audioProgressType,
+                  progressBarColor: progressBarColor ?? AppColors.of(context).textPrimary,
+                  showProgress: showProgress,
+                ),
+            ],
+          ),
         ),
       ),
     );

@@ -13,16 +13,13 @@ class _ArticleCoverAudioButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      width: height,
-      child: AudioControlButton(
-        article: article,
-        elevation: 0,
-        backgroundColor: AppColors.of(context).backgroundSecondary,
-        imageHeight: height * _iconHeightImagePercentage,
-        progressSize: height,
-      ),
+    return AudioControlButton(
+      article: article,
+      elevation: 0,
+      backgroundColor: AppColors.of(context).backgroundSecondary,
+      imageHeight: height * _iconHeightImagePercentage,
+      progressSize: height,
+      dimension: height,
     );
   }
 }
