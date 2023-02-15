@@ -15,12 +15,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class ShareTopicButton extends HookWidget {
   const ShareTopicButton({
     required this.topic,
-    this.iconColor,
+    this.color,
     super.key,
   });
 
   final TopicPreview topic;
-  final Color? iconColor;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -42,29 +42,35 @@ class ShareTopicButton extends HookWidget {
       }
     });
 
-    return Stack(
-      children: [
-        Visibility(
-          maintainSize: true,
-          maintainAnimation: true,
-          maintainState: true,
-          visible: state == ShareTopicButtonState.idle,
-          child: Center(
-            child: ShareButton(
-              onTap: (selectedShareOption) => cubit.share(selectedShareOption, topic),
-              iconColor: iconColor,
+    return Opacity(
+      opacity: state.isOffline ? AppDimens.offlineIconOpacity : 1,
+      child: Stack(
+        children: [
+          Visibility(
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            visible: state.visible,
+            child: Center(
+              child: ShareButton(
+                iconColor: color,
+                enabled: !state.isOffline,
+                onTap: state.isOffline
+                    ? (_) => snackbarController.showMessage(SnackbarMessage.offline())
+                    : (selectedShareOption) => cubit.share(selectedShareOption, topic),
+              ),
             ),
           ),
-        ),
-        if (state == ShareArticleButtonState.processing)
-          const Positioned.fill(
-            left: AppDimens.zero,
-            right: AppDimens.zero,
-            bottom: AppDimens.zero,
-            top: AppDimens.zero,
-            child: Loader(strokeWidth: 2.0),
-          ),
-      ],
+          if (state == ShareArticleButtonState.processing)
+            const Positioned.fill(
+              left: AppDimens.zero,
+              right: AppDimens.zero,
+              bottom: AppDimens.zero,
+              top: AppDimens.zero,
+              child: Loader(strokeWidth: 2.0),
+            ),
+        ],
+      ),
     );
   }
 }

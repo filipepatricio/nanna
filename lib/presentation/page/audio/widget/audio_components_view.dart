@@ -18,7 +18,11 @@ class _AudioComponentsView extends StatelessWidget {
           children: [
             AudioSeekButton.rewind(),
             const SizedBox(width: AppDimens.m),
-            AudioControlButton(article: article),
+            AudioControlButton.audioPage(
+              key: Key('audio_button_${article.slug}'),
+              backgroundColor: AppColors.of(context).blackWhitePrimary,
+              iconColor: AppColors.of(context).blackWhiteSecondary,
+            ),
             const SizedBox(width: AppDimens.m),
             AudioSeekButton.fastForward(),
           ],

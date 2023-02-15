@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/current_audio_progress_bar.dart';
@@ -145,7 +145,7 @@ class _AudioControlButton extends StatelessWidget {
       child: FittedBox(
         child: state.maybeMap(
           visible: (state) {
-            return const AudioFloatingControlButton.forCurrentAudio(
+            return const AudioControlButton.forCurrentAudio(
               elevation: 0,
               progressSize: AppDimens.audioControlButtonSize,
             );
