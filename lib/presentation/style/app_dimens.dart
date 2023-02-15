@@ -241,4 +241,7 @@ class AppDimens {
 
   /// 40%
   static const unavailableItemOpacity = 0.4;
+
+  /// 50%
+  static const offlineIconOpacity = 0.5;
 }

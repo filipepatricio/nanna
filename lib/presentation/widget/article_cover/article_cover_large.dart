@@ -18,6 +18,7 @@ class _ArticleCoverLarge extends ArticleCover {
 
   @override
   Widget build(BuildContext context) {
+    final snackbarController = useSnackbarController();
     final cubit = useCubit<ArticleCoverCubit>();
     final state = useCubitBuilder(cubit);
     final articleNote = article.note;
@@ -36,15 +37,17 @@ class _ArticleCoverLarge extends ArticleCover {
       ),
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: onTap,
+        onTap: () => state.maybeMap(
+          offline: (_) => snackbarController.showMessage(SnackbarMessage.offline()),
+          orElse: onTap,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (article.hasImage) ...[
-              _ArticleAspectRatioImageCover(
+              _ArticleCoverImage.aspectRatio(
                 article: article,
-                coverColor: article.category.color,
                 aspectRatio: AppDimens.articleLargeCoverAspectRatio,
                 width: double.infinity,
                 available: state.maybeMap(offline: (_) => false, orElse: () => true),
@@ -92,7 +95,7 @@ class _ArticleCoverLarge extends ArticleCover {
               ),
               const SizedBox(height: AppDimens.m),
             ],
-            ArticleMetadataRow(
+            _ArticleCoverMetadataRow(
               article: state.map(
                 initializing: (_) => article,
                 idle: (state) => state.article,

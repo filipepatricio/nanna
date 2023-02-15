@@ -3,11 +3,9 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/no_connection_banner/no_connection_banner.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:flutter/material.dart';
@@ -92,10 +90,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
               alignment: Alignment.center,
               child: ShareArticleButton(
                 article: article,
-                buttonBuilder: (context) => InformedSvg(
-                  AppVectorGraphics.share,
-                  color: foregroundColorAnimation.value,
-                ),
+                color: foregroundColorAnimation.value,
               ),
             ),
             const SizedBox(width: AppDimens.ml),
