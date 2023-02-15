@@ -49,7 +49,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(
-        kToolbarHeight + (isConnected ? 0 : NoConnectionBanner.appBarHeight),
+        kToolbarHeight + (isConnected ? 0 : NoConnectionBanner.height),
       );
 }
 

@@ -31,7 +31,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(
-        kToolbarHeight + (isConnected ? 0 : NoConnectionBanner.appBarHeight),
+        kToolbarHeight + (isConnected ? 0 : NoConnectionBanner.height),
       );
 
   @override

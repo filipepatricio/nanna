@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/data/auth/api/refresh_token_service.di.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/article/article_local_repository.dart';
+import 'package:better_informed_mobile/domain/article/article_progress_local_repository.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/article_read_state_notifier.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
@@ -29,6 +30,7 @@ class SignOutUseCase {
     this._articleLocalRepository,
     this._topicsLocalRepository,
     this._bookmarkLocalRepository,
+    this._articleProgressLocalRepository,
     this._getIt,
   );
   final AuthStore _authStore;
@@ -43,6 +45,7 @@ class SignOutUseCase {
   final ArticleLocalRepository _articleLocalRepository;
   final TopicsLocalRepository _topicsLocalRepository;
   final BookmarkLocalRepository _bookmarkLocalRepository;
+  final ArticleProgressLocalRepository _articleProgressLocalRepository;
   final GetIt _getIt;
 
   Future<void> call() async {
@@ -54,6 +57,7 @@ class SignOutUseCase {
     await _articleLocalRepository.deleteAll();
     await _topicsLocalRepository.deleteAll();
     await _bookmarkLocalRepository.deleteAll();
+    await _articleProgressLocalRepository.deleteAll();
 
     await _userLocalRepository.deleteUser();
     await _pushNotificationStore.clear();
