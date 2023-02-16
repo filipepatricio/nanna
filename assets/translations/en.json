@@ -102,19 +102,24 @@
       "fresh": "Fresh curations every day",
       "read": "Read or listen to articles"
     },
+    "subscriptionTypeName": {
+      "monthly": "monthly",
+      "annual": "yearly"
+    },
     "redeemCode": "Redeem Code",
     "restoringPurchaseError": "There are no purchases to restore associated to this account",
     "restoringPurchase": "Restoring purchase",
     "restorePurchase": "Restore purchase",
     "startYourTrial": "Now: start your free trial of Premium",
     "receiveAnEmail": "In {}: get an email reminder that your trial ends soon",
-    "youllBeCharged": "In {}: you’ll be charged for informed",
+    "youllBeCharged": "In {}: you'll be charged {} for a {} subscription",
+    "monthlyPriceComparison": "({}/month instead of {})",
     "viewAllPlansAction": "View all plans",
     "chargeInfo": {
       "trial": "Cancel anytime during your {} trial and you won't be charged.",
       "standard": "Recurring billing · Cancel anytime"
     },
-    "off": "{}% off",
+    "off": "Save {}%",
     "description": "Read or listen to all of our curated articles.\nCancel anytime during your trial.",
     "planInfo": {
       "trial": "Free {} trial, then {} / year",

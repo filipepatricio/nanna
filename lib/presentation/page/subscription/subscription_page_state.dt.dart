@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,10 +11,16 @@ class SubscriptionPageState with _$SubscriptionPageState {
   const factory SubscriptionPageState.initializing() = _SubscriptionPageStateInitial;
 
   @Implements<BuildState>()
-  const factory SubscriptionPageState.idle() = _SubscriptionPageStateIdle;
+  const factory SubscriptionPageState.idle({
+    required SubscriptionPlanGroup group,
+    required SubscriptionPlan selectedPlan,
+  }) = _SubscriptionPageStateIdle;
 
   @Implements<BuildState>()
-  const factory SubscriptionPageState.processing() = _SubscriptionPageStateProcessing;
+  const factory SubscriptionPageState.processing({
+    required SubscriptionPlanGroup group,
+    required SubscriptionPlan selectedPlan,
+  }) = _SubscriptionPageStateProcessing;
 
   @Implements<BuildState>()
   const factory SubscriptionPageState.success({required bool withTrial}) = _SubscriptionPageStateSuccess;

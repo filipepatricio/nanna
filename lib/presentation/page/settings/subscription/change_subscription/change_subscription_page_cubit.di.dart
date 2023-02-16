@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
@@ -24,7 +25,7 @@ class ChangeSubscriptionPageCubit extends Cubit<ChangeSubscriptionPageState> {
   final RestorePurchaseUseCase _restorePurchaseUseCase;
   final PurchaseSubscriptionUseCase _purchaseSubscriptionUseCase;
 
-  late List<SubscriptionPlan> _plans;
+  late SubscriptionPlanGroup _planGroup;
   late ActiveSubscription _subscription;
 
   SubscriptionPlan? selectedPlan;
@@ -40,7 +41,7 @@ class ChangeSubscriptionPageCubit extends Cubit<ChangeSubscriptionPageState> {
       );
 
   Future<void> initialize() async {
-    _plans = await _getSubscriptionPlansUseCase();
+    _planGroup = await _getSubscriptionPlansUseCase();
     _subscription = await _getActiveSubscriptionUseCase();
 
     if (currentPlan != null) selectedPlan = currentPlan!;
@@ -56,7 +57,7 @@ class ChangeSubscriptionPageCubit extends Cubit<ChangeSubscriptionPageState> {
   }
 
   Future<void> purchase() async {
-    emit(ChangeSubscriptionPageState.processing(plans: _plans, subscription: _subscription));
+    emit(ChangeSubscriptionPageState.processing(planGroup: _planGroup, subscription: _subscription));
     try {
       final successful = await _purchaseSubscriptionUseCase(
         selectedPlan!,
@@ -91,6 +92,6 @@ class ChangeSubscriptionPageCubit extends Cubit<ChangeSubscriptionPageState> {
   }
 
   void _emitIdle() {
-    emit(ChangeSubscriptionPageState.idle(plans: _plans, subscription: _subscription));
+    emit(ChangeSubscriptionPageState.idle(planGroup: _planGroup, subscription: _subscription));
   }
 }

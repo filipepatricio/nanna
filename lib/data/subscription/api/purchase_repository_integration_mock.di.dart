@@ -31,6 +31,8 @@ class PurchaseRepositoryIntegrationMock implements PurchasesRepository {
         description: 'Monthly plan',
         price: 9.99,
         priceString: '9.99',
+        monthlyPrice: 9.99,
+        monthlyPriceString: '9.99',
         trialDays: 0,
         reminderDays: 14,
         offeringId: offeringId,

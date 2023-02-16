@@ -12,6 +12,8 @@ class SubscriptionPlanEntity {
     required this.description,
     required this.price,
     required this.priceString,
+    required this.monthlyPrice,
+    required this.monthlyPriceString,
     required this.trialDays,
     required this.reminderDays,
     required this.discountPercentage,
@@ -42,4 +44,8 @@ class SubscriptionPlanEntity {
   final String packageId;
   @HiveField(10)
   final String productId;
+  @HiveField(11)
+  final double monthlyPrice;
+  @HiveField(12)
+  final String monthlyPriceString;
 }

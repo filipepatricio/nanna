@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -54,7 +55,7 @@ class FakeGetSubscriptionPlansUseCase extends Fake implements GetSubscriptionPla
   final List<SubscriptionPlan> plans;
 
   @override
-  Future<List<SubscriptionPlan>> call() async => plans;
+  Future<SubscriptionPlanGroup> call() async => SubscriptionPlanGroup(plans: plans);
 }
 
 class FakeRestorePurchaseUseCase extends Fake implements RestorePurchaseUseCase {

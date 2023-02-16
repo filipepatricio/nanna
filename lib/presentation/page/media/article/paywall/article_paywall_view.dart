@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_state.dt.dart';
@@ -47,6 +48,8 @@ class ArticlePaywallView extends HookWidget {
       state.whenOrNull(
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
         purchaseSuccess: () => InformedDialog.removeRestorePurchase(context),
+        multiplePlans: (planGroup, processing) => InformedDialog.removeRestorePurchase(context),
+        trial: (plan, processing) => InformedDialog.removeRestorePurchase(context),
         generalError: (message) {
           InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(
@@ -93,7 +96,7 @@ class ArticlePaywallView extends HookWidget {
                 isProcessing: state.processing,
               ),
               multiplePlans: (state) => _PaywallMultipleOptions(
-                plans: state.plans,
+                planGroup: state.planGroup,
                 onPurchasePressed: cubit.purchase,
                 onRestorePressed: cubit.restore,
                 isProcessing: state.processing,

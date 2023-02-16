@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
-import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -13,8 +13,9 @@ class GetSubscriptionPlansUseCase {
   final PurchasesRepository _purchasesRepository;
   final FeaturesFlagsRepository _featuresFlagsRepository;
 
-  Future<List<SubscriptionPlan>> call() async {
+  Future<SubscriptionPlanGroup> call() async {
     final offeringId = await _featuresFlagsRepository.defaultPaywall();
-    return await _purchasesRepository.getSubscriptionPlans(offeringId: offeringId);
+    final plans = await _purchasesRepository.getSubscriptionPlans(offeringId: offeringId);
+    return SubscriptionPlanGroup(plans: plans);
   }
 }
