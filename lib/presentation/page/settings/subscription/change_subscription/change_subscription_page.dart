@@ -48,6 +48,7 @@ class ChangeSubscriptionPage extends HookWidget {
     useCubitListener<ChangeSubscriptionPageCubit, ChangeSubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
+        idle: (planGroup, subscription) => InformedDialog.removeRestorePurchase(context),
         success: () {
           InformedDialog.removeRestorePurchase(context);
           AutoRouter.of(context).replace(

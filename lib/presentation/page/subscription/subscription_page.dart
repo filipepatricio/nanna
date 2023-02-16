@@ -51,6 +51,9 @@ class SubscriptionPage extends HookWidget {
 
     useCubitListener<SubscriptionPageCubit, SubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
+        idle: (group, selectedPlan) {
+          InformedDialog.removeRestorePurchase(context);
+        },
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
         success: (trialMode) {
           InformedDialog.removeRestorePurchase(context);

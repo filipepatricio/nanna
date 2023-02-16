@@ -48,6 +48,8 @@ class ArticlePaywallView extends HookWidget {
       state.whenOrNull(
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
         purchaseSuccess: () => InformedDialog.removeRestorePurchase(context),
+        multiplePlans: (planGroup, processing) => InformedDialog.removeRestorePurchase(context),
+        trial: (plan, processing) => InformedDialog.removeRestorePurchase(context),
         generalError: (message) {
           InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(
