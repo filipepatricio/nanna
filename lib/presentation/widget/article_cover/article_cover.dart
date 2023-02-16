@@ -13,7 +13,6 @@ import 'package:better_informed_mobile/presentation/widget/audio/control_button/
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/category_dot.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/new_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/owners_note.dart';
@@ -27,9 +26,9 @@ part 'article_cover_large.dart';
 part 'article_cover_medium.dart';
 part 'article_cover_small.dart';
 part 'article_opacity.dart';
+part 'content/article_cover_audio_button.dart';
 part 'content/article_cover_image.dart';
 part 'content/article_cover_metadata_row.dart';
-part 'content/article_cover_audio_button.dart';
 
 abstract class ArticleCover extends HookWidget {
   const ArticleCover._({super.key}) : super();

@@ -68,10 +68,7 @@ class _ArticleCoverLarge extends ArticleCover {
                   const SizedBox(height: AppDimens.s),
                   Text(
                     article.strippedTitle,
-                    style: AppTypography.articleTitle.copyWith(
-                      fontSize: 26,
-                      letterSpacing: 0.02,
-                    ),
+                    style: AppTypography.serifTitleLargeIvar,
                   ),
                 ],
               ),

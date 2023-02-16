@@ -69,10 +69,11 @@ class _ArticleCoverMedium extends ArticleCover {
                       children: [
                         PublisherRow(article: article),
                         const SizedBox(height: AppDimens.sl),
-                        InformedMarkdownBody(
-                          markdown: article.title,
-                          baseTextStyle: AppTypography.serifTitleLargeIvar,
+                        Text(
+                          article.strippedTitle,
+                          style: AppTypography.serifTitleLargeIvar,
                           maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
