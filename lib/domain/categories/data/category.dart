@@ -25,4 +25,18 @@ class Category {
         color: color,
         items: [],
       );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Category &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          id == other.id &&
+          slug == other.slug &&
+          icon == other.icon &&
+          color == other.color;
+
+  @override
+  int get hashCode => name.hashCode ^ id.hashCode ^ slug.hashCode ^ icon.hashCode ^ color.hashCode;
 }
