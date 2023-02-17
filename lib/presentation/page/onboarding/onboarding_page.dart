@@ -101,7 +101,7 @@ class OnboardingPage extends HookWidget {
                         if (isLastPage)
                           InformedFilledButton.primary(
                             context: context,
-                            text: LocaleKeys.common_continue.tr(),
+                            text: context.l10n.common_continue,
                             onTap: () => _navigateToMainPage(context, cubit),
                           )
                         else
@@ -148,7 +148,7 @@ class _SkipButton extends StatelessWidget {
         cubit.trackOnboardingSkipped();
       },
       child: Text(
-        LocaleKeys.common_skip.tr(),
+        context.l10n.common_skip,
         style: AppTypography.buttonBold,
       ),
     );

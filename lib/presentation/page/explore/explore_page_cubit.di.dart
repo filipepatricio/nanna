@@ -10,7 +10,6 @@ import 'package:better_informed_mobile/domain/search/use_case/remove_search_hist
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -110,7 +109,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   Future<void> _showTutorialSnackBar() async {
     _isExploreTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.explore);
     if (!_isExploreTutorialStepSeen) {
-      emit(ExplorePageState.showTutorialToast(LocaleKeys.tutorial_exploreSnackBarText.tr()));
+      emit(const ExplorePageState.showTutorialToast());
       await _setTutorialStepSeenUseCase(TutorialStep.explore);
     }
   }

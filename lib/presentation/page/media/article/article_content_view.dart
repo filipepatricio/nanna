@@ -134,7 +134,7 @@ class _ArticleHeader extends StatelessWidget {
                         children: [
                           if (author != null) ...[
                             Text(
-                              LocaleKeys.article_byName.tr(args: [author]),
+                              context.l10n.article_byName(author),
                               style: metadataStyle,
                             ),
                             const SizedBox(height: AppDimens.xs),

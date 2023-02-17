@@ -12,7 +12,6 @@ import 'package:better_informed_mobile/domain/analytics/use_case/initialize_anal
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/auth/data/auth_token.dart';
-import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
@@ -24,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:phrase/phrase.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,7 +59,6 @@ Future<void> main() async {
 
   final environment = _getEnvironment();
 
-  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -71,6 +70,10 @@ Future<void> main() async {
   await _setupAccessToken(getIt);
   _setupFimber(getIt);
   await _setupAnalytics(getIt);
+
+  if (appConfig.phraseConfig != null) {
+    Phrase.setup(appConfig.phraseConfig!.phraseDistributionID, appConfig.phraseConfig!.phraseEnvironmentID);
+  }
 
   final currentThemeMode = await AdaptiveTheme.getThemeMode();
 
@@ -88,17 +91,10 @@ Future<void> main() async {
     appRunner: () => runApp(
       DefaultAssetBundle(
         bundle: SentryAssetBundle(),
-        child: EasyLocalization(
-          path: 'assets/translations',
-          supportedLocales: availableLocales.values.toList(),
-          fallbackLocale: availableLocales[fallbackLanguageCode],
-          useOnlyLangCode: true,
-          saveLocale: true,
-          child: InformedApp(
-            getIt: getIt,
-            themeMode: currentThemeMode,
-            mainRouter: kDebugMode ? MainRouter() : null,
-          ),
+        child: InformedApp(
+          getIt: getIt,
+          themeMode: currentThemeMode,
+          mainRouter: kDebugMode ? MainRouter() : null,
         ),
       ),
     ),

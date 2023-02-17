@@ -134,7 +134,7 @@ class _EmptyView extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  LocaleKeys.search_emptyResults.tr(args: [query]),
+                  context.l10n.search_emptyResults(query),
                   style: AppTypography.b2Bold,
                   textAlign: TextAlign.center,
                 ),

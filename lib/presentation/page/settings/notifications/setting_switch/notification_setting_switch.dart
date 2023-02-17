@@ -101,13 +101,13 @@ class NotificationSettingSwitch extends HookWidget {
         state.mapOrNull(
           generalError: (_) => snackbarController.showMessage(
             SnackbarMessage.simple(
-              message: LocaleKeys.common_error_tryAgainLater.tr(),
+              message: context.l10n.common_error_tryAgainLater,
               type: SnackbarMessageType.error,
             ),
           ),
           noPermissionError: (_) => snackbarController.showMessage(
             SnackbarMessage.simple(
-              message: LocaleKeys.settings_notifications_noPermissionSnackbarError.tr(),
+              message: context.l10n.settings_notifications_noPermissionSnackbarError,
               type: SnackbarMessageType.error,
             ),
           ),

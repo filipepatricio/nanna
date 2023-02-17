@@ -1,7 +1,6 @@
-import 'dart:ui';
-
 import 'package:better_informed_mobile/exports.dart';
 import 'package:clock/clock.dart';
+import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
 const _locale = 'en';
@@ -39,33 +38,33 @@ class DateFormatUtil {
     return Jiffy(dateTime).fromNow();
   }
 
-  static String currentBriefDate(DateTime briefDate) {
+  static String currentBriefDate(AppLocalizations l10n, DateTime briefDate) {
     final now = clock.now();
     final daysDifference = daysBetween(briefDate, now);
 
     if (daysDifference == 0) {
-      return LocaleKeys.dailyBrief_title_today.tr();
+      return l10n.dailyBrief_title_today;
     } else if (daysDifference == 1) {
-      return LocaleKeys.dailyBrief_title_yesterday.tr();
+      return l10n.dailyBrief_title_yesterday;
     }
 
-    return DateFormat('EEEE d').format(briefDate) + getDayOfMonthSuffix(briefDate).tr();
+    return DateFormat('EEEE d').format(briefDate) + getDayOfMonthSuffix(l10n, briefDate);
   }
 
-  static String getDayOfMonthSuffix(DateTime dateTime) {
+  static String getDayOfMonthSuffix(AppLocalizations l10n, DateTime dateTime) {
     if (dateTime.day >= 11 && dateTime.day <= 13) {
-      return LocaleKeys.dailyBrief_title_dateTh;
+      return l10n.dailyBrief_title_dateTh;
     }
 
     switch (dateTime.day % 10) {
       case 1:
-        return LocaleKeys.dailyBrief_title_dateSt;
+        return l10n.dailyBrief_title_dateSt;
       case 2:
-        return LocaleKeys.dailyBrief_title_dateNd;
+        return l10n.dailyBrief_title_dateNd;
       case 3:
-        return LocaleKeys.dailyBrief_title_dateRd;
+        return l10n.dailyBrief_title_dateRd;
       default:
-        return LocaleKeys.dailyBrief_title_dateTh;
+        return l10n.dailyBrief_title_dateTh;
     }
   }
 }

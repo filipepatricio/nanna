@@ -43,7 +43,7 @@ class TopicOwnerPage extends HookWidget {
       (cubit, state, context) {
         state.mapOrNull(
           browserError: (state) {
-            showBrowserError(state.link, snackbarController);
+            showBrowserError(context, state.link, snackbarController);
           },
         );
       },
@@ -123,7 +123,7 @@ class TopicOwnerPage extends HookWidget {
                               padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
                               child: InformedFilledButton.secondary(
                                 context: context,
-                                text: LocaleKeys.topic_howWeCurateContent_label.tr(),
+                                text: context.l10n.topic_howWeCurateContent_label,
                                 trailing: const InformedSvg(
                                   AppVectorGraphics.chevronNext,
                                   fit: BoxFit.scaleDown,
@@ -170,9 +170,9 @@ class _ActionsBar extends HookWidget {
   Widget build(BuildContext context) {
     final showOwnerTitle = useState(0.0);
     final actionBarTitle = owner.map(
-      editor: (owner) => LocaleKeys.topic_owner_editorTitle.tr(),
-      expert: (owner) => LocaleKeys.topic_owner_expertTitle.tr(),
-      editorialTeam: (owner) => LocaleKeys.topic_owner_editorialTeamTitle.tr(),
+      editor: (owner) => context.l10n.topic_owner_editorTitle,
+      expert: (owner) => context.l10n.topic_owner_expertTitle,
+      editorialTeam: (owner) => context.l10n.topic_owner_editorialTeamTitle,
       unknown: (_) => "",
     );
 
@@ -259,7 +259,7 @@ class _SocialMediaLinks extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           InformedMarkdownBody(
-            markdown: LocaleKeys.topic_owner_followExpertOn.tr(args: [owner.name]),
+            markdown: context.l10n.topic_owner_followExpertOn(owner.name),
             baseTextStyle: AppTypography.b2Regular.copyWith(height: 2.0),
           ),
           const SizedBox(height: AppDimens.m),

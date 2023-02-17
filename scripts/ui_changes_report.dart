@@ -258,7 +258,7 @@ Future<void> getBaselineGoldens() async {
               await printAndExec('git', ['reset', '--hard', head]);
               print('> > Rebuilding PR changes ...');
               await printAndExec('make', ['get']);
-              await printAndExec('make', ['easy_localization']);
+              await printAndExec('make', ['localization']);
               await printAndExec('make', ['build_runner']);
             }
           },

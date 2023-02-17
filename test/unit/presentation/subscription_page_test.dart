@@ -13,6 +13,12 @@ import '../../test_data.dart';
 import '../unit_test_utils.dart';
 
 void main() {
+  late AppLocalizations l10n;
+
+  setUp(() async {
+    l10n = await AppLocalizations.delegate.load(PhraseLocalizations.supportedLocales.first);
+  });
+
   testWidgets(
     'all available plans are shown in screen',
     (tester) async {
@@ -26,24 +32,20 @@ void main() {
       await tester.startApp(initialRoute: const SubscriptionPageRoute());
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeCharged.tr(
-            args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.first.trialDays),
-              TestData.subscriptionPlansWithTrial.first.priceString,
-              LocaleKeys.subscription_subscriptionTypeName_annual.tr(),
-            ],
+          l10n.subscription_youllBeCharged(
+            l10n.date_day(TestData.subscriptionPlansWithTrial.first.trialDays),
+            TestData.subscriptionPlansWithTrial.first.priceString,
+            l10n.subscription_subscriptionTypeName_annual,
           ),
         ),
         findsOneWidget,
       );
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeCharged.tr(
-            args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.last.trialDays),
-              TestData.subscriptionPlansWithTrial.last.priceString,
-              LocaleKeys.subscription_subscriptionTypeName_monthly.tr()
-            ],
+          l10n.subscription_youllBeCharged(
+            l10n.date_day(TestData.subscriptionPlansWithTrial.last.trialDays),
+            TestData.subscriptionPlansWithTrial.last.priceString,
+            l10n.subscription_subscriptionTypeName_monthly,
           ),
         ),
         findsNothing,
@@ -52,24 +54,20 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeCharged.tr(
-            args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.last.trialDays),
-              TestData.subscriptionPlansWithTrial.last.priceString,
-              LocaleKeys.subscription_subscriptionTypeName_monthly.tr()
-            ],
+          l10n.subscription_youllBeCharged(
+            l10n.date_day(TestData.subscriptionPlansWithTrial.last.trialDays),
+            TestData.subscriptionPlansWithTrial.last.priceString,
+            l10n.subscription_subscriptionTypeName_monthly,
           ),
         ),
         findsOneWidget,
       );
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeCharged.tr(
-            args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.first.trialDays),
-              TestData.subscriptionPlansWithTrial.first.priceString,
-              LocaleKeys.subscription_subscriptionTypeName_annual.tr(),
-            ],
+          l10n.subscription_youllBeCharged(
+            l10n.date_day(TestData.subscriptionPlansWithTrial.first.trialDays),
+            TestData.subscriptionPlansWithTrial.first.priceString,
+            l10n.subscription_subscriptionTypeName_annual,
           ),
         ),
         findsNothing,
@@ -83,10 +81,8 @@ void main() {
       await tester.startApp(initialRoute: const SubscriptionPageRoute());
       expect(
         find.byText(
-          LocaleKeys.subscription_chargeInfo_trial.tr(
-            args: [
-              LocaleKeys.date_daySuffix.tr(args: ['${TestData.subscriptionPlansWithTrial.first.trialDays}']),
-            ],
+          l10n.subscription_chargeInfo_trial(
+            l10n.date_daySuffix('${TestData.subscriptionPlansWithTrial.first.trialDays}'),
           ),
           skipOffstage: false,
         ),
@@ -96,10 +92,8 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         find.byText(
-          LocaleKeys.subscription_chargeInfo_trial.tr(
-            args: [
-              LocaleKeys.date_daySuffix.tr(args: ['${TestData.subscriptionPlansWithTrial.last.trialDays}']),
-            ],
+          l10n.subscription_chargeInfo_trial(
+            l10n.date_daySuffix('${TestData.subscriptionPlansWithTrial.last.trialDays}'),
           ),
           skipOffstage: false,
         ),
@@ -131,7 +125,7 @@ void main() {
       );
       expect(
         find.byWidgetPredicate(
-          (widget) => widget is InformedFilledButton && widget.text == LocaleKeys.subscription_button_standard.tr(),
+          (widget) => widget is InformedFilledButton && widget.text == l10n.subscription_button_standard,
         ),
         findsOneWidget,
       );
@@ -144,10 +138,8 @@ void main() {
           (widget) =>
               widget is InformedFilledButton &&
               widget.text ==
-                  LocaleKeys.subscription_button_trialText.tr(
-                    args: [
-                      LocaleKeys.date_daySuffix.tr(args: ['${lastPlan.trialDays}']),
-                    ],
+                  l10n.subscription_button_trialText(
+                    l10n.date_daySuffix('${lastPlan.trialDays}'),
                   ),
           skipOffstage: false,
         ),
@@ -175,7 +167,7 @@ void main() {
       await tester.startApp(initialRoute: const SubscriptionPageRoute());
       expect(
         find.byWidgetPredicate(
-          (widget) => widget is InformedMarkdownBody && widget.markdown == LocaleKeys.subscription_title_trial.tr(),
+          (widget) => widget is InformedMarkdownBody && widget.markdown == l10n.subscription_title_trial,
         ),
         findsOneWidget,
       );

@@ -27,14 +27,14 @@ class _ArticleHeadline extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         InformedMarkdownBody(
-          markdown: "_${LocaleKeys.article_relatedContent_cantGetEnough.tr()}_",
+          markdown: "_${context.l10n.article_relatedContent_cantGetEnough}_",
           baseTextStyle: AppTypography.h2Medium,
           highlightColor: AppColors.brandAccent,
           textAlignment: TextAlign.center,
         ),
         const SizedBox(height: AppDimens.sl),
         Text(
-          LocaleKeys.article_relatedContent_thereAreManyMore.tr(),
+          context.l10n.article_relatedContent_thereAreManyMore,
           style: AppTypography.b2Medium,
           textAlign: TextAlign.center,
         ),
@@ -51,7 +51,7 @@ class _ArticleFooter extends StatelessWidget {
     return InformedFilledButton.primary(
       context: context,
       onTap: context.goToExplore,
-      text: LocaleKeys.explore_exploreNow.tr(),
+      text: context.l10n.explore_exploreNow,
     );
   }
 }

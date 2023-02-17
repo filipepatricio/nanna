@@ -48,13 +48,13 @@ class HowDoWeCurateContentPage extends HookWidget {
                         children: [
                           const SizedBox(height: AppDimens.m),
                           Text(
-                            LocaleKeys.topic_howWeCurateContent_title.tr(),
+                            context.l10n.topic_howWeCurateContent_title,
                             softWrap: true,
                             style: AppTypography.h0Medium,
                           ),
                           const SizedBox(height: AppDimens.m),
                           InformedMarkdownBody(
-                            markdown: LocaleKeys.topic_howWeCurateContent_text.tr(),
+                            markdown: context.l10n.topic_howWeCurateContent_text,
                             baseTextStyle: AppTypography.articleText.copyWith(
                               height: 1.5,
                             ),

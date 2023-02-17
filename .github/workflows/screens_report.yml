@@ -33,8 +33,7 @@ jobs:
       - name: Install Flutter dependencies
         run: flutter pub get
 
-      - name: Run easy_localization:generate and generate files
-        run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+      - run: make localization
 
       - name: Run build_runner and generate files
         run: flutter pub run build_runner build --delete-conflicting-outputs

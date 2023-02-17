@@ -55,7 +55,7 @@ class _Timeline extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        LocaleKeys.subscription_startYourTrial.tr(),
+                        context.l10n.subscription_startYourTrial,
                         style: labelStyle,
                         maxLines: 2,
                       ),
@@ -71,8 +71,8 @@ class _Timeline extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        LocaleKeys.subscription_receiveAnEmail.tr(
-                          args: [LocaleKeys.date_day.plural(plan.reminderDays)],
+                        context.l10n.subscription_receiveAnEmail(
+                          context.l10n.date_day(plan.reminderDays),
                         ),
                         style: labelStyle,
                         maxLines: 2,
@@ -90,12 +90,10 @@ class _Timeline extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        LocaleKeys.subscription_youllBeCharged.tr(
-                          args: [
-                            LocaleKeys.date_day.plural(plan.trialDays),
-                            plan.priceString,
-                            plan.type.text,
-                          ],
+                        context.l10n.subscription_youllBeCharged(
+                          context.l10n.date_day(plan.trialDays),
+                          plan.priceString,
+                          plan.type.text(context),
                         ),
                         style: labelStyle,
                         maxLines: 2,
@@ -161,12 +159,12 @@ class _OutlinedDot extends StatelessWidget {
 }
 
 extension on SubscriptionPlanType {
-  String get text {
+  String text(BuildContext context) {
     switch (this) {
       case SubscriptionPlanType.monthly:
-        return LocaleKeys.subscription_subscriptionTypeName_monthly.tr();
+        return context.l10n.subscription_subscriptionTypeName_monthly;
       case SubscriptionPlanType.annual:
-        return LocaleKeys.subscription_subscriptionTypeName_annual.tr();
+        return context.l10n.subscription_subscriptionTypeName_annual;
     }
   }
 }

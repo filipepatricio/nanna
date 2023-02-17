@@ -23,7 +23,7 @@ class _PaywallMultipleOptions extends HookWidget {
       await openInAppBrowser(
         uri,
         (error, stacktrace) {
-          showBrowserError(uri, snackbarController);
+          showBrowserError(context, uri, snackbarController);
         },
       );
     }
@@ -33,7 +33,7 @@ class _PaywallMultipleOptions extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         InformedMarkdownBody(
-          markdown: LocaleKeys.subscription_title_article.tr(),
+          markdown: context.l10n.subscription_title_article,
           baseTextStyle: AppTypography.h1Medium,
         ),
         const SizedBox(height: AppDimens.l),

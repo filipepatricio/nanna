@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../finders.dart';
+import '../../flutter_test_config.dart';
 import '../unit_test_utils.dart';
 
 void main() {
@@ -13,7 +14,7 @@ void main() {
     (tester) async {
       kIsAppleDevice = true;
       await tester.startApp(initialRoute: const SignInPageRoute());
-      expect(find.byText(LocaleKeys.signIn_providerButton_apple.tr()), findsOneWidget);
+      expect(find.byText(l10n.signIn_providerButton_apple), findsOneWidget);
     },
   );
 
@@ -22,7 +23,7 @@ void main() {
     (tester) async {
       kIsAppleDevice = false;
       await tester.startApp(initialRoute: const SignInPageRoute());
-      expect(find.byText(LocaleKeys.signIn_providerButton_google.tr()), findsOneWidget);
+      expect(find.byText(l10n.signIn_providerButton_google), findsOneWidget);
     },
   );
 

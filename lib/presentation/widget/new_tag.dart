@@ -18,7 +18,7 @@ class NewTag extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppDimens.xs),
       ),
       child: Text(
-        LocaleKeys.common_new.tr(),
+        context.l10n.common_new,
         style: AppTypography.sansTextNanoLausanne.copyWith(
           color: AppColors.brandPrimary,
           height: 1,

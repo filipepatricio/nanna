@@ -96,8 +96,8 @@ class BookmarkButton extends HookWidget {
                 message: state.message,
                 type: SnackbarMessageType.info,
                 action: SnackbarAction(
-                  label: LocaleKeys.common_undo.tr(),
-                  callback: () => cubit.switchState(fromUndo: true),
+                  label: context.l10n.common_undo,
+                  callback: () => cubit.switchState(context.l10n, fromUndo: true),
                 ),
               ),
             );
@@ -146,7 +146,7 @@ class BookmarkButton extends HookWidget {
                   color: iconColor.withOpacity(AppDimens.offlineIconOpacity),
                   animationController: animationController,
                   onTap: () => snackbarController.showMessage(
-                    SnackbarMessage.offline(),
+                    SnackbarMessage.offline(context),
                   ),
                 ),
                 switching: (state) => _Loader(color: iconColor),
@@ -198,6 +198,8 @@ class _IdleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return PaddingTapWidget(
       onTap: () async {
         await HapticFeedback.mediumImpact();
@@ -206,7 +208,7 @@ class _IdleButton extends StatelessWidget {
         if (onTap != null) {
           return onTap?.call();
         }
-        await cubit.switchState();
+        await cubit.switchState(l10n);
       },
       tapPadding: const EdgeInsets.all(AppDimens.m),
       child: state.icon(color),

@@ -44,7 +44,7 @@ class EntryPage extends HookWidget {
     return Scaffold(
       body: state.maybeMap(
         error: (_) => Center(
-          child: ErrorView.general(
+          child: ErrorView(
             retryCallback: () => cubit.initialize(),
           ),
         ),

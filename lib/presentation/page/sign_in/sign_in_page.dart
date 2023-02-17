@@ -63,8 +63,8 @@ class SignInPage extends HookWidget {
             if (!state.isOnboardingSeen) const OnboardingPageRoute() else const MainPageRoute(),
           ],
         ),
-        unauthorizedError: (_) => showSnackbar(LocaleKeys.signIn_unauthorized.tr()),
-        generalError: (_) => showSnackbar(LocaleKeys.common_generalError.tr()),
+        unauthorizedError: (_) => showSnackbar(context.l10n.signIn_unauthorized),
+        generalError: (_) => showSnackbar(context.l10n.common_generalError),
         orElse: () {},
       );
     });

@@ -69,7 +69,7 @@ class _ShareOptionsView extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    LocaleKeys.common_shareVia.tr(),
+                    context.l10n.common_shareVia,
                     style: AppTypography.b2Medium,
                   ),
                   const Spacer(),
@@ -88,7 +88,7 @@ class _ShareOptionsView extends HookWidget {
                 .map(
                   (shareOption) => ShareOptionItem(
                     svg: shareOption.getIcon(),
-                    text: shareOption.getText(),
+                    text: shareOption.getText(context),
                     onTap: () => AutoRouter.of(context).pop(shareOption),
                   ),
                 )

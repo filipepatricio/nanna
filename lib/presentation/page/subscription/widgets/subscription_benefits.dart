@@ -16,9 +16,9 @@ class SubscriptionBenefits extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ...[
-          _SubscriptionBenefitLine(text: LocaleKeys.subscription_benefit_access.tr()),
-          _SubscriptionBenefitLine(text: LocaleKeys.subscription_benefit_fresh.tr()),
-          _SubscriptionBenefitLine(text: LocaleKeys.subscription_benefit_read.tr()),
+          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_access),
+          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_fresh),
+          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_read),
         ].withDividers(
           divider: const SizedBox(height: AppDimens.m),
         )

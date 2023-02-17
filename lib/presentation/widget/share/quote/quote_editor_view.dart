@@ -75,7 +75,7 @@ class QuoteEditorView extends HookWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  LocaleKeys.shareQuote_title.tr(),
+                  context.l10n.shareQuote_title,
                   style: AppTypography.b2Medium,
                 ),
                 const Spacer(),
@@ -92,7 +92,7 @@ class QuoteEditorView extends HookWidget {
           const Divider(height: 0),
           ShareOptionItem(
             svg: AppVectorGraphics.image,
-            text: tr(LocaleKeys.shareQuote_as_image),
+            text: context.l10n.shareQuote_as_image,
             onTap: () {
               AutoRouter.of(context).pop();
               cubit.shareSticker(
@@ -103,7 +103,7 @@ class QuoteEditorView extends HookWidget {
           ),
           ShareOptionItem(
             svg: AppVectorGraphics.text,
-            text: tr(LocaleKeys.shareQuote_as_text),
+            text: context.l10n.shareQuote_as_text,
             onTap: () {
               AutoRouter.of(context).pop();
               cubit.shareText(article, quote);
@@ -112,7 +112,7 @@ class QuoteEditorView extends HookWidget {
           if (state.isInstagramAvailable) ...[
             ShareOptionItem(
               svg: AppVectorGraphics.igStory,
-              text: tr(LocaleKeys.shareQuote_as_igStory),
+              text: context.l10n.shareQuote_as_igStory,
               onTap: () {
                 AutoRouter.of(context).pop();
                 cubit.shareStory(article, quote);

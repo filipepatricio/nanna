@@ -154,9 +154,9 @@ class _ErrorContent extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: AppDimens.xxxc),
         child: Center(
           child: ErrorView(
-            title: LocaleKeys.article_error_title.tr(),
-            content: LocaleKeys.article_error_body.tr(),
-            action: article != null ? LocaleKeys.article_openSourceUrl.tr() : LocaleKeys.common_tryAgain.tr(),
+            title: context.l10n.article_error_title,
+            content: context.l10n.article_error_body,
+            action: article != null ? context.l10n.article_openSourceUrl : context.l10n.common_tryAgain,
             retryCallback: () {
               article == null ? onTryAgain.call() : openUrl(article.sourceUrl);
             },
@@ -178,9 +178,9 @@ class _ErrorGeoblocked extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: ErrorView(
-            title: LocaleKeys.article_geoblockedError_title.tr(),
-            content: LocaleKeys.article_geoblockedError_content.tr(),
-            action: LocaleKeys.article_geoblockedError_action.tr(),
+            title: context.l10n.article_geoblockedError_title,
+            content: context.l10n.article_geoblockedError_content,
+            action: context.l10n.article_geoblockedError_action,
             retryCallback: context.popRoute,
           ),
         ),

@@ -21,6 +21,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../finders.dart';
+import '../../flutter_test_config.dart';
 import '../../test_data.dart';
 import '../unit_test_utils.dart';
 
@@ -105,7 +106,7 @@ void main() {
           ],
         ),
       );
-      expect(find.byText(LocaleKeys.topic_label.tr()), findsOneWidget);
+      expect(find.byText(l10n.topic_label), findsOneWidget);
     },
   );
 
@@ -119,7 +120,7 @@ void main() {
           ],
         ),
       );
-      expect(find.byText(LocaleKeys.topic_label.tr()), findsNothing);
+      expect(find.byText(l10n.topic_label), findsNothing);
     },
   );
 

@@ -70,7 +70,7 @@ class InfoToast extends StatelessWidget {
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                     child: Text(
-                      LocaleKeys.common_gotIt.tr(),
+                      context.l10n.common_gotIt,
                       style: AppTypography.b2Regular,
                     ),
                   ),

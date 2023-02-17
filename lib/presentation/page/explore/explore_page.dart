@@ -45,7 +45,10 @@ class ExplorePage extends HookWidget {
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        showTutorialToast: (text) => showInfoToast(context: context, text: text),
+        showTutorialToast: () => showInfoToast(
+          context: context,
+          text: context.l10n.tutorial_exploreSnackBarText,
+        ),
         startExploring: () {
           scrollController.jumpTo(scrollControllerIdleOffset.value);
         },
@@ -122,7 +125,7 @@ class ExplorePage extends HookWidget {
                       ),
                       error: (state) => SliverFillRemaining(
                         child: Center(
-                          child: ErrorView.general(
+                          child: ErrorView(
                             retryCallback: cubit.initialize,
                           ),
                         ),

@@ -18,9 +18,9 @@ class SettingsAppearancePage extends HookWidget {
       appBar: InformedAppBar(
         isConnected: context.watch<IsConnected>(),
         leading: BackTextButton(
-          text: LocaleKeys.settings_settings.tr(),
+          text: context.l10n.settings_settings,
         ),
-        title: LocaleKeys.settings_appearance_title.tr(),
+        title: context.l10n.settings_appearance_title,
       ),
       body: SafeArea(
         child: Padding(
@@ -34,7 +34,7 @@ class SettingsAppearancePage extends HookWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                   child: Text(
-                    LocaleKeys.settings_appearance_theme.tr(),
+                    context.l10n.settings_appearance_theme,
                     style: AppTypography.subH1Bold.copyWith(
                       color: AppColors.of(context).textTertiary,
                     ),
@@ -42,21 +42,21 @@ class SettingsAppearancePage extends HookWidget {
                 ),
                 const SizedBox(height: AppDimens.s),
                 SettingsMainItem(
-                  label: LocaleKeys.settings_appearance_dark.tr(),
+                  label: context.l10n.settings_appearance_dark,
                   icon: mode.isDark ? AppVectorGraphics.checkmark : null,
                   iconColor: AppColors.stateBackgroundSuccess,
                   onTap: AdaptiveTheme.of(context).setDark,
                 ),
                 const SizedBox(height: AppDimens.s),
                 SettingsMainItem(
-                  label: LocaleKeys.settings_appearance_light.tr(),
+                  label: context.l10n.settings_appearance_light,
                   icon: mode.isLight ? AppVectorGraphics.checkmark : null,
                   iconColor: AppColors.stateBackgroundSuccess,
                   onTap: AdaptiveTheme.of(context).setLight,
                 ),
                 const SizedBox(height: AppDimens.s),
                 SettingsMainItem(
-                  label: LocaleKeys.settings_appearance_auto.tr(),
+                  label: context.l10n.settings_appearance_auto,
                   icon: mode.isSystem ? AppVectorGraphics.checkmark : null,
                   iconColor: AppColors.stateBackgroundSuccess,
                   onTap: AdaptiveTheme.of(context).setSystem,

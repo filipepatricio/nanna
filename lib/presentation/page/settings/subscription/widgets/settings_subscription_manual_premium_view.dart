@@ -19,13 +19,13 @@ class _SettingsSubscriptionManualPremiumView extends StatelessWidget {
             const SizedBox(height: AppDimens.l),
             _ChangeSubscriptionCard(
               icon: AppVectorGraphics.informedLogoGreen,
-              title: LocaleKeys.subscription_premium.tr(),
+              title: context.l10n.subscription_premium,
               subtitle: null,
               onTap: () => context.pushRoute(const SubscriptionPageRoute()),
             ),
             const SizedBox(height: AppDimens.xl),
             Text(
-              LocaleKeys.subscription_planIncludes.tr(),
+              context.l10n.subscription_planIncludes,
               style: AppTypography.subH1Medium.copyWith(
                 color: AppColors.of(context).textTertiary,
               ),
@@ -35,7 +35,7 @@ class _SettingsSubscriptionManualPremiumView extends StatelessWidget {
             const SizedBox(height: AppDimens.xl),
             if (subscription.expirationDate != null) ...[
               Text(
-                LocaleKeys.subscription_endDate.tr(),
+                context.l10n.subscription_endDate,
                 style: AppTypography.subH1Medium.copyWith(
                   color: AppColors.of(context).textTertiary,
                 ),

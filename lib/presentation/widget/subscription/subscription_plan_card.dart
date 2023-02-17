@@ -66,7 +66,7 @@ class SubscriptionPlanCard extends HookWidget {
                 children: [
                   if (isCurrent) ...[
                     Text(
-                      LocaleKeys.subscription_change_currentPlan.tr(),
+                      context.l10n.subscription_change_currentPlan,
                       style: AppTypography.b2Regular.copyWith(
                         color: AppColors.of(context).textSecondary,
                       ),
@@ -74,7 +74,7 @@ class SubscriptionPlanCard extends HookWidget {
                     const SizedBox(height: AppDimens.xs),
                   ] else if (isNextPlan) ...[
                     Text(
-                      LocaleKeys.subscription_change_upcomingPlan.tr(),
+                      context.l10n.subscription_change_upcomingPlan,
                       style: AppTypography.b2Regular.copyWith(
                         color: AppColors.of(context).textSecondary,
                       ),
@@ -108,11 +108,9 @@ class SubscriptionPlanCard extends HookWidget {
                       if (plan.monthlyPrice < highestMonthlyCostPlan.monthlyPrice) ...[
                         const SizedBox(width: AppDimens.s),
                         Text(
-                          LocaleKeys.subscription_monthlyPriceComparison.tr(
-                            args: [
-                              plan.monthlyPriceString,
-                              highestMonthlyCostPlan.monthlyPriceString,
-                            ],
+                          context.l10n.subscription_monthlyPriceComparison(
+                            plan.monthlyPriceString,
+                            highestMonthlyCostPlan.monthlyPriceString,
                           ),
                           style: AppTypography.sansTextNanoLausanne.copyWith(
                             color: AppColors.of(context).textSecondary,
@@ -169,7 +167,7 @@ class _DiscountBadge extends StatelessWidget {
         color: AppColors.of(context).buttonAccentBackground,
       ),
       child: Text(
-        LocaleKeys.subscription_off.tr(args: ['${plan.discountPercentage}']),
+        context.l10n.subscription_off('${plan.discountPercentage}'),
         style: AppTypography.sansTextSmallLausanne.copyWith(
           color: AppColors.of(context).buttonAccentText,
           height: 1,

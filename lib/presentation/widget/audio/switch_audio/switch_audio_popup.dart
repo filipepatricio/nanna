@@ -43,20 +43,20 @@ class SwitchAudioPopup extends StatelessWidget {
         children: [
           const SizedBox(height: AppDimens.xl),
           Text(
-            LocaleKeys.audio_switchAudio_message.tr(),
+            context.l10n.audio_switchAudio_message,
             textAlign: TextAlign.center,
             style: AppTypography.b2Bold,
           ),
           const SizedBox(height: AppDimens.l),
           InformedFilledButton.primary(
             context: context,
-            text: tr(LocaleKeys.audio_switchAudio_deny),
+            text: context.l10n.audio_switchAudio_deny,
             onTap: () => Navigator.pop(context, false),
           ),
           const SizedBox(height: AppDimens.m),
           InformedFilledButton.secondary(
             context: context,
-            text: LocaleKeys.audio_switchAudio_approve.tr(),
+            text: context.l10n.audio_switchAudio_approve,
             withOutline: true,
             onTap: () => Navigator.pop(context, true),
           ),

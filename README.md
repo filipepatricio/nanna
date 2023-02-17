@@ -9,7 +9,7 @@ Follow those steps to start:
 - Check Flutter version in "Mobile introduction" section below
 - Run `make get` or `flutter pub get` to get dependencies.
 - Run `make build_runner` or `flutter pub run build_runner build --delete-conflicting-outputs` to generate code (routing, json serializers etc.). For FVM users, run `make br`
-- Run `make easy_localization` or `flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart` to generate translation files. For FVM users, run `make l10n`
+- Run `make localization` to generate translation files. For FVM users, run `make l10n`
 
 ...and you are ready to go.
 
@@ -100,7 +100,7 @@ If you really want to run app locally with `release` mode, change in xcode `Auto
 - Logs: fimber
 - DI: injectable + getIt
 - Parsing : json_annotation
-- Language and Texts : easy_localization
+- Language and Texts : phrase
 - State management : Cubit (bloc)
 - Animations and controllers : flutter_hooks
 - GraphQl : graphql_flutter
@@ -287,7 +287,7 @@ void main() {
     (tester) async {
       kIsAppleDevice = true;
       await tester.startApp(initialRoute: const SignInPageRoute());
-      expect(find.byText(LocaleKeys.signIn_providerButton_apple.tr()), findsOneWidget);
+      expect(find.byText(context.l10n.signIn_providerButton_apple), findsOneWidget);
     },
   );
 ...
@@ -309,7 +309,7 @@ Make sure to use `setUp` and `tearDown` commands as needed for each test - to ch
       // Forcing dialog to show because fetching and solving version logic is already tested by package
       Upgrader().debugDisplayAlways = true;
       await tester.startApp();
-      expect(find.byText(LocaleKeys.update_title.tr()), findsOneWidget);
+      expect(find.byText(context.l10n.update_title), findsOneWidget);
     },
   );
 

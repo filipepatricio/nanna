@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/domain/subscription/use_case/get_subscrip
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/redeem_offer_code_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -80,7 +79,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
       emit(SubscriptionPageState.success(withTrial: _selectedPlan.hasTrial));
     } catch (e) {
       Fimber.e('Error while trying to restore purchase', ex: e);
-      emit(SubscriptionPageState.generalError(LocaleKeys.subscription_restoringPurchaseError.tr()));
+      emit(const SubscriptionPageState.restoringPurchaseError());
       emit(SubscriptionPageState.idle(group: _planGroup, selectedPlan: _selectedPlan));
     }
   }

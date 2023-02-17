@@ -118,9 +118,7 @@ class ArticleDottedInfo extends StatelessWidget {
                 ],
                 if (canShowReadTime)
                   Text(
-                    '${canShowDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
-                      args: [timeToRead.toString()],
-                    )}',
+                    '${canShowDate ? ' · ' : ''}${context.l10n.article_readMinutes(timeToRead)}',
                     style: finalTextStyle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

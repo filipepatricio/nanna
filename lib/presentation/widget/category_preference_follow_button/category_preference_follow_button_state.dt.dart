@@ -14,6 +14,5 @@ class CategoryPreferenceFollowButtonState with _$CategoryPreferenceFollowButtonS
     CategoryPreference categoryPreference,
   ) = CategoryPreferenceFollowButtonStateLoaded;
 
-  const factory CategoryPreferenceFollowButtonState.showMessage(String message) =
-      CategoryPreferenceFollowButtonStateShowMessage;
+  const factory CategoryPreferenceFollowButtonState.error() = CategoryPreferenceFollowButtonStateError;
 }

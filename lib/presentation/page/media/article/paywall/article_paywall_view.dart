@@ -51,10 +51,18 @@ class ArticlePaywallView extends HookWidget {
         multiplePlans: (planGroup, processing) => InformedDialog.removeRestorePurchase(context),
         trial: (plan, processing) => InformedDialog.removeRestorePurchase(context),
         generalError: (message) {
+          snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: message ?? context.l10n.common_error_tryAgainLater,
+              type: SnackbarMessageType.error,
+            ),
+          );
+        },
+        restoringPurchaseError: () {
           InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(
             SnackbarMessage.simple(
-              message: message ?? LocaleKeys.common_error_tryAgainLater.tr(),
+              message: context.l10n.subscription_restoringPurchaseError,
               type: SnackbarMessageType.error,
             ),
           );

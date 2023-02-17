@@ -102,7 +102,7 @@ class CategoryPage extends HookWidget {
                     padding: const EdgeInsets.symmetric(vertical: AppDimens.xl),
                     sliver: SliverToBoxAdapter(
                       child: Center(
-                        child: ErrorView.general(
+                        child: ErrorView(
                           retryCallback: () {
                             cubit.initialize(category.slug, category.items);
                           },

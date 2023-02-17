@@ -7,40 +7,35 @@ import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
 
 class ErrorView extends StatelessWidget {
-  ErrorView({
-    required this.title,
-    required this.content,
+  const ErrorView({
+    this.type = ErrorViewType.general,
+    this.title,
+    this.content,
     this.svgPath,
     this.retryCallback,
-    String? action,
+    this.action,
     super.key,
-  }) : action = action ?? LocaleKeys.common_tryAgain.tr();
+  });
 
-  factory ErrorView.general({VoidCallback? retryCallback}) => ErrorView(
-        title: LocaleKeys.common_error_title.tr(),
-        content: LocaleKeys.common_error_body.tr(),
-        action: LocaleKeys.common_tryAgain.tr(),
-        retryCallback: retryCallback,
-      );
-
-  factory ErrorView.offline({
-    required VoidCallback retryCallback,
-  }) =>
-      ErrorView(
-        title: LocaleKeys.noConnection_errorView_title.tr(),
-        content: LocaleKeys.noConnection_errorView_body.tr(),
+  factory ErrorView.offline({required VoidCallback retryCallback}) => ErrorView(
+        type: ErrorViewType.offline,
         retryCallback: retryCallback,
         svgPath: AppVectorGraphics.error,
       );
 
-  final String title;
-  final String content;
-  final String action;
+  final ErrorViewType type;
+  final String? title;
+  final String? content;
+  final String? action;
   final String? svgPath;
   final VoidCallback? retryCallback;
 
   @override
   Widget build(BuildContext context) {
+    final title = this.title ?? type.title(context);
+    final content = this.content ?? type.content(context);
+    final action = this.action ?? type.action(context);
+
     final svg = svgPath;
 
     return Column(
@@ -78,5 +73,34 @@ class ErrorView extends StatelessWidget {
           ),
       ],
     );
+  }
+}
+
+enum ErrorViewType { offline, general }
+
+extension on ErrorViewType {
+  String title(BuildContext context) {
+    switch (this) {
+      case ErrorViewType.offline:
+        return context.l10n.noConnection_errorView_title;
+      default:
+        return context.l10n.common_error_title;
+    }
+  }
+
+  String content(BuildContext context) {
+    switch (this) {
+      case ErrorViewType.offline:
+        return context.l10n.noConnection_errorView_body;
+      default:
+        return context.l10n.common_error_body;
+    }
+  }
+
+  String action(BuildContext context) {
+    switch (this) {
+      default:
+        return context.l10n.common_tryAgain;
+    }
   }
 }

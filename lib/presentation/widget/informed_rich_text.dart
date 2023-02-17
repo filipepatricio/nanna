@@ -124,8 +124,8 @@ class _CustomTextPainter extends HookWidget {
             textAlign: textAlign,
             selectionControls: createPlatformSpecific(
               [
-                shareControlData(tr(LocaleKeys.common_share), shareCallback),
-                if (defaultTargetPlatform.isApple) lookUpControlData(tr(LocaleKeys.common_lookUp)),
+                shareControlData(context.l10n.common_share, shareCallback),
+                if (defaultTargetPlatform.isApple) lookUpControlData(context.l10n.common_lookUp),
               ],
             ),
             onSelectionChanged: (_, __) => selectionControllers?.unselectAllBut(controller.key),

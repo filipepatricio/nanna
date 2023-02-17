@@ -27,7 +27,7 @@ class SubscriptionLinksFooter extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          _getChargeInfoText(subscriptionPlan),
+          _getChargeInfoText(context, subscriptionPlan),
           textAlign: TextAlign.center,
           style: AppTypography.metadata1Medium.copyWith(color: AppColors.of(context).textSecondary),
         ),
@@ -36,17 +36,17 @@ class SubscriptionLinksFooter extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             LinkLabel(
-              label: LocaleKeys.subscription_restorePurchase.tr(),
+              label: context.l10n.subscription_restorePurchase,
               style: AppTypography.metadata1Medium,
               onTap: onRestorePressed,
             ),
             LinkLabel(
-              label: LocaleKeys.settings_termsAndConditions.tr(),
+              label: context.l10n.settings_termsAndConditions,
               style: AppTypography.metadata1Medium,
               onTap: () => openInBrowser(termsOfServiceUri),
             ),
             LinkLabel(
-              label: LocaleKeys.settings_privacyPolicy.tr(),
+              label: context.l10n.settings_privacyPolicy,
               style: AppTypography.metadata1Medium,
               onTap: () => openInBrowser(policyPrivacyUri),
             ),
@@ -58,14 +58,12 @@ class SubscriptionLinksFooter extends StatelessWidget {
   }
 }
 
-String _getChargeInfoText(SubscriptionPlan plan) {
+String _getChargeInfoText(BuildContext context, SubscriptionPlan plan) {
   if (plan.hasTrial) {
-    return LocaleKeys.subscription_chargeInfo_trial.tr(
-      args: [
-        LocaleKeys.date_daySuffix.tr(args: ['${plan.trialDays}']),
-      ],
+    return context.l10n.subscription_chargeInfo_trial(
+      context.l10n.date_daySuffix('${plan.trialDays}'),
     );
   } else {
-    return LocaleKeys.subscription_chargeInfo_standard.tr();
+    return context.l10n.subscription_chargeInfo_standard;
   }
 }

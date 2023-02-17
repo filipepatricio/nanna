@@ -44,9 +44,9 @@ class SettingsNotificationsBody extends HookWidget {
                       ),
                     ),
                     child: ErrorView(
-                      title: LocaleKeys.settings_notifications_noPermissionTitle.tr(),
-                      content: LocaleKeys.settings_notifications_noPermissionContent.tr(),
-                      action: LocaleKeys.settings_notifications_noPermissionAction.tr(),
+                      title: context.l10n.settings_notifications_noPermissionTitle,
+                      content: context.l10n.settings_notifications_noPermissionContent,
+                      action: context.l10n.settings_notifications_noPermissionAction,
                       retryCallback: onRequestPermissionTap,
                     ),
                   ),
@@ -55,16 +55,16 @@ class SettingsNotificationsBody extends HookWidget {
                 const SizedBox(height: AppDimens.l),
                 NotificationHeaderContainer(
                   startWidget: Text(
-                    LocaleKeys.settings_notifications_title.tr(),
+                    context.l10n.settings_notifications_title,
                     style: AppTypography.h4Bold.copyWith(height: 1),
                   ),
                   trailingChildren: [
                     Text(
-                      LocaleKeys.settings_push.tr(),
+                      context.l10n.settings_push,
                       style: AppTypography.b3Regular.copyWith(height: 1),
                     ),
                     Text(
-                      LocaleKeys.settings_email.tr(),
+                      context.l10n.settings_email,
                       style: AppTypography.b3Regular.copyWith(height: 1),
                     ),
                   ],

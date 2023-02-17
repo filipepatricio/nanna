@@ -127,7 +127,7 @@ class AudioControlButton extends HookWidget {
                   borderRadius: BorderRadius.circular(AppDimens.xl),
                 )
               : null,
-          onPressed: state.getAction(cubit, snackbarController),
+          onPressed: state.getAction(context, cubit, snackbarController),
           backgroundColor: (backgroundColor ?? AppColors.of(context).backgroundSecondary).withAlpha(state.imageAlpha),
           child: Stack(
             alignment: Alignment.center,

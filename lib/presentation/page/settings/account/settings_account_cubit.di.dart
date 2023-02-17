@@ -31,8 +31,11 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
   late SettingsAccountData _originalData;
   SettingsAccountData _modifiedData = SettingsAccountData.empty();
 
-  Future<void> initialize() async {
+  late AppLocalizations _l10n;
+
+  Future<void> initialize(AppLocalizations l10n) async {
     try {
+      _l10n = l10n;
       final user = await _getUserUseCase();
       await _setAccountData(user);
     } on NoInternetConnectionException {
@@ -55,7 +58,7 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
       emit(SettingsAccountState.updating(_originalData, _modifiedData));
       final user = await _updateUserUseCase(_modifiedData);
       await _setAccountData(user);
-      emit(SettingsAccountState.showMessage(LocaleKeys.settings_accountInfoSavedSuccessfully.tr()));
+      emit(SettingsAccountState.showMessage(_l10n.settings_accountInfoSavedSuccessfully));
     }
   }
 
@@ -65,7 +68,7 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
         return await _signOutUseCase();
       }
 
-      emit(SettingsAccountState.showMessage(LocaleKeys.common_error_body.tr()));
+      emit(SettingsAccountState.showMessage(_l10n.common_error_body));
     } catch (e, s) {
       Fimber.e('Deleting account failed', ex: e, stacktrace: s);
     } finally {
@@ -118,20 +121,20 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     if (value != null && value.isNotEmpty) {
       return null;
     }
-    return LocaleKeys.settings_wrongFirstNameInput.tr();
+    return _l10n.settings_wrongFirstNameInput;
   }
 
   String? _validateLastName(String? value) {
     if (value != null && value.isNotEmpty) {
       return null;
     }
-    return LocaleKeys.settings_wrongLastNameInput.tr();
+    return _l10n.settings_wrongLastNameInput;
   }
 
   String? _validateEmail(String email) {
     if (_isEmailValidUseCase(email)) {
       return null;
     }
-    return LocaleKeys.settings_wrongEmailInput.tr();
+    return _l10n.settings_wrongEmailInput;
   }
 }

@@ -148,7 +148,7 @@ class BriefDate extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              DateFormatUtil.currentBriefDate(briefDate),
+              DateFormatUtil.currentBriefDate(context.l10n, briefDate),
               style: isTitle ? AppTypography.h4Medium.copyWith(height: 2) : AppTypography.sansTitleLargeLausanne,
             ),
             AnimatedSize(

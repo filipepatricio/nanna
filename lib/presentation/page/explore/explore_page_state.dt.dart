@@ -36,5 +36,5 @@ class ExplorePageState with _$ExplorePageState {
 
   const factory ExplorePageState.startExploring() = _ExplorePageStateStartExploring;
 
-  const factory ExplorePageState.showTutorialToast(String text) = _ExplorePageStateShowTutorialToast;
+  const factory ExplorePageState.showTutorialToast() = _ExplorePageStateShowTutorialToast;
 }

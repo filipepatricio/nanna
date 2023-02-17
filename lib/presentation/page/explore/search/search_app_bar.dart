@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/intl_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/no_connection_banner/no_connection_banner.dart';
 import 'package:flutter/material.dart';
@@ -120,7 +121,7 @@ class _SearchBar extends HookWidget {
         autocorrect: false,
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: LocaleKeys.search_hint.tr(),
+          hintText: context.l10n.search_hint,
           hintStyle: AppTypography.b2Medium.copyWith(
             color: AppColors.of(context).textSecondary,
             height: 1.05,
@@ -199,7 +200,7 @@ class _CancelButton extends HookWidget {
                     splashFactory: NoSplash.splashFactory,
                   ),
                   child: Text(
-                    LocaleKeys.common_cancel.tr(),
+                    context.l10n.common_cancel,
                     style: AppTypography.h4Medium.copyWith(
                       color: AppColors.of(context).textSecondary,
                       height: 1.1,
