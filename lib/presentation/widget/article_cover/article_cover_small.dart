@@ -60,11 +60,11 @@ class _ArticleCoverSmall extends ArticleCover {
                     children: [
                       PublisherRow(article: article),
                       const SizedBox(height: AppDimens.sl),
-                      InformedMarkdownBody(
+                      Text(
+                        article.strippedTitle,
                         maxLines: 4,
-                        markdown: article.title,
-                        highlightColor: AppColors.transparent,
-                        baseTextStyle: AppTypography.serifTitleSmallIvar,
+                        style: AppTypography.serifTitleSmallIvar,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
