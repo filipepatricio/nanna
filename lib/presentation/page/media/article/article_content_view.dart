@@ -114,6 +114,7 @@ class _ArticleHeader extends StatelessWidget {
                   showReadTime: false,
                   color: AppColors.categoriesTextPrimary,
                   textStyle: AppTypography.metadata1Medium,
+                  publisherLogoSize: AppDimens.l,
                 ),
                 const SizedBox(height: AppDimens.m),
                 InformedMarkdownBody(

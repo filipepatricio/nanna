@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
@@ -23,6 +24,7 @@ class ArticleDottedInfo extends StatelessWidget {
     this.color,
     this.publisherMaxLines = 1,
     this.centerContent = false,
+    this.publisherLogoSize = AppDimens.publisherLogoSize,
     Key? key,
   })  : assert(
           showPublisher || showDate || showReadTime,
@@ -41,6 +43,7 @@ class ArticleDottedInfo extends StatelessWidget {
   final Color? color;
   final int publisherMaxLines;
   final bool centerContent;
+  final double publisherLogoSize;
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +85,10 @@ class ArticleDottedInfo extends StatelessWidget {
                 children: [
                   if (showLogo) ...[
                     if (darkMode)
-                      PublisherLogo.dark(publisher: article.publisher)
+                      PublisherLogo.dark(publisher: article.publisher, dimension: publisherLogoSize)
                     else
-                      PublisherLogo.light(publisher: article.publisher),
+                      PublisherLogo.light(publisher: article.publisher, dimension: publisherLogoSize),
+                    const SizedBox(width: AppDimens.xs),
                   ],
                   Flexible(
                     child: Text(
