@@ -10,5 +10,5 @@ class IncomingPushDTO {
   factory IncomingPushDTO.fromJson(Map<String, dynamic> json) => _$IncomingPushDTOFromJson(json);
 
   final List<IncomingPushActionDTO> actions;
-  final Map<String, dynamic> meta;
+  final Map<String, dynamic>? meta;
 }

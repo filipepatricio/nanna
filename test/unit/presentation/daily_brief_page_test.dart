@@ -36,6 +36,8 @@ void main() {
   late MockSetOnboardingPaywallSeenUseCase setOnboardingPaywallSeenUseCase;
   late MockMarkTopicAsSeenUseCase markTopicAsSeenUseCase;
   late MockMarkArticleAsSeenUseCase markArticleAsSeenUseCase;
+  late MockShouldRefreshDailyBriefUseCase shouldRefreshDailyBriefUseCase;
+  late MockIncomingPushBadgeCountStreamUseCase incomingPushBadgeCountStreamUseCase;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(
@@ -59,6 +61,8 @@ void main() {
     setOnboardingPaywallSeenUseCase = MockSetOnboardingPaywallSeenUseCase();
     markTopicAsSeenUseCase = MockMarkTopicAsSeenUseCase();
     markArticleAsSeenUseCase = MockMarkArticleAsSeenUseCase();
+    shouldRefreshDailyBriefUseCase = MockShouldRefreshDailyBriefUseCase();
+    incomingPushBadgeCountStreamUseCase = MockIncomingPushBadgeCountStreamUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -74,6 +78,8 @@ void main() {
       setOnboardingPaywallSeenUseCase,
       markArticleAsSeenUseCase,
       markTopicAsSeenUseCase,
+      shouldRefreshDailyBriefUseCase,
+      incomingPushBadgeCountStreamUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
@@ -89,6 +95,8 @@ void main() {
     when(hasActiveSubscriptionUseCase.call()).thenAnswer((_) async => true);
     when(isOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async => true);
     when(setOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async {});
+    when(shouldRefreshDailyBriefUseCase.call()).thenAnswer((_) async => false);
+    when(incomingPushBadgeCountStreamUseCase.call()).thenAnswer((_) async* {});
   });
 
   test('brief entry preview is being tracked correctly', () async {

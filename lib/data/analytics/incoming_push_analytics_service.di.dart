@@ -9,6 +9,9 @@ class IncomingPushAnalyticsService {
   final AnalyticsRepository _analyticsRepository;
 
   void trackPressedPushNotification(IncomingPushDTO push) {
-    _analyticsRepository.event(AnalyticsEvent.pushNotificationTapped(push.meta));
+    final meta = push.meta;
+    if (meta != null) {
+      _analyticsRepository.event(AnalyticsEvent.pushNotificationTapped(meta));
+    }
   }
 }
