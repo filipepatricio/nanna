@@ -7,6 +7,7 @@ class UpdateArticleProgressResponse {
     required this.progressState,
     this.freeArticlesLeftWarning,
   });
+
   final ArticleProgress progress;
   final ArticleProgressState progressState;
   final String? freeArticlesLeftWarning;

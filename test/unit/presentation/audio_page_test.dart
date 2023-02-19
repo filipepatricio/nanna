@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/presentation/page/audio/audio_page.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_close_button.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../finders.dart';
@@ -20,24 +20,23 @@ void main() {
         ),
       );
 
-      final playButton = find.byType(AudioControlButton);
-      expect(playButton, findsOneWidget);
+      final audioButton = find.byKey(Key('audio_button_${TestData.premiumArticleWithAudio.slug}'));
+      expect(audioButton, findsOneWidget);
+
       expect(
         find.descendant(
-          of: playButton,
+          of: audioButton,
           matching: find.bySvgAssetName(AppVectorGraphics.playArrow),
         ),
         findsOneWidget,
       );
 
-      await tester.tap(playButton);
+      await tester.tap(audioButton);
       await tester.pumpAndSettle();
 
-      final pauseButton = find.byType(AudioControlButton);
-      expect(pauseButton, findsOneWidget);
       expect(
         find.descendant(
-          of: pauseButton,
+          of: audioButton,
           matching: find.bySvgAssetName(AppVectorGraphics.pause),
         ),
         findsOneWidget,

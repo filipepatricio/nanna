@@ -503,6 +503,8 @@ class MockDTO {
     'Location, Location, Location: Investing in Real Estate in the Metaverse',
     // note
     null,
+    // isNoteCollapsible
+    false,
     // type
     ArticleTypeDTO.free,
     // kind
@@ -558,6 +560,15 @@ class MockDTO {
     slug: 'slug-premium',
     type: ArticleTypeDTO.premium,
     image: _articleImageCloudinary,
+    locked: true,
+  );
+
+  static final premiumArticleNoteCollapsible = _freeArticle.copyWith(
+    id: 'id-premium-collapsible',
+    slug: 'slug-premium-collapsible',
+    type: ArticleTypeDTO.premium,
+    image: _articleImageCloudinary,
+    isNoteCollapsible: true,
     locked: true,
   );
 
@@ -1052,6 +1063,8 @@ class MockDTO {
     description: annualPackage.storeProduct.description,
     price: annualPackage.storeProduct.price,
     priceString: annualPackage.storeProduct.priceString,
+    monthlyPrice: annualPackage.storeProduct.price / 12.0,
+    monthlyPriceString: '\$${(annualPackage.storeProduct.price / 12.0).toStringAsFixed(2)}',
     trialDays: 14,
     reminderDays: 7,
     offeringId: offeringWithTrial.offering.identifier,
@@ -1065,6 +1078,8 @@ class MockDTO {
     description: monthlyPackage.storeProduct.description,
     price: monthlyPackage.storeProduct.price,
     priceString: monthlyPackage.storeProduct.priceString,
+    monthlyPrice: monthlyPackage.storeProduct.price,
+    monthlyPriceString: monthlyPackage.storeProduct.priceString,
     trialDays: 7,
     reminderDays: 3,
     offeringId: offeringWithTrial.offering.identifier,
@@ -1158,6 +1173,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
     String? title,
     String? strippedTitle,
     String? note,
+    bool? isNoteCollapsible,
     String? credits,
     ArticleTypeDTO? type,
     ArticleKindDTO? kind,
@@ -1182,6 +1198,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       title ?? this.title,
       strippedTitle ?? this.strippedTitle,
       note ?? this.note,
+      isNoteCollapsible ?? this.isNoteCollapsible,
       type ?? this.type,
       kind ?? this.kind,
       publicationDate ?? this.publicationDate,
@@ -1208,6 +1225,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       title,
       strippedTitle,
       note,
+      isNoteCollapsible,
       type,
       kind,
       publicationDate,
@@ -1234,6 +1252,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       title,
       strippedTitle,
       note,
+      isNoteCollapsible,
       type,
       kind,
       publicationDate,

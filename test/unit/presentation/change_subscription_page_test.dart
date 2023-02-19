@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -24,7 +25,8 @@ void main() {
       final getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
       final getSubscriptionPlansUseCase = MockGetSubscriptionPlansUseCase();
 
-      when(getSubscriptionPlansUseCase()).thenAnswer((_) async => TestData.subscriptionPlansWithoutTrial);
+      when(getSubscriptionPlansUseCase())
+          .thenAnswer((_) async => SubscriptionPlanGroup(plans: TestData.subscriptionPlansWithoutTrial));
 
       final subscription = TestData.activeSubscription.copyWith(nextPlan: TestData.subscriptionPlansWithoutTrial.first);
       when(getActiveSubscriptionUseCase()).thenAnswer((_) async => subscription);

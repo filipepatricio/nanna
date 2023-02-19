@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/article_paywall_subscription_plan_pack.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -68,7 +69,7 @@ void main() {
 
     final purchaseSubscriptionUseCase = MockPurchaseSubscriptionUseCase();
     final getArticlePaywallPreferredPlanUseCase = FakeGetArticlePaywallPreferredPlanUseCase(
-      ArticlePaywallSubscriptionPlanPack.multiple(plans),
+      ArticlePaywallSubscriptionPlanPack.multiple(SubscriptionPlanGroup(plans: plans)),
     );
 
     when(purchaseSubscriptionUseCase.call(plans.last)).thenAnswer((realInvocation) async => true);

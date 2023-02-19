@@ -26,6 +26,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     String title,
     String strippedTitle,
     String? note,
+    bool isNoteCollapsible,
     ArticleTypeDTO type,
     ArticleKindDTO? kind,
     String? publicationDate,

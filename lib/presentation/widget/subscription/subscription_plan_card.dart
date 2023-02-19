@@ -17,6 +17,7 @@ typedef OnPlanPressed = void Function(SubscriptionPlan plan);
 class SubscriptionPlanCard extends HookWidget {
   const SubscriptionPlanCard({
     required this.plan,
+    required this.highestMonthlyCostPlan,
     required this.isSelected,
     required this.onPlanPressed,
     this.isCurrent = false,
@@ -25,6 +26,7 @@ class SubscriptionPlanCard extends HookWidget {
   }) : super(key: key);
 
   final SubscriptionPlan plan;
+  final SubscriptionPlan highestMonthlyCostPlan;
   final bool isSelected;
   final OnPlanPressed onPlanPressed;
   final bool isCurrent;
@@ -43,101 +45,134 @@ class SubscriptionPlanCard extends HookWidget {
           eventController.track(AnalyticsEvent.subscriptionPlanSelected(packageId: plan.packageId));
           onPlanPressed(plan);
         },
-        child: AnimatedContainer(
-          duration: animationsDuration,
-          padding: const EdgeInsets.all(AppDimens.m),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: isSelected ? AppColors.of(context).borderTertiary : AppColors.of(context).borderPrimary,
-            ),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(AppDimens.modalRadius),
-            ),
-            color: isSelected ? AppColors.of(context).blackWhiteSecondary : AppColors.of(context).backgroundSecondary,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (isCurrent) ...[
-                Text(
-                  LocaleKeys.subscription_change_currentPlan.tr(),
-                  style: AppTypography.b2Regular.copyWith(
-                    color: AppColors.of(context).textSecondary,
-                  ),
+        child: Stack(
+          children: [
+            AnimatedContainer(
+              duration: animationsDuration,
+              padding: const EdgeInsets.all(AppDimens.m),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: isSelected ? AppColors.of(context).borderTertiary : AppColors.of(context).borderPrimary,
                 ),
-                const SizedBox(height: AppDimens.s),
-              ] else if (isNextPlan) ...[
-                Text(
-                  LocaleKeys.subscription_change_upcomingPlan.tr(),
-                  style: AppTypography.b2Regular.copyWith(
-                    color: AppColors.of(context).textSecondary,
-                  ),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(AppDimens.modalRadius),
                 ),
-                const SizedBox(height: AppDimens.s),
-              ],
-              Flexible(
-                child: AutoSizeText(
-                  plan.title,
-                  style: AppTypography.b2Medium,
-                  maxLines: 1,
-                ),
+                color:
+                    isSelected ? AppColors.of(context).blackWhiteSecondary : AppColors.of(context).backgroundSecondary,
               ),
-              const SizedBox(height: AppDimens.xs),
-              if (plan.hasTrial) ...[
-                Text(
-                  plan.description,
-                  style: AppTypography.b2Regular.copyWith(
-                    color: AppColors.of(context).textSecondary,
-                  ),
-                ),
-                const SizedBox(height: AppDimens.xs),
-              ],
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    plan.priceString,
-                    style: AppTypography.b2Medium,
+                  if (isCurrent) ...[
+                    Text(
+                      LocaleKeys.subscription_change_currentPlan.tr(),
+                      style: AppTypography.b2Regular.copyWith(
+                        color: AppColors.of(context).textSecondary,
+                      ),
+                    ),
+                    const SizedBox(height: AppDimens.xs),
+                  ] else if (isNextPlan) ...[
+                    Text(
+                      LocaleKeys.subscription_change_upcomingPlan.tr(),
+                      style: AppTypography.b2Regular.copyWith(
+                        color: AppColors.of(context).textSecondary,
+                      ),
+                    ),
+                    const SizedBox(height: AppDimens.xs),
+                  ],
+                  Flexible(
+                    child: AutoSizeText(
+                      plan.title,
+                      style: AppTypography.sansTitleSmallLausanne.w550,
+                      maxLines: 1,
+                    ),
                   ),
-                  if (plan.discountPercentage > 0)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: AppDimens.s,
-                        horizontal: AppDimens.sl,
+                  const SizedBox(height: AppDimens.xs),
+                  if (plan.hasTrial) ...[
+                    Text(
+                      plan.description,
+                      style: AppTypography.b2Regular.copyWith(
+                        color: AppColors.of(context).textSecondary,
                       ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(AppDimens.pillRadius),
-                        color: AppColors.of(context).buttonAccentBackground,
+                    ),
+                    const SizedBox(height: AppDimens.s),
+                  ],
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        plan.priceString,
+                        style: AppTypography.b2Medium,
                       ),
-                      child: Text(
-                        LocaleKeys.subscription_off.tr(args: [('${plan.discountPercentage}')]),
-                        style: AppTypography.b2Regular.copyWith(
-                          height: 1,
-                          color: AppColors.of(context).buttonAccentText,
+                      if (plan.monthlyPrice < highestMonthlyCostPlan.monthlyPrice) ...[
+                        const SizedBox(width: AppDimens.s),
+                        Text(
+                          LocaleKeys.subscription_monthlyPriceComparison.tr(
+                            args: [
+                              plan.monthlyPriceString,
+                              highestMonthlyCostPlan.monthlyPriceString,
+                            ],
+                          ),
+                          style: AppTypography.sansTextNanoLausanne.copyWith(
+                            color: AppColors.of(context).textSecondary,
+                          ),
                         ),
+                      ]
+                    ],
+                  ),
+                  if (plan.hasTrial)
+                    AnimatedOpacity(
+                      opacity: isSelected ? 1 : 0,
+                      duration: animationsDuration,
+                      child: AnimatedSize(
+                        duration: animationsDuration,
+                        curve: Curves.linearToEaseOut,
+                        child: isSelected
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: AppDimens.l),
+                                child: _Timeline(plan: plan),
+                              )
+                            : Container(),
                       ),
                     ),
                 ],
               ),
-              if (plan.hasTrial)
-                AnimatedOpacity(
-                  opacity: isSelected ? 1 : 0,
-                  duration: animationsDuration,
-                  child: AnimatedSize(
-                    duration: animationsDuration,
-                    curve: Curves.linearToEaseOut,
-                    child: isSelected
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: AppDimens.l),
-                            child: _Timeline(plan: plan),
-                          )
-                        : Container(),
-                  ),
-                ),
-            ],
-          ),
+            ),
+            if (plan.discountPercentage > 0)
+              Positioned(
+                top: AppDimens.m,
+                right: AppDimens.m,
+                child: _DiscountBadge(plan: plan),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DiscountBadge extends StatelessWidget {
+  const _DiscountBadge({required this.plan});
+
+  final SubscriptionPlan plan;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: AppDimens.s,
+        horizontal: AppDimens.sl,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppDimens.pillRadius),
+        color: AppColors.of(context).buttonAccentBackground,
+      ),
+      child: Text(
+        LocaleKeys.subscription_off.tr(args: ['${plan.discountPercentage}']),
+        style: AppTypography.sansTextSmallLausanne.copyWith(
+          color: AppColors.of(context).buttonAccentText,
+          height: 1,
         ),
       ),
     );

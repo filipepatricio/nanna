@@ -15,11 +15,12 @@ class _ArticleCoverMedium extends ArticleCover {
   final bool isNew;
   final bool showNote;
   final bool showRecommendedBy;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
   final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
+    final snackbarController = useSnackbarController();
     final coverWidth = useMemoized(
       () => AppDimens.coverSize(context, AppDimens.coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
@@ -43,7 +44,10 @@ class _ArticleCoverMedium extends ArticleCover {
       ),
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: onTap,
+        onTap: () => state.maybeMap(
+          offline: (_) => snackbarController.showMessage(SnackbarMessage.offline()),
+          orElse: onTap,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -65,19 +69,19 @@ class _ArticleCoverMedium extends ArticleCover {
                       children: [
                         PublisherRow(article: article),
                         const SizedBox(height: AppDimens.sl),
-                        InformedMarkdownBody(
-                          markdown: article.title,
-                          baseTextStyle: AppTypography.serifTitleLargeIvar,
+                        Text(
+                          article.strippedTitle,
+                          style: AppTypography.serifTitleLargeIvar,
                           maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(width: AppDimens.m),
-                _ArticleAspectRatioImageCover(
+                _ArticleCoverImage.aspectRatio(
                   article: article,
-                  coverColor: article.category.color,
                   aspectRatio: AppDimens.articleSmallCoverAspectRatio,
                   width: coverWidth,
                   available: state.maybeMap(offline: (_) => false, orElse: () => true),
@@ -95,13 +99,15 @@ class _ArticleCoverMedium extends ArticleCover {
                 available: state.maybeMap(offline: (_) => false, orElse: () => true),
                 child: OwnersNote(
                   note: articleNote,
+                  isNoteCollapsible: article.isNoteCollapsible,
                   showRecommendedBy: showRecommendedBy,
                   curationInfo: article.curationInfo,
+                  onTap: onTap,
                 ),
               ),
             ],
             const SizedBox(height: AppDimens.sl),
-            ArticleMetadataRow(
+            _ArticleCoverMetadataRow(
               article: state.map(
                 initializing: (_) => article,
                 idle: (state) => state.article,

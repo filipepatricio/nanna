@@ -5,16 +5,20 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_metadata_row.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_no_image_view.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_time_read_label.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
+import 'package:better_informed_mobile/presentation/widget/category_dot.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
+import 'package:better_informed_mobile/presentation/widget/new_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/owners_note.dart';
+import 'package:better_informed_mobile/presentation/widget/pipe_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_row.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -22,7 +26,9 @@ part 'article_cover_large.dart';
 part 'article_cover_medium.dart';
 part 'article_cover_small.dart';
 part 'article_opacity.dart';
-part 'content/article_image_cover.dart';
+part 'content/article_cover_audio_button.dart';
+part 'content/article_cover_image.dart';
+part 'content/article_cover_metadata_row.dart';
 
 abstract class ArticleCover extends HookWidget {
   const ArticleCover._({super.key}) : super();

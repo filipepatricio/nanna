@@ -33,14 +33,14 @@ class _ChangeSubscriptionPlansView extends HookWidget {
                 const SizedBox(height: AppDimens.xl),
                 state.maybeMap(
                   idle: (data) => _PlanCardsList(
-                    plans: data.plans,
+                    planGroup: data.planGroup,
                     selectedPlanNotifier: selectedPlanNotifier,
                     currentPlan: currentPlan,
                     nextPlan: nextPlan,
                     cubit: cubit,
                   ),
                   processing: (data) => _PlanCardsList(
-                    plans: data.plans,
+                    planGroup: data.planGroup,
                     selectedPlanNotifier: selectedPlanNotifier,
                     currentPlan: currentPlan,
                     nextPlan: nextPlan,
@@ -98,7 +98,7 @@ class _ChangeSubscriptionPlansView extends HookWidget {
 
 class _PlanCardsList extends StatelessWidget {
   const _PlanCardsList({
-    required this.plans,
+    required this.planGroup,
     required this.selectedPlanNotifier,
     required this.currentPlan,
     required this.nextPlan,
@@ -106,7 +106,7 @@ class _PlanCardsList extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final List<SubscriptionPlan> plans;
+  final SubscriptionPlanGroup planGroup;
   final ValueNotifier<SubscriptionPlan> selectedPlanNotifier;
   final SubscriptionPlan? currentPlan;
   final SubscriptionPlan? nextPlan;
@@ -116,7 +116,7 @@ class _PlanCardsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: plans
+      children: planGroup.plans
           .map(
             (plan) => ValueListenableBuilder<SubscriptionPlan>(
               valueListenable: selectedPlanNotifier,
@@ -126,6 +126,7 @@ class _PlanCardsList extends StatelessWidget {
                   isSelected: plan == selectedPlan,
                   isCurrent: plan == currentPlan,
                   isNextPlan: plan == nextPlan,
+                  highestMonthlyCostPlan: planGroup.highestMonthlyCostPlan,
                   onPlanPressed: (plan) {
                     selectedPlanNotifier.value = plan;
                     cubit.selectPlan(plan);

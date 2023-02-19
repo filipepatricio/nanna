@@ -40,11 +40,9 @@
   "onboarding": {
     "title": "How we use push notifications",
     "headerSlideOne": "Access trusted, premium news sources",
-    "headerSlideTwo": "Explore diverse perspectives",
     "headerSlideCategories": "Add your interests",
     "headerSlideThree": "Notifications",
     "descriptionSlideOne": "Get a daily curation of must-read articles – all in one app.",
-    "descriptionSlideTwo": "Our editors and experts read hundreds of articles daily, choosing only the best and deliberately curating diverse perspectives.",
     "descriptionSlideCategories": "Choose what matters to you and you’ll get personalised daily reading suggestions, alongside wider curated articles. Change your interests anytime in Profile → Settings.",
     "categories": {
       "everything": "Show me everything"
@@ -82,13 +80,7 @@
       "byLine": "Curated by",
       "name": "informed",
       "bio": "We are a group of dedicated journalists who have written for a variety of respected publications and bring decades of combined experience. Although we have different backgrounds, we believe in a common cause: breaking through filter bubbles and providing readers with the facts and variety of perspectives they need to understand a complex world."
-    },
-    "justSec": "Just a sec...",
-    "loading": "We’re loading your brief",
-    "readingList": "Reading list",
-    "relax": "Relax",
-    "selectedArticles": "{} selected articles",
-    "articles": "{} articles"
+    }
   },
   "date": {
     "daySuffix": "{}-day",
@@ -110,19 +102,24 @@
       "fresh": "Fresh curations every day",
       "read": "Read or listen to articles"
     },
+    "subscriptionTypeName": {
+      "monthly": "monthly",
+      "annual": "yearly"
+    },
     "redeemCode": "Redeem Code",
     "restoringPurchaseError": "There are no purchases to restore associated to this account",
     "restoringPurchase": "Restoring purchase",
     "restorePurchase": "Restore purchase",
     "startYourTrial": "Now: start your free trial of Premium",
     "receiveAnEmail": "In {}: get an email reminder that your trial ends soon",
-    "youllBeCharged": "In {}: you’ll be charged for informed",
+    "youllBeCharged": "In {}: you'll be charged {} for a {} subscription",
+    "monthlyPriceComparison": "({}/month instead of {})",
     "viewAllPlansAction": "View all plans",
     "chargeInfo": {
       "trial": "Cancel anytime during your {} trial and you won't be charged.",
       "standard": "Recurring billing · Cancel anytime"
     },
-    "off": "{}% off",
+    "off": "Save {}%",
     "description": "Read or listen to all of our curated articles.\nCancel anytime during your trial.",
     "planInfo": {
       "trial": "Free {} trial, then {} / year",
@@ -134,7 +131,6 @@
       "tryForFree": "Try for free",
       "standard": "Subscribe"
     },
-    "withXDaysFreeTrial": "with {} free trial",
     "success": {
       "title": {
         "trial": "You _free trial_ starts now",
@@ -240,29 +236,14 @@
   },
   "article": {
     "label": "Article",
-    "types": {
-      "freemium": "Free",
-      "premium": "Premium",
-      "exclusive": "Exclusive"
-    },
-    "appBar": {
-      "freemium": "Free Article",
-      "premium": "Premium Article"
-    },
     "byName": "By {}",
-    "by": "By",
     "read": "Read",
-    "readMore": "Read more",
     "readMinutes": "{} min read",
-    "loadingNext": "Loading next article in\nthe reading list.",
-    "allArticlesRead": "Great! You’ve read all\narticles on this topic.",
-    "goBackToExplore": "Back to explore",
     "openSourceUrl": "Open in Browser",
     "error": {
       "title": "Oops",
       "body": "Something went wrong\n while loading the article"
     },
-    "continueToArticle": "Continue reading",
     "geoblockedError": {
       "title": "Content unavailable",
       "content": "The content you requested is not yet available in your country.",
@@ -278,11 +259,11 @@
     },
     "otherBriefs": "More Articles and Deep Dives from Today",
     "moreFromTopic": "More Articles in ‘{}’",
-    "percentageRead": "{}% read"
-  },
-  "readingList": {
-    "title": "Reading list",
-    "articleCount": "{} articles"
+    "note": {
+      "showMore": "Show more",
+      "showLess": "Show less",
+      "readFullArticle": "Read full article"
+    }
   },
   "topic": {
     "label": "Deep Dive",
@@ -303,11 +284,8 @@
       "label": "How we curate content",
       "title": "How we curate content?",
       "text": "We don't believe algorithms alone can provide you with the news and information you need. That's why, in addition to using algorithms for what they're good at, we have _human beings curate our articles,_ experienced journalists who can provide you with the context you need to understand a complex world.\n\nWe select our articles from sources _with a proven track record_ of following ethical practices and standards in journalism, and we clearly delineate between news, opinion, and analysis.\n\nWhen the publications or authors we curate have a _particularly strong political leanings,_ we mention that political perspective in the editor's note so the reader understands the biases they are encountering.\n\nOn occasion, we may use sources outside the standard realm of journalism, including _blogs and academic articles._ When we do so, we will clearly inform readers in the editor's note and highlight any political affiliations associated with the sources.\n\nOne of our central goals is to _repair a splintered media landscape_ in which people remain in information bubbles, getting news from sources that only reinforce their existing beliefs.\n\nWe therefore believe firmly in providing a common platform where a _variety of perspectives_ can be heard and hope, by doing so, we can help renew civil discourse and counteract ever-greater polarization.\n\nWe do not shy away from engaging with the most hotly discussed topics of the day. However, we seek to _stay above the fray,_ presenting multiple points of view. While _we strive to be non-partisan,_ this does not mean we don't have our own voice or believe there are some limits to acceptable discourse. We will not lend a platform to those who intentionally spread misinformation or question established science. We will exclude sources that peddle propaganda or seek to foment hatred."
-    },
-    "displayFullImage": "Display full image"
+    }
   },
-  "continueReading": "Continue reading",
-  "continueListening": "Continue listening",
   "explore": {
     "title": "Explore",
     "viewAll": "View All",

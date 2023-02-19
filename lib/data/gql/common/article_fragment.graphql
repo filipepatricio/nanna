@@ -18,6 +18,7 @@ fragment articleFragment on Article {
     title
     strippedTitle
     note
+    isNoteCollapsible
     type
     kind {
         ...kindFragment

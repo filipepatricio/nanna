@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'article_paywall_subscription_plan_pack.dt.freezed.dart';
@@ -8,6 +9,6 @@ class ArticlePaywallSubscriptionPlanPack with _$ArticlePaywallSubscriptionPlanPa
   factory ArticlePaywallSubscriptionPlanPack.singleTrial(SubscriptionPlan plan) =
       _ArticlePaywallSubscriptionPlanPackSingleTrial;
 
-  factory ArticlePaywallSubscriptionPlanPack.multiple(List<SubscriptionPlan> plans) =
+  factory ArticlePaywallSubscriptionPlanPack.multiple(SubscriptionPlanGroup planGroup) =
       _ArticlePaywallSubscriptionPlanPackMultiple;
 }

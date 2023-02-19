@@ -10,10 +10,7 @@ abstract class SynchronizableEntityMapper<A, B>
 
   @override
   SynchronizableEntity<A> from(Synchronizable<B> data) {
-    final item = data.map(
-      synchronized: (data) => data.data,
-      notSynchronized: (_) => null,
-    );
+    final item = data.data;
     final synchronizedAt = data.map(
       synchronized: (data) => data.synchronizedAt,
       notSynchronized: (_) => null,
@@ -43,6 +40,7 @@ abstract class SynchronizableEntityMapper<A, B>
       );
     } else {
       return Synchronizable.notSynchronized(
+        data: item != null ? dataMapper.to(item) : null,
         dataId: data.dataId,
         createdAt: DateTime.parse(data.createdAt),
         expirationDate: DateTime.parse(data.expirationDate),

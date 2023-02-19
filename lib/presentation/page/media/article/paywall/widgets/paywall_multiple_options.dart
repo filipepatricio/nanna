@@ -2,21 +2,21 @@ part of '../article_paywall_view.dart';
 
 class _PaywallMultipleOptions extends HookWidget {
   const _PaywallMultipleOptions({
-    required this.plans,
+    required this.planGroup,
     required this.onPurchasePressed,
     required this.onRestorePressed,
     required this.isProcessing,
     Key? key,
   }) : super(key: key);
 
-  final List<SubscriptionPlan> plans;
+  final SubscriptionPlanGroup planGroup;
   final OnPurchasePressed onPurchasePressed;
   final VoidCallback onRestorePressed;
   final bool isProcessing;
 
   @override
   Widget build(BuildContext context) {
-    final selectedPlan = useState(plans.first);
+    final selectedPlan = useState(planGroup.plans.first);
     final snackbarController = useSnackbarController();
 
     Future<void> openInBrowser(String uri) async {
@@ -37,11 +37,12 @@ class _PaywallMultipleOptions extends HookWidget {
           baseTextStyle: AppTypography.h1Medium,
         ),
         const SizedBox(height: AppDimens.l),
-        ...plans
+        ...planGroup.plans
             .map(
               (plan) => SubscriptionPlanCard(
                 plan: plan,
                 isSelected: selectedPlan.value == plan,
+                highestMonthlyCostPlan: planGroup.highestMonthlyCostPlan,
                 onPlanPressed: (plan) {
                   selectedPlan.value = plan;
                 },

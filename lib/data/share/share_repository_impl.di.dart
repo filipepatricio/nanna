@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/share/data/share_options.dart';
 import 'package:better_informed_mobile/domain/share/share_repository.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:social_share/social_share.dart';
@@ -23,17 +24,17 @@ class ShareRepositoryImpl implements ShareRepository {
   @override
   Future<List<ShareOption>> getShareOptions() async {
     final apps = await SocialShare.checkInstalledAppsForShare();
-    final entries = apps?.entries.map((e) => MapEntry(e.key as String, e.value as bool)).toList();
+    final entries = apps?.cast<String, bool>().entries ?? [];
 
-    if (entries == null) return [];
-
-    return entries
-        .where((entry) => _socialShareOptions.containsKey(entry.key))
-        .where((entry) => entry.value)
-        .map((entry) => _socialShareOptions[entry.key])
-        .whereType<ShareOption>()
-        .toList()
-      ..addAll([ShareOption.copyLink, ShareOption.more]);
+    return [
+      ...entries
+          .where((entry) => _socialShareOptions.containsKey(entry.key))
+          .where((entry) => entry.value)
+          .map((entry) => _socialShareOptions[entry.key])
+          .whereType<ShareOption>(),
+      ShareOption.copyLink,
+      ShareOption.more,
+    ];
   }
 
   @override
@@ -48,7 +49,7 @@ class ShareRepositoryImpl implements ShareRepository {
         await SocialShare.shareWhatsapp(text);
         break;
       case ShareOption.copyLink:
-        await SocialShare.copyToClipboard(text: text);
+        await Clipboard.setData(ClipboardData(text: text));
         break;
       default:
         await Share.share(text, subject: subject);

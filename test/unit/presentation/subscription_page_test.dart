@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
@@ -29,6 +29,8 @@ void main() {
           LocaleKeys.subscription_youllBeCharged.tr(
             args: [
               LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.first.trialDays),
+              TestData.subscriptionPlansWithTrial.first.priceString,
+              LocaleKeys.subscription_subscriptionTypeName_annual.tr(),
             ],
           ),
         ),
@@ -39,6 +41,8 @@ void main() {
           LocaleKeys.subscription_youllBeCharged.tr(
             args: [
               LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.last.trialDays),
+              TestData.subscriptionPlansWithTrial.last.priceString,
+              LocaleKeys.subscription_subscriptionTypeName_monthly.tr()
             ],
           ),
         ),
@@ -51,6 +55,8 @@ void main() {
           LocaleKeys.subscription_youllBeCharged.tr(
             args: [
               LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.last.trialDays),
+              TestData.subscriptionPlansWithTrial.last.priceString,
+              LocaleKeys.subscription_subscriptionTypeName_monthly.tr()
             ],
           ),
         ),
@@ -61,6 +67,8 @@ void main() {
           LocaleKeys.subscription_youllBeCharged.tr(
             args: [
               LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.first.trialDays),
+              TestData.subscriptionPlansWithTrial.first.priceString,
+              LocaleKeys.subscription_subscriptionTypeName_annual.tr(),
             ],
           ),
         ),
@@ -128,7 +136,7 @@ void main() {
         findsOneWidget,
       );
 
-      final lastPlan = (await useCase.call()).last;
+      final lastPlan = (await useCase.call()).plans.last;
       await tester.tap(find.byType(SubscriptionPlanCard).last);
       await tester.pumpAndSettle();
       expect(
@@ -177,6 +185,12 @@ void main() {
 
 class FakeGetSubscriptionPlansUseCase extends Fake implements GetSubscriptionPlansUseCase {
   @override
-  Future<List<SubscriptionPlan>> call() async =>
-      [TestData.subscriptionPlansWithoutTrial.first, TestData.subscriptionPlansWithTrial.last];
+  Future<SubscriptionPlanGroup> call() async {
+    return SubscriptionPlanGroup(
+      plans: [
+        TestData.subscriptionPlansWithoutTrial.first,
+        TestData.subscriptionPlansWithTrial.last,
+      ],
+    );
+  }
 }

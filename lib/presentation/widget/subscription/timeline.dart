@@ -25,7 +25,7 @@ class _Timeline extends StatelessWidget {
           children: [
             Positioned(
               top: dotSize * .5,
-              bottom: dotSize * .5,
+              bottom: dotSize,
               left: (dotSize - dottedTimelineWidth) * .5,
               child: DottedLine(
                 direction: Axis.vertical,
@@ -82,7 +82,7 @@ class _Timeline extends StatelessWidget {
                 ),
                 const SizedBox(height: AppDimens.ml),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const _TimelineColumnCell(
                       width: timelineColumnWidth,
@@ -93,6 +93,8 @@ class _Timeline extends StatelessWidget {
                         LocaleKeys.subscription_youllBeCharged.tr(
                           args: [
                             LocaleKeys.date_day.plural(plan.trialDays),
+                            plan.priceString,
+                            plan.type.text,
                           ],
                         ),
                         style: labelStyle,
@@ -155,5 +157,16 @@ class _OutlinedDot extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+extension on SubscriptionPlanType {
+  String get text {
+    switch (this) {
+      case SubscriptionPlanType.monthly:
+        return LocaleKeys.subscription_subscriptionTypeName_monthly.tr();
+      case SubscriptionPlanType.annual:
+        return LocaleKeys.subscription_subscriptionTypeName_annual.tr();
+    }
   }
 }

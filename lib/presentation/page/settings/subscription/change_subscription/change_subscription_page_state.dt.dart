@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
-import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -12,13 +12,13 @@ class ChangeSubscriptionPageState with _$ChangeSubscriptionPageState {
 
   @Implements<BuildState>()
   const factory ChangeSubscriptionPageState.idle({
-    required List<SubscriptionPlan> plans,
+    required SubscriptionPlanGroup planGroup,
     required ActiveSubscription subscription,
   }) = _ChangeSubscriptionPageStateIdle;
 
   @Implements<BuildState>()
   const factory ChangeSubscriptionPageState.processing({
-    required List<SubscriptionPlan> plans,
+    required SubscriptionPlanGroup planGroup,
     required ActiveSubscription subscription,
   }) = _ChangeSubscriptionPageStateProcessing;
 

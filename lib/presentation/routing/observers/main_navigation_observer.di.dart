@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
@@ -19,7 +20,12 @@ class MainNavigationObserver extends AutoRouterObserver {
   @override
   void didPop(Route route, Route? previousRoute) {
     switch (route.settings.name) {
-      case TopicPage.name:
+      case MediaItemPageRoute.name:
+        final args = route.settings.arguments as MediaItemPageRouteArgs;
+        if (args.briefId != null) {
+          _updateBriefNotifierUseCase();
+        }
+        break;
       case SubscriptionPageRoute.name:
       case SubscriptionSuccessPageRoute.name:
         _updateBriefNotifierUseCase();
@@ -41,6 +47,8 @@ class MainNavigationObserver extends AutoRouterObserver {
         return _trackActivityUseCase.trackPage(AnalyticsPage.accountSettings());
       case SettingsNotificationsPageRoute.name:
         return _trackActivityUseCase.trackPage(AnalyticsPage.notificationSettings());
+      case SubscriptionPageRoute.name:
+        return _trackActivityUseCase.trackEvent(AnalyticsEvent.paywallTriggered());
     }
   }
 }

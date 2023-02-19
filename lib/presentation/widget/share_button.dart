@@ -8,16 +8,18 @@ class ShareButton extends StatelessWidget {
   const ShareButton({
     required this.onTap,
     this.iconColor,
-    Key? key,
-  }) : super(key: key);
+    this.enabled = true,
+    super.key,
+  });
 
   final Function(ShareOption?) onTap;
   final Color? iconColor;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async => onTap(await showShareOptions(context)),
+      onTap: () async => onTap(enabled ? await showShareOptions(context) : null),
       child: SizedBox.square(
         dimension: 32.0,
         child: Center(

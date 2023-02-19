@@ -265,6 +265,8 @@ SubscriptionPlan _createPlan({String offeringId = 'offeringId', String packageId
     description: 'Annual',
     price: 9.99,
     priceString: '9.99',
+    monthlyPrice: 0.83,
+    monthlyPriceString: '0.83',
     title: 'Premium',
     trialDays: 0,
     reminderDays: 14,

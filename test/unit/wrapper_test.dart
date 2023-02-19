@@ -19,6 +19,10 @@ import 'data/subscription/mapper/active_subscription_mapper_test.dart' as active
 import 'data/subscription/purchase_repository_impl_test.dart' as purchase_repository_impl_test;
 import 'data/topic/api/mapper/topic_dto_mapper_test.dart' as topic_dto_mapper_test;
 import 'data/topic/api/mapper/topic_preview_dto_mapper_test.dart' as topic_preview_dto_mapper_test;
+import 'domain/article/use_case/save_article_read_progress_locally_use_case_test.dart'
+    as save_article_read_progress_locally_use_case_test;
+import 'domain/article/use_case/synchroniza_article_progress_with_remote_use_case_test.dart'
+    as synchroniza_article_progress_with_remote_use_case_test;
 import 'domain/article/use_case/track_article_reading_progress_use_case_test.dart'
     as track_article_reading_progress_use_case_test;
 import 'domain/audio/audio_progress_tracker_test.dart' as audio_progress_tracker_test;
@@ -42,6 +46,7 @@ import 'domain/release_notes/use_case/get_current_release_note_use_case_test.dar
     as get_current_release_note_use_case_test;
 import 'domain/release_notes/use_case/save_release_note_if_first_run_use_case_test.dart'
     as save_release_note_if_first_run_use_case_test;
+import 'domain/subscription/data/subscription_plan_group_test.dart' as subscription_plan_group_test;
 import 'domain/subscription/use_case/get_article_paywall_preferred_plan_use_case_test.dart'
     as get_article_paywall_preferred_plan_use_case_test;
 import 'domain/synchronization/use_case/run_initial_bookmark_sync_use_case_test.dart'
@@ -108,6 +113,12 @@ void main() {
   group('save_bookmarked_media_item_use_case_test', save_bookmarked_media_item_use_case_test.main);
   group('synchroniza_all_use_case_test', synchroniza_all_use_case_test.main);
   group('run_initial_bookmark_sync_use_case_test', run_initial_bookmark_sync_use_case_test.main);
+  group('save_article_read_progress_locally_use_case_test', save_article_read_progress_locally_use_case_test.main);
+  group(
+    'synchroniza_article_progress_with_remote_use_case_test',
+    synchroniza_article_progress_with_remote_use_case_test.main,
+  );
+  group('subscription_plan_group_test', subscription_plan_group_test.main);
 
   // Presentation
   group('app_connectivity_checker_test', app_connectivity_checker_test.main);

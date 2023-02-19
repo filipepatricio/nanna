@@ -35,6 +35,7 @@ class ArticleHeaderEntity {
     required this.locked,
     required this.category,
     required this.curationInfo,
+    required this.isNoteCollapsible,
   });
 
   @HiveField(0)
@@ -79,4 +80,6 @@ class ArticleHeaderEntity {
   final CategoryEntity category;
   @HiveField(20)
   final CurationInfoEntity curationInfo;
+  @HiveField(21, defaultValue: false)
+  final bool isNoteCollapsible;
 }

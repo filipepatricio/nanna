@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_state.dt.dart';
@@ -50,6 +51,9 @@ class SubscriptionPage extends HookWidget {
 
     useCubitListener<SubscriptionPageCubit, SubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
+        idle: (group, selectedPlan) {
+          InformedDialog.removeRestorePurchase(context);
+        },
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
         success: (trialMode) {
           InformedDialog.removeRestorePurchase(context);
@@ -88,12 +92,21 @@ class SubscriptionPage extends HookWidget {
         ),
         child: InformedAnimatedSwitcher(
           child: state.maybeMap(
-            initializing: (_) => const _SubscriptionPlansLoadingView(),
-            orElse: () => SubscriptionPlansView(
+            idle: (state) => SubscriptionPlansView(
               cubit: cubit,
               openInBrowser: openInBrowser,
-              trialViewMode: cubit.plans.every((element) => element.hasTrial),
+              trialViewMode: state.group.hasTrail,
+              planGroup: state.group,
+              selectedPlan: state.selectedPlan,
             ),
+            processing: (state) => SubscriptionPlansView(
+              cubit: cubit,
+              openInBrowser: openInBrowser,
+              trialViewMode: state.group.hasTrail,
+              planGroup: state.group,
+              selectedPlan: state.selectedPlan,
+            ),
+            orElse: () => const _SubscriptionPlansLoadingView(),
           ),
         ),
       ),

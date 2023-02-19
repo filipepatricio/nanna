@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/article_paywall_subscription_plan_pack.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_view.dart';
@@ -66,7 +67,11 @@ void main() {
         dependencyOverride: (getIt) async {
           getIt.registerFactory<GetArticlePaywallPreferredPlanUseCase>(
             () => FakeGetArticlePaywallPreferredPlanUseCase(
-              ArticlePaywallSubscriptionPlanPack.multiple(TestData.subscriptionPlansWithoutTrial),
+              ArticlePaywallSubscriptionPlanPack.multiple(
+                SubscriptionPlanGroup(
+                  plans: TestData.subscriptionPlansWithoutTrial,
+                ),
+              ),
             ),
           );
         },
