@@ -72,20 +72,22 @@ class _ArticleCoverMedium extends ArticleCover {
                         Text(
                           article.strippedTitle,
                           style: AppTypography.serifTitleLargeIvar,
-                          maxLines: 4,
-                          overflow: TextOverflow.ellipsis,
+                          maxLines: article.hasImage ? 4 : null,
+                          overflow: article.hasImage ? TextOverflow.ellipsis : null,
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(width: AppDimens.m),
-                _ArticleCoverImage.aspectRatio(
-                  article: article,
-                  aspectRatio: AppDimens.articleSmallCoverAspectRatio,
-                  width: coverWidth,
-                  available: state.maybeMap(offline: (_) => false, orElse: () => true),
-                ),
+                if (article.hasImage) ...[
+                  const SizedBox(width: AppDimens.m),
+                  _ArticleCoverImage.aspectRatio(
+                    article: article,
+                    aspectRatio: AppDimens.articleSmallCoverAspectRatio,
+                    width: coverWidth,
+                    available: state.maybeMap(offline: (_) => false, orElse: () => true),
+                  ),
+                ],
               ],
             ),
             if (articleNote != null && article.shouldShowArticleCoverNote && showNote) ...[

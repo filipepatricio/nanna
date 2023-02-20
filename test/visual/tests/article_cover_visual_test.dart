@@ -93,9 +93,27 @@ void main() {
         onTap: () {},
       ),
 
+      /// Medium w/note no image
+      ArticleCover.medium(
+        article: TestData.article.copyWith(image: null),
+        isNew: true,
+        showNote: true,
+        showRecommendedBy: true,
+        onTap: () {},
+      ),
+
       /// Medium w/note collapsed
       ArticleCover.medium(
         article: TestData.premiumArticleNoteCollapsible,
+        isNew: true,
+        showNote: true,
+        showRecommendedBy: true,
+        onTap: () {},
+      ),
+
+      /// Medium w/note collapsed no image
+      ArticleCover.medium(
+        article: TestData.premiumArticleNoteCollapsible.copyWith(image: null),
         isNew: true,
         showNote: true,
         showRecommendedBy: true,
