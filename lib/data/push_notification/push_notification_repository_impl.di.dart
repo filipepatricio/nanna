@@ -97,10 +97,11 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
 
     _incomingPushNotificationStream = StreamController<IncomingPush>.broadcast();
 
-    final incomingPushStream = Rx.concat(
+    final incomingPushStream = Rx.merge(
       [
         _pushNotificationMessenger.initialMessage().asStream().whereType<IncomingPushDTO>(),
         _pushNotificationMessenger.onMessageOpenedApp(),
+        _pushNotificationMessenger.onMessage(),
       ],
     ).map<IncomingPush>(_incomingPushDTOMapper).map<IncomingPush>(_logUnknownActions);
 
