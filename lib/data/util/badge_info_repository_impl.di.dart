@@ -14,7 +14,7 @@ class BadgeInfoRepositoryImpl implements BadgeInfoRepository {
 
   @override
   Future<bool> shouldRefreshDailyBrief() async {
-    final shouldRefreshBrief = _sharedPreferences.get(_shouldRefreshBriefKey) as bool;
+    final shouldRefreshBrief = _sharedPreferences.get(_shouldRefreshBriefKey) as bool? ?? false;
     await _sharedPreferences.setBool(_shouldRefreshBriefKey, false);
     await FlutterAppBadger.removeBadge();
     return shouldRefreshBrief;

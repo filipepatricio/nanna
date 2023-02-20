@@ -16,7 +16,7 @@ class SynchronizeAllUseCase {
 
   Future<void> call() async {
     for (final group in _groups) {
-      await _synchronizeRepository(group);
+      await group.runSync(_synchronizeRepository);
     }
   }
 
