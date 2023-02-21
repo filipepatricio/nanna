@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -86,6 +87,7 @@ class PremiumArticleReadView extends HookWidget {
                 controller: mainController,
                 child: CustomScrollView(
                   controller: mainController,
+                  physics: const BottomBouncingScrollPhysics(),
                   slivers: [
                     SliverToBoxAdapter(
                       child: ArticleContentView(
