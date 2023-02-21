@@ -55,6 +55,7 @@ import 'package:better_informed_mobile/domain/bookmark/bookmark_change_notifier.
 import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/profile_bookmark_change_notifier.di.dart';
+import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/save_bookmarked_media_item_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
@@ -193,6 +194,7 @@ const _classes = [
   LoadLocalArticleUseCase,
   ShouldRefreshDailyBriefUseCase,
   IncomingPushBadgeCountStreamUseCase,
+  GetBookmarkStateUseCase,
 ];
 
 @GenerateMocks(_classes)
