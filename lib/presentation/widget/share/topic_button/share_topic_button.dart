@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
-import 'package:better_informed_mobile/generated/local_keys.g.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
@@ -8,7 +8,6 @@ import 'package:better_informed_mobile/presentation/widget/share/article_button/
 import 'package:better_informed_mobile/presentation/widget/share/topic_button/share_topic_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -35,7 +34,7 @@ class ShareTopicButton extends HookWidget {
       if (state == ShareTopicButtonState.copiedMessage) {
         snackbarController.showMessage(
           SnackbarMessage.simple(
-            message: LocaleKeys.common_linkCopied.tr(),
+            message: context.l10n.common_linkCopied,
             type: SnackbarMessageType.success,
           ),
         );
@@ -56,7 +55,7 @@ class ShareTopicButton extends HookWidget {
                 iconColor: color,
                 enabled: !state.isOffline,
                 onTap: state.isOffline
-                    ? (_) => snackbarController.showMessage(SnackbarMessage.offline())
+                    ? (_) => snackbarController.showMessage(SnackbarMessage.offline(context))
                     : (selectedShareOption) => cubit.share(selectedShareOption, topic),
               ),
             ),

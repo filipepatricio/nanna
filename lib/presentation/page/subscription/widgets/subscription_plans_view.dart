@@ -31,12 +31,12 @@ class SubscriptionPlansView extends HookWidget {
                 const SizedBox(height: AppDimens.l),
                 if (trialViewMode) ...[
                   InformedMarkdownBody(
-                    markdown: LocaleKeys.subscription_title_trial.tr(),
+                    markdown: context.l10n.subscription_title_trial,
                     baseTextStyle: AppTypography.h1Medium,
                   ),
                 ] else ...[
                   InformedMarkdownBody(
-                    markdown: LocaleKeys.subscription_title_standard.tr(),
+                    markdown: context.l10n.subscription_title_standard,
                     baseTextStyle: AppTypography.h1Medium,
                   ),
                   const SizedBox(height: AppDimens.l),
@@ -67,7 +67,7 @@ class SubscriptionPlansView extends HookWidget {
                 if (defaultTargetPlatform.isApple) ...[
                   const SizedBox(height: AppDimens.m),
                   LinkLabel(
-                    label: LocaleKeys.subscription_redeemCode.tr(),
+                    label: context.l10n.subscription_redeemCode,
                     onTap: cubit.redeemOfferCode,
                   ),
                 ],

@@ -31,10 +31,10 @@ class CategoryPreferenceFollowButton extends HookWidget {
     useCubitListener<CategoryPreferenceFollowButtonCubit, CategoryPreferenceFollowButtonState>(cubit,
         (cubit, state, context) {
       state.whenOrNull(
-        showMessage: (message) {
+        error: () {
           snackbarController.showMessage(
             SnackbarMessage.simple(
-              message: message,
+              message: context.l10n.common_generalError,
               type: SnackbarMessageType.error,
             ),
           );
@@ -89,9 +89,7 @@ class CategoryPreferenceFollowButton extends HookWidget {
             children: [
               Center(
                 child: Text(
-                  state.categoryPreference.isPreferred
-                      ? LocaleKeys.common_following.tr()
-                      : LocaleKeys.common_follow.tr(),
+                  state.categoryPreference.isPreferred ? context.l10n.common_following : context.l10n.common_follow,
                   style: AppTypography.buttonBold.copyWith(
                     color: state.categoryPreference.isPreferred
                         ? AppColors.of(context).buttonSecondaryText

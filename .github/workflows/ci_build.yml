@@ -146,9 +146,9 @@ jobs:
 
       - name: Build
         run: |
-          flutter pub get
-          flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
-          flutter pub run build_runner build --delete-conflicting-outputs
+          make get
+          make localization
+          make build_runner
 
       - name: Analyze & Test
         run: |
@@ -205,9 +205,9 @@ jobs:
 
       - name: Clean & Build
         run: |
-          flutter pub get
-          flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
-          flutter pub run build_runner build --delete-conflicting-outputs
+          make get
+          make localization
+          make build_runner
 
       - name: Build Android app
         run: flutter build apk --release --dart-define=env=prod --flavor prod
@@ -266,9 +266,9 @@ jobs:
 
       - name: Clean & Build
         run: |
-          flutter pub get
-          flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
-          flutter pub run build_runner build --delete-conflicting-outputs
+          make get
+          make localization
+          make build_runner
 
       - name: Build iOS app
         run: flutter build ios --release --no-codesign --dart-define=env=prod --flavor prod --bundle-sksl-path warmup.sksl.json

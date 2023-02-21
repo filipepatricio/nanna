@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/presentation/util/platform_util.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as custom_tabs;
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -17,9 +18,9 @@ Future<void> openInAppBrowser(String uri, [OpenInAppBrowserErrorCallback? onErro
   }
 }
 
-void showBrowserError(String uri, SnackbarController controller) {
+void showBrowserError(BuildContext context, String uri, SnackbarController controller) {
   controller.showMessage(
-    _browserErrorMessage(uri, controller),
+    _browserErrorMessage(context, uri, controller),
   );
 }
 
@@ -39,23 +40,23 @@ Future<void> _openWithAnyApp(String uri, OpenInAppBrowserErrorCallback? onError)
   }
 }
 
-SnackbarMessage _browserErrorMessage(String uri, SnackbarController snackbarController) {
+SnackbarMessage _browserErrorMessage(BuildContext context, String uri, SnackbarController snackbarController) {
   return SnackbarMessage.simple(
-    message: LocaleKeys.common_error_noBrowser.tr(),
+    message: context.l10n.common_error_noBrowser,
     subMessage: uri,
     action: SnackbarAction(
-      label: LocaleKeys.common_copy.tr(),
-      callback: () => _copyUriToClipboard(uri, snackbarController),
+      label: context.l10n.common_copy,
+      callback: () => _copyUriToClipboard(context, uri, snackbarController),
     ),
     type: SnackbarMessageType.error,
   );
 }
 
-void _copyUriToClipboard(String uri, SnackbarController snackbarController) {
+void _copyUriToClipboard(BuildContext context, String uri, SnackbarController snackbarController) {
   Clipboard.setData(ClipboardData(text: uri));
   snackbarController.showMessage(
     SnackbarMessage.simple(
-      message: tr(LocaleKeys.common_linkCopied),
+      message: context.l10n.common_linkCopied,
       type: SnackbarMessageType.success,
     ),
   );

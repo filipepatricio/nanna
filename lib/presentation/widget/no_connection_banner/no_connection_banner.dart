@@ -21,7 +21,7 @@ class NoConnectionBanner extends HookWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.all(AppDimens.s),
       child: Center(
         child: Text(
-          LocaleKeys.noConnection_banner.tr(),
+          context.l10n.noConnection_banner,
           style: AppTypography.sansTextNanoLausanne.copyWith(
             color: AppColors.stateTextSecondary,
             height: 1,

@@ -111,10 +111,10 @@ class _DailyBriefPage extends HookWidget {
         hasBeenUpdated: () {
           snackbarController.showMessage(
             SnackbarMessage.simple(
-              message: LocaleKeys.dailyBrief_refreshSnackBar_message.tr(),
+              message: context.l10n.dailyBrief_refreshSnackBar_message,
               type: SnackbarMessageType.info,
               action: SnackbarAction(
-                label: LocaleKeys.dailyBrief_refreshSnackBar_action.tr(),
+                label: context.l10n.dailyBrief_refreshSnackBar_action,
                 callback: () => cubit.refetchBriefs(),
               ),
             ),
@@ -203,7 +203,7 @@ class _DailyBriefPage extends HookWidget {
                     ),
                     error: (_) => SliverFillRemaining(
                       child: Center(
-                        child: ErrorView.general(
+                        child: ErrorView(
                           retryCallback: cubit.loadBriefs,
                         ),
                       ),
@@ -324,11 +324,11 @@ class _IdleContent extends HookWidget {
           final listener = topicCardTutorialListener(scrollController, topicCardTriggerPoint);
           scrollController.addListener(listener);
         },
-        showTutorialToast: (text) {
+        showTutorialToast: () {
           isShowingTutorialToast.value = true;
           showInfoToast(
             context: context,
-            text: text,
+            text: context.l10n.tutorial_dailyBriefSnackBarText,
             onDismiss: () {
               isShowingTutorialToast.value = false;
             },
@@ -600,10 +600,10 @@ class _Greeting extends StatelessWidget {
   Widget build(BuildContext context) {
     final intro = introduction;
     final dummyEditorialTeamCurationInfo = CurationInfo(
-      LocaleKeys.dailyBrief_dummyEditorialTeamCurationInfo_byLine.tr(),
+      context.l10n.dailyBrief_dummyEditorialTeamCurationInfo_byLine,
       Curator.editorialTeam(
-        name: LocaleKeys.dailyBrief_dummyEditorialTeamCurationInfo_name.tr(),
-        bio: LocaleKeys.dailyBrief_dummyEditorialTeamCurationInfo_bio.tr(),
+        name: context.l10n.dailyBrief_dummyEditorialTeamCurationInfo_name,
+        bio: context.l10n.dailyBrief_dummyEditorialTeamCurationInfo_bio,
       ),
     );
     return AccentBorderContainer(

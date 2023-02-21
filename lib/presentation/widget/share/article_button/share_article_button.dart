@@ -33,7 +33,7 @@ class ShareArticleButton extends HookWidget {
       if (state == ShareArticleButtonState.showMessage) {
         snackbarController.showMessage(
           SnackbarMessage.simple(
-            message: LocaleKeys.common_linkCopied.tr(),
+            message: context.l10n.common_linkCopied,
             type: SnackbarMessageType.success,
           ),
         );
@@ -53,7 +53,7 @@ class ShareArticleButton extends HookWidget {
               iconColor: color,
               enabled: !state.isOffline,
               onTap: state.isOffline
-                  ? (_) => snackbarController.showMessage(SnackbarMessage.offline())
+                  ? (_) => snackbarController.showMessage(SnackbarMessage.offline(context))
                   : (shareOption) => cubit.share(shareOption, article),
             ),
           ),

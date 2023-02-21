@@ -40,7 +40,7 @@ class SettingsMainBody extends HookWidget {
     useCubitListener<SettingsMainCubit, SettingsMainState>(cubit, (cubit, state, context) {
       state.mapOrNull(
         sendingEmailError: (error) {
-          showEmailErrorMessage(snackbarController);
+          showEmailErrorMessage(context, snackbarController);
         },
       );
     });
@@ -59,7 +59,7 @@ class SettingsMainBody extends HookWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: Text(
-            LocaleKeys.settings_profileHeader.tr(),
+            context.l10n.settings_profileHeader,
             style: AppTypography.subH1Bold.copyWith(
               color: AppColors.of(context).textTertiary,
             ),
@@ -67,22 +67,22 @@ class SettingsMainBody extends HookWidget {
         ),
         const SizedBox(height: AppDimens.s),
         SettingsMainItem(
-          label: LocaleKeys.settings_account.tr(),
+          label: context.l10n.settings_account,
           icon: AppVectorGraphics.account,
           onTap: () => context.pushRoute(const SettingsAccountPageRoute()),
         ),
         SettingsMainItem(
-          label: LocaleKeys.settings_notifications_title.tr(),
+          label: context.l10n.settings_notifications_title,
           icon: AppVectorGraphics.notifications,
           onTap: () => context.pushRoute(const SettingsNotificationsPageRoute()),
         ),
         SettingsMainItem(
-          label: LocaleKeys.settings_appearance_title.tr(),
+          label: context.l10n.settings_appearance_title,
           icon: AppVectorGraphics.image,
           onTap: () => context.pushRoute(const SettingsAppearancePageRoute()),
         ),
         SettingsMainItem(
-          label: LocaleKeys.settings_manageMyInterests.tr(),
+          label: context.l10n.settings_manageMyInterests,
           icon: AppVectorGraphics.star,
           onTap: () => context.pushRoute(const SettingsManageMyInterestsPageRoute()),
         ),
@@ -90,7 +90,7 @@ class SettingsMainBody extends HookWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: Text(
-            LocaleKeys.settings_aboutHeader.tr(),
+            context.l10n.settings_aboutHeader,
             style: AppTypography.subH1Bold.copyWith(
               color: AppColors.of(context).textTertiary,
             ),
@@ -98,24 +98,24 @@ class SettingsMainBody extends HookWidget {
         ),
         const SizedBox(height: AppDimens.s),
         SettingsMainItem(
-          label: LocaleKeys.settings_privacyPolicy.tr(),
-          onTap: () => _openInBrowser(policyPrivacyUri, snackbarController),
+          label: context.l10n.settings_privacyPolicy,
+          onTap: () => _openInBrowser(context, policyPrivacyUri, snackbarController),
         ),
         SettingsMainItem(
-          label: LocaleKeys.settings_termsOfService.tr(),
-          onTap: () => _openInBrowser(termsOfServiceUri, snackbarController),
+          label: context.l10n.settings_termsOfService,
+          onTap: () => _openInBrowser(context, termsOfServiceUri, snackbarController),
         ),
         SettingsMainItem(
-          label: LocaleKeys.settings_feedbackButton.tr(),
+          label: context.l10n.settings_feedbackButton,
           onTap: () {
             cubit.sendFeedbackEmail(
               _feedbackEmail,
-              LocaleKeys.settings_feedbackSubject.tr(),
+              context.l10n.settings_feedbackSubject,
             );
           },
         ),
         SettingsMainItem(
-          label: LocaleKeys.common_signOut.tr(),
+          label: context.l10n.common_signOut,
           onTap: cubit.signOut,
           fontColor: AppColors.of(context).textTertiary,
         ),
@@ -132,34 +132,34 @@ class SettingsMainBody extends HookWidget {
     );
   }
 
-  Future<void> _openInBrowser(String uri, SnackbarController snackbarController) async {
+  Future<void> _openInBrowser(BuildContext context, String uri, SnackbarController snackbarController) async {
     await openInAppBrowser(
       uri,
       (error, stacktrace) {
-        showBrowserError(uri, snackbarController);
+        showBrowserError(context, uri, snackbarController);
       },
     );
   }
 
-  void showEmailErrorMessage(SnackbarController controller) {
+  void showEmailErrorMessage(BuildContext context, SnackbarController controller) {
     controller.showMessage(
       SnackbarMessage.simple(
-        message: LocaleKeys.settings_feedbackMailError.tr(),
+        message: context.l10n.settings_feedbackMailError,
         subMessage: _feedbackEmail,
         action: SnackbarAction(
-          label: LocaleKeys.common_copy.tr(),
-          callback: () => _copyEmailToClipboard(controller),
+          label: context.l10n.common_copy,
+          callback: () => _copyEmailToClipboard(context, controller),
         ),
         type: SnackbarMessageType.error,
       ),
     );
   }
 
-  void _copyEmailToClipboard(SnackbarController controller) {
+  void _copyEmailToClipboard(BuildContext context, SnackbarController controller) {
     Clipboard.setData(const ClipboardData(text: _feedbackEmail));
     controller.showMessage(
       SnackbarMessage.simple(
-        message: LocaleKeys.profile_emailCopied.tr(),
+        message: context.l10n.profile_emailCopied,
         type: SnackbarMessageType.success,
       ),
     );

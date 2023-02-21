@@ -111,7 +111,7 @@ class _CollapsibleNoteWrapper extends HookWidget {
                             GestureDetector(
                               onTap: onTap,
                               child: Text(
-                                LocaleKeys.article_note_readFullArticle.tr(),
+                                context.l10n.article_note_readFullArticle,
                                 style: AppTypography.sansTextSmallLausanne.w550,
                               ),
                             ),
@@ -138,7 +138,7 @@ class _CollapsibleNoteWrapper extends HookWidget {
                         left: AppDimens.xxxl,
                       ),
                       child: Text(
-                        tr(isCollapsed ? LocaleKeys.article_note_showMore : LocaleKeys.article_note_showLess),
+                        isCollapsed ? context.l10n.article_note_showMore : context.l10n.article_note_showLess,
                         style: isCollapsed
                             ? AppTypography.sansTextSmallLausanne.w550
                             : AppTypography.sansTextSmallLausanne,

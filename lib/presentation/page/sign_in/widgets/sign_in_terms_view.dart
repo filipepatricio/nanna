@@ -15,36 +15,38 @@ class _TermsPolicy extends HookWidget {
           color: AppColors.of(context).textTertiary,
         ),
         children: [
-          TextSpan(text: LocaleKeys.signIn_consentParts_info.tr()),
+          TextSpan(text: context.l10n.signIn_consentParts_info),
           TextSpan(
-            text: LocaleKeys.signIn_consentParts_terms.tr(),
+            text: context.l10n.signIn_consentParts_terms,
             style: AppTypography.metadata1Regular.copyWith(
               fontWeight: FontWeight.w500,
               decoration: TextDecoration.underline,
               color: AppColors.of(context).textSecondary,
             ),
-            recognizer: TapGestureRecognizer()..onTap = () => _openInBrowser(termsOfServiceUri, snackbarController),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => _openInBrowser(context, termsOfServiceUri, snackbarController),
           ),
-          TextSpan(text: LocaleKeys.signIn_consentParts_and.tr()),
+          TextSpan(text: context.l10n.signIn_consentParts_and),
           TextSpan(
-            text: LocaleKeys.signIn_consentParts_privacy.tr(),
+            text: context.l10n.signIn_consentParts_privacy,
             style: AppTypography.metadata1Regular.copyWith(
               fontWeight: FontWeight.w500,
               decoration: TextDecoration.underline,
               color: AppColors.of(context).textSecondary,
             ),
-            recognizer: TapGestureRecognizer()..onTap = () => _openInBrowser(policyPrivacyUri, snackbarController),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => _openInBrowser(context, policyPrivacyUri, snackbarController),
           ),
         ],
       ),
     );
   }
 
-  Future<void> _openInBrowser(String uri, SnackbarController controller) async {
+  Future<void> _openInBrowser(BuildContext context, String uri, SnackbarController controller) async {
     await openInAppBrowser(
       uri,
       (error, stacktrace) {
-        showBrowserError(uri, controller);
+        showBrowserError(context, uri, controller);
       },
     );
   }

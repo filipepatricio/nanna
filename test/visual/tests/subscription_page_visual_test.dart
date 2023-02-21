@@ -28,6 +28,7 @@ void main() {
   });
 
   visualTest('${SubscriptionPage}_(restore_purchase)', (tester) async {
+    final l10n = await AppLocalizations.delegate.load(PhraseLocalizations.supportedLocales.first);
     final useCase = FakeRestorePurchaseUseCase();
     await tester.startApp(
       dependencyOverride: (getIt) async {
@@ -37,7 +38,7 @@ void main() {
     );
 
     final widgetFinder = find.byWidgetPredicate(
-      (widget) => widget is LinkLabel && widget.label == LocaleKeys.subscription_restorePurchase.tr(),
+      (widget) => widget is LinkLabel && widget.label == l10n.subscription_restorePurchase,
     );
 
     await tester.dragUntilVisible(widgetFinder, find.byType(SubscriptionPage), const Offset(0, -100));

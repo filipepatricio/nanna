@@ -24,13 +24,15 @@ br:
 	fvm flutter pub run build_runner build --delete-conflicting-outputs
 
 l10n:
-	fvm flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+	fvm flutter pub run phrase
+	fvm flutter gen-l10n
 
 build_runner:
 	flutter pub run build_runner build --delete-conflicting-outputs
 
-easy_localization:
-	flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+localization:
+	flutter pub run phrase
+	flutter gen-l10n
 
 unit_tests:
 	-flutter test test/unit/wrapper_test.dart

@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/registered_push_token.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
-import 'package:better_informed_mobile/exports.dart' hide TopicPage;
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/appearance/settings_appearance_page.dart';
@@ -19,6 +18,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../finders.dart';
+import '../../flutter_test_config.dart';
 import '../../generated_mocks.mocks.dart';
 import '../../test_data.dart';
 import '../unit_test_utils.dart';
@@ -141,7 +141,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         find.byText(
-          LocaleKeys.article_moreFromTopic.tr(args: [topic.strippedTitle]),
+          l10n.article_moreFromTopic(topic.strippedTitle),
           skipOffstage: false,
         ),
         findsOneWidget,

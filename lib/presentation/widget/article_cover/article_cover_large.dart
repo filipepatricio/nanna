@@ -38,7 +38,7 @@ class _ArticleCoverLarge extends ArticleCover {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => state.maybeMap(
-          offline: (_) => snackbarController.showMessage(SnackbarMessage.offline()),
+          offline: (_) => snackbarController.showMessage(SnackbarMessage.offline(context)),
           orElse: onTap,
         ),
         child: Column(

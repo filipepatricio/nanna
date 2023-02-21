@@ -226,7 +226,7 @@ class _AppBar extends StatelessWidget {
     return InformedSliverCupertinoAppBar(
       leading: BackTextButton(
         color: AppColors.light.textPrimary,
-        text: tr(LocaleKeys.explore_title),
+        text: context.l10n.explore_title,
       ),
       title: title,
       backgroundColor: backgroundColor ?? AppColors.brandAccent,

@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/domain/user/data/category_preference.dart
 import 'package:better_informed_mobile/domain/user/use_case/follow_category_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_category_preference_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/unfollow_category_use_case.di.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/widget/category_preference_follow_button/category_preference_follow_button_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -64,7 +63,7 @@ class CategoryPreferenceFollowButtonCubit extends Cubit<CategoryPreferenceFollow
       _updateBriefStreamController.sink.add(true);
       emit(CategoryPreferenceFollowButtonState.categoryPreferenceLoaded(updatedCategoryPreference));
     } catch (e, s) {
-      emit(CategoryPreferenceFollowButtonState.showMessage(LocaleKeys.common_generalError.tr()));
+      emit(const CategoryPreferenceFollowButtonState.error());
       Fimber.e('Update preferred categories failed', ex: e, stacktrace: s);
     }
   }
@@ -75,7 +74,7 @@ class CategoryPreferenceFollowButtonCubit extends Cubit<CategoryPreferenceFollow
       _updateBriefStreamController.sink.add(true);
       emit(CategoryPreferenceFollowButtonState.categoryPreferenceLoaded(updatedCategoryPreference));
     } catch (e, s) {
-      emit(CategoryPreferenceFollowButtonState.showMessage(LocaleKeys.common_generalError.tr()));
+      emit(const CategoryPreferenceFollowButtonState.error());
       Fimber.e('Update preferred categories failed', ex: e, stacktrace: s);
     }
   }

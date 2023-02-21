@@ -76,7 +76,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
           backgroundColor: backgroundColorAnimation.value,
           leading: BackTextButton(
             color: foregroundColorAnimation.value,
-            text: fromTopic ? LocaleKeys.topic_label.tr() : LocaleKeys.common_back.tr(),
+            text: fromTopic ? context.l10n.topic_label : context.l10n.common_back,
           ),
           actions: [
             BookmarkButton.article(

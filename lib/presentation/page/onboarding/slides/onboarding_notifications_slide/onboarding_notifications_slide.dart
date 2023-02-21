@@ -62,16 +62,16 @@ class _IdleContent extends StatelessWidget {
           const Spacer(flex: 5),
           NotificationHeaderContainer(
             startWidget: Text(
-              LocaleKeys.onboarding_headerSlideThree.tr(),
+              context.l10n.onboarding_headerSlideThree,
               style: AppTypography.b3Medium.copyWith(color: AppColors.of(context).textSecondary),
             ),
             trailingChildren: [
               Text(
-                LocaleKeys.onboarding_notifications_push.tr(),
+                context.l10n.onboarding_notifications_push,
                 style: AppTypography.b3Medium,
               ),
               Text(
-                LocaleKeys.onboarding_notifications_email.tr(),
+                context.l10n.onboarding_notifications_email,
                 style: AppTypography.b3Medium,
               ),
             ],
@@ -101,12 +101,12 @@ class _IdleContent extends StatelessWidget {
                       ),
                   if (kIsAppleDevice) ...[
                     Text(
-                      LocaleKeys.onboarding_tracking_title.tr(),
+                      context.l10n.onboarding_tracking_title,
                       style: AppTypography.b2Medium,
                     ),
                     const SizedBox(height: AppDimens.s),
                     Text(
-                      LocaleKeys.onboarding_tracking_info.tr(),
+                      context.l10n.onboarding_tracking_info,
                       style: AppTypography.b2Regular.copyWith(
                         color: AppColors.of(context).textSecondary,
                       ),

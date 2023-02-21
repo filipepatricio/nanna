@@ -54,24 +54,17 @@ class SubscribeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = plan.hasTrial && contentType == SubscriptionButtonContentType.full
-        ? LocaleKeys.subscription_button_trialText.tr(
-            args: [
-              LocaleKeys.date_daySuffix.tr(args: ['${plan.trialDays}']),
-            ],
+        ? context.l10n.subscription_button_trialText(
+            context.l10n.date_daySuffix('${plan.trialDays}'),
           )
-        : LocaleKeys.subscription_button_standard.tr();
+        : context.l10n.subscription_button_standard;
 
     if (mode == Brightness.dark) {
       return InformedFilledButton.primary(
         context: context,
         text: text,
         subtext: contentType == SubscriptionButtonContentType.full && plan.hasTrial
-            ? LocaleKeys.subscription_button_trialSubtext.tr(
-                args: [
-                  plan.priceString,
-                  plan.periodString,
-                ],
-              )
+            ? context.l10n.subscription_button_trialSubtext(plan.priceString, plan.periodString(context))
             : null,
         onTap: () => onPurchasePressed(plan),
         isLoading: isLoading,
@@ -82,12 +75,7 @@ class SubscribeButton extends StatelessWidget {
       context: context,
       text: text,
       subtext: contentType == SubscriptionButtonContentType.full && plan.hasTrial
-          ? LocaleKeys.subscription_button_trialSubtext.tr(
-              args: [
-                plan.priceString,
-                plan.periodString,
-              ],
-            )
+          ? context.l10n.subscription_button_trialSubtext(plan.priceString, plan.periodString(context))
           : null,
       onTap: () => onPurchasePressed(plan),
       isLoading: isLoading,
@@ -96,5 +84,5 @@ class SubscribeButton extends StatelessWidget {
 }
 
 extension on SubscriptionPlan {
-  String get periodString => isAnnual ? LocaleKeys.date_year.tr() : LocaleKeys.date_month.tr();
+  String periodString(BuildContext context) => isAnnual ? context.l10n.date_year : context.l10n.date_month;
 }

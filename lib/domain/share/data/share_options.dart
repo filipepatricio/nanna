@@ -1,21 +1,22 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:flutter/material.dart';
 
 enum ShareOption { instagram, facebook, whatsapp, copyLink, more }
 
 extension ShareExtension on ShareOption {
-  String getText() {
+  String getText(BuildContext context) {
     switch (this) {
       case ShareOption.instagram:
-        return LocaleKeys.social_instagram.tr();
+        return context.l10n.social_instagram;
       case ShareOption.facebook:
-        return LocaleKeys.social_facebook.tr();
+        return context.l10n.social_facebook;
       case ShareOption.whatsapp:
-        return LocaleKeys.social_whatsapp.tr();
+        return context.l10n.social_whatsapp;
       case ShareOption.copyLink:
-        return LocaleKeys.common_copyLink.tr();
+        return context.l10n.common_copyLink;
       case ShareOption.more:
-        return LocaleKeys.common_more.tr();
+        return context.l10n.common_more;
     }
   }
 

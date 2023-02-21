@@ -3,11 +3,13 @@ import 'package:better_informed_mobile/presentation/widget/audio/control_button/
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+import 'package:flutter/material.dart';
 
 enum AudioProgressType { current, other, loading }
 
 extension AudioControlButtonStateViewExtension on AudioControlButtonState {
   Function()? getAction(
+    BuildContext context,
     AudioControlButtonCubit cubit,
     SnackbarController snackbarController,
   ) {
@@ -17,7 +19,7 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
       loading: (_) => null,
       playing: (_) => () => cubit.pause(),
       paused: (_) => () => cubit.play(),
-      offline: (_) => () => snackbarController.showMessage(SnackbarMessage.offline()),
+      offline: (_) => () => snackbarController.showMessage(SnackbarMessage.offline(context)),
       orElse: () => throw Exception('Unhandled type'),
     );
   }

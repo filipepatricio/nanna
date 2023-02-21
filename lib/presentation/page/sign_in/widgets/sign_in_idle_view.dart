@@ -31,12 +31,12 @@ class _SignInIdleView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          LocaleKeys.signIn_welcome.tr(),
+                          context.l10n.signIn_welcome,
                           style: AppTypography.onBoardingHeader,
                         ),
                         const SizedBox(height: AppDimens.s),
                         Text(
-                          LocaleKeys.signIn_header_signIn.tr(),
+                          context.l10n.signIn_header_signIn,
                           style: AppTypography.b2Regular,
                         ),
                         if (!keyboardVisible) ...[
@@ -60,7 +60,7 @@ class _SignInIdleView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                tr(LocaleKeys.signIn_orContinue),
+                                context.l10n.signIn_orContinue,
                                 style: AppTypography.b3Medium.copyWith(
                                   color: AppColors.of(context).textTertiary,
                                   height: 1,
@@ -92,7 +92,7 @@ class _SignInIdleView extends StatelessWidget {
                 InformedFilledButton.primary(
                   context: context,
                   isEnabled: isEmailValid,
-                  text: LocaleKeys.common_continue.tr(),
+                  text: context.l10n.common_continue,
                   onTap: cubit.sendMagicLink,
                 ),
                 const SizedBox(height: AppDimens.m),

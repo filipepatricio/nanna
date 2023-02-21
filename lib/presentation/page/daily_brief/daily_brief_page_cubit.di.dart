@@ -152,7 +152,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   Future<void> initializeTutorialSnackBar() async {
     final isDailyBriefTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     if (!isDailyBriefTutorialStepSeen) {
-      emit(DailyBriefPageState.showTutorialToast(LocaleKeys.tutorial_dailyBriefSnackBarText.tr()));
+      emit(DailyBriefPageState.showTutorialToast());
       await _setTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     }
   }
@@ -377,8 +377,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
             ),
             builder: (context, controller) {
               return TutorialTooltip(
-                text: LocaleKeys.tutorial_topicCoachmarkText.tr(),
-                dismissButtonText: LocaleKeys.common_gotIt.tr(),
+                text: context.l10n.tutorial_topicCoachmarkText,
+                dismissButtonText: context.l10n.common_gotIt,
                 onDismiss: () => emit(DailyBriefPageState.finishTutorialCoachMark()),
               );
             },

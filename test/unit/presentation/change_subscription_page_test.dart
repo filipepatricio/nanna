@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../finders.dart';
+import '../../flutter_test_config.dart';
 import '../../generated_mocks.mocks.dart';
 import '../../test_data.dart';
 import '../unit_test_utils.dart';
@@ -15,8 +16,8 @@ void main() {
     'no upcoming plan is labeled, when not available',
     (tester) async {
       await tester.startApp(initialRoute: const ChangeSubscriptionPageRoute());
-      expect(find.byText(LocaleKeys.subscription_change_currentPlan.tr()), findsOneWidget);
-      expect(find.byText(LocaleKeys.subscription_change_upcomingPlan.tr()), findsNothing);
+      expect(find.byText(l10n.subscription_change_currentPlan), findsOneWidget);
+      expect(find.byText(l10n.subscription_change_upcomingPlan), findsNothing);
     },
   );
   testWidgets(
@@ -39,8 +40,8 @@ void main() {
         },
       );
 
-      expect(find.byText(LocaleKeys.subscription_change_currentPlan.tr()), findsOneWidget);
-      expect(find.byText(LocaleKeys.subscription_change_upcomingPlan.tr()), findsOneWidget);
+      expect(find.byText(l10n.subscription_change_currentPlan), findsOneWidget);
+      expect(find.byText(l10n.subscription_change_upcomingPlan), findsOneWidget);
     },
   );
 }

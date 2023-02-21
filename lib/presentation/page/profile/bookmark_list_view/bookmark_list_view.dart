@@ -68,13 +68,13 @@ class BookmarkListView extends HookWidget {
           snackbarController.showMessage(
             SnackbarMessage.simple(
               message: state.bookmark.data.maybeMap(
-                article: (_) => LocaleKeys.bookmark_removeArticle.tr(),
-                topic: (_) => LocaleKeys.bookmark_removeTopic.tr(),
+                article: (_) => context.l10n.bookmark_removeArticle,
+                topic: (_) => context.l10n.bookmark_removeTopic,
                 orElse: () => '',
               ),
               type: SnackbarMessageType.info,
               action: SnackbarAction(
-                label: LocaleKeys.common_undo.tr(),
+                label: context.l10n.common_undo,
                 callback: () {
                   cubit.undoRemovingBookmark(state.bookmark, state.index);
                 },
@@ -107,7 +107,7 @@ class BookmarkListView extends HookWidget {
                 child: state.maybeMap(
                   initial: (_) => const SizedBox.shrink(),
                   error: (_) => Center(
-                    child: ErrorView.general(
+                    child: ErrorView(
                       retryCallback: cubit.loadNextPage,
                     ),
                   ),

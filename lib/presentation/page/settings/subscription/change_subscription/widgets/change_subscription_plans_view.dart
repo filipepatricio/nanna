@@ -27,7 +27,7 @@ class _ChangeSubscriptionPlansView extends HookWidget {
               [
                 const SizedBox(height: AppDimens.m),
                 InformedMarkdownBody(
-                  markdown: LocaleKeys.subscription_change_title.tr(),
+                  markdown: context.l10n.subscription_change_title,
                   baseTextStyle: AppTypography.h1Medium,
                 ),
                 const SizedBox(height: AppDimens.xl),
@@ -54,7 +54,7 @@ class _ChangeSubscriptionPlansView extends HookWidget {
                   builder: (context, selectedPlan, _) {
                     return InformedFilledButton.primary(
                       context: context,
-                      text: LocaleKeys.subscription_change_confirm.tr(),
+                      text: context.l10n.subscription_change_confirm,
                       onTap: cubit.purchase,
                       isEnabled: currentPlan?.productId != selectedPlan.productId &&
                           currentPlan?.productId != nextPlan?.productId,
@@ -151,8 +151,8 @@ class _ExpirationDateFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      LocaleKeys.subscription_change_footer.tr(
-        args: [DateFormatUtil.formatShortMonthNameDay(expirationDate)],
+      context.l10n.subscription_change_footer(
+        DateFormatUtil.formatShortMonthNameDay(expirationDate),
       ),
       textAlign: TextAlign.center,
       style: AppTypography.metadata1Medium.copyWith(color: AppColors.of(context).textSecondary),

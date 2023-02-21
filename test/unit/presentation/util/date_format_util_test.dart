@@ -2,6 +2,8 @@ import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../flutter_test_config.dart';
+
 void main() {
   group('currentBriefDate', () {
     final briefDate = DateTime(2022, 05, 27);
@@ -16,7 +18,7 @@ void main() {
 
         for (final date in datesToCheck) {
           withClock(Clock.fixed(date), () {
-            final title = DateFormatUtil.currentBriefDate(briefDate);
+            final title = DateFormatUtil.currentBriefDate(l10n, briefDate);
             expect(title, 'Today');
           });
         }
@@ -34,7 +36,7 @@ void main() {
 
         for (final date in datesToCheck) {
           withClock(Clock.fixed(date), () {
-            final title = DateFormatUtil.currentBriefDate(briefDate);
+            final title = DateFormatUtil.currentBriefDate(l10n, briefDate);
             expect(title, 'Yesterday');
           });
         }
@@ -52,7 +54,7 @@ void main() {
 
         for (final date in datesToCheck) {
           withClock(Clock.fixed(date), () {
-            final title = DateFormatUtil.currentBriefDate(briefDate);
+            final title = DateFormatUtil.currentBriefDate(l10n, briefDate);
             expect(title, 'Friday 27th');
           });
         }

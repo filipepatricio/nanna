@@ -97,7 +97,7 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
     );
   }
 
-  Future<void> switchState({bool? fromUndo}) async {
+  Future<void> switchState(AppLocalizations l10n, {bool? fromUndo}) async {
     await state.mapOrNull(
       idle: (state) async {
         emit(BookmarkButtonState.switching(state.data));
@@ -112,16 +112,14 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
             if (fromUndo == true) {
               _trackBookmarkRemoveUndo(state.data);
             } else {
-              _emitBookmarkAdded(state.data);
+              _emitBookmarkAdded(l10n, state.data);
             }
           },
           notBookmarked: (_) => emit(
             BookmarkButtonState.bookmarkRemoved(
-              tr(
-                state.data.map(
-                  article: (_) => LocaleKeys.bookmark_removeArticle,
-                  topic: (_) => LocaleKeys.bookmark_removeTopic,
-                ),
+              state.data.map(
+                article: (_) => l10n.bookmark_removeArticle,
+                topic: (_) => l10n.bookmark_removeTopic,
               ),
             ),
           ),
@@ -132,18 +130,15 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
     );
   }
 
-  Future<void> _emitBookmarkAdded(BookmarkTypeData bookmarkType) async {
+  Future<void> _emitBookmarkAdded(AppLocalizations l10n, BookmarkTypeData bookmarkType) async {
     final hasActiveSubscription = await _hasActiveSubscriptionUseCase();
     emit(
       BookmarkButtonState.bookmarkAdded(
-        tr(
-          bookmarkType.map(
-            article: (type) => hasActiveSubscription && type.type.isPremium
-                ? LocaleKeys.bookmark_addArticleSubscribed
-                : LocaleKeys.bookmark_addArticle,
-            topic: (type) =>
-                hasActiveSubscription ? LocaleKeys.bookmark_addTopicSubscribed : LocaleKeys.bookmark_addTopic,
-          ),
+        bookmarkType.map(
+          article: (type) => hasActiveSubscription && type.type.isPremium
+              ? l10n.bookmark_addArticleSubscribed
+              : l10n.bookmark_addArticle,
+          topic: (type) => hasActiveSubscription ? l10n.bookmark_addTopicSubscribed : l10n.bookmark_addTopic,
         ),
       ),
     );

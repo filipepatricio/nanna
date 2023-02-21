@@ -62,10 +62,18 @@ class SubscriptionPage extends HookWidget {
           );
         },
         generalError: (message) {
+          snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: message ?? context.l10n.common_error_tryAgainLater,
+              type: SnackbarMessageType.error,
+            ),
+          );
+        },
+        restoringPurchaseError: () {
           InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(
             SnackbarMessage.simple(
-              message: message ?? LocaleKeys.common_error_tryAgainLater.tr(),
+              message: context.l10n.subscription_restoringPurchaseError,
               type: SnackbarMessageType.error,
             ),
           );
@@ -73,11 +81,11 @@ class SubscriptionPage extends HookWidget {
       );
     });
 
-    Future<void> openInBrowser(String uri) async {
+    Future<void> openInBrowser(BuildContext context, String uri) async {
       await openInAppBrowser(
         uri,
         (error, stacktrace) {
-          showBrowserError(uri, snackbarController);
+          showBrowserError(context, uri, snackbarController);
         },
       );
     }
@@ -94,14 +102,14 @@ class SubscriptionPage extends HookWidget {
           child: state.maybeMap(
             idle: (state) => SubscriptionPlansView(
               cubit: cubit,
-              openInBrowser: openInBrowser,
+              openInBrowser: (uri) => openInBrowser(context, uri),
               trialViewMode: state.group.hasTrail,
               planGroup: state.group,
               selectedPlan: state.selectedPlan,
             ),
             processing: (state) => SubscriptionPlansView(
               cubit: cubit,
-              openInBrowser: openInBrowser,
+              openInBrowser: (uri) => openInBrowser(context, uri),
               trialViewMode: state.group.hasTrail,
               planGroup: state.group,
               selectedPlan: state.selectedPlan,

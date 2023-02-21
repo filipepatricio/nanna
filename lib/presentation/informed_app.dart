@@ -80,6 +80,8 @@ class InformedApp extends HookWidget {
                       debugShowCheckedModeBanner: false,
                       theme: lightTheme,
                       darkTheme: darkTheme,
+                      localizationsDelegates: PhraseLocalizations.localizationsDelegates,
+                      supportedLocales: PhraseLocalizations.supportedLocales,
                       routeInformationParser: router.defaultRouteParser(),
                       routerDelegate: router.delegate(),
                       builder: (context, child) {
@@ -117,11 +119,10 @@ class InformedApp extends HookWidget {
                 initial: initialThemeMode,
                 builder: (lightTheme, darkTheme) {
                   return MaterialApp.router(
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale: context.locale,
                     theme: lightTheme,
                     darkTheme: darkTheme,
+                    localizationsDelegates: PhraseLocalizations.localizationsDelegates,
+                    supportedLocales: PhraseLocalizations.supportedLocales,
                     routeInformationParser: router.defaultRouteParser(),
                     routerDelegate: router.delegate(
                       navigatorObservers: () => [

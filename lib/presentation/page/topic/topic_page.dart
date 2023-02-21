@@ -104,7 +104,7 @@ class _TopicPage extends StatelessWidget {
           error: (_) => Padding(
             padding: const EdgeInsets.only(bottom: AppDimens.xxxc),
             child: Center(
-              child: ErrorView.general(
+              child: ErrorView(
                 retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
               ),
             ),
@@ -141,11 +141,11 @@ class _TopicIdleView extends HookWidget {
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        showTutorialToast: (text) {
+        showTutorialToast: () {
           isShowingTutorialToast.value = true;
           showInfoToast(
             context: context,
-            text: text,
+            text: context.l10n.tutorial_topicSnackBarText,
             onDismiss: () {
               isShowingTutorialToast.value = false;
             },

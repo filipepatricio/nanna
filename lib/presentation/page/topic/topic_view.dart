@@ -67,7 +67,7 @@ class TopicView extends HookWidget {
                 const SizedBox(height: AppDimens.xxxl),
                 if (topicSummary != null) ...[
                   InformedMarkdownBody(
-                    markdown: LocaleKeys.topic_summaryTitle.tr(),
+                    markdown: context.l10n.topic_summaryTitle,
                     baseTextStyle: AppTypography.h0Medium,
                     maxLines: 1,
                   ),
@@ -83,7 +83,7 @@ class TopicView extends HookWidget {
                   const SizedBox(height: AppDimens.xxl),
                 ],
                 InformedMarkdownBody(
-                  markdown: LocaleKeys.topic_articlesTitle.tr(),
+                  markdown: context.l10n.topic_articlesTitle,
                   baseTextStyle: AppTypography.h0Medium,
                   maxLines: 2,
                 ),

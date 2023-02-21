@@ -48,7 +48,10 @@ class ProfileFilterTabBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
         labelPadding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
         splashFactory: NoSplash.splashFactory,
-        tabs: List.generate(_filterList.length, (index) => _filterList[index].tab),
+        tabs: List.generate(
+          _filterList.length,
+          (index) => _filterList[index].tab(context),
+        ),
       ),
     );
   }
@@ -90,19 +93,19 @@ class _TextFixedSizeTab extends HookWidget {
 }
 
 extension on BookmarkFilter {
-  Widget get tab {
+  Widget tab(BuildContext context) {
     switch (this) {
       case BookmarkFilter.all:
         return _TextFixedSizeTab(
-          text: tr(LocaleKeys.profile_filter_all),
+          text: context.l10n.profile_filter_all,
         );
       case BookmarkFilter.topic:
         return _TextFixedSizeTab(
-          text: tr(LocaleKeys.profile_filter_topics),
+          text: context.l10n.profile_filter_topics,
         );
       case BookmarkFilter.article:
         return _TextFixedSizeTab(
-          text: tr(LocaleKeys.profile_filter_articles),
+          text: context.l10n.profile_filter_articles,
         );
     }
   }

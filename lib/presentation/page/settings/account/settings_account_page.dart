@@ -14,12 +14,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class SettingsAccountPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final cubit = useCubit<SettingsAccountCubit>();
     final state = useCubitBuilder<SettingsAccountCubit, SettingsAccountState>(cubit);
 
     useEffect(
       () {
-        cubit.initialize();
+        cubit.initialize(l10n);
       },
       [cubit],
     );
@@ -28,9 +29,9 @@ class SettingsAccountPage extends HookWidget {
       appBar: InformedAppBar(
         isConnected: context.watch<IsConnected>(),
         leading: BackTextButton(
-          text: LocaleKeys.settings_settings.tr(),
+          text: context.l10n.settings_settings,
         ),
-        title: LocaleKeys.settings_account.tr(),
+        title: context.l10n.settings_account,
       ),
       body: SnackbarParentView(
         audioPlayerResponsive: true,
@@ -49,13 +50,13 @@ class SettingsAccountPage extends HookWidget {
             originalData: data.original,
           ),
           error: (value) => Center(
-            child: ErrorView.general(
-              retryCallback: cubit.initialize,
+            child: ErrorView(
+              retryCallback: () => cubit.initialize(context.l10n),
             ),
           ),
           offline: (value) => Center(
             child: ErrorView.offline(
-              retryCallback: cubit.initialize,
+              retryCallback: () => cubit.initialize(context.l10n),
             ),
           ),
           orElse: () => const SizedBox.shrink(),

@@ -26,5 +26,7 @@ class ChangeSubscriptionPageState with _$ChangeSubscriptionPageState {
 
   factory ChangeSubscriptionPageState.restoringPurchase() = _ChangeSubscriptionPageStateRestoringPurchase;
 
+  factory ChangeSubscriptionPageState.restoringPurchaseError() = _ChangeSubscriptionPageStateRestoringPurchaseError;
+
   factory ChangeSubscriptionPageState.generalError([String? message]) = _ChangeSubscriptionPageStateGeneralError;
 }

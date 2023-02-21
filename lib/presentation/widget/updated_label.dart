@@ -24,9 +24,7 @@ class UpdatedLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       withPrefix
-          ? LocaleKeys.topic_updated.tr(
-              args: [DateFormatUtil.dateTimeFromNow(dateTime)],
-            )
+          ? context.l10n.topic_updated(DateFormatUtil.dateTimeFromNow(dateTime))
           : DateFormatUtil.dateTimeFromNow(dateTime).toCapitalized(),
       style: textStyle.copyWith(
         height: 1,

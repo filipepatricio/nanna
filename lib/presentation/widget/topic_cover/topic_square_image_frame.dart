@@ -42,7 +42,7 @@ class TopicSquareImageFrame extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
                   child: Text(
-                    LocaleKeys.topic_label.tr(),
+                    context.l10n.topic_label,
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     style: AppTypography.h4Regular.copyWith(

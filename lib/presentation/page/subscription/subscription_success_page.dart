@@ -37,17 +37,17 @@ class SubscriptionSuccessPage extends HookWidget {
             ),
             const SizedBox(height: AppDimens.l),
             InformedMarkdownBody(
-              markdown: (trialMode
-                      ? LocaleKeys.subscription_success_title_trial
-                      : LocaleKeys.subscription_success_title_standard)
-                  .tr(),
+              markdown: trialMode
+                  ? context.l10n.subscription_success_title_trial
+                  : context.l10n.subscription_success_title_standard,
               textAlignment: TextAlign.center,
               baseTextStyle: AppTypography.h1Medium,
             ),
             const SizedBox(height: AppDimens.s),
             Text(
-              (trialMode ? LocaleKeys.subscription_success_body_trial : LocaleKeys.subscription_success_body_standard)
-                  .tr(),
+              trialMode
+                  ? context.l10n.subscription_success_body_trial
+                  : context.l10n.subscription_success_body_standard,
               textAlign: TextAlign.center,
               style: AppTypography.b2Medium,
             ),
@@ -56,7 +56,7 @@ class SubscriptionSuccessPage extends HookWidget {
               width: double.infinity,
               child: InformedFilledButton.primary(
                 context: context,
-                text: LocaleKeys.subscription_startReading.tr(),
+                text: context.l10n.subscription_startReading,
                 onTap: context.popRoute,
               ),
             ),

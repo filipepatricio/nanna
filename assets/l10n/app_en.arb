@@ -1,0 +1,1141 @@
+{
+  "@@locale": "en",
+  "article_byName": "By {name}",
+  "@article_byName": {
+    "type": "text",
+    "placeholders": {
+      "name": {
+      }
+    }
+  },
+  "article_error_body": "Something went wrong\n while loading the article",
+  "@article_error_body": {
+    "type": "text"
+  },
+  "article_error_title": "Oops",
+  "@article_error_title": {
+    "type": "text"
+  },
+  "article_geoblockedError_action": "Ok",
+  "@article_geoblockedError_action": {
+    "type": "text"
+  },
+  "article_geoblockedError_content": "The content you requested is not yet available in your country.",
+  "@article_geoblockedError_content": {
+    "type": "text"
+  },
+  "article_geoblockedError_title": "Content unavailable",
+  "@article_geoblockedError_title": {
+    "type": "text"
+  },
+  "article_label": "Article",
+  "@article_label": {
+    "type": "text"
+  },
+  "article_moreFromTopic": "More Articles in ‘{topic}’",
+  "@article_moreFromTopic": {
+    "type": "text",
+    "placeholders": {
+      "topic": {
+      }
+    }
+  },
+  "article_note_readFullArticle": "Read full article",
+  "@article_note_readFullArticle": {
+    "type": "text"
+  },
+  "article_note_showLess": "Show less",
+  "@article_note_showLess": {
+    "type": "text"
+  },
+  "article_note_showMore": "Show more",
+  "@article_note_showMore": {
+    "type": "text"
+  },
+  "article_openSourceUrl": "Open in Browser",
+  "@article_openSourceUrl": {
+    "type": "text"
+  },
+  "article_otherBriefs": "More Articles and Deep Dives from Today",
+  "@article_otherBriefs": {
+    "type": "text"
+  },
+  "article_read": "Read",
+  "@article_read": {
+    "type": "text"
+  },
+  "article_readMinutes": "{min} min read",
+  "@article_readMinutes": {
+    "type": "text",
+    "placeholders": {
+      "min": {
+      }
+    }
+  },
+  "article_relatedContent_cantGetEnough": "Can't get enough?",
+  "@article_relatedContent_cantGetEnough": {
+    "type": "text"
+  },
+  "article_relatedContent_exploreMoreCategories": "Explore more in these categories",
+  "@article_relatedContent_exploreMoreCategories": {
+    "type": "text"
+  },
+  "article_relatedContent_goToExplore": "Go to Explore",
+  "@article_relatedContent_goToExplore": {
+    "type": "text"
+  },
+  "article_relatedContent_relatedReads": "Related reads you might enjoy",
+  "@article_relatedContent_relatedReads": {
+    "type": "text"
+  },
+  "article_relatedContent_similarStories": "Similar stories",
+  "@article_relatedContent_similarStories": {
+    "type": "text"
+  },
+  "article_relatedContent_thereAreManyMore": "There are many more stories you might like",
+  "@article_relatedContent_thereAreManyMore": {
+    "type": "text"
+  },
+  "audio_speed": "Speed {speed}",
+  "@audio_speed": {
+    "type": "text",
+    "placeholders": {
+      "speed": {
+      }
+    }
+  },
+  "audio_switchAudio_approve": "Yes, replace",
+  "@audio_switchAudio_approve": {
+    "type": "text"
+  },
+  "audio_switchAudio_deny": "No, keep listening",
+  "@audio_switchAudio_deny": {
+    "type": "text"
+  },
+  "audio_switchAudio_message": "Replace the current audio?",
+  "@audio_switchAudio_message": {
+    "type": "text"
+  },
+  "bookmark_addArticle": "Article added to your Profile",
+  "@bookmark_addArticle": {
+    "type": "text"
+  },
+  "bookmark_addArticleSubscribed": "Downloading article to your Profile",
+  "@bookmark_addArticleSubscribed": {
+    "type": "text"
+  },
+  "bookmark_addTopic": "Deep Dive added to your Profile",
+  "@bookmark_addTopic": {
+    "type": "text"
+  },
+  "bookmark_addTopicSubscribed": "Downloading Deep Dive to your Profile",
+  "@bookmark_addTopicSubscribed": {
+    "type": "text"
+  },
+  "bookmark_bookmarkSortConfig_alphabeticalAsc": "Alphabetical (a-z)",
+  "@bookmark_bookmarkSortConfig_alphabeticalAsc": {
+    "type": "text"
+  },
+  "bookmark_bookmarkSortConfig_alphabeticalDesc": "Alphabetical (z-a)",
+  "@bookmark_bookmarkSortConfig_alphabeticalDesc": {
+    "type": "text"
+  },
+  "bookmark_bookmarkSortConfig_lastAdded": "Last Added",
+  "@bookmark_bookmarkSortConfig_lastAdded": {
+    "type": "text"
+  },
+  "bookmark_bookmarkSortConfig_lastUpdated": "Last Updated",
+  "@bookmark_bookmarkSortConfig_lastUpdated": {
+    "type": "text"
+  },
+  "bookmark_removeArticle": "Article removed from your Profile",
+  "@bookmark_removeArticle": {
+    "type": "text"
+  },
+  "bookmark_removeTopic": "Deep Dive removed from your Profile",
+  "@bookmark_removeTopic": {
+    "type": "text"
+  },
+  "bookmark_sortBy": "Sort by",
+  "@bookmark_sortBy": {
+    "type": "text"
+  },
+  "common_back": "Back",
+  "@common_back": {
+    "type": "text"
+  },
+  "common_cancel": "Cancel",
+  "@common_cancel": {
+    "type": "text"
+  },
+  "common_continue": "Continue",
+  "@common_continue": {
+    "type": "text"
+  },
+  "common_copy": "Copy",
+  "@common_copy": {
+    "type": "text"
+  },
+  "common_copyLink": "Copy link",
+  "@common_copyLink": {
+    "type": "text"
+  },
+  "common_done": "Done",
+  "@common_done": {
+    "type": "text"
+  },
+  "common_error_body": "This error has been reported.",
+  "@common_error_body": {
+    "type": "text"
+  },
+  "common_error_noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy ",
+  "@common_error_noBrowser": {
+    "type": "text"
+  },
+  "common_error_title": "Something went wrong",
+  "@common_error_title": {
+    "type": "text"
+  },
+  "common_error_tryAgainLater": "👎 Oops, looks like something went wrong, please try again later!",
+  "@common_error_tryAgainLater": {
+    "type": "text"
+  },
+  "common_follow": "Follow",
+  "@common_follow": {
+    "type": "text"
+  },
+  "common_following": "Following",
+  "@common_following": {
+    "type": "text"
+  },
+  "common_generalError": "Something went wrong.\nTry again later.",
+  "@common_generalError": {
+    "type": "text"
+  },
+  "common_gotIt": "Got it",
+  "@common_gotIt": {
+    "type": "text"
+  },
+  "common_linkCopied": "Successfuly copied link to your clipboard!",
+  "@common_linkCopied": {
+    "type": "text"
+  },
+  "common_lookUp": "Look up",
+  "@common_lookUp": {
+    "type": "text"
+  },
+  "common_more": "More",
+  "@common_more": {
+    "type": "text"
+  },
+  "common_new": "New",
+  "@common_new": {
+    "type": "text"
+  },
+  "common_next": "Next",
+  "@common_next": {
+    "type": "text"
+  },
+  "common_search": "Search",
+  "@common_search": {
+    "type": "text"
+  },
+  "common_seeAll": "See All",
+  "@common_seeAll": {
+    "type": "text"
+  },
+  "common_share": "Share",
+  "@common_share": {
+    "type": "text"
+  },
+  "common_shareImage": "Share image",
+  "@common_shareImage": {
+    "type": "text"
+  },
+  "common_shareText": "Share text",
+  "@common_shareText": {
+    "type": "text"
+  },
+  "common_shareVia": "Share via",
+  "@common_shareVia": {
+    "type": "text"
+  },
+  "common_signOut": "Sign out",
+  "@common_signOut": {
+    "type": "text"
+  },
+  "common_skip": "Skip",
+  "@common_skip": {
+    "type": "text"
+  },
+  "common_tryAgain": "Try again",
+  "@common_tryAgain": {
+    "type": "text"
+  },
+  "common_undo": "Undo",
+  "@common_undo": {
+    "type": "text"
+  },
+  "dailyBrief_dummyEditorialTeamCurationInfo_bio": "We are a group of dedicated journalists who have written for a variety of respected publications and bring decades of combined experience. Although we have different backgrounds, we believe in a common cause: breaking through filter bubbles and providing readers with the facts and variety of perspectives they need to understand a complex world.",
+  "@dailyBrief_dummyEditorialTeamCurationInfo_bio": {
+    "type": "text"
+  },
+  "dailyBrief_dummyEditorialTeamCurationInfo_byLine": "Curated by",
+  "@dailyBrief_dummyEditorialTeamCurationInfo_byLine": {
+    "type": "text"
+  },
+  "dailyBrief_dummyEditorialTeamCurationInfo_name": "informed",
+  "@dailyBrief_dummyEditorialTeamCurationInfo_name": {
+    "type": "text"
+  },
+  "dailyBrief_refreshSnackBar_action": "Refresh",
+  "@dailyBrief_refreshSnackBar_action": {
+    "type": "text"
+  },
+  "dailyBrief_refreshSnackBar_message": "Your Daily Brief has new updates",
+  "@dailyBrief_refreshSnackBar_message": {
+    "type": "text"
+  },
+  "dailyBrief_title_dateNd": "nd",
+  "@dailyBrief_title_dateNd": {
+    "type": "text"
+  },
+  "dailyBrief_title_dateRd": "rd",
+  "@dailyBrief_title_dateRd": {
+    "type": "text"
+  },
+  "dailyBrief_title_dateSt": "st",
+  "@dailyBrief_title_dateSt": {
+    "type": "text"
+  },
+  "dailyBrief_title_dateTh": "th",
+  "@dailyBrief_title_dateTh": {
+    "type": "text"
+  },
+  "dailyBrief_title_today": "Today",
+  "@dailyBrief_title_today": {
+    "type": "text"
+  },
+  "dailyBrief_title_yesterday": "Yesterday",
+  "@dailyBrief_title_yesterday": {
+    "type": "text"
+  },
+  "date_day": "{count, plural, other{{count} days} one{{count} day}}",
+  "@date_day": {
+    "type": "text",
+    "description": "date_day",
+    "placeholders": {
+      "count": {
+      }
+    }
+  },
+  "date_daySuffix": "{count}-day",
+  "@date_daySuffix": {
+    "type": "text",
+    "placeholders": {
+      "count": {
+      }
+    }
+  },
+  "date_month": "month",
+  "@date_month": {
+    "type": "text"
+  },
+  "date_year": "year",
+  "@date_year": {
+    "type": "text"
+  },
+  "explore_exploreNow": "Explore now",
+  "@explore_exploreNow": {
+    "type": "text"
+  },
+  "explore_title": "Explore",
+  "@explore_title": {
+    "type": "text"
+  },
+  "explore_viewAll": "View All",
+  "@explore_viewAll": {
+    "type": "text"
+  },
+  "main_exploreTab": "Explore",
+  "@main_exploreTab": {
+    "type": "text"
+  },
+  "main_profileTab": "Profile",
+  "@main_profileTab": {
+    "type": "text"
+  },
+  "main_todayTab": "Today",
+  "@main_todayTab": {
+    "type": "text"
+  },
+  "noConnection_banner": "No internet connection",
+  "@noConnection_banner": {
+    "type": "text"
+  },
+  "noConnection_errorView_action": "Retry",
+  "@noConnection_errorView_action": {
+    "type": "text"
+  },
+  "noConnection_errorView_body": "Check your internet connection",
+  "@noConnection_errorView_body": {
+    "type": "text"
+  },
+  "noConnection_errorView_title": "Could not load content",
+  "@noConnection_errorView_title": {
+    "type": "text"
+  },
+  "noConnection_snackbar_message": "You’re offline",
+  "@noConnection_snackbar_message": {
+    "type": "text"
+  },
+  "noConnection_snackbar_subMessage": "You’ll need to be online to do that",
+  "@noConnection_snackbar_subMessage": {
+    "type": "text"
+  },
+  "onboarding_categories_everything": "Show me everything",
+  "@onboarding_categories_everything": {
+    "type": "text"
+  },
+  "onboarding_descriptionSlideCategories": "Choose what matters to you and you’ll get personalised daily reading suggestions, alongside wider curated articles. Change your interests anytime in Profile → Settings.",
+  "@onboarding_descriptionSlideCategories": {
+    "type": "text"
+  },
+  "onboarding_descriptionSlideOne": "Get a daily curation of must-read articles – all in one app.",
+  "@onboarding_descriptionSlideOne": {
+    "type": "text"
+  },
+  "onboarding_headerSlideCategories": "Add your interests",
+  "@onboarding_headerSlideCategories": {
+    "type": "text"
+  },
+  "onboarding_headerSlideOne": "Access trusted, premium news sources",
+  "@onboarding_headerSlideOne": {
+    "type": "text"
+  },
+  "onboarding_headerSlideThree": "Notifications",
+  "@onboarding_headerSlideThree": {
+    "type": "text"
+  },
+  "onboarding_notifications_email": "Email",
+  "@onboarding_notifications_email": {
+    "type": "text"
+  },
+  "onboarding_notifications_push": "Push",
+  "@onboarding_notifications_push": {
+    "type": "text"
+  },
+  "onboarding_title": "How we use push notifications",
+  "@onboarding_title": {
+    "type": "text"
+  },
+  "onboarding_tracking_info": "We track user behaviour to understand your needs better and make performance improvements. Please consider tapping ‘Allow’ for an enhanced experience.",
+  "@onboarding_tracking_info": {
+    "type": "text"
+  },
+  "onboarding_tracking_title": "Improve your experience",
+  "@onboarding_tracking_title": {
+    "type": "text"
+  },
+  "profile_banner_action": "See plans",
+  "@profile_banner_action": {
+    "type": "text"
+  },
+  "profile_banner_body": "Subscribe to informed and every article you save is downloaded to your device for offline reading.",
+  "@profile_banner_body": {
+    "type": "text"
+  },
+  "profile_banner_title": "Take every article with you, wherever you go.",
+  "@profile_banner_title": {
+    "type": "text"
+  },
+  "profile_emailCopied": "Successfully copied email to your clipboard!",
+  "@profile_emailCopied": {
+    "type": "text"
+  },
+  "profile_emptyPage_noAll": "When you save an article or Deep Dive, you'll find it here.",
+  "@profile_emptyPage_noAll": {
+    "type": "text"
+  },
+  "profile_emptyPage_noAllAction": "Explore now",
+  "@profile_emptyPage_noAllAction": {
+    "type": "text"
+  },
+  "profile_emptyPage_noArticles": "When you save an article,\nyou'll find it here.",
+  "@profile_emptyPage_noArticles": {
+    "type": "text"
+  },
+  "profile_emptyPage_noArticlesAction": "Explore articles",
+  "@profile_emptyPage_noArticlesAction": {
+    "type": "text"
+  },
+  "profile_emptyPage_noTopics": "When you save a Deep Dive,\nyou'll find it here.",
+  "@profile_emptyPage_noTopics": {
+    "type": "text"
+  },
+  "profile_emptyPage_noTopicsAction": "Explore Deep Dives",
+  "@profile_emptyPage_noTopicsAction": {
+    "type": "text"
+  },
+  "profile_emptyPage_title": "Nothing saved yet\n",
+  "@profile_emptyPage_title": {
+    "type": "text"
+  },
+  "profile_filter_all": "All",
+  "@profile_filter_all": {
+    "type": "text"
+  },
+  "profile_filter_articles": "Articles",
+  "@profile_filter_articles": {
+    "type": "text"
+  },
+  "profile_filter_topics": "Deep Dives",
+  "@profile_filter_topics": {
+    "type": "text"
+  },
+  "profile_title": "Profile",
+  "@profile_title": {
+    "type": "text"
+  },
+  "releaseNotes_updateLabel": "Product update",
+  "@releaseNotes_updateLabel": {
+    "type": "text"
+  },
+  "search_callToAction": "Check out our latest content",
+  "@search_callToAction": {
+    "type": "text"
+  },
+  "search_emptyResults": "We couldn’t find any results matching \"{search}\"",
+  "@search_emptyResults": {
+    "type": "text",
+    "placeholders": {
+      "search": {
+      }
+    }
+  },
+  "search_hint": "Search articles, deep dives, authors",
+  "@search_hint": {
+    "type": "text"
+  },
+  "settings_aboutHeader": "About",
+  "@settings_aboutHeader": {
+    "type": "text"
+  },
+  "settings_account": "Account",
+  "@settings_account": {
+    "type": "text"
+  },
+  "settings_accountInfoSavedSuccessfully": "Your information was saved successfully",
+  "@settings_accountInfoSavedSuccessfully": {
+    "type": "text"
+  },
+  "settings_appearance_auto": "Auto",
+  "@settings_appearance_auto": {
+    "type": "text"
+  },
+  "settings_appearance_dark": "Dark",
+  "@settings_appearance_dark": {
+    "type": "text"
+  },
+  "settings_appearance_light": "Light",
+  "@settings_appearance_light": {
+    "type": "text"
+  },
+  "settings_appearance_theme": "Theme",
+  "@settings_appearance_theme": {
+    "type": "text"
+  },
+  "settings_appearance_title": "Appearance",
+  "@settings_appearance_title": {
+    "type": "text"
+  },
+  "settings_deleteAccount_button": "Delete account",
+  "@settings_deleteAccount_button": {
+    "type": "text"
+  },
+  "settings_deleteAccount_delete": "Delete",
+  "@settings_deleteAccount_delete": {
+    "type": "text"
+  },
+  "settings_deleteAccount_dialogBody": "If you delete your account you will lose all your saved data and preferences",
+  "@settings_deleteAccount_dialogBody": {
+    "type": "text"
+  },
+  "settings_deleteAccount_dialogTitle": "Are you sure?",
+  "@settings_deleteAccount_dialogTitle": {
+    "type": "text"
+  },
+  "settings_email": "Email",
+  "@settings_email": {
+    "type": "text"
+  },
+  "settings_emailAddress": "Email address",
+  "@settings_emailAddress": {
+    "type": "text"
+  },
+  "settings_feedbackButton": "Give feedback",
+  "@settings_feedbackButton": {
+    "type": "text"
+  },
+  "settings_feedbackMailError": "Oops, we're having trouble opening your email client automatically. You can send your feedback to ",
+  "@settings_feedbackMailError": {
+    "type": "text"
+  },
+  "settings_feedbackSubject": "Feedback on Informed app",
+  "@settings_feedbackSubject": {
+    "type": "text"
+  },
+  "settings_firstName": "First name",
+  "@settings_firstName": {
+    "type": "text"
+  },
+  "settings_lastName": "Last name",
+  "@settings_lastName": {
+    "type": "text"
+  },
+  "settings_manageMyInterests": "Manage my interests",
+  "@settings_manageMyInterests": {
+    "type": "text"
+  },
+  "settings_manageMyInterestsTitle": "Interests",
+  "@settings_manageMyInterestsTitle": {
+    "type": "text"
+  },
+  "settings_notifications_noPermissionAction": "Enable",
+  "@settings_notifications_noPermissionAction": {
+    "type": "text"
+  },
+  "settings_notifications_noPermissionContent": "Enable notifications to stay informed.",
+  "@settings_notifications_noPermissionContent": {
+    "type": "text"
+  },
+  "settings_notifications_noPermissionSnackbarError": "You'll need to enable notifications on your device to edit this",
+  "@settings_notifications_noPermissionSnackbarError": {
+    "type": "text"
+  },
+  "settings_notifications_noPermissionTitle": "Notifications are disabled",
+  "@settings_notifications_noPermissionTitle": {
+    "type": "text"
+  },
+  "settings_notifications_title": "Notifications",
+  "@settings_notifications_title": {
+    "type": "text"
+  },
+  "settings_privacyPolicy": "Privacy Policy",
+  "@settings_privacyPolicy": {
+    "type": "text"
+  },
+  "settings_profileHeader": "Profile",
+  "@settings_profileHeader": {
+    "type": "text"
+  },
+  "settings_push": "Push",
+  "@settings_push": {
+    "type": "text"
+  },
+  "settings_save": "Save",
+  "@settings_save": {
+    "type": "text"
+  },
+  "settings_settings": "Settings",
+  "@settings_settings": {
+    "type": "text"
+  },
+  "settings_termsAndConditions": "Terms & Conditions",
+  "@settings_termsAndConditions": {
+    "type": "text"
+  },
+  "settings_termsOfService": "Terms of Service",
+  "@settings_termsOfService": {
+    "type": "text"
+  },
+  "settings_wrongEmailInput": "Wrong email input",
+  "@settings_wrongEmailInput": {
+    "type": "text"
+  },
+  "settings_wrongFirstNameInput": "Wrong first name input",
+  "@settings_wrongFirstNameInput": {
+    "type": "text"
+  },
+  "settings_wrongLastNameInput": "Wrong last name input",
+  "@settings_wrongLastNameInput": {
+    "type": "text"
+  },
+  "shareArticle_author": "By {author}",
+  "@shareArticle_author": {
+    "type": "text",
+    "placeholders": {
+      "author": {
+      }
+    }
+  },
+  "shareQuote_as_igStory": "Instagram Story",
+  "@shareQuote_as_igStory": {
+    "type": "text"
+  },
+  "shareQuote_as_image": "Image",
+  "@shareQuote_as_image": {
+    "type": "text"
+  },
+  "shareQuote_as_text": "Text",
+  "@shareQuote_as_text": {
+    "type": "text"
+  },
+  "shareQuote_title": "Share Quote",
+  "@shareQuote_title": {
+    "type": "text"
+  },
+  "shareTopic_articlesCount": "{count, plural, other{{count} articles} one{{count} article}}",
+  "@shareTopic_articlesCount": {
+    "type": "text",
+    "description": "shareTopic_articlesCount",
+    "placeholders": {
+      "count": {
+      }
+    }
+  },
+  "signIn_consentParts_and": " and ",
+  "@signIn_consentParts_and": {
+    "type": "text"
+  },
+  "signIn_consentParts_info": "By signing up, you agree to our ",
+  "@signIn_consentParts_info": {
+    "type": "text"
+  },
+  "signIn_consentParts_privacy": "Privacy Policy",
+  "@signIn_consentParts_privacy": {
+    "type": "text"
+  },
+  "signIn_consentParts_terms": "Terms of Service",
+  "@signIn_consentParts_terms": {
+    "type": "text"
+  },
+  "signIn_emailLabel": "Email address",
+  "@signIn_emailLabel": {
+    "type": "text"
+  },
+  "signIn_header_magicLinkOne": "_Check your mail!_",
+  "@signIn_header_magicLinkOne": {
+    "type": "text"
+  },
+  "signIn_header_magicLinkTwo": "We've sent you a magic link to {address}",
+  "@signIn_header_magicLinkTwo": {
+    "type": "text",
+    "placeholders": {
+      "address": {
+      }
+    }
+  },
+  "signIn_header_signIn": "Sign up or log in below to access world-class journalism from premium publishers, curated by editors & experts.",
+  "@signIn_header_signIn": {
+    "type": "text"
+  },
+  "signIn_orContinue": "Or continue with",
+  "@signIn_orContinue": {
+    "type": "text"
+  },
+  "signIn_providerButton_apple": "Sign in with Apple",
+  "@signIn_providerButton_apple": {
+    "type": "text"
+  },
+  "signIn_providerButton_google": "Sign in with Google",
+  "@signIn_providerButton_google": {
+    "type": "text"
+  },
+  "signIn_providerButton_linkedin": "Sign in with LinkedIn",
+  "@signIn_providerButton_linkedin": {
+    "type": "text"
+  },
+  "signIn_receiveNews": "I’d like to receive news and updates from informed",
+  "@signIn_receiveNews": {
+    "type": "text"
+  },
+  "signIn_unauthorized": "This link has expired. Please type in your email again to get a new one",
+  "@signIn_unauthorized": {
+    "type": "text"
+  },
+  "signIn_welcome": "Welcome to informed ",
+  "@signIn_welcome": {
+    "type": "text"
+  },
+  "social_facebook": "Facebook",
+  "@social_facebook": {
+    "type": "text"
+  },
+  "social_instagram": "Instagram",
+  "@social_instagram": {
+    "type": "text"
+  },
+  "social_whatsapp": "Whatsapp",
+  "@social_whatsapp": {
+    "type": "text"
+  },
+  "subscription_benefit_access": "Unlimited news access",
+  "@subscription_benefit_access": {
+    "type": "text"
+  },
+  "subscription_benefit_fresh": "Fresh curations every day",
+  "@subscription_benefit_fresh": {
+    "type": "text"
+  },
+  "subscription_benefit_read": "Read or listen to articles",
+  "@subscription_benefit_read": {
+    "type": "text"
+  },
+  "subscription_button_standard": "Subscribe",
+  "@subscription_button_standard": {
+    "type": "text"
+  },
+  "subscription_button_trialSubtext": "then {price} / {period}",
+  "@subscription_button_trialSubtext": {
+    "type": "text",
+    "placeholders": {
+      "price": {
+      },
+      "period": {
+      }
+    }
+  },
+  "subscription_button_trialText": "Start your free {period} trial",
+  "@subscription_button_trialText": {
+    "type": "text",
+    "placeholders": {
+      "period": {
+      }
+    }
+  },
+  "subscription_button_tryForFree": "Try for free",
+  "@subscription_button_tryForFree": {
+    "type": "text"
+  },
+  "subscription_cancelSubscription": "Cancel subscription",
+  "@subscription_cancelSubscription": {
+    "type": "text"
+  },
+  "subscription_change_confirm": "Confirm change",
+  "@subscription_change_confirm": {
+    "type": "text"
+  },
+  "subscription_change_currentPlan": "Current plan",
+  "@subscription_change_currentPlan": {
+    "type": "text"
+  },
+  "subscription_change_footer": "Your new plan starts on {date}",
+  "@subscription_change_footer": {
+    "type": "text",
+    "placeholders": {
+      "date": {
+      }
+    }
+  },
+  "subscription_change_title": "Change _your plan_",
+  "@subscription_change_title": {
+    "type": "text"
+  },
+  "subscription_change_upcomingPlan": "Upcoming plan",
+  "@subscription_change_upcomingPlan": {
+    "type": "text"
+  },
+  "subscription_chargeInfo_standard": "Recurring billing · Cancel anytime",
+  "@subscription_chargeInfo_standard": {
+    "type": "text"
+  },
+  "subscription_chargeInfo_trial": "Cancel anytime during your {period} trial and you won't be charged.",
+  "@subscription_chargeInfo_trial": {
+    "type": "text",
+    "placeholders": {
+      "period": {
+      }
+    }
+  },
+  "subscription_description": "Read or listen to all of our curated articles.\nCancel anytime during your trial.",
+  "@subscription_description": {
+    "type": "text"
+  },
+  "subscription_endDate": "End date",
+  "@subscription_endDate": {
+    "type": "text"
+  },
+  "subscription_endsIn": "Ends in {days}",
+  "@subscription_endsIn": {
+    "type": "text",
+    "placeholders": {
+      "days": {
+      }
+    }
+  },
+  "subscription_free": "Free",
+  "@subscription_free": {
+    "type": "text"
+  },
+  "subscription_goPremium": "Go Premium",
+  "@subscription_goPremium": {
+    "type": "text"
+  },
+  "subscription_membership": "Membership",
+  "@subscription_membership": {
+    "type": "text"
+  },
+  "subscription_monthlyPriceComparison": "({price1}/month instead of {price2})",
+  "@subscription_monthlyPriceComparison": {
+    "type": "text",
+    "placeholders": {
+      "price1": {
+      },
+      "price2": {
+      }
+    }
+  },
+  "subscription_off": "Save {discount}%",
+  "@subscription_off": {
+    "type": "text",
+    "placeholders": {
+      "discount": {
+      }
+    }
+  },
+  "subscription_planIncludes": "Plan includes",
+  "@subscription_planIncludes": {
+    "type": "text"
+  },
+  "subscription_planInfo_standard": "{price} / year",
+  "@subscription_planInfo_standard": {
+    "type": "text",
+    "placeholders": {
+      "price": {
+      }
+    }
+  },
+  "subscription_planInfo_trial": "Free {period} trial, then {price} / year",
+  "@subscription_planInfo_trial": {
+    "type": "text",
+    "placeholders": {
+      "period": {
+      },
+      "price": {
+      }
+    }
+  },
+  "subscription_premium": "Premium",
+  "@subscription_premium": {
+    "type": "text"
+  },
+  "subscription_receiveAnEmail": "In {days}: get an email reminder that your trial ends soon",
+  "@subscription_receiveAnEmail": {
+    "type": "text",
+    "placeholders": {
+      "days": {
+      }
+    }
+  },
+  "subscription_redeemCode": "Redeem Code",
+  "@subscription_redeemCode": {
+    "type": "text"
+  },
+  "subscription_renewalDate": "Renewal date",
+  "@subscription_renewalDate": {
+    "type": "text"
+  },
+  "subscription_restorePurchase": "Restore purchase",
+  "@subscription_restorePurchase": {
+    "type": "text"
+  },
+  "subscription_restoringPurchase": "Restoring purchase",
+  "@subscription_restoringPurchase": {
+    "type": "text"
+  },
+  "subscription_restoringPurchaseError": "There are no purchases to restore associated to this account",
+  "@subscription_restoringPurchaseError": {
+    "type": "text"
+  },
+  "subscription_settings_endsIn": "Your free trial ends in {days} days",
+  "@subscription_settings_endsIn": {
+    "type": "text",
+    "placeholders": {
+      "days": {
+      }
+    }
+  },
+  "subscription_settings_freeThrough": "On {date}, you'll be charged {price}. Cancel anytime before your trial ends",
+  "@subscription_settings_freeThrough": {
+    "type": "text",
+    "placeholders": {
+      "date": {
+      },
+      "price": {
+      }
+    }
+  },
+  "subscription_snackbar_link": "Upgrade for unlimited access",
+  "@subscription_snackbar_link": {
+    "type": "text"
+  },
+  "subscription_startReading": "Start reading",
+  "@subscription_startReading": {
+    "type": "text"
+  },
+  "subscription_startYourTrial": "Now: start your free trial of Premium",
+  "@subscription_startYourTrial": {
+    "type": "text"
+  },
+  "subscription_subscriptionTypeName_annual": "yearly",
+  "@subscription_subscriptionTypeName_annual": {
+    "type": "text"
+  },
+  "subscription_subscriptionTypeName_monthly": "monthly",
+  "@subscription_subscriptionTypeName_monthly": {
+    "type": "text"
+  },
+  "subscription_success_body_standard": "Enjoy unlimited access to informed.",
+  "@subscription_success_body_standard": {
+    "type": "text"
+  },
+  "subscription_success_body_trial": "Thanks for subscribing and enjoy unlimited access to informed.",
+  "@subscription_success_body_trial": {
+    "type": "text"
+  },
+  "subscription_success_title_standard": "_Thank you_ for subscribing",
+  "@subscription_success_title_standard": {
+    "type": "text"
+  },
+  "subscription_success_title_trial": "You _free trial_ starts now",
+  "@subscription_success_title_trial": {
+    "type": "text"
+  },
+  "subscription_title_article": "Subscribe for _unlimited_ access",
+  "@subscription_title_article": {
+    "type": "text"
+  },
+  "subscription_title_standard": "Subscribe to Premium",
+  "@subscription_title_standard": {
+    "type": "text"
+  },
+  "subscription_title_trial": "Subscribe now",
+  "@subscription_title_trial": {
+    "type": "text"
+  },
+  "subscription_trial": "Trial",
+  "@subscription_trial": {
+    "type": "text"
+  },
+  "subscription_viewAllPlansAction": "View all plans",
+  "@subscription_viewAllPlansAction": {
+    "type": "text"
+  },
+  "subscription_youllBeCharged": "In {days}: you'll be charged {price} for a {period} subscription",
+  "@subscription_youllBeCharged": {
+    "type": "text",
+    "placeholders": {
+      "days": {
+      },
+      "price": {
+      },
+      "period": {
+      }
+    }
+  },
+  "topic_articlesTitle": "Discover this _article collection_",
+  "@topic_articlesTitle": {
+    "type": "text"
+  },
+  "topic_howWeCurateContent_label": "How we curate content",
+  "@topic_howWeCurateContent_label": {
+    "type": "text"
+  },
+  "topic_howWeCurateContent_text": "We don't believe algorithms alone can provide you with the news and information you need. That's why, in addition to using algorithms for what they're good at, we have _human beings curate our articles,_ experienced journalists who can provide you with the context you need to understand a complex world.\n\nWe select our articles from sources _with a proven track record_ of following ethical practices and standards in journalism, and we clearly delineate between news, opinion, and analysis.\n\nWhen the publications or authors we curate have a _particularly strong political leanings,_ we mention that political perspective in the editor's note so the reader understands the biases they are encountering.\n\nOn occasion, we may use sources outside the standard realm of journalism, including _blogs and academic articles._ When we do so, we will clearly inform readers in the editor's note and highlight any political affiliations associated with the sources.\n\nOne of our central goals is to _repair a splintered media landscape_ in which people remain in information bubbles, getting news from sources that only reinforce their existing beliefs.\n\nWe therefore believe firmly in providing a common platform where a _variety of perspectives_ can be heard and hope, by doing so, we can help renew civil discourse and counteract ever-greater polarization.\n\nWe do not shy away from engaging with the most hotly discussed topics of the day. However, we seek to _stay above the fray,_ presenting multiple points of view. While _we strive to be non-partisan,_ this does not mean we don't have our own voice or believe there are some limits to acceptable discourse. We will not lend a platform to those who intentionally spread misinformation or question established science. We will exclude sources that peddle propaganda or seek to foment hatred.",
+  "@topic_howWeCurateContent_text": {
+    "type": "text"
+  },
+  "topic_howWeCurateContent_title": "How we curate content?",
+  "@topic_howWeCurateContent_title": {
+    "type": "text"
+  },
+  "topic_label": "Deep Dive",
+  "@topic_label": {
+    "type": "text"
+  },
+  "topic_labelExpert": "Expert Deep Dive",
+  "@topic_labelExpert": {
+    "type": "text"
+  },
+  "topic_owner_editorialTeam": "Informed Editorial Team",
+  "@topic_owner_editorialTeam": {
+    "type": "text"
+  },
+  "topic_owner_editorialTeamTitle": "About the editors",
+  "@topic_owner_editorialTeamTitle": {
+    "type": "text"
+  },
+  "topic_owner_editorTitle": "About the editor",
+  "@topic_owner_editorTitle": {
+    "type": "text"
+  },
+  "topic_owner_expertIn": "Expert in {name}",
+  "@topic_owner_expertIn": {
+    "type": "text",
+    "placeholders": {
+      "name": {
+      }
+    }
+  },
+  "topic_owner_expertTitle": "About the expert",
+  "@topic_owner_expertTitle": {
+    "type": "text"
+  },
+  "topic_owner_followExpertOn": "Follow **{name}** on",
+  "@topic_owner_followExpertOn": {
+    "type": "text",
+    "placeholders": {
+      "name": {
+      }
+    }
+  },
+  "topic_summaryTitle": "_Summary_",
+  "@topic_summaryTitle": {
+    "type": "text"
+  },
+  "topic_updated": "Updated {date}",
+  "@topic_updated": {
+    "type": "text",
+    "placeholders": {
+      "date": {
+      }
+    }
+  },
+  "tutorial_dailyBriefSnackBarText": "👋🏻 Welcome to your Daily Brief. Here you’ll get updates from our editorial team on the most important stories of the day.",
+  "@tutorial_dailyBriefSnackBarText": {
+    "type": "text"
+  },
+  "tutorial_exploreSnackBarText": "🔍  If you’d like to explore more or missed a brief then you can find even more topics as well as articles here.",
+  "@tutorial_exploreSnackBarText": {
+    "type": "text"
+  },
+  "tutorial_topicCoachmarkText": "🔍 Look out for the 'Deep Dive' label – these are article collections exploring a single subject in detail.",
+  "@tutorial_topicCoachmarkText": {
+    "type": "text"
+  },
+  "tutorial_topicSnackBarText": "👍🏻 You’ve found a topic of interest. Scroll down to get an overview or jump into the list of articles we curated for you. ",
+  "@tutorial_topicSnackBarText": {
+    "type": "text"
+  },
+  "update_body": "We hope our latest update makes it easier to get informed. Thanks for reading and enjoy.",
+  "@update_body": {
+    "type": "text"
+  },
+  "update_button": "Update",
+  "@update_button": {
+    "type": "text"
+  },
+  "update_title": "Update now",
+  "@update_title": {
+    "type": "text"
+  },
+  "update_versionAvailable": "Version {version} is now available",
+  "@update_versionAvailable": {
+    "type": "text",
+    "placeholders": {
+      "version": {
+      }
+    }
+  }
+}

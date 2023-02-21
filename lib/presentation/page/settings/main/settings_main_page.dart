@@ -26,9 +26,9 @@ class SettingsMainPage extends HookWidget {
       appBar: InformedAppBar(
         isConnected: context.watch<IsConnected>(),
         leading: BackTextButton(
-          text: LocaleKeys.profile_title.tr(),
+          text: context.l10n.profile_title,
         ),
-        title: LocaleKeys.settings_settings.tr(),
+        title: context.l10n.settings_settings,
       ),
       body: SnackbarParentView(
         audioPlayerResponsive: true,

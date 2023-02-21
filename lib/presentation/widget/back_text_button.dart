@@ -21,7 +21,7 @@ class BackTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = text ?? LocaleKeys.common_back.tr();
+    final label = text ?? context.l10n.common_back;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,

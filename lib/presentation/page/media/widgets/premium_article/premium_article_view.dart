@@ -106,7 +106,7 @@ void showFreeArticlesWarning(BuildContext context, SnackbarController snackbarCo
   snackbarController.showMessage(
     SnackbarMessage.simple(
       message: message,
-      subMessage: LocaleKeys.subscription_snackbar_link.tr(),
+      subMessage: context.l10n.subscription_snackbar_link,
       action: SnackbarAction(
         label: 'Upgrade',
         callback: () => context.pushRoute(const SubscriptionPageRoute()),

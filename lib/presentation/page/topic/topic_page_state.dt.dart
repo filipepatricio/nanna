@@ -15,5 +15,5 @@ class TopicPageState with _$TopicPageState {
   @Implements<BuildState>()
   factory TopicPageState.error() = _TopicPageStateError;
 
-  factory TopicPageState.showTutorialToast(String text) = _TopicPageStateShowTutorialToast;
+  factory TopicPageState.showTutorialToast() = _TopicPageStateShowTutorialToast;
 }

@@ -97,14 +97,14 @@ class PremiumArticleReadView extends HookWidget {
                     if (data.otherTopicItems.isNotEmpty)
                       SliverToBoxAdapter(
                         child: ArticleMoreFromSection(
-                          title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
+                          title: context.l10n.article_moreFromTopic(cubit.topicTitle),
                           items: data.otherTopicItems.buildWidgets(context, cubit),
                         ),
                       ),
                     if (data.moreFromBriefItems.isNotEmpty)
                       SliverToBoxAdapter(
                         child: ArticleMoreFromSection(
-                          title: LocaleKeys.article_otherBriefs.tr(),
+                          title: context.l10n.article_otherBriefs,
                           items: data.moreFromBriefItems.buildWidgets(context, cubit),
                         ),
                       ),
