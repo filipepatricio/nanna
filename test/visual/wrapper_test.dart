@@ -26,6 +26,7 @@ import 'tests/settings_manage_my_interests_page_visual_test.dart' as settings_ma
 import 'tests/settings_notifications_page_visual_test.dart' as settings_notifications_page_visual_test;
 import 'tests/settings_subscription_page_visual_test.dart' as settings_subscription_page_visual_test;
 import 'tests/share_article_view_visual_test.dart' as share_article_view_visual_test;
+import 'tests/share_options_view_visual_test.dart' as share_options_view_visual_test;
 import 'tests/share_quote_view_visual_test.dart' as share_quote_view_visual_test;
 import 'tests/share_topic_view_visual_test.dart' as share_topic_view_visual_test;
 import 'tests/sign_in_page_visual_test.dart' as sign_in_page_visual_test;
@@ -64,6 +65,7 @@ void main() {
 
   group('settings_notifications_page_visual_test', settings_notifications_page_visual_test.main);
   group('share_article_view_visual_test', share_article_view_visual_test.main);
+  group('share_options_view_visual_test', share_options_view_visual_test.main);
   group('share_topic_view_visual_test', share_topic_view_visual_test.main);
   group('sign_in_page_visual_test', sign_in_page_visual_test.main);
   group('daily_brief_page_visual_test', daily_brief_page_visual_test.main);

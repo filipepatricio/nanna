@@ -67,8 +67,11 @@ jobs:
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
 
+      - name: Check unreferenced test files in wrappers
+        run: make unreferenced_tests_check
+
       - name: Get flutter dependencies for base branch
-        run: flutter pub get
+        run: make get
 
       - name: Generate ui changes report
         run: make ui_changes_report
