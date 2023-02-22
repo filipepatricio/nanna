@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/widget/audio/player_banner/a
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/current_audio_progress_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -56,71 +57,108 @@ class AudioPlayerBanner extends HookWidget {
       [state],
     );
 
+    return Hero(
+      tag: 'audio_banner',
+      flightShuttleBuilder: (flightContext, animation, flightDirection, fromHeroContext, toHeroContext) {
+        final unoperativeSnackbarController = SnackbarController();
+
+        return Provider.value(
+          value: unoperativeSnackbarController,
+          child: _Banner(
+            cubit: cubit,
+            state: state,
+            sizeAnimation: sizeAnimation,
+            onTap: null,
+          ),
+        );
+      },
+      child: _Banner(
+        cubit: cubit,
+        state: state,
+        sizeAnimation: sizeAnimation,
+        onTap: onTap,
+      ),
+    );
+  }
+}
+
+class _Banner extends StatelessWidget {
+  const _Banner({
+    required this.cubit,
+    required this.state,
+    required this.sizeAnimation,
+    required this.onTap,
+  });
+
+  final AudioPlayerBannerCubit cubit;
+  final AudioPlayerBannerState state;
+  final Animation<double> sizeAnimation;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
     final bottomSpacing = MediaQuery.of(context).padding.bottom;
     final height = AppDimens.audioBannerHeight + MediaQuery.of(context).padding.bottom;
 
-    return Hero(
-      tag: 'audio_banner',
-      child: Material(
-        child: SizeTransition(
-          sizeFactor: sizeAnimation,
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: state.getOnTap(context, onTap),
-            child: Container(
-              height: height,
-              decoration: BoxDecoration(
-                color: AppColors.of(context).backgroundPrimary,
-              ),
-              child: Stack(
-                children: [
-                  Row(
-                    children: [
-                      const SizedBox(width: AppDimens.pageHorizontalMargin),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: bottomSpacing),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                state.optionalTitle,
-                                style: AppTypography.articleSmallTitle,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: AppDimens.m),
-                      Padding(
+    return Material(
+      child: SizeTransition(
+        sizeFactor: sizeAnimation,
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: state.getOnTap(context, onTap),
+          child: Container(
+            height: height,
+            decoration: BoxDecoration(
+              color: AppColors.of(context).backgroundPrimary,
+            ),
+            child: Stack(
+              children: [
+                Row(
+                  children: [
+                    const SizedBox(width: AppDimens.pageHorizontalMargin),
+                    Expanded(
+                      child: Padding(
                         padding: EdgeInsets.only(bottom: bottomSpacing),
-                        child: Row(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _AudioControlButton(state: state),
-                            GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: cubit.stop,
-                              child: const Padding(
-                                padding: EdgeInsets.all(AppDimens.s + AppDimens.xs),
-                                child: InformedSvg(AppVectorGraphics.close),
-                              ),
+                            Text(
+                              state.optionalTitle,
+                              style: AppTypography.articleSmallTitle,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                  const Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: CurrentAudioProgressBar(),
-                  ),
-                ],
-              ),
+                    ),
+                    const SizedBox(width: AppDimens.m),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: bottomSpacing),
+                      child: Row(
+                        children: [
+                          _AudioControlButton(state: state),
+                          GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: cubit.stop,
+                            child: const Padding(
+                              padding: EdgeInsets.all(AppDimens.s + AppDimens.xs),
+                              child: InformedSvg(AppVectorGraphics.close),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: CurrentAudioProgressBar(),
+                ),
+              ],
             ),
           ),
         ),
