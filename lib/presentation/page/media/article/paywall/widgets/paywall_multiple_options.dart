@@ -6,12 +6,15 @@ class _PaywallMultipleOptions extends HookWidget {
     required this.onPurchasePressed,
     required this.onRestorePressed,
     required this.isProcessing,
+    required this.onRedeemCodePressed,
     Key? key,
   }) : super(key: key);
 
   final SubscriptionPlanGroup planGroup;
   final OnPurchasePressed onPurchasePressed;
   final VoidCallback onRestorePressed;
+  final VoidCallback onRedeemCodePressed;
+
   final bool isProcessing;
 
   @override
@@ -59,6 +62,13 @@ class _PaywallMultipleOptions extends HookWidget {
             contentType: SubscriptionButtonContentType.lite,
           ),
         ),
+        if (defaultTargetPlatform.isApple) ...[
+          const SizedBox(height: AppDimens.m),
+          LinkLabel(
+            label: context.l10n.subscription_redeemCode,
+            onTap: onRedeemCodePressed,
+          ),
+        ],
         const SizedBox(height: AppDimens.l),
         SubscriptionLinksFooter(
           subscriptionPlan: selectedPlan.value,

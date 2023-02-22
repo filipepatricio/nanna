@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/page/media/article/paywall/a
 import 'package:better_informed_mobile/presentation/page/media/content/article_content_markdown.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../fakes.dart';
@@ -17,6 +18,7 @@ void main() {
   visualTest(
     '${ArticlePaywallView}_(trial)',
     (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
       final article = Article(
         metadata: TestData.premiumArticleWithAudioAndLocked,
         content: TestData.fullArticle.content,
@@ -51,6 +53,7 @@ void main() {
 
       await tester.pumpAndSettle();
       await tester.matchGoldenFile();
+      debugDefaultTargetPlatformOverride = null;
     },
     testConfig: TestConfig.autoHeight(),
   );
@@ -58,6 +61,7 @@ void main() {
   visualTest(
     '${ArticlePaywallView}_(no_trial)',
     (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
       final article = Article(
         metadata: TestData.premiumArticleWithAudioAndLocked,
         content: TestData.fullArticle.content,
@@ -96,6 +100,7 @@ void main() {
 
       await tester.pumpAndSettle();
       await tester.matchGoldenFile();
+      debugDefaultTargetPlatformOverride = null;
     },
     testConfig: TestConfig.autoHeight(),
   );

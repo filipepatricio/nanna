@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/subscription/use_case/restore_purc
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_data.dart';
@@ -12,11 +13,14 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest('${SubscriptionPage}_(trial)', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     await tester.startApp(initialRoute: const SubscriptionPageRoute());
     await tester.matchGoldenFile();
+    debugDefaultTargetPlatformOverride = null;
   });
 
   visualTest('${SubscriptionPage}_(no_trial)', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     final useCase = FakeGetSubscriptionPlansUseCase(TestData.subscriptionPlansWithoutTrial);
     await tester.startApp(
       dependencyOverride: (getIt) async {
@@ -25,6 +29,7 @@ void main() {
       initialRoute: const SubscriptionPageRoute(),
     );
     await tester.matchGoldenFile();
+    debugDefaultTargetPlatformOverride = null;
   });
 
   visualTest('${SubscriptionPage}_(restore_purchase)', (tester) async {
