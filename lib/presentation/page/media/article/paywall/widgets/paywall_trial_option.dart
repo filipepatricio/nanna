@@ -5,11 +5,13 @@ class _PaywallTrialOption extends StatelessWidget {
     required this.plan,
     required this.onPurchasePressed,
     required this.isProcessing,
+    required this.onRedeemCodePressed,
     Key? key,
   }) : super(key: key);
 
   final SubscriptionPlan plan;
   final OnPurchasePressed onPurchasePressed;
+  final VoidCallback onRedeemCodePressed;
   final bool isProcessing;
 
   @override
@@ -58,6 +60,13 @@ class _PaywallTrialOption extends StatelessWidget {
                 onPurchasePressed: onPurchasePressed,
                 contentType: SubscriptionButtonContentType.lite,
               ),
+              if (defaultTargetPlatform.isApple) ...[
+                const SizedBox(height: AppDimens.m),
+                LinkLabel(
+                  label: context.l10n.subscription_redeemCode,
+                  onTap: onRedeemCodePressed,
+                ),
+              ],
             ],
           ),
         ),

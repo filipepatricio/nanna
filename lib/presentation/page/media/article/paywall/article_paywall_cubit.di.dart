@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/redeem_offer_code_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -14,11 +15,13 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
     this._getArticlePaywallPreferredPlanUseCase,
     this._restorePurchaseUseCase,
     this._purchaseSubscriptionUseCase,
+    this._redeemOfferCodeUseCase,
   ) : super(ArticlePaywallState.initializing());
 
   final GetArticlePaywallPreferredPlanUseCase _getArticlePaywallPreferredPlanUseCase;
   final RestorePurchaseUseCase _restorePurchaseUseCase;
   final PurchaseSubscriptionUseCase _purchaseSubscriptionUseCase;
+  final RedeemOfferCodeUseCase _redeemOfferCodeUseCase;
 
   Future<void> initialize(Article article) async {
     if (article.metadata.availableInSubscription) {
@@ -71,6 +74,8 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
       emit(ArticlePaywallState.restoringPurchaseError());
     }
   }
+
+  Future<void> redeemOfferCode() async => await _redeemOfferCodeUseCase();
 
   Future<void> _setupPaywall() async {
     final planPack = await _getArticlePaywallPreferredPlanUseCase();
