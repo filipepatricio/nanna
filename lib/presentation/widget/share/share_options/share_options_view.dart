@@ -30,13 +30,13 @@ Future<ShareOption?> showShareOptions(BuildContext context) {
     isScrollControlled: true,
     useRootNavigator: true,
     builder: (context) {
-      return const _ShareOptionsView();
+      return const ShareOptionsView();
     },
   );
 }
 
-class _ShareOptionsView extends HookWidget {
-  const _ShareOptionsView({Key? key}) : super(key: key);
+class ShareOptionsView extends HookWidget {
+  const ShareOptionsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

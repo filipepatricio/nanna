@@ -12,9 +12,9 @@ class ShareRepositoryMock implements ShareRepository {
     return [
       ShareOption.instagram,
       ShareOption.facebook,
+      ShareOption.whatsapp,
       ShareOption.copyLink,
       ShareOption.more,
-      ShareOption.whatsapp,
     ];
   }
 
