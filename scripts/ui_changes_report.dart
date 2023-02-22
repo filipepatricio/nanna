@@ -244,7 +244,7 @@ Future<void> getBaselineGoldens() async {
           body: () async {
             print('> > Rebuilding baseline ...');
             await printAndExec('make', ['get']);
-            await printAndExec('make', ['easy_localization']);
+            await printAndExec('make', ['localization']);
             await printAndExec('make', ['build_runner']);
             print('> > Updating goldens ...');
             await printAndExec('make', ['update_goldens']);
