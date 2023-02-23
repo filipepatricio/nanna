@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/synchronization/synchronizable.dt.dart';
 import 'package:injectable/injectable.dart';
 
@@ -47,4 +48,9 @@ class BookmarkLocalRepositoryMock implements BookmarkLocalRepository {
 
   @override
   Future<void> saveSynchronizationTime(DateTime synchronizedAt) async {}
+
+  @override
+  Future<BookmarkState> getBookmarkState(String articleSlug) async {
+    return BookmarkState.notBookmarked();
+  }
 }

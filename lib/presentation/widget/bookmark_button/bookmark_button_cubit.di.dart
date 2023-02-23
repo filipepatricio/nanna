@@ -47,9 +47,12 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
   Future<void> onOffline(BookmarkTypeData initialData) async {
     state.maybeMap(
       idle: (state) => emit(BookmarkButtonState.offline(state.state)),
+      initializing: (state) async {
+        final bookmarkState = await _getBookmarkStateUseCase(initialData);
+        emit(BookmarkButtonState.offline(bookmarkState));
+      },
       orElse: () => emit(BookmarkButtonState.offline(BookmarkState.notBookmarked())),
     );
-    await _notifierSubscription?.cancel();
   }
 
   @override
@@ -76,7 +79,7 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
   }
 
   void _registerBookmarkChangeNotification(BookmarkTypeData data) {
-    _notifierSubscription = _getBookmarkChangeStreamUseCase(includeProfileEvents: true)
+    _notifierSubscription ??= _getBookmarkChangeStreamUseCase(includeProfileEvents: true)
         .debounceTime(const Duration(milliseconds: 100))
         .switchMap((event) => _reloadOnChangeNotification(event, data))
         .listen(_handleBookmarkState);
