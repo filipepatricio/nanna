@@ -161,7 +161,7 @@ class _DailyBriefPage extends HookWidget {
                         cubit: cubit,
                       ),
                       loadingPastDay: (state) => DailyBriefAppBar(
-                        showCalendar: true,
+                        showCalendar: state.showCalendar,
                         scrollController: scrollController,
                         briefDate: state.selectedPastDay.date,
                         pastDays: state.pastDays,
@@ -186,7 +186,7 @@ class _DailyBriefPage extends HookWidget {
                       ),
                       loadingPastDay: (state) => SliverPinnedHeader(
                         child: DailyBriefCalendar(
-                          isVisible: true,
+                          isVisible: state.showCalendar,
                           selectedBriefDate: state.selectedPastDay.date,
                           pastDays: state.pastDays,
                           isFloating: state.showAppBarTitle,

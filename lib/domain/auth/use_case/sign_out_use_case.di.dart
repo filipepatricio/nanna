@@ -6,6 +6,8 @@ import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/article_read_state_notifier.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
+import 'package:better_informed_mobile/domain/daily_brief/daily_brief_calendar_local_repository.dart';
+import 'package:better_informed_mobile/domain/daily_brief/daily_brief_local_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
@@ -31,6 +33,8 @@ class SignOutUseCase {
     this._topicsLocalRepository,
     this._bookmarkLocalRepository,
     this._articleProgressLocalRepository,
+    this._dailyBriefLocalRepository,
+    this._dailyBriefCalendarLocalRepository,
     this._getIt,
   );
   final AuthStore _authStore;
@@ -46,6 +50,8 @@ class SignOutUseCase {
   final TopicsLocalRepository _topicsLocalRepository;
   final BookmarkLocalRepository _bookmarkLocalRepository;
   final ArticleProgressLocalRepository _articleProgressLocalRepository;
+  final DailyBriefLocalRepository _dailyBriefLocalRepository;
+  final DailyBriefCalendarLocalRepository _dailyBriefCalendarLocalRepository;
   final GetIt _getIt;
 
   Future<void> call() async {
@@ -58,6 +64,8 @@ class SignOutUseCase {
     await _topicsLocalRepository.deleteAll();
     await _bookmarkLocalRepository.deleteAll();
     await _articleProgressLocalRepository.deleteAll();
+    await _dailyBriefLocalRepository.deleteAll();
+    await _dailyBriefCalendarLocalRepository.clear();
 
     await _userLocalRepository.deleteUser();
     await _pushNotificationStore.clear();

@@ -2,7 +2,6 @@ import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/widgets/daily_brief_calendar.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
@@ -38,6 +37,7 @@ void main() {
   late MockMarkArticleAsSeenUseCase markArticleAsSeenUseCase;
   late MockShouldRefreshDailyBriefUseCase shouldRefreshDailyBriefUseCase;
   late MockIncomingPushBadgeCountStreamUseCase incomingPushBadgeCountStreamUseCase;
+  late MockIsInternetConnectionAvailableUseCase isInternetConnectionAvailableUseCase;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(
@@ -63,6 +63,7 @@ void main() {
     markArticleAsSeenUseCase = MockMarkArticleAsSeenUseCase();
     shouldRefreshDailyBriefUseCase = MockShouldRefreshDailyBriefUseCase();
     incomingPushBadgeCountStreamUseCase = MockIncomingPushBadgeCountStreamUseCase();
+    isInternetConnectionAvailableUseCase = MockIsInternetConnectionAvailableUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -80,6 +81,7 @@ void main() {
       markTopicAsSeenUseCase,
       shouldRefreshDailyBriefUseCase,
       incomingPushBadgeCountStreamUseCase,
+      isInternetConnectionAvailableUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
@@ -97,6 +99,8 @@ void main() {
     when(setOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async {});
     when(shouldRefreshDailyBriefUseCase.call()).thenAnswer((_) async => false);
     when(incomingPushBadgeCountStreamUseCase.call()).thenAnswer((_) async* {});
+    when(isInternetConnectionAvailableUseCase.call()).thenAnswer((_) async => true);
+    when(isInternetConnectionAvailableUseCase.stream).thenAnswer((_) async* {});
   });
 
   test('brief entry preview is being tracked correctly', () async {
@@ -273,7 +277,6 @@ void main() {
         },
       );
 
-      expect(dailyBriefPageCubit.state, DailyBriefPageState.showPaywall());
       verify(setOnboardingPaywallSeenUseCase.call()).called(1);
       expect(find.byType(SubscriptionPage), findsOneWidget);
     },

@@ -96,7 +96,6 @@ class _CalendarItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isConnected = context.watch<IsConnected>();
     final type = useState(_CalendarItemType.normal);
 
     useEffect(
@@ -107,7 +106,7 @@ class _CalendarItem extends HookWidget {
           return;
         }
 
-        if (pastDay.date.isSameDateAs(clock.now())) {
+        if (pastDay.date.isSameDateAs(clock.now()) && pastDay.hasBrief) {
           type.value = _CalendarItemType.current;
           return;
         }
@@ -117,15 +116,9 @@ class _CalendarItem extends HookWidget {
           return;
         }
 
-        // TODO: Remove when we start storing daily briefs locally
-        if (!isConnected) {
-          type.value = _CalendarItemType.disable;
-          return;
-        }
-
         type.value = _CalendarItemType.normal;
       },
-      [selectedBriefDate, pastDay, isInLoadingState, isConnected],
+      [selectedBriefDate, pastDay, isInLoadingState],
     );
 
     return GestureDetector(

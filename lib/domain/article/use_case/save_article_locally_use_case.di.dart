@@ -25,6 +25,11 @@ class SaveArticleLocallyUseCase {
   final SaveSynchronizableItemUseCase _saveSynchronizableItemUseCase;
   final ImagePrecacheBroadcaster _imagePrecacheBroadcaster;
 
+  Future<void> saveUnsynchronized(String slug, Duration timeToExpire) async {
+    final synchronizable = Synchronizable.createNotSynchronized<Article>(slug, timeToExpire);
+    await _saveSynchronizableItemUseCase(_articleLocalRepository, synchronizable);
+  }
+
   Future<void> fetchAndSave(String slug, Duration timeToExpire) async {
     final synchronizable = Synchronizable.createNotSynchronized<Article>(slug, timeToExpire);
     await _saveSynchronizableItemUseCase(_articleLocalRepository, synchronizable);
@@ -44,6 +49,8 @@ class SaveArticleLocallyUseCase {
   }
 
   Future<void> save(Article article, Duration timeToExpire) async {
+    if (!article.metadata.availableInSubscription) return;
+
     final synchronizable = Synchronizable.createSynchronized(article, article.metadata.slug, timeToExpire);
 
     _imagePrecacheBroadcaster.broadcast(ImagePrecacheData.article(article.metadata));
