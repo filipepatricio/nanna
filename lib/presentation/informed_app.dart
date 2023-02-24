@@ -83,7 +83,12 @@ class InformedApp extends HookWidget {
                       localizationsDelegates: PhraseLocalizations.localizationsDelegates,
                       supportedLocales: PhraseLocalizations.supportedLocales,
                       routeInformationParser: router.defaultRouteParser(),
-                      routerDelegate: router.delegate(),
+                      routerDelegate: router.delegate(
+                        navigatorObservers: () => [
+                          HeroController(),
+                          getIt<MainNavigationObserver>(),
+                        ],
+                      ),
                       builder: (context, child) {
                         final mediaQuery = MediaQuery.of(context);
                         return NoScrollGlow(

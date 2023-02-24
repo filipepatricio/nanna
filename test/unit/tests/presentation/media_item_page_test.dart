@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
@@ -5,6 +6,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
+import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
@@ -12,6 +14,7 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_categories.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
+import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
@@ -190,6 +193,26 @@ void main() {
       expect(find.byType(CategoryPage), findsOneWidget);
     },
   );
+
+  testWidgets('closing page that was opened through deeplink does not throw', (widgetTester) async {
+    await widgetTester.startApp(
+      initialRoute: const MainPageRoute(),
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<PremiumArticleViewCubit>(() => FakePremiumArticleViewCubit());
+      },
+    );
+
+    final navigator = AutoRouter.of(find.byType(MainPage).evaluate().single);
+    navigator.navigateNamed('${const MainPageRoute().path}/articles/${TestData.premiumArticleWithAudio.slug}').ignore();
+    await widgetTester.pumpAndSettle();
+
+    expect(find.byType(MediaItemPage), findsOneWidget);
+
+    await widgetTester.tap(find.byType(BackTextButton));
+    await widgetTester.pumpAndSettle();
+
+    expect(find.byType(MediaItemPage), findsNothing);
+  });
 }
 
 class FakeBookmarkButtonCubit extends Fake implements BookmarkButtonCubit {
