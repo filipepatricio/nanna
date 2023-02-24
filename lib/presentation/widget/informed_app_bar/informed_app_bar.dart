@@ -25,12 +25,24 @@ class InformedAppBar extends HookWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final title = this.title;
-    final actions = this.actions;
-    final leadingWidth = MediaQuery.of(context).size.width / 3;
+    final actions = this
+        .actions
+        ?.map(
+          (action) => SizedBox(
+            width: AppDimens.actionsWidth,
+            child: action,
+          ),
+        )
+        .toList();
+    actions?.add(const SizedBox(width: AppDimens.xs));
+    const leadingWidth = AppDimens.backButtonWidth;
 
     return AppBar(
       backgroundColor: backgroundColor ?? AppColors.of(context).backgroundPrimary,
-      leading: leading ?? const BackTextButton(),
+      leading: Container(
+        margin: const EdgeInsets.only(left: AppDimens.xs),
+        child: leading ?? const BackTextButton(),
+      ),
       leadingWidth: leadingWidth,
       titleSpacing: AppDimens.zero,
       centerTitle: true,
