@@ -30,9 +30,9 @@ class SettingsManageMyInterestsPage extends HookWidget {
       appBar: InformedAppBar(
         isConnected: context.watch<IsConnected>(),
         leading: BackTextButton(
-          text: LocaleKeys.settings_settings.tr(),
+          text: context.l10n.settings_settings,
         ),
-        title: LocaleKeys.settings_manageMyInterestsTitle.tr(),
+        title: context.l10n.settings_manageMyInterestsTitle,
       ),
       body: SnackbarParentView(
         audioPlayerResponsive: true,
@@ -43,7 +43,7 @@ class SettingsManageMyInterestsPage extends HookWidget {
             cubit: cubit,
           ),
           error: () => Center(
-            child: ErrorView.general(
+            child: ErrorView(
               retryCallback: cubit.initialize,
             ),
           ),

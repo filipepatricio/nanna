@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.dart';
-import 'package:easy_localization/src/localization.dart';
-import 'package:easy_localization/src/translations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_keyboard_visibility/src/keyboard_visibility_handler.dart';
@@ -16,15 +12,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 late BetterInformedTestWidgetsFlutterBinding binding;
+late AppLocalizations l10n;
+
 final debugPrintBuffer = <String>[];
 
 const defaultInitialRoute = TabBarPageRoute();
 
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
-  /// Replaces the need for [EasyLocalization] wrapper widget - part 1
-  final content = await File('assets/translations/en.json').readAsString();
-  final data = jsonDecode(content) as Map<String, dynamic>;
-
   WidgetController.hitTestWarningShouldBeFatal = true;
 
   // Prevent printing to stdout (unless a test fails) ...
@@ -34,14 +28,9 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
     SharedPreferences.setMockInitialValues({});
   });
 
-  /// Replaces the need for [EasyLocalization] wrapper widget - part 2
-  Localization.load(
-    const Locale('en'),
-    translations: Translations(data),
-  );
-
   VisibilityDetectorController.instance.updateInterval = Duration.zero;
   KeyboardVisibilityHandler.setVisibilityForTesting(false);
+  l10n = await AppLocalizations.delegate.load(PhraseLocalizations.supportedLocales.first);
   await loadAppFonts();
   return testMain();
 }

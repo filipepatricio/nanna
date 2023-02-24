@@ -139,12 +139,7 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                     ...publisherImages.expand((element) => [element, const SizedBox(width: AppDimens.s)]).toList(),
                     const SizedBox(width: AppDimens.m),
                     Text(
-                      LocaleKeys.shareTopic_articlesCount.plural(
-                        topic.entryCount,
-                        args: [
-                          topic.entryCount.toString(),
-                        ],
-                      ),
+                      context.l10n.shareTopic_articlesCount(topic.entryCount),
                       style: AppTypography.b1Regular.copyWith(
                         height: 1,
                         color: AppColors.categoriesTextPrimary,

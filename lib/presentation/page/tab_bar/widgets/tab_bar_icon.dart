@@ -1,7 +1,7 @@
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/intl_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/today_tab_bar_badge/today_tab_bar_badge.dart';
 import 'package:flutter/material.dart';
@@ -10,42 +10,36 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 enum MainTab { today, explore, profile }
 
 extension MainTabExtension on MainTab {
-  Widget get icon => _icon();
-
-  Widget get activeIcon => _activeIcon();
-
-  String get title => _title();
-
-  Widget _icon() {
+  Widget icon(BuildContext context) {
     switch (this) {
       case MainTab.today:
-        return TodayTabBarBadge(child: _TabBarIcon(AppVectorGraphics.today, _title(), isActive: false));
+        return TodayTabBarBadge(child: _TabBarIcon(AppVectorGraphics.today, title(context), isActive: false));
       case MainTab.explore:
-        return _TabBarIcon(AppVectorGraphics.explore, _title(), isActive: false);
+        return _TabBarIcon(AppVectorGraphics.explore, title(context), isActive: false);
       case MainTab.profile:
-        return _TabBarIcon(AppVectorGraphics.profile, _title(), isActive: false);
+        return _TabBarIcon(AppVectorGraphics.profile, title(context), isActive: false);
     }
   }
 
-  Widget _activeIcon() {
+  Widget activeIcon(BuildContext context) {
     switch (this) {
       case MainTab.today:
-        return TodayTabBarBadge(child: _TabBarIcon(AppVectorGraphics.today, _title()));
+        return TodayTabBarBadge(child: _TabBarIcon(AppVectorGraphics.today, title(context)));
       case MainTab.explore:
-        return _TabBarIcon(AppVectorGraphics.explore, _title());
+        return _TabBarIcon(AppVectorGraphics.explore, title(context));
       case MainTab.profile:
-        return _TabBarIcon(AppVectorGraphics.profile, _title());
+        return _TabBarIcon(AppVectorGraphics.profile, title(context));
     }
   }
 
-  String _title() {
+  String title(BuildContext context) {
     switch (this) {
       case MainTab.today:
-        return LocaleKeys.main_todayTab.tr();
+        return context.l10n.main_todayTab;
       case MainTab.explore:
-        return LocaleKeys.main_exploreTab.tr();
+        return context.l10n.main_exploreTab;
       case MainTab.profile:
-        return LocaleKeys.main_profileTab.tr();
+        return context.l10n.main_profileTab;
     }
   }
 

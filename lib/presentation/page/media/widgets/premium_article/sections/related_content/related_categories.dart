@@ -24,7 +24,7 @@ class RelatedCategories extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           child: Text(
-            LocaleKeys.article_relatedContent_exploreMoreCategories.tr(),
+            context.l10n.article_relatedContent_exploreMoreCategories,
             style: AppTypography.h1Medium,
           ),
         ),
@@ -43,7 +43,7 @@ class RelatedCategories extends StatelessWidget {
                 context.navigateTo(
                   CategoryPageRoute(
                     category: featuredCategories[index].asCategoryWithItems(),
-                    openedFrom: tr(LocaleKeys.article_label),
+                    openedFrom: context.l10n.article_label,
                   ),
                 );
               },

@@ -26,11 +26,11 @@ class _BookmarkEmptyView extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: tr(LocaleKeys.profile_emptyPage_title),
+                        text: context.l10n.profile_emptyPage_title,
                         style: AppTypography.b2Medium,
                       ),
                       TextSpan(
-                        text: filter.emptyBodyText,
+                        text: filter.emptyBodyText(context),
                         style: AppTypography.b2Regular,
                       ),
                     ],
@@ -40,7 +40,7 @@ class _BookmarkEmptyView extends StatelessWidget {
                 Center(
                   child: InformedFilledButton.primary(
                     context: context,
-                    text: filter.buttonText,
+                    text: filter.buttonText(context),
                     onTap: () => AutoRouter.of(context).navigate(
                       const ExploreTabGroupRouter(
                         children: [
@@ -60,25 +60,25 @@ class _BookmarkEmptyView extends StatelessWidget {
 }
 
 extension Texts on BookmarkFilter {
-  String get emptyBodyText {
+  String emptyBodyText(BuildContext context) {
     switch (this) {
       case BookmarkFilter.all:
-        return LocaleKeys.profile_emptyPage_noAll.tr();
+        return context.l10n.profile_emptyPage_noAll;
       case BookmarkFilter.topic:
-        return LocaleKeys.profile_emptyPage_noTopics.tr();
+        return context.l10n.profile_emptyPage_noTopics;
       case BookmarkFilter.article:
-        return LocaleKeys.profile_emptyPage_noArticles.tr();
+        return context.l10n.profile_emptyPage_noArticles;
     }
   }
 
-  String get buttonText {
+  String buttonText(BuildContext context) {
     switch (this) {
       case BookmarkFilter.all:
-        return LocaleKeys.profile_emptyPage_noAllAction.tr();
+        return context.l10n.profile_emptyPage_noAllAction;
       case BookmarkFilter.topic:
-        return LocaleKeys.profile_emptyPage_noTopicsAction.tr();
+        return context.l10n.profile_emptyPage_noTopicsAction;
       case BookmarkFilter.article:
-        return LocaleKeys.profile_emptyPage_noArticlesAction.tr();
+        return context.l10n.profile_emptyPage_noArticlesAction;
     }
   }
 }

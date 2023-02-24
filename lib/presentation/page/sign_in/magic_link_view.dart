@@ -36,7 +36,7 @@ class MagicLinkContent extends StatelessWidget {
             const SizedBox(height: AppDimens.xl),
             Center(
               child: InformedMarkdownBody(
-                markdown: LocaleKeys.signIn_header_magicLinkOne.tr(),
+                markdown: context.l10n.signIn_header_magicLinkOne,
                 baseTextStyle: AppTypography.h2Regular.copyWith(
                   height: 1.4,
                   letterSpacing: 0.15,
@@ -45,7 +45,7 @@ class MagicLinkContent extends StatelessWidget {
             ),
             Center(
               child: InformedMarkdownBody(
-                markdown: LocaleKeys.signIn_header_magicLinkTwo.tr(args: [email]),
+                markdown: context.l10n.signIn_header_magicLinkTwo(email),
                 baseTextStyle: AppTypography.h2Regular.copyWith(
                   height: 1.4,
                   letterSpacing: 0.15,

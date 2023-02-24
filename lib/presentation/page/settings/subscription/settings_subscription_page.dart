@@ -43,11 +43,11 @@ class SettingsSubscriptionPage extends HookWidget {
       [cubit],
     );
 
-    Future<void> openInBrowser(String uri) async {
+    Future<void> openInBrowser(BuildContext context, String uri) async {
       await openInAppBrowser(
         uri,
         (error, stacktrace) {
-          showBrowserError(uri, snackbarController);
+          showBrowserError(context, uri, snackbarController);
         },
       );
     }
@@ -56,9 +56,9 @@ class SettingsSubscriptionPage extends HookWidget {
       appBar: InformedAppBar(
         isConnected: context.watch<IsConnected>(),
         leading: BackTextButton(
-          text: LocaleKeys.settings_settings.tr(),
+          text: context.l10n.settings_settings,
         ),
-        title: LocaleKeys.subscription_membership.tr(),
+        title: context.l10n.subscription_membership,
       ),
       body: SnackbarParentView(
         audioPlayerResponsive: true,
@@ -67,11 +67,11 @@ class SettingsSubscriptionPage extends HookWidget {
           loading: () => const Loader(),
           trial: (data) => _SettingsSubscriptionTrialView(
             subscription: data,
-            onCancelSubscriptionTap: () => openInBrowser(data.manageSubscriptionURL),
+            onCancelSubscriptionTap: () => openInBrowser(context, data.manageSubscriptionURL),
           ),
           premium: (data) => _SettingsSubscriptionPremiumView(
             subscription: data,
-            onCancelSubscriptionTap: () => openInBrowser(data.manageSubscriptionURL),
+            onCancelSubscriptionTap: () => openInBrowser(context, data.manageSubscriptionURL),
           ),
           manualPremium: (data) => _SettingsSubscriptionManualPremiumView(
             subscription: data,

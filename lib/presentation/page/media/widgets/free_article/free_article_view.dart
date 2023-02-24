@@ -62,6 +62,7 @@ class FreeArticleView extends HookWidget {
       appBar: ArticleAppBar(
         article: article,
         topicId: topicId,
+        shouldShowTitle: true,
         isConnected: context.watch<IsConnected>(),
       ),
       body: Stack(

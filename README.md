@@ -9,26 +9,23 @@ Follow those steps to start:
 - Check Flutter version in "Mobile introduction" section below
 - Run `make get` or `flutter pub get` to get dependencies.
 - Run `make build_runner` or `flutter pub run build_runner build --delete-conflicting-outputs` to generate code (routing, json serializers etc.). For FVM users, run `make br`
-- Run `make easy_localization` or `flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart` to generate translation files. For FVM users, run `make l10n`
+- Run `make localization` to generate translation files. For FVM users, run `make l10n`
 
 ...and you are ready to go.
 
-# Pre-commit hook - how to install
+# Localization
 
-Just run these commands
+Localization is handled with Phrase (https://phrase.com). Creation of new keys is handled by devs from the codebase, but translations are handled from the console
 
-```
-chmod +x scripts/pre-commit.sh
-ln -s ../../scripts/pre-commit.sh .git/hooks/pre-commit
-```
+* To create a new key
+- Add it to './assets/l10n/app_en.arb', following the ARB format
+- Push it in your PR
+- Phrase will automatically fetch the new keys
 
-This hook will run before commiting anything, and it:
-
-1. Generate all needed files with `build_runner`
-2. Update l10n files
-3. Run `flutter format` and `flutter analyze` to check for any inconsistencies in sintax
-
-If this last step fails, an error message will be shown and the commit will not be completed
+* To change a translation
+- Go to Phrase console, project `app`
+- Select the language. Find the relevant key. Update its translation
+- If you don't have access, request the change via a Linear issue to the person responsible
 
 # Committing changes
 
@@ -36,13 +33,13 @@ When pushing changes to any branch, but specially when opening a PR for review, 
 
 <type>: <message>
 
-Where <type> can be either `feat` or `fix`
+Where <type> must be either `feat` or `fix`
 
 And <message> is a free text explaining the content of the commit
 
 ## Running App
 
-Right now we have 3 app flavors: dev, stage and prod. This adds requirement for additional arguments when running flutter app:
+Right now we have 3 app flavors: `dev`, `stage` and `prod`. This adds requirement for additional arguments when running flutter app:
 
 `flutter run --release --dart-define=env=dev --flavor dev`
 
@@ -100,7 +97,7 @@ If you really want to run app locally with `release` mode, change in xcode `Auto
 - Logs: fimber
 - DI: injectable + getIt
 - Parsing : json_annotation
-- Language and Texts : easy_localization
+- Language and Texts : phrase
 - State management : Cubit (bloc)
 - Animations and controllers : flutter_hooks
 - GraphQl : graphql_flutter
@@ -287,7 +284,7 @@ void main() {
     (tester) async {
       kIsAppleDevice = true;
       await tester.startApp(initialRoute: const SignInPageRoute());
-      expect(find.byText(LocaleKeys.signIn_providerButton_apple.tr()), findsOneWidget);
+      expect(find.byText(l10n.signIn_providerButton_apple), findsOneWidget);
     },
   );
 ...
@@ -309,7 +306,7 @@ Make sure to use `setUp` and `tearDown` commands as needed for each test - to ch
       // Forcing dialog to show because fetching and solving version logic is already tested by package
       Upgrader().debugDisplayAlways = true;
       await tester.startApp();
-      expect(find.byText(LocaleKeys.update_title.tr()), findsOneWidget);
+      expect(find.byText(context.l10n.update_title), findsOneWidget);
     },
   );
 

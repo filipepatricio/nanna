@@ -1,0 +1,16 @@
+phrase:
+  project_id: 71cb444180cdb180833eddb248fa3e48
+  push:
+    sources:
+    - file: ./assets/l10n/app_en.arb
+      params:
+        locale_id: en
+        file_format: arb
+        update_translations: false
+
+  pull:
+    targets:
+    - file: ./assets/l10n/app_en.arb
+      params:
+        locale_id: en
+        file_format: arb

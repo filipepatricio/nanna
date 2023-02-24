@@ -43,13 +43,13 @@ class InformedDialog extends HookWidget {
     return show<void>(
       context,
       routeName: appUpdateDialogRouteName,
-      title: LocaleKeys.update_title.tr(),
-      text: LocaleKeys.update_body.tr(),
-      secondaryText: availableVersion != null ? LocaleKeys.update_versionAvailable.tr(args: [availableVersion]) : null,
+      title: context.l10n.update_title,
+      text: context.l10n.update_body,
+      secondaryText: availableVersion != null ? context.l10n.update_versionAvailable(availableVersion) : null,
       action: OpenWebButton(
         withIcon: false,
         url: platformStoreLink,
-        buttonLabel: LocaleKeys.update_button.tr(),
+        buttonLabel: context.l10n.update_button,
         launchExternalApp: true,
       ),
       onWillPop: onWillPop,
@@ -60,8 +60,8 @@ class InformedDialog extends HookWidget {
     return show<bool>(
       context,
       routeName: deleteAccountDialogRouteName,
-      title: LocaleKeys.settings_deleteAccount_dialogTitle.tr(),
-      text: LocaleKeys.settings_deleteAccount_dialogBody.tr(),
+      title: context.l10n.settings_deleteAccount_dialogTitle,
+      text: context.l10n.settings_deleteAccount_dialogBody,
       dismissible: true,
       action: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +70,7 @@ class InformedDialog extends HookWidget {
             flex: 6,
             child: InformedFilledButton.secondary(
               context: context,
-              text: LocaleKeys.common_cancel.tr(),
+              text: context.l10n.common_cancel,
               onTap: () => Navigator.of(context, rootNavigator: true).pop(false),
             ),
           ),
@@ -78,7 +78,7 @@ class InformedDialog extends HookWidget {
           Expanded(
             flex: 6,
             child: InformedFilledButton.negative(
-              text: LocaleKeys.settings_deleteAccount_delete.tr(),
+              text: context.l10n.settings_deleteAccount_delete,
               onTap: () => Navigator.of(context, rootNavigator: true).pop(true),
             ),
           ),
@@ -91,7 +91,7 @@ class InformedDialog extends HookWidget {
     return show<void>(
       context,
       routeName: restorePurchaseDialogRouteName,
-      title: LocaleKeys.subscription_restoringPurchase.tr(),
+      title: context.l10n.subscription_restoringPurchase,
       action: const Loader(strokeWidth: 2),
     );
   }

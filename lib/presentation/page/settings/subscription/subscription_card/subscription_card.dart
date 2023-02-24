@@ -47,25 +47,25 @@ class SubscriptionCard extends HookWidget {
           child: state.map(
             loading: (_) => const _LoadingContent(),
             free: (data) => _IdleContent(
-              typeLabel: LocaleKeys.subscription_free.tr(),
+              typeLabel: context.l10n.subscription_free,
               callToActionLabel: Text(
-                LocaleKeys.subscription_goPremium.tr(),
+                context.l10n.subscription_goPremium,
                 style: AppTypography.subH1Medium.copyWith(decoration: TextDecoration.underline),
               ),
             ),
             trial: (data) => _IdleContent(
-              typeLabel: LocaleKeys.subscription_trial.tr(),
+              typeLabel: context.l10n.subscription_trial,
               callToActionLabel: Text(
-                LocaleKeys.subscription_endsIn.tr(
-                  args: [LocaleKeys.date_day.plural(data.remainingDays)],
+                context.l10n.subscription_endsIn(
+                  context.l10n.date_day(data.remainingDays),
                 ),
                 style: AppTypography.subH1Medium,
               ),
             ),
             premium: (data) => _IdleContent(
-              typeLabel: LocaleKeys.subscription_premium.tr(),
+              typeLabel: context.l10n.subscription_premium,
               callToActionLabel: Text(
-                LocaleKeys.subscription_membership.tr(),
+                context.l10n.subscription_membership,
                 style: AppTypography.subH1Medium,
               ),
             ),

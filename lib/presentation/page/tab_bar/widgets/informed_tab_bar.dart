@@ -80,9 +80,9 @@ class _TabBar extends StatelessWidget {
           items: [
             ...MainTab.values.map(
               (tab) => BottomNavigationBarItem(
-                icon: tab.icon,
-                activeIcon: tab.activeIcon,
-                label: tab.title,
+                icon: tab.icon(context),
+                activeIcon: tab.activeIcon(context),
+                label: tab.title(context),
               ),
             )
           ],

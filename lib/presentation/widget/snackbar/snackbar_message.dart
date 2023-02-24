@@ -22,14 +22,13 @@ class SnackbarMessage {
         action: action,
       );
 
-  factory SnackbarMessage.offline({
-    String? message,
-    String? subMessage,
+  factory SnackbarMessage.offline(
+    BuildContext context, {
     SnackbarAction? action,
   }) =>
       SnackbarMessage._(
-        message: message ?? LocaleKeys.noConnection_snackbar_message.tr(),
-        subMessage: subMessage ?? LocaleKeys.noConnection_snackbar_subMessage.tr(),
+        message: context.l10n.noConnection_snackbar_message,
+        subMessage: context.l10n.noConnection_snackbar_subMessage,
         type: SnackbarMessageType.info,
         action: action,
       );

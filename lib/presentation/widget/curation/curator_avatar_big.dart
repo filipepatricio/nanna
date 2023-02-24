@@ -1,12 +1,11 @@
 import 'package:better_informed_mobile/domain/common/data/curator.dt.dart';
-import 'package:better_informed_mobile/generated/local_keys.g.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/curation/curator_avatar_unknown.dart';
 import 'package:better_informed_mobile/presentation/widget/curator_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class CuratorAvatarBig extends StatelessWidget {
@@ -45,7 +44,10 @@ class CuratorAvatarBig extends StatelessWidget {
                 maxLines: 1,
               ),
               Text(
-                curator.expertise,
+                curator.maybeMap(
+                  expert: (expert) => context.l10n.topic_owner_expertIn(expert.areaOfExpertise),
+                  orElse: () => context.l10n.topic_owner_editorialTeam,
+                ),
                 style: AppTypography.b3Regular.copyWith(
                   color: AppColors.of(context).textSecondary,
                   height: 1.5,
@@ -55,19 +57,6 @@ class CuratorAvatarBig extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-extension on Curator {
-  String get expertise {
-    return maybeMap(
-      expert: (expert) => LocaleKeys.topic_owner_expertIn.tr(
-        args: [
-          expert.areaOfExpertise,
-        ],
-      ),
-      orElse: () => LocaleKeys.topic_owner_editorialTeam.tr(),
     );
   }
 }

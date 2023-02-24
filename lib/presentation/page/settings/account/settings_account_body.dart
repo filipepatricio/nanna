@@ -66,7 +66,7 @@ class SettingsAccountBody extends HookWidget {
             children: [
               SettingsInputItem(
                 controller: nameController,
-                label: LocaleKeys.settings_firstName.tr(),
+                label: context.l10n.settings_firstName,
                 isEditable: true,
                 isFormFocused: isFirstNameFocused.value,
                 validator: (_) => modifiedData.firstNameValidator,
@@ -82,7 +82,7 @@ class SettingsAccountBody extends HookWidget {
               const SizedBox(height: AppDimens.m),
               SettingsInputItem(
                 controller: lastNameController,
-                label: LocaleKeys.settings_lastName.tr(),
+                label: context.l10n.settings_lastName,
                 isEditable: true,
                 isFormFocused: isLastNameFocused.value,
                 validator: (_) => modifiedData.lastNameValidator,
@@ -98,7 +98,7 @@ class SettingsAccountBody extends HookWidget {
               const SizedBox(height: AppDimens.m),
               SettingsInputItem(
                 controller: emailController,
-                label: LocaleKeys.settings_emailAddress.tr(),
+                label: context.l10n.settings_emailAddress,
                 isEditable: false,
                 validator: (_) => modifiedData.emailValidator,
                 onChanged: cubit.updateEmail,
@@ -111,7 +111,7 @@ class SettingsAccountBody extends HookWidget {
                 duration: const Duration(milliseconds: 250),
                 child: InformedFilledButton.primary(
                   context: context,
-                  text: LocaleKeys.settings_save.tr(),
+                  text: context.l10n.settings_save,
                   onTap: () => _onSaveButtonTap(isFirstNameFocused, isLastNameFocused),
                   isEnabled: cubit.formsAreValid(),
                   isLoading: state.maybeMap(updating: (_) => true, orElse: () => false),
@@ -119,7 +119,7 @@ class SettingsAccountBody extends HookWidget {
               ),
               const SizedBox(height: AppDimens.l),
               LinkLabel(
-                label: LocaleKeys.settings_deleteAccount_button.tr(),
+                label: context.l10n.settings_deleteAccount_button,
                 decoration: TextDecoration.none,
                 onTap: () => _onDeleteAccountLinkTap(context),
               ),

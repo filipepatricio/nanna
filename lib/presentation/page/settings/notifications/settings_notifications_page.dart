@@ -38,9 +38,9 @@ class SettingsNotificationsPage extends HookWidget {
       appBar: InformedAppBar(
         isConnected: context.watch<IsConnected>(),
         leading: BackTextButton(
-          text: LocaleKeys.settings_settings.tr(),
+          text: context.l10n.settings_settings,
         ),
-        title: LocaleKeys.settings_notifications_title.tr(),
+        title: context.l10n.settings_notifications_title,
       ),
       body: SnackbarParentView(
         audioPlayerResponsive: true,
@@ -52,7 +52,7 @@ class SettingsNotificationsPage extends HookWidget {
           ),
           notificationSettingsLoaded: (data) => SettingsNotificationsBody(groups: data),
           error: () => Center(
-            child: ErrorView.general(
+            child: ErrorView(
               retryCallback: cubit.initialize,
             ),
           ),

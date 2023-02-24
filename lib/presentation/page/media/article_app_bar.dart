@@ -1,7 +1,6 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
@@ -18,6 +17,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
     this.briefId,
     this.topicId,
     this.isConnected = true,
+    this.shouldShowTitle = false,
     Key? key,
   }) : super(key: key);
 
@@ -26,6 +26,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   final String? briefId;
   final String? topicId;
   final bool isConnected;
+  final bool shouldShowTitle;
 
   bool get fromTopic => topicId != null;
 
@@ -76,8 +77,9 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
           backgroundColor: backgroundColorAnimation.value,
           leading: BackTextButton(
             color: foregroundColorAnimation.value,
-            text: fromTopic ? LocaleKeys.topic_label.tr() : LocaleKeys.common_back.tr(),
+            text: fromTopic ? context.l10n.topic_label : context.l10n.common_back,
           ),
+          title: shouldShowTitle ? article.publisher.name : null,
           actions: [
             BookmarkButton.article(
               article: article,
@@ -85,7 +87,6 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
               briefId: briefId,
               color: foregroundColorAnimation.value,
             ),
-            const SizedBox(width: AppDimens.m),
             Align(
               alignment: Alignment.center,
               child: ShareArticleButton(
@@ -93,7 +94,6 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
                 color: foregroundColorAnimation.value,
               ),
             ),
-            const SizedBox(width: AppDimens.ml),
           ],
         ),
       ),

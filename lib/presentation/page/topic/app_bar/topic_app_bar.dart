@@ -16,8 +16,8 @@ class _TopicAppBar extends HookWidget {
   Widget build(BuildContext context) {
     final backgroundColor = AppColors.of(context).backgroundPrimary;
     final title = topic.curationInfo.curator.maybeMap(
-      expert: (_) => LocaleKeys.topic_labelExpert.tr(),
-      orElse: () => LocaleKeys.topic_label.tr(),
+      expert: (_) => context.l10n.topic_labelExpert,
+      orElse: () => context.l10n.topic_label,
     );
     final animationController = useAnimationController(duration: const Duration(milliseconds: 150));
     final backgroundColorAnimation = ColorTween(

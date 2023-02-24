@@ -1,9 +1,8 @@
-import 'package:better_informed_mobile/generated/local_keys.g.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_provider_button.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SignInWithLinkedInButton extends StatelessWidget {
@@ -17,7 +16,7 @@ class SignInWithLinkedInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SignInWithProviderButton(
-      label: LocaleKeys.signIn_providerButton_linkedin.tr(),
+      label: context.l10n.signIn_providerButton_linkedin,
       icon: const InformedSvg(
         AppVectorGraphics.linkedinSignIn,
         width: AppDimens.l,

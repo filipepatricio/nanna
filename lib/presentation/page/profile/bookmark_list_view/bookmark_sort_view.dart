@@ -94,7 +94,7 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        tr(LocaleKeys.bookmark_sortBy),
+                        context.l10n.bookmark_sortBy,
                         style: AppTypography.b2Bold,
                       ),
                     ),
@@ -117,7 +117,7 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              entry.key.title,
+                              entry.key.title(context),
                               style: config == entry.value ? AppTypography.b2Bold : AppTypography.b2Regular,
                             ),
                             const Spacer(),
@@ -151,16 +151,16 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
 }
 
 extension on BookmarkSortConfigName {
-  String get title {
+  String title(BuildContext context) {
     switch (this) {
       case BookmarkSortConfigName.lastUpdated:
-        return tr(LocaleKeys.bookmark_bookmarkSortConfig_lastUpdated);
+        return context.l10n.bookmark_bookmarkSortConfig_lastUpdated;
       case BookmarkSortConfigName.lastAdded:
-        return tr(LocaleKeys.bookmark_bookmarkSortConfig_lastAdded);
+        return context.l10n.bookmark_bookmarkSortConfig_lastAdded;
       case BookmarkSortConfigName.alphabeticalAsc:
-        return tr(LocaleKeys.bookmark_bookmarkSortConfig_alphabeticalAsc);
+        return context.l10n.bookmark_bookmarkSortConfig_alphabeticalAsc;
       case BookmarkSortConfigName.alphabeticalDesc:
-        return tr(LocaleKeys.bookmark_bookmarkSortConfig_alphabeticalDesc);
+        return context.l10n.bookmark_bookmarkSortConfig_alphabeticalDesc;
     }
   }
 }

@@ -62,11 +62,7 @@ class ShareArticleViewContent extends StatelessWidget {
         if (author != null) ...[
           const SizedBox(height: AppDimens.m),
           Text(
-            LocaleKeys.shareArticle_author.tr(
-              args: [
-                author,
-              ],
-            ),
+            context.l10n.shareArticle_author(author),
             style: AppTypography.b1Regular.copyWith(
               color: AppColors.categoriesTextPrimary,
               fontSize: 24,

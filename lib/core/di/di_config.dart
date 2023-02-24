@@ -4,9 +4,7 @@ import 'package:injectable/injectable.dart';
 
 @InjectableInit(
   preferRelativeImports: false,
-  ignoreUnregisteredTypes: [
-    GetIt,
-  ],
+  ignoreUnregisteredTypes: [GetIt],
 )
 Future<GetIt> configureDependencies(String env) async {
   final getIt = GetIt.asNewInstance();

@@ -83,9 +83,7 @@ class SaveArticleReadProgressLocallyUseCase {
         progress: article.metadata.progress.copyWith(
           contentProgress: progress,
         ),
-        progressState: progress >= finishedArticleProgressThreshold
-            ? ArticleProgressState.finished
-            : ArticleProgressState.inProgress,
+        progressState: _getStateForProgress(progress),
       ),
     );
 

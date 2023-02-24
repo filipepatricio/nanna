@@ -26,9 +26,7 @@ class AudioSpeedButton extends HookWidget {
         opacity: state.isEnabled ? 1.0 : 0.7,
         child: InformedFilledButton.secondary(
           context: context,
-          text: LocaleKeys.audio_speed.tr(
-            args: [state.currentSpeed],
-          ),
+          text: context.l10n.audio_speed(state.currentSpeed),
           withOutline: true,
           onTap: state.isEnabled ? cubit.switchSpeed : null,
         ),

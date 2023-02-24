@@ -47,9 +47,12 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
   Future<void> onOffline(BookmarkTypeData initialData) async {
     state.maybeMap(
       idle: (state) => emit(BookmarkButtonState.offline(state.state)),
+      initializing: (state) async {
+        final bookmarkState = await _getBookmarkStateUseCase(initialData);
+        emit(BookmarkButtonState.offline(bookmarkState));
+      },
       orElse: () => emit(BookmarkButtonState.offline(BookmarkState.notBookmarked())),
     );
-    await _notifierSubscription?.cancel();
   }
 
   @override
@@ -76,7 +79,7 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
   }
 
   void _registerBookmarkChangeNotification(BookmarkTypeData data) {
-    _notifierSubscription = _getBookmarkChangeStreamUseCase(includeProfileEvents: true)
+    _notifierSubscription ??= _getBookmarkChangeStreamUseCase(includeProfileEvents: true)
         .debounceTime(const Duration(milliseconds: 100))
         .switchMap((event) => _reloadOnChangeNotification(event, data))
         .listen(_handleBookmarkState);
@@ -97,7 +100,7 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
     );
   }
 
-  Future<void> switchState({bool? fromUndo}) async {
+  Future<void> switchState(AppLocalizations l10n, {bool? fromUndo}) async {
     await state.mapOrNull(
       idle: (state) async {
         emit(BookmarkButtonState.switching(state.data));
@@ -112,16 +115,14 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
             if (fromUndo == true) {
               _trackBookmarkRemoveUndo(state.data);
             } else {
-              _emitBookmarkAdded(state.data);
+              _emitBookmarkAdded(l10n, state.data);
             }
           },
           notBookmarked: (_) => emit(
             BookmarkButtonState.bookmarkRemoved(
-              tr(
-                state.data.map(
-                  article: (_) => LocaleKeys.bookmark_removeArticle,
-                  topic: (_) => LocaleKeys.bookmark_removeTopic,
-                ),
+              state.data.map(
+                article: (_) => l10n.bookmark_removeArticle,
+                topic: (_) => l10n.bookmark_removeTopic,
               ),
             ),
           ),
@@ -132,18 +133,15 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
     );
   }
 
-  Future<void> _emitBookmarkAdded(BookmarkTypeData bookmarkType) async {
+  Future<void> _emitBookmarkAdded(AppLocalizations l10n, BookmarkTypeData bookmarkType) async {
     final hasActiveSubscription = await _hasActiveSubscriptionUseCase();
     emit(
       BookmarkButtonState.bookmarkAdded(
-        tr(
-          bookmarkType.map(
-            article: (type) => hasActiveSubscription && type.type.isPremium
-                ? LocaleKeys.bookmark_addArticleSubscribed
-                : LocaleKeys.bookmark_addArticle,
-            topic: (type) =>
-                hasActiveSubscription ? LocaleKeys.bookmark_addTopicSubscribed : LocaleKeys.bookmark_addTopic,
-          ),
+        bookmarkType.map(
+          article: (type) => hasActiveSubscription && type.type.isPremium
+              ? l10n.bookmark_addArticleSubscribed
+              : l10n.bookmark_addArticle,
+          topic: (type) => hasActiveSubscription ? l10n.bookmark_addTopicSubscribed : l10n.bookmark_addTopic,
         ),
       ),
     );

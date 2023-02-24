@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
+import 'package:better_informed_mobile/presentation/util/platform_util.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
@@ -20,6 +21,7 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_mes
 import 'package:better_informed_mobile/presentation/widget/subscription/subscribe_button.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_card.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscrption_links_footer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -51,10 +53,18 @@ class ArticlePaywallView extends HookWidget {
         multiplePlans: (planGroup, processing) => InformedDialog.removeRestorePurchase(context),
         trial: (plan, processing) => InformedDialog.removeRestorePurchase(context),
         generalError: (message) {
+          snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: message ?? context.l10n.common_error_tryAgainLater,
+              type: SnackbarMessageType.error,
+            ),
+          );
+        },
+        restoringPurchaseError: () {
           InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(
             SnackbarMessage.simple(
-              message: message ?? LocaleKeys.common_error_tryAgainLater.tr(),
+              message: context.l10n.subscription_restoringPurchaseError,
               type: SnackbarMessageType.error,
             ),
           );
@@ -93,12 +103,14 @@ class ArticlePaywallView extends HookWidget {
               trial: (state) => _PaywallTrialOption(
                 plan: state.plan,
                 onPurchasePressed: cubit.purchase,
+                onRedeemCodePressed: cubit.redeemOfferCode,
                 isProcessing: state.processing,
               ),
               multiplePlans: (state) => _PaywallMultipleOptions(
                 planGroup: state.planGroup,
                 onPurchasePressed: cubit.purchase,
                 onRestorePressed: cubit.restore,
+                onRedeemCodePressed: cubit.redeemOfferCode,
                 isProcessing: state.processing,
               ),
               loading: (_) => const _PaywallLoadingView(),

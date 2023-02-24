@@ -3,24 +3,51 @@ import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:better_informed_mobile/core/database/hive_initializer.dart';
 import 'package:better_informed_mobile/core/di/di_config.dart';
+import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_action_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/push_notification_message_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/util/badge_info_repository_impl.di.dart';
 import 'package:better_informed_mobile/data/util/reporting_tree_error_filter.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_analytics_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/auth/data/auth_token.dart';
-import 'package:better_informed_mobile/domain/language/language_code.dart';
+import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
 import 'package:fimber/fimber.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:phrase/phrase.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const _environmentArgKey = 'env';
+const shouldRefreshBriefKey = 'shouldRefreshBrief';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  final remoteMessageToIncomingPushDTOMapper = RemoteMessageToIncomingPushDTOMapper();
+  final incomingPushActionDTOMapper = IncomingPushActionDTOMapper();
+  final incomingPushDTOMapper = IncomingPushDTOMapper(incomingPushActionDTOMapper);
+  final incomingPushDTO = remoteMessageToIncomingPushDTOMapper.call(message);
+  final incomingPush = incomingPushDTOMapper.call(incomingPushDTO);
+  final sharedPreferences = await SharedPreferences.getInstance();
+  final badgeRepository = BadgeInfoRepositoryImpl(sharedPreferences);
+  final setNeedsRefreshDailyBriefUseCase = SetNeedsRefreshDailyBriefUseCase(badgeRepository);
+
+  final action = incomingPush.actions.first;
+
+  await action.mapOrNull(
+    briefEntriesUpdated: (args) => setNeedsRefreshDailyBriefUseCase(args.badgeCount),
+    briefEntrySeenByUser: (args) => setNeedsRefreshDailyBriefUseCase(args.badgeCount),
+    newBriefPublished: (args) => setNeedsRefreshDailyBriefUseCase(args.badgeCount),
+  );
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,8 +59,9 @@ Future<void> main() async {
 
   final environment = _getEnvironment();
 
-  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await initializeHive();
   final getIt = await configureDependencies(environment);
@@ -42,6 +70,10 @@ Future<void> main() async {
   await _setupAccessToken(getIt);
   _setupFimber(getIt);
   await _setupAnalytics(getIt);
+
+  if (appConfig.phraseConfig != null) {
+    Phrase.setup(appConfig.phraseConfig!.phraseDistributionID, appConfig.phraseConfig!.phraseEnvironmentID);
+  }
 
   final currentThemeMode = await AdaptiveTheme.getThemeMode();
 
@@ -59,17 +91,10 @@ Future<void> main() async {
     appRunner: () => runApp(
       DefaultAssetBundle(
         bundle: SentryAssetBundle(),
-        child: EasyLocalization(
-          path: 'assets/translations',
-          supportedLocales: availableLocales.values.toList(),
-          fallbackLocale: availableLocales[fallbackLanguageCode],
-          useOnlyLangCode: true,
-          saveLocale: true,
-          child: InformedApp(
-            getIt: getIt,
-            themeMode: currentThemeMode,
-            mainRouter: kDebugMode ? MainRouter() : null,
-          ),
+        child: InformedApp(
+          getIt: getIt,
+          themeMode: currentThemeMode,
+          mainRouter: kDebugMode ? MainRouter() : null,
         ),
       ),
     ),

@@ -30,13 +30,13 @@ Future<ShareOption?> showShareOptions(BuildContext context) {
     isScrollControlled: true,
     useRootNavigator: true,
     builder: (context) {
-      return const _ShareOptionsView();
+      return const ShareOptionsView();
     },
   );
 }
 
-class _ShareOptionsView extends HookWidget {
-  const _ShareOptionsView({Key? key}) : super(key: key);
+class ShareOptionsView extends HookWidget {
+  const ShareOptionsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class _ShareOptionsView extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    LocaleKeys.common_shareVia.tr(),
+                    context.l10n.common_shareVia,
                     style: AppTypography.b2Medium,
                   ),
                   const Spacer(),
@@ -88,7 +88,7 @@ class _ShareOptionsView extends HookWidget {
                 .map(
                   (shareOption) => ShareOptionItem(
                     svg: shareOption.getIcon(),
-                    text: shareOption.getText(),
+                    text: shareOption.getText(context),
                     onTap: () => AutoRouter.of(context).pop(shareOption),
                   ),
                 )

@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/subscription/use_case/restore_purc
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_data.dart';
@@ -12,11 +13,14 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest('${SubscriptionPage}_(trial)', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     await tester.startApp(initialRoute: const SubscriptionPageRoute());
     await tester.matchGoldenFile();
+    debugDefaultTargetPlatformOverride = null;
   });
 
   visualTest('${SubscriptionPage}_(no_trial)', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     final useCase = FakeGetSubscriptionPlansUseCase(TestData.subscriptionPlansWithoutTrial);
     await tester.startApp(
       dependencyOverride: (getIt) async {
@@ -25,9 +29,11 @@ void main() {
       initialRoute: const SubscriptionPageRoute(),
     );
     await tester.matchGoldenFile();
+    debugDefaultTargetPlatformOverride = null;
   });
 
   visualTest('${SubscriptionPage}_(restore_purchase)', (tester) async {
+    final l10n = await AppLocalizations.delegate.load(PhraseLocalizations.supportedLocales.first);
     final useCase = FakeRestorePurchaseUseCase();
     await tester.startApp(
       dependencyOverride: (getIt) async {
@@ -37,7 +43,7 @@ void main() {
     );
 
     final widgetFinder = find.byWidgetPredicate(
-      (widget) => widget is LinkLabel && widget.label == LocaleKeys.subscription_restorePurchase.tr(),
+      (widget) => widget is LinkLabel && widget.label == l10n.subscription_restorePurchase,
     );
 
     await tester.dragUntilVisible(widgetFinder, find.byType(SubscriptionPage), const Offset(0, -100));

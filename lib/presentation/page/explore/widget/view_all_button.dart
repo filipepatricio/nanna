@@ -23,7 +23,7 @@ class ViewAllButton extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            LocaleKeys.explore_viewAll.tr(),
+            context.l10n.explore_viewAll,
             style: AppTypography.b3Medium.copyWith(
               color: AppColors.of(context).textSecondary,
             ),

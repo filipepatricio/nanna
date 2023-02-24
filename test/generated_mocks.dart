@@ -55,6 +55,7 @@ import 'package:better_informed_mobile/domain/bookmark/bookmark_change_notifier.
 import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/profile_bookmark_change_notifier.di.dart';
+import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/save_bookmarked_media_item_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
@@ -62,9 +63,11 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_up
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
+import 'package:better_informed_mobile/domain/networking/connectivity_repository.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_badge_count_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_local_repository.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_remote_repository.dart';
@@ -87,6 +90,7 @@ import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
 import 'package:better_informed_mobile/domain/util/network_cache_manager.dart';
+import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -189,6 +193,10 @@ const _classes = [
   ArticleProgressLocalRepository,
   SaveArticleReadProgressLocallyUseCase,
   LoadLocalArticleUseCase,
+  ShouldRefreshDailyBriefUseCase,
+  IncomingPushBadgeCountStreamUseCase,
+  GetBookmarkStateUseCase,
+  ConnectivityRepository,
 ];
 
 @GenerateMocks(_classes)

@@ -82,20 +82,24 @@ class PremiumArticleView extends HookWidget {
       },
     );
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: ArticleAppBar(
-        article: article.metadata,
-        briefId: briefId,
-        topicId: topicId,
-        actionsBarColorModeNotifier: actionsBarColorModeNotifier,
-        isConnected: context.watch<IsConnected>(),
-      ),
-      body: ScrollsToTop(
-        onScrollsToTop: (_) => mainController.animateToStart(),
-        child: PremiumArticleReadView(
-          cubit: cubit,
-          mainController: mainController,
+    return ValueListenableBuilder<bool>(
+      valueListenable: isScrolled,
+      builder: (context, isScrolled, _) => Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: ArticleAppBar(
+          article: article.metadata,
+          briefId: briefId,
+          topicId: topicId,
+          shouldShowTitle: isScrolled,
+          actionsBarColorModeNotifier: actionsBarColorModeNotifier,
+          isConnected: context.watch<IsConnected>(),
+        ),
+        body: ScrollsToTop(
+          onScrollsToTop: (_) => mainController.animateToStart(),
+          child: PremiumArticleReadView(
+            cubit: cubit,
+            mainController: mainController,
+          ),
         ),
       ),
     );
@@ -106,7 +110,7 @@ void showFreeArticlesWarning(BuildContext context, SnackbarController snackbarCo
   snackbarController.showMessage(
     SnackbarMessage.simple(
       message: message,
-      subMessage: LocaleKeys.subscription_snackbar_link.tr(),
+      subMessage: context.l10n.subscription_snackbar_link,
       action: SnackbarAction(
         label: 'Upgrade',
         callback: () => context.pushRoute(const SubscriptionPageRoute()),

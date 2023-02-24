@@ -33,7 +33,7 @@ class DailyBriefPageState with _$DailyBriefPageState {
   @Implements<BuildState>()
   factory DailyBriefPageState.offline() = _DailyBriefPageStateOffline;
 
-  factory DailyBriefPageState.showTutorialToast(String text) = _DailyBriefPageStateShowTutorialToast;
+  factory DailyBriefPageState.showTutorialToast() = _DailyBriefPageStateShowTutorialToast;
 
   factory DailyBriefPageState.shouldShowTopicCardTutorialCoachMark() =
       _DailyBriefPageStateShouldShowTopicCardTutorialCoachMark;
@@ -50,4 +50,6 @@ class DailyBriefPageState with _$DailyBriefPageState {
       _DailyBriefPageStatePreCacheImages;
 
   factory DailyBriefPageState.showPaywall() = _DailyBriefPageStateShowPaywall;
+
+  factory DailyBriefPageState.hasBeenUpdated() = _DailyBriefPageStateHasBeenUpdated;
 }

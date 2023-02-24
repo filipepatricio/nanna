@@ -244,4 +244,10 @@ class AppDimens {
 
   /// 50%
   static const offlineIconOpacity = 0.5;
+
+  /// 48px
+  static const actionsWidth = AppDimens.xxxl;
+
+  /// 96px
+  static const backButtonWidth = AppDimens.xxxl * 2;
 }

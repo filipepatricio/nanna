@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_up
 import 'package:better_informed_mobile/domain/exception/brief_not_initialized_exception.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_badge_count_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
@@ -23,6 +24,7 @@ import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -58,6 +60,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     this._setOnboardingPaywallSeenUseCase,
     this._markArticleAsSeenUseCase,
     this._markTopicAsSeenUseCase,
+    this._shouldRefreshDailyBriefUseCase,
+    this._incomingPushBadgeCountStreamUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
@@ -73,6 +77,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final SetOnboardingPaywallSeenUseCase _setOnboardingPaywallSeenUseCase;
   final MarkArticleAsSeenUseCase _markArticleAsSeenUseCase;
   final MarkTopicAsSeenUseCase _markTopicAsSeenUseCase;
+  final ShouldRefreshDailyBriefUseCase _shouldRefreshDailyBriefUseCase;
+  final IncomingPushBadgeCountStreamUseCase _incomingPushBadgeCountStreamUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -80,6 +86,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   Brief? _selectedBrief;
 
   StreamSubscription? _dataRefreshSubscription;
+  StreamSubscription? _badgeCountRefreshSubscription;
   StreamSubscription? _currentBriefSubscription;
   StreamSubscription? _shouldUpdateBriefSubscription;
   StreamSubscription? _itemPreviewTrackerSubscription;
@@ -98,6 +105,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     await _shouldUpdateBriefSubscription?.cancel();
     await _trackItemController.close();
     await _itemPreviewTrackerSubscription?.cancel();
+    await _badgeCountRefreshSubscription?.cancel();
     await super.close();
   }
 
@@ -112,6 +120,11 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     _dataRefreshSubscription ??= _incomingPushDataRefreshStreamUseCase().listen((event) {
       Fimber.d('Incoming push - refreshing daily brief');
       loadBriefs();
+    });
+
+    _badgeCountRefreshSubscription ??= _incomingPushBadgeCountStreamUseCase().listen((event) {
+      Fimber.d('Incoming push - badge count');
+      emit(DailyBriefPageState.hasBeenUpdated());
     });
 
     _shouldUpdateBriefSubscription ??= _getShouldUpdateBriefStreamUseCase().listen((_) => refetchBriefs());
@@ -129,10 +142,17 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
+  Future<void> shouldRefreshBrief() async {
+    final shouldRefreshBrief = await _shouldRefreshDailyBriefUseCase();
+    if (shouldRefreshBrief) {
+      emit(DailyBriefPageState.hasBeenUpdated());
+    }
+  }
+
   Future<void> initializeTutorialSnackBar() async {
     final isDailyBriefTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     if (!isDailyBriefTutorialStepSeen) {
-      emit(DailyBriefPageState.showTutorialToast(LocaleKeys.tutorial_dailyBriefSnackBarText.tr()));
+      emit(DailyBriefPageState.showTutorialToast());
       await _setTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     }
   }
@@ -357,8 +377,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
             ),
             builder: (context, controller) {
               return TutorialTooltip(
-                text: LocaleKeys.tutorial_topicCoachmarkText.tr(),
-                dismissButtonText: LocaleKeys.common_gotIt.tr(),
+                text: context.l10n.tutorial_topicCoachmarkText,
+                dismissButtonText: context.l10n.common_gotIt,
                 onDismiss: () => emit(DailyBriefPageState.finishTutorialCoachMark()),
               );
             },

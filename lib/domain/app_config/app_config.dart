@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:better_informed_mobile/domain/app_config/linkedin_config.dart';
+import 'package:better_informed_mobile/domain/app_config/phrase_config.dart';
 import 'package:injectable/injectable.dart';
 
 const _environmentArgHost = 'host';
@@ -42,6 +43,7 @@ class AppConfig {
     this.revenueCatKeyAndroid,
     this.revenueCatPremiumEntitlementId,
     this.appsFlyerLinkPath = const [],
+    this.phraseConfig,
   });
 
   final String name;
@@ -61,6 +63,7 @@ class AppConfig {
   final String? revenueCatKeyAndroid;
   final String? revenueCatPremiumEntitlementId;
   final List<String> appsFlyerLinkPath;
+  final PhraseConfig? phraseConfig;
 
   static const dev = AppConfig._(
     name: Environment.dev,
@@ -78,6 +81,7 @@ class AppConfig {
     revenueCatKeyiOS: 'appl_lmbriZAQhIhAfDEMDIcCyaRwZjD',
     revenueCatKeyAndroid: 'goog_KvJYjAuvczWsabJAOxFZeVCLRnA',
     revenueCatPremiumEntitlementId: 'premium',
+    phraseConfig: PhraseConfig.dev(),
   );
 
   static const mock = AppConfig._(
@@ -115,6 +119,7 @@ class AppConfig {
     revenueCatKeyAndroid: 'goog_KvJYjAuvczWsabJAOxFZeVCLRnA',
     revenueCatPremiumEntitlementId: 'premium',
     appsFlyerLinkPath: ['/tHNA'],
+    phraseConfig: PhraseConfig.dev(),
   );
 
   static const prod = AppConfig._(
@@ -135,5 +140,6 @@ class AppConfig {
     revenueCatKeyAndroid: 'goog_jUdAAFYAkEzYinZAmOWysZPVOut',
     revenueCatPremiumEntitlementId: 'premium',
     appsFlyerLinkPath: ['/BHtj', '/FtMU'],
+    phraseConfig: PhraseConfig.prod(),
   );
 }

@@ -6,12 +6,15 @@ class _PaywallMultipleOptions extends HookWidget {
     required this.onPurchasePressed,
     required this.onRestorePressed,
     required this.isProcessing,
+    required this.onRedeemCodePressed,
     Key? key,
   }) : super(key: key);
 
   final SubscriptionPlanGroup planGroup;
   final OnPurchasePressed onPurchasePressed;
   final VoidCallback onRestorePressed;
+  final VoidCallback onRedeemCodePressed;
+
   final bool isProcessing;
 
   @override
@@ -23,7 +26,7 @@ class _PaywallMultipleOptions extends HookWidget {
       await openInAppBrowser(
         uri,
         (error, stacktrace) {
-          showBrowserError(uri, snackbarController);
+          showBrowserError(context, uri, snackbarController);
         },
       );
     }
@@ -33,7 +36,7 @@ class _PaywallMultipleOptions extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         InformedMarkdownBody(
-          markdown: LocaleKeys.subscription_title_article.tr(),
+          markdown: context.l10n.subscription_title_article,
           baseTextStyle: AppTypography.h1Medium,
         ),
         const SizedBox(height: AppDimens.l),
@@ -59,6 +62,13 @@ class _PaywallMultipleOptions extends HookWidget {
             contentType: SubscriptionButtonContentType.lite,
           ),
         ),
+        if (defaultTargetPlatform.isApple) ...[
+          const SizedBox(height: AppDimens.m),
+          LinkLabel(
+            label: context.l10n.subscription_redeemCode,
+            onTap: onRedeemCodePressed,
+          ),
+        ],
         const SizedBox(height: AppDimens.l),
         SubscriptionLinksFooter(
           subscriptionPlan: selectedPlan.value,

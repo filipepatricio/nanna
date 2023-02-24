@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/domain/topic/use_case/mark_topic_as_visit
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -69,7 +68,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   Future<void> initializeTutorialStep() async {
     final isTopicTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topic);
     if (!isTopicTutorialStepSeen) {
-      emit(TopicPageState.showTutorialToast(LocaleKeys.tutorial_topicSnackBarText.tr()));
+      emit(TopicPageState.showTutorialToast());
       await _setTutorialStepSeenUseCase.call(TutorialStep.topic);
     }
   }

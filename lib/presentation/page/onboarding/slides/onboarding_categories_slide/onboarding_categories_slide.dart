@@ -28,7 +28,7 @@ class OnboardingCategoriesSlide extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: AutoSizeText(
-            LocaleKeys.onboarding_headerSlideCategories.tr(),
+            context.l10n.onboarding_headerSlideCategories,
             style: AppTypography.onBoardingHeader.copyWith(height: 1.14, fontSize: 34),
           ),
         ),
@@ -36,7 +36,7 @@ class OnboardingCategoriesSlide extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: AutoSizeText(
-            LocaleKeys.onboarding_descriptionSlideCategories.tr(),
+            context.l10n.onboarding_descriptionSlideCategories,
             style: AppTypography.b2Regular,
           ),
         ),
@@ -97,7 +97,7 @@ class _MainContent extends HookWidget {
                 ),
               ),
               _SelectableCard(
-                text: LocaleKeys.onboarding_categories_everything.tr(),
+                text: context.l10n.onboarding_categories_everything,
                 isSelected: idleState.data.selectedCategories.isEmpty,
                 onPressed: cubit.onAllCardPressed,
               ),

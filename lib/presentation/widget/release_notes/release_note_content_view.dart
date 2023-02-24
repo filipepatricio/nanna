@@ -43,7 +43,7 @@ class ReleaseNoteContentView extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  LocaleKeys.releaseNotes_updateLabel.tr(),
+                  context.l10n.releaseNotes_updateLabel,
                   style: AppTypography.caption1Regular,
                 ),
               ),

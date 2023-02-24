@@ -50,14 +50,14 @@ class OnboardingPublishersSlide extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AutoSizeText(
-                    LocaleKeys.onboarding_headerSlideOne.tr(),
+                    context.l10n.onboarding_headerSlideOne,
                     style: AppTypography.onBoardingHeader.copyWith(height: 1.14),
                     maxLines: 3,
                     stepGranularity: 0.1,
                   ),
                   const SizedBox(height: AppDimens.s),
                   AutoSizeText(
-                    LocaleKeys.onboarding_descriptionSlideOne.tr(),
+                    context.l10n.onboarding_descriptionSlideOne,
                     style: AppTypography.b2Regular,
                     maxLines: 4,
                     stepGranularity: 0.1,

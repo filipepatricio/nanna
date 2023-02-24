@@ -5,11 +5,13 @@ class _PaywallTrialOption extends StatelessWidget {
     required this.plan,
     required this.onPurchasePressed,
     required this.isProcessing,
+    required this.onRedeemCodePressed,
     Key? key,
   }) : super(key: key);
 
   final SubscriptionPlan plan;
   final OnPurchasePressed onPurchasePressed;
+  final VoidCallback onRedeemCodePressed;
   final bool isProcessing;
 
   @override
@@ -19,12 +21,12 @@ class _PaywallTrialOption extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         InformedMarkdownBody(
-          markdown: LocaleKeys.subscription_title_article.tr(),
+          markdown: context.l10n.subscription_title_article,
           baseTextStyle: AppTypography.h1Medium,
         ),
         const SizedBox(height: AppDimens.s),
         Text(
-          LocaleKeys.subscription_description.tr(),
+          context.l10n.subscription_description,
           style: AppTypography.b2Medium.copyWith(height: 1.2),
         ),
         const SizedBox(height: AppDimens.m),
@@ -44,11 +46,9 @@ class _PaywallTrialOption extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                LocaleKeys.subscription_planInfo_trial.tr(
-                  args: [
-                    LocaleKeys.date_daySuffix.tr(args: ['${plan.trialDays}']),
-                    plan.priceString,
-                  ],
+                context.l10n.subscription_planInfo_trial(
+                  context.l10n.date_daySuffix('${plan.trialDays}'),
+                  plan.priceString,
                 ),
                 style: AppTypography.b2Medium,
                 textAlign: TextAlign.center,
@@ -60,13 +60,20 @@ class _PaywallTrialOption extends StatelessWidget {
                 onPurchasePressed: onPurchasePressed,
                 contentType: SubscriptionButtonContentType.lite,
               ),
+              if (defaultTargetPlatform.isApple) ...[
+                const SizedBox(height: AppDimens.m),
+                LinkLabel(
+                  label: context.l10n.subscription_redeemCode,
+                  onTap: onRedeemCodePressed,
+                ),
+              ],
             ],
           ),
         ),
         const SizedBox(height: AppDimens.m),
         Center(
           child: LinkLabel(
-            label: LocaleKeys.subscription_viewAllPlansAction.tr(),
+            label: context.l10n.subscription_viewAllPlansAction,
             style: AppTypography.b2Medium,
             onTap: () => AutoRouter.of(context).push(const SubscriptionPageRoute()),
           ),

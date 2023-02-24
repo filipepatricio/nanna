@@ -41,7 +41,7 @@ class _TopicCoverLarge extends TopicCover {
                   Positioned(
                     top: AppDimens.m,
                     child: InformedPill(
-                      title: LocaleKeys.topic_label.tr(),
+                      title: context.l10n.topic_label,
                       color: AppColors.of(context).buttonSecondaryFrame,
                     ),
                   ),

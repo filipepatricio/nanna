@@ -22,7 +22,7 @@ class FreeUserBanner extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              LocaleKeys.profile_banner_title.tr(),
+              context.l10n.profile_banner_title,
               textAlign: TextAlign.center,
               style: AppTypography.serifTitleLargeIvar.copyWith(
                 color: AppColors.stateTextPrimary,
@@ -30,7 +30,7 @@ class FreeUserBanner extends StatelessWidget {
             ),
             const SizedBox(height: AppDimens.m),
             Text(
-              LocaleKeys.profile_banner_body.tr(),
+              context.l10n.profile_banner_body,
               textAlign: TextAlign.center,
               style: AppTypography.sansTextSmallLausanne.copyWith(
                 color: AppColors.stateTextPrimary,
@@ -43,7 +43,7 @@ class FreeUserBanner extends StatelessWidget {
                 fillColor: AppColors.brandPrimary,
                 disableColor: AppColors.brandPrimary,
                 textColor: AppColors.brandSecondary,
-                text: LocaleKeys.profile_banner_action.tr(),
+                text: context.l10n.profile_banner_action,
                 onTap: () => context.pushRoute(const SubscriptionPageRoute()),
               ),
             ),

@@ -15,7 +15,7 @@ class SignInWithGoogleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SignInWithProviderButton(
-      label: LocaleKeys.signIn_providerButton_google.tr(),
+      label: context.l10n.signIn_providerButton_google,
       icon: const InformedSvg(
         AppVectorGraphics.googleSignIn,
         colored: false,

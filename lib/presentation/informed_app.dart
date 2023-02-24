@@ -80,8 +80,15 @@ class InformedApp extends HookWidget {
                       debugShowCheckedModeBanner: false,
                       theme: lightTheme,
                       darkTheme: darkTheme,
+                      localizationsDelegates: PhraseLocalizations.localizationsDelegates,
+                      supportedLocales: PhraseLocalizations.supportedLocales,
                       routeInformationParser: router.defaultRouteParser(),
-                      routerDelegate: router.delegate(),
+                      routerDelegate: router.delegate(
+                        navigatorObservers: () => [
+                          HeroController(),
+                          getIt<MainNavigationObserver>(),
+                        ],
+                      ),
                       builder: (context, child) {
                         final mediaQuery = MediaQuery.of(context);
                         return NoScrollGlow(
@@ -117,11 +124,10 @@ class InformedApp extends HookWidget {
                 initial: initialThemeMode,
                 builder: (lightTheme, darkTheme) {
                   return MaterialApp.router(
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale: context.locale,
                     theme: lightTheme,
                     darkTheme: darkTheme,
+                    localizationsDelegates: PhraseLocalizations.localizationsDelegates,
+                    supportedLocales: PhraseLocalizations.supportedLocales,
                     routeInformationParser: router.defaultRouteParser(),
                     routerDelegate: router.delegate(
                       navigatorObservers: () => [

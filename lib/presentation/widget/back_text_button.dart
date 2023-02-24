@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -21,7 +20,7 @@ class BackTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = text ?? LocaleKeys.common_back.tr();
+    final label = text ?? context.l10n.common_back;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -29,7 +28,6 @@ class BackTextButton extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(width: AppDimens.xs),
           InformedSvg(
             AppVectorGraphics.chevronBack,
             color: color ?? Theme.of(context).iconTheme.color,

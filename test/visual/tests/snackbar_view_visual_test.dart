@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_view.dart';
+import 'package:flutter/material.dart';
 
 import '../visual_test_utils.dart';
 
@@ -150,8 +151,10 @@ void main() {
           action: action,
         ),
       );
-      final snackbarOffline = SnackbarView(
-        message: SnackbarMessage.offline(),
+      final snackbarOffline = Builder(
+        builder: (context) => SnackbarView(
+          message: SnackbarMessage.offline(context),
+        ),
       );
 
       await tester.startApp(
