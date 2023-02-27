@@ -65,7 +65,12 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
 
   @override
   Future<String> getCurrentToken() async {
-    return await _firebaseMessaging.getToken() ?? (throw Exception('Push notification token can not be null'));
+    try {
+      return await _firebaseMessaging.getToken() ?? (throw Exception('Push notification token can not be null'));
+    } on FirebaseException catch (e) {
+      _firebaseExceptionMapper.mapAndThrow(e);
+      rethrow;
+    }
   }
 
   @override
