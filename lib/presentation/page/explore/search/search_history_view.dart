@@ -13,14 +13,12 @@ class SearchHistoryView extends HookWidget {
     required this.explorePageCubit,
     required this.searchViewCubit,
     required this.searchHistory,
-    required this.scrollController,
     Key? key,
   }) : super(key: key);
 
   final ExplorePageCubit explorePageCubit;
   final SearchViewCubit searchViewCubit;
   final List<String> searchHistory;
-  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {

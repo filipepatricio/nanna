@@ -67,11 +67,6 @@ class TabBarListener extends HookWidget {
                 scrollController.animateToStart();
               }
             },
-            scrollToTop: () {
-              if (currentPage.isActive) {
-                scrollController.animateToStart();
-              }
-            },
             orElse: () {},
           );
         }

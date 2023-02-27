@@ -21,6 +21,7 @@ import 'package:better_informed_mobile/presentation/widget/physics/bottom_bounci
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 
 class ArticleSeeAllPage extends HookWidget {
   const ArticleSeeAllPage({
@@ -57,16 +58,15 @@ class ArticleSeeAllPage extends HookWidget {
       orElse: () => false,
     );
 
-    return Scaffold(
-      body: SnackbarParentView(
-        child: AudioPlayerBannerWrapper(
-          layout: AudioPlayerBannerLayout.column,
-          child: NextPageLoadExecutor(
-            enabled: shouldListen,
-            onNextPageLoad: cubit.loadNextPage,
-            scrollController: scrollController,
-            child: TabBarListener(
-              currentPage: context.routeData,
+    return ScrollsToTop(
+      onScrollsToTop: (_) => scrollController.animateToStart(),
+      child: Scaffold(
+        body: SnackbarParentView(
+          child: AudioPlayerBannerWrapper(
+            layout: AudioPlayerBannerLayout.column,
+            child: NextPageLoadExecutor(
+              enabled: shouldListen,
+              onNextPageLoad: cubit.loadNextPage,
               scrollController: scrollController,
               child: _Body(
                 title: title,

@@ -40,6 +40,7 @@ import 'package:better_informed_mobile/presentation/widget/track/view_visibility
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -129,119 +130,122 @@ class _DailyBriefPage extends HookWidget {
       }
     });
 
-    return Scaffold(
-      body: TabBarListener(
-        currentPage: context.routeData,
-        scrollController: scrollController,
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 250),
-          child: RefreshIndicator(
-            onRefresh: cubit.loadBriefs,
-            color: AppColors.of(context).iconPrimary,
-            child: SnackbarParentView(
-              audioPlayerResponsive: true,
-              child: CustomScrollView(
-                controller: scrollController,
-                physics: state.maybeMap(
-                  error: (_) => const NeverScrollableScrollPhysics(),
-                  loading: (_) => const NeverScrollableScrollPhysics(),
-                  orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
+    return ScrollsToTop(
+      onScrollsToTop: (event) async => scrollController.animateToStart(),
+      child: Scaffold(
+        body: TabBarListener(
+          currentPage: context.routeData,
+          scrollController: scrollController,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            child: RefreshIndicator(
+              onRefresh: cubit.loadBriefs,
+              color: AppColors.of(context).iconPrimary,
+              child: SnackbarParentView(
+                audioPlayerResponsive: true,
+                child: CustomScrollView(
+                  controller: scrollController,
+                  physics: state.maybeMap(
+                    error: (_) => const NeverScrollableScrollPhysics(),
+                    loading: (_) => const NeverScrollableScrollPhysics(),
+                    orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
+                  ),
+                  slivers: [
+                    state.maybeMap(
+                      idle: (state) => DailyBriefAppBar(
+                        showCalendar: state.showCalendar,
+                        scrollController: scrollController,
+                        briefDate: state.selectedBrief.date,
+                        pastDays: state.pastDays,
+                        showAppBarTitle: state.showAppBarTitle,
+                        cubit: cubit,
+                      ),
+                      loadingPastDay: (state) => DailyBriefAppBar(
+                        showCalendar: true,
+                        scrollController: scrollController,
+                        briefDate: state.selectedPastDay.date,
+                        pastDays: state.pastDays,
+                        showAppBarTitle: state.showAppBarTitle,
+                        cubit: cubit,
+                      ),
+                      orElse: () => DailyBriefAppBar.disabled(
+                        scrollController: scrollController,
+                        cubit: cubit,
+                      ),
+                    ),
+                    state.maybeMap(
+                      idle: (state) => SliverPinnedHeader(
+                        child: DailyBriefCalendar(
+                          isVisible: state.showCalendar,
+                          selectedBriefDate: state.selectedBrief.date,
+                          pastDays: state.pastDays,
+                          isFloating: state.showAppBarTitle,
+                          cubit: cubit,
+                          scrollController: scrollController,
+                        ),
+                      ),
+                      loadingPastDay: (state) => SliverPinnedHeader(
+                        child: DailyBriefCalendar(
+                          isVisible: true,
+                          selectedBriefDate: state.selectedPastDay.date,
+                          pastDays: state.pastDays,
+                          isFloating: state.showAppBarTitle,
+                          cubit: cubit,
+                          scrollController: scrollController,
+                          isInLoadingState: true,
+                        ),
+                      ),
+                      orElse: SliverToBoxAdapter.new,
+                    ),
+                    state.maybeMap(
+                      idle: (state) => _IdleContent(
+                        cubit: cubit,
+                        brief: state.selectedBrief,
+                        tutorialCoachMark: tutorialCoachMark,
+                        scrollController: scrollController,
+                      ),
+                      error: (_) => SliverFillRemaining(
+                        child: Center(
+                          child: ErrorView(
+                            retryCallback: cubit.loadBriefs,
+                          ),
+                        ),
+                      ),
+                      offline: (_) => SliverFillRemaining(
+                        child: Center(
+                          child: ErrorView.offline(
+                            retryCallback: cubit.initialize,
+                          ),
+                        ),
+                      ),
+                      loading: (_) => SliverToBoxAdapter(
+                        child: DailyBriefLoadingView(
+                          coverSize: Size(
+                            AppDimens.topicCardBigMaxWidth(context),
+                            AppDimens.topicCardBigMaxHeight,
+                          ),
+                        ),
+                      ),
+                      loadingPastDay: (_) => SliverToBoxAdapter(
+                        child: DailyBriefLoadingView(
+                          coverSize: Size(
+                            AppDimens.topicCardBigMaxWidth(context),
+                            AppDimens.topicCardBigMaxHeight,
+                          ),
+                        ),
+                      ),
+                      orElse: () => const SliverToBoxAdapter(
+                        child: SizedBox.shrink(),
+                      ),
+                    ),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(height: AppDimens.l),
+                    ),
+                    const SliverToBoxAdapter(
+                      child: AudioPlayerBannerPlaceholder(),
+                    ),
+                  ],
                 ),
-                slivers: [
-                  state.maybeMap(
-                    idle: (state) => DailyBriefAppBar(
-                      showCalendar: state.showCalendar,
-                      scrollController: scrollController,
-                      briefDate: state.selectedBrief.date,
-                      pastDays: state.pastDays,
-                      showAppBarTitle: state.showAppBarTitle,
-                      cubit: cubit,
-                    ),
-                    loadingPastDay: (state) => DailyBriefAppBar(
-                      showCalendar: true,
-                      scrollController: scrollController,
-                      briefDate: state.selectedPastDay.date,
-                      pastDays: state.pastDays,
-                      showAppBarTitle: state.showAppBarTitle,
-                      cubit: cubit,
-                    ),
-                    orElse: () => DailyBriefAppBar.disabled(
-                      scrollController: scrollController,
-                      cubit: cubit,
-                    ),
-                  ),
-                  state.maybeMap(
-                    idle: (state) => SliverPinnedHeader(
-                      child: DailyBriefCalendar(
-                        isVisible: state.showCalendar,
-                        selectedBriefDate: state.selectedBrief.date,
-                        pastDays: state.pastDays,
-                        isFloating: state.showAppBarTitle,
-                        cubit: cubit,
-                        scrollController: scrollController,
-                      ),
-                    ),
-                    loadingPastDay: (state) => SliverPinnedHeader(
-                      child: DailyBriefCalendar(
-                        isVisible: true,
-                        selectedBriefDate: state.selectedPastDay.date,
-                        pastDays: state.pastDays,
-                        isFloating: state.showAppBarTitle,
-                        cubit: cubit,
-                        scrollController: scrollController,
-                        isInLoadingState: true,
-                      ),
-                    ),
-                    orElse: SliverToBoxAdapter.new,
-                  ),
-                  state.maybeMap(
-                    idle: (state) => _IdleContent(
-                      cubit: cubit,
-                      brief: state.selectedBrief,
-                      tutorialCoachMark: tutorialCoachMark,
-                      scrollController: scrollController,
-                    ),
-                    error: (_) => SliverFillRemaining(
-                      child: Center(
-                        child: ErrorView(
-                          retryCallback: cubit.loadBriefs,
-                        ),
-                      ),
-                    ),
-                    offline: (_) => SliverFillRemaining(
-                      child: Center(
-                        child: ErrorView.offline(
-                          retryCallback: cubit.initialize,
-                        ),
-                      ),
-                    ),
-                    loading: (_) => SliverToBoxAdapter(
-                      child: DailyBriefLoadingView(
-                        coverSize: Size(
-                          AppDimens.topicCardBigMaxWidth(context),
-                          AppDimens.topicCardBigMaxHeight,
-                        ),
-                      ),
-                    ),
-                    loadingPastDay: (_) => SliverToBoxAdapter(
-                      child: DailyBriefLoadingView(
-                        coverSize: Size(
-                          AppDimens.topicCardBigMaxWidth(context),
-                          AppDimens.topicCardBigMaxHeight,
-                        ),
-                      ),
-                    ),
-                    orElse: () => const SliverToBoxAdapter(
-                      child: SizedBox.shrink(),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: AppDimens.l),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: AudioPlayerBannerPlaceholder(),
-                  ),
-                ],
               ),
             ),
           ),

@@ -16,6 +16,7 @@ import 'package:better_informed_mobile/presentation/widget/no_connection_banner/
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 
 part 'profile_page_app_bar.dart';
 
@@ -36,37 +37,40 @@ class ProfilePage extends HookWidget {
       [cubit],
     );
 
-    return Scaffold(
-      appBar: _ProfilePageAppBar(
-        isConnected: context.watch<IsConnected>(),
-        tabController: tabController,
-        cubit: cubit,
-        state: state,
-      ),
-      body: TabBarListener(
+    return ScrollsToTop(
+      onScrollsToTop: (_) async => scrollController.animateToStart(),
+      child: TabBarListener(
         scrollController: scrollController,
         currentPage: context.routeData,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: state.maybeMap(
-                initializing: (state) => const BookmarkLoadingView(),
-                idle: (state) => SnackbarParentView(
-                  audioPlayerResponsive: true,
-                  child: BookmarkListView(
-                    key: ValueKey(state.version),
-                    scrollController: scrollController,
-                    filter: state.filter,
-                    hasActiveSubscription: state.hasActiveSubscription,
-                    sortConfigName: state.sortConfigName,
-                    onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
+        child: Scaffold(
+          appBar: _ProfilePageAppBar(
+            isConnected: context.watch<IsConnected>(),
+            tabController: tabController,
+            cubit: cubit,
+            state: state,
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: state.maybeMap(
+                  initializing: (state) => const BookmarkLoadingView(),
+                  idle: (state) => SnackbarParentView(
+                    audioPlayerResponsive: true,
+                    child: BookmarkListView(
+                      key: ValueKey(state.version),
+                      scrollController: scrollController,
+                      filter: state.filter,
+                      hasActiveSubscription: state.hasActiveSubscription,
+                      sortConfigName: state.sortConfigName,
+                      onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
+                    ),
                   ),
+                  orElse: Container.new,
                 ),
-                orElse: Container.new,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

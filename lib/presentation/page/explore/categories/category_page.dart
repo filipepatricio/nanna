@@ -25,6 +25,7 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_par
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class CategoryPage extends HookWidget {
@@ -55,36 +56,35 @@ class CategoryPage extends HookWidget {
       orElse: () => false,
     );
 
-    return SnackbarParentView(
-      child: Scaffold(
-        body: CustomScrollView(
-          physics: const BottomBouncingScrollPhysics(),
-          controller: scrollController,
-          slivers: [
-            InformedSliverCupertinoAppBar(
-              leading: BackTextButton(
-                color: AppColors.light.textPrimary,
-                text: openedFrom,
-              ),
-              title: category.name,
-              expanded: Theme(
-                data: Theme.of(context).copyWith(brightness: Brightness.light),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: CategoryPreferenceFollowButton(
-                    category: category,
+    return ScrollsToTop(
+      onScrollsToTop: (_) => scrollController.animateToStart(),
+      child: SnackbarParentView(
+        child: Scaffold(
+          body: CustomScrollView(
+            physics: const BottomBouncingScrollPhysics(),
+            controller: scrollController,
+            slivers: [
+              InformedSliverCupertinoAppBar(
+                leading: BackTextButton(
+                  color: AppColors.light.textPrimary,
+                  text: openedFrom,
+                ),
+                title: category.name,
+                expanded: Theme(
+                  data: Theme.of(context).copyWith(brightness: Brightness.light),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: CategoryPreferenceFollowButton(
+                      category: category,
+                    ),
                   ),
                 ),
+                backgroundColor: category.color,
+                textColor: AppColors.light.textPrimary,
               ),
-              backgroundColor: category.color,
-              textColor: AppColors.light.textPrimary,
-            ),
-            NextPageLoadExecutor(
-              enabled: shouldListen,
-              onNextPageLoad: cubit.loadNextPage,
-              scrollController: scrollController,
-              child: TabBarListener(
-                currentPage: context.routeData,
+              NextPageLoadExecutor(
+                enabled: shouldListen,
+                onNextPageLoad: cubit.loadNextPage,
                 scrollController: scrollController,
                 child: state.maybeMap(
                   loading: (_) => const SliverToBoxAdapter(child: Loader()),
@@ -125,11 +125,11 @@ class CategoryPage extends HookWidget {
                   orElse: () => const SliverToBoxAdapter(),
                 ),
               ),
-            ),
-            const SliverToBoxAdapter(
-              child: AudioPlayerBannerPlaceholder(),
-            ),
-          ],
+              const SliverToBoxAdapter(
+                child: AudioPlayerBannerPlaceholder(),
+              ),
+            ],
+          ),
         ),
       ),
     );

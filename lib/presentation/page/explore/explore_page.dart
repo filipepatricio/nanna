@@ -29,6 +29,7 @@ import 'package:better_informed_mobile/presentation/widget/track/general_event_t
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 
 class ExplorePage extends HookWidget {
   const ExplorePage({Key? key}) : super(key: key);
@@ -76,77 +77,79 @@ class ExplorePage extends HookWidget {
       [cubit],
     );
 
-    return Scaffold(
-      appBar: state.maybeMap(
-        error: (_) => AppBar(),
-        orElse: () => SearchAppBar(
-          explorePageCubit: cubit,
-          searchTextEditingController: searchTextEditingController,
-          searchViewCubit: searchViewCubit,
-          isConnected: context.watch<IsConnected>(),
-        ),
-      ),
-      body: TabBarListener(
+    return ScrollsToTop(
+      onScrollsToTop: (_) async => scrollController.animateToStart(),
+      child: TabBarListener(
         scrollController: scrollController,
         currentPage: context.routeData,
-        child: Stack(
-          children: [
-            RefreshIndicator(
-              color: AppColors.of(context).iconPrimary,
-              onRefresh: state.maybeMap(
-                search: (_) => searchViewCubit.refresh,
-                orElse: () => cubit.loadExplorePageData,
-              ),
-              child: SnackbarParentView(
-                audioPlayerResponsive: true,
-                child: CustomScrollView(
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  controller: scrollController,
-                  physics: state.maybeMap(
-                    initialLoading: (_) => const NeverScrollableScrollPhysics(),
-                    error: (_) => const NeverScrollableScrollPhysics(),
-                    orElse: () => getPlatformScrollPhysics(),
+        child: Scaffold(
+          appBar: state.maybeMap(
+            error: (_) => AppBar(),
+            orElse: () => SearchAppBar(
+              explorePageCubit: cubit,
+              searchTextEditingController: searchTextEditingController,
+              searchViewCubit: searchViewCubit,
+              isConnected: context.watch<IsConnected>(),
+            ),
+          ),
+          body: Stack(
+            children: [
+              RefreshIndicator(
+                color: AppColors.of(context).iconPrimary,
+                onRefresh: state.maybeMap(
+                  search: (_) => searchViewCubit.refresh,
+                  orElse: () => cubit.loadExplorePageData,
+                ),
+                child: SnackbarParentView(
+                  audioPlayerResponsive: true,
+                  child: CustomScrollView(
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    controller: scrollController,
+                    physics: state.maybeMap(
+                      initialLoading: (_) => const NeverScrollableScrollPhysics(),
+                      error: (_) => const NeverScrollableScrollPhysics(),
+                      orElse: () => getPlatformScrollPhysics(),
+                    ),
+                    slivers: [
+                      state.maybeMap(
+                        initialLoading: (_) => const _LoadingSection(),
+                        idle: (state) => _ItemList(
+                          items: state.items,
+                        ),
+                        search: (_) => SearchView(
+                          cubit: searchViewCubit,
+                          scrollController: scrollController,
+                        ),
+                        searchHistory: (state) => SearchHistoryView(
+                          explorePageCubit: cubit,
+                          searchViewCubit: searchViewCubit,
+                          searchHistory: state.searchHistory,
+                        ),
+                        error: (state) => SliverFillRemaining(
+                          child: Center(
+                            child: ErrorView(
+                              retryCallback: cubit.initialize,
+                            ),
+                          ),
+                        ),
+                        offline: (state) => SliverFillRemaining(
+                          child: Center(
+                            child: ErrorView.offline(
+                              retryCallback: cubit.initialize,
+                            ),
+                          ),
+                        ),
+                        orElse: () => const SliverToBoxAdapter(),
+                      ),
+                      const SliverToBoxAdapter(
+                        child: AudioPlayerBannerPlaceholder(),
+                      ),
+                    ],
                   ),
-                  slivers: [
-                    state.maybeMap(
-                      initialLoading: (_) => const _LoadingSection(),
-                      idle: (state) => _ItemList(
-                        items: state.items,
-                      ),
-                      search: (_) => SearchView(
-                        cubit: searchViewCubit,
-                        scrollController: scrollController,
-                      ),
-                      searchHistory: (state) => SearchHistoryView(
-                        explorePageCubit: cubit,
-                        searchViewCubit: searchViewCubit,
-                        scrollController: scrollController,
-                        searchHistory: state.searchHistory,
-                      ),
-                      error: (state) => SliverFillRemaining(
-                        child: Center(
-                          child: ErrorView(
-                            retryCallback: cubit.initialize,
-                          ),
-                        ),
-                      ),
-                      offline: (state) => SliverFillRemaining(
-                        child: Center(
-                          child: ErrorView.offline(
-                            retryCallback: cubit.initialize,
-                          ),
-                        ),
-                      ),
-                      orElse: () => const SliverToBoxAdapter(),
-                    ),
-                    const SliverToBoxAdapter(
-                      child: AudioPlayerBannerPlaceholder(),
-                    ),
-                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
