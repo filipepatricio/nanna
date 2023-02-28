@@ -18,7 +18,7 @@ class SynchronizeArticleWithRemoteUseCase implements SynchronizeWithRemoteUsecas
   @override
   Future<Synchronizable<Article>> call(Synchronizable<Article> synchronizable) async {
     final header = await _getArticleHeaderUseCase(synchronizable.dataId);
-    final article = await _getArticleUseCase(header);
+    final article = await _getArticleUseCase(header, refreshMetadata: true);
 
     return synchronizable.synchronize(article);
   }
