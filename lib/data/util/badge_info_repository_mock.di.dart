@@ -13,10 +13,12 @@ class BadgeInfoRepositoryMock implements BadgeInfoRepository {
   Future<void> needsRefreshDailyBrief(int badgeCount) async {}
 
   @override
-  Future<bool> isShowingDailyBriefBadge() {
+  Future<bool> shouldShowDailyBriefBadge() {
     return Future.value(true);
   }
 
   @override
-  Future<void> setShouldShowDailyBriefBadge(bool showShowBadge) async {}
+  Future<bool> setShouldShowDailyBriefBadge(bool showShowBadge) async {
+    return Future.value(true);
+  }
 }

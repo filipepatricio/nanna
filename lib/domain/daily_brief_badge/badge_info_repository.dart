@@ -3,7 +3,7 @@ abstract class BadgeInfoRepository {
 
   Future<void> needsRefreshDailyBrief(int badgeCount);
 
-  Future<void> setShouldShowDailyBriefBadge(bool shouldShowDailyBriefBadge);
+  Future<bool> setShouldShowDailyBriefBadge(bool shouldShowDailyBriefBadge);
 
-  Future<bool> isShowingDailyBriefBadge();
+  Future<bool> shouldShowDailyBriefBadge();
 }

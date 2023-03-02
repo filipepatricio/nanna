@@ -26,12 +26,13 @@ class BadgeInfoRepositoryImpl implements BadgeInfoRepository {
   }
 
   @override
-  Future<void> setShouldShowDailyBriefBadge(bool shouldShowDailyBriefBadge) async {
+  Future<bool> setShouldShowDailyBriefBadge(bool shouldShowDailyBriefBadge) async {
     await _badgeInfoDataSource.setShouldShowDailyBriefBadge(shouldShowDailyBriefBadge);
+    return shouldShowDailyBriefBadge;
   }
 
   @override
-  Future<bool> isShowingDailyBriefBadge() async {
+  Future<bool> shouldShowDailyBriefBadge() async {
     return await _badgeInfoDataSource.isShowingDailyBriefBadge();
   }
 }

@@ -2,9 +2,9 @@ import 'package:better_informed_mobile/domain/daily_brief_badge/badge_info_repos
 import 'package:injectable/injectable.dart';
 
 @injectable
-class IsShowingDailyBriefBadgeUseCase {
-  IsShowingDailyBriefBadgeUseCase(this._badgeInfoRepository);
+class ShouldShowDailyBriefBadgeUseCase {
+  ShouldShowDailyBriefBadgeUseCase(this._badgeInfoRepository);
   final BadgeInfoRepository _badgeInfoRepository;
 
-  Future<bool> call() => _badgeInfoRepository.isShowingDailyBriefBadge();
+  Future<bool> call() => _badgeInfoRepository.shouldShowDailyBriefBadge();
 }
