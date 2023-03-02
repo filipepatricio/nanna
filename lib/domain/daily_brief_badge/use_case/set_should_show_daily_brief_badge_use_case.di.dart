@@ -11,9 +11,8 @@ class SetShouldShowDailyBriefBadgeUseCase {
   final BadgeInfoRepository _badgeInfoRepository;
   final UpdateShouldShowDailyBriefBadgeStateNotifierUseCase _updateShouldShowDailyBriefBadgeStateNotifierUseCase;
 
-  Future<bool> call(bool shouldShowDailyBriefBadge) async {
+  Future<void> call(bool shouldShowDailyBriefBadge) async {
     final shouldShowBadge = await _badgeInfoRepository.setShouldShowDailyBriefBadge(shouldShowDailyBriefBadge);
     _updateShouldShowDailyBriefBadgeStateNotifierUseCase.call(shouldShowBadge);
-    return shouldShowBadge;
   }
 }

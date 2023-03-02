@@ -25,11 +25,7 @@ class BadgeInfoDataSource {
   }
 
   Future<bool> isShowingDailyBriefBadge() async {
-    final isShowingDailyBriefBadge = _sharedPreferences.getBool(_shouldShowDailyBriefBadgeKey);
-    if (isShowingDailyBriefBadge == null) {
-      await setShouldShowDailyBriefBadge(true);
-    }
-
-    return isShowingDailyBriefBadge ?? true;
+    final isShowingDailyBriefBadge = _sharedPreferences.getBool(_shouldShowDailyBriefBadgeKey) ?? false;
+    return isShowingDailyBriefBadge;
   }
 }

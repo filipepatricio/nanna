@@ -47,29 +47,38 @@ class DailyBriefBadgeSwitchContainer extends HookWidget {
                     style: AppTypography.b2Medium,
                   ),
                   const SizedBox(height: AppDimens.s),
-                  Row(
-                    children: [
-                      InformedSvg(
-                        AppVectorGraphics.locker,
-                        color: Theme.of(context).iconTheme.color,
-                        height: AppDimens.s + AppDimens.xxs,
-                      ),
-                      const SizedBox(width: AppDimens.xs),
-                      Text(
-                        'Unlock with Premium',
-                        style: AppTypography.sansTextNanoLausanne
-                            .copyWith(height: 1, color: AppColors.of(context).textSecondary),
-                      ),
-                    ],
+                  state.maybeMap(
+                    free: (state) => Row(
+                      children: [
+                        InformedSvg(
+                          AppVectorGraphics.locker,
+                          color: Theme.of(context).iconTheme.color,
+                          height: AppDimens.s + AppDimens.xxs,
+                        ),
+                        const SizedBox(width: AppDimens.xs),
+                        Text(
+                          'Unlock with Premium',
+                          style: AppTypography.sansTextNanoLausanne
+                              .copyWith(height: 1, color: AppColors.of(context).textSecondary),
+                        ),
+                      ],
+                    ),
+                    orElse: SizedBox.shrink,
                   ),
                 ],
               ),
             ),
             const SizedBox(width: AppDimens.s),
             state.maybeMap(
-              idle: (state) => Switch.adaptive(
+              free: (state) => Switch.adaptive(
                 // This bool value toggles the switch.
-                value: state.isShowingBadge,
+                value: state.shouldShowBadge,
+                activeColor: AppColors.of(context).switchPrimary,
+                onChanged: null,
+              ),
+              premiumOrTrial: (state) => Switch.adaptive(
+                // This bool value toggles the switch.
+                value: state.shouldShowBadge,
                 activeColor: AppColors.of(context).switchPrimary,
                 onChanged: cubit.setShouldShowDailyBriefBadge,
               ),

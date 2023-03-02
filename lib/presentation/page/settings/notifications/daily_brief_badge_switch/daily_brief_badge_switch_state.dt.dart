@@ -6,8 +6,12 @@ part 'daily_brief_badge_switch_state.dt.freezed.dart';
 @Freezed(toJson: false)
 class DailyBriefBadgeSwitchState with _$DailyBriefBadgeSwitchState {
   @Implements<BuildState>()
-  factory DailyBriefBadgeSwitchState.notInitialized() = _DailyBriefBadgeSwitchStateNotInitialized;
+  const factory DailyBriefBadgeSwitchState.loading() = _DailyBriefBadgeSwitchStateLoading;
 
   @Implements<BuildState>()
-  factory DailyBriefBadgeSwitchState.idle(bool isShowingBadge) = _DailyBriefBadgeSwitchStateIdle;
+  const factory DailyBriefBadgeSwitchState.free(bool shouldShowBadge) = _DailyBriefBadgeSwitchStateFree;
+
+  @Implements<BuildState>()
+  const factory DailyBriefBadgeSwitchState.premiumOrTrial(bool shouldShowBadge) =
+      _DailyBriefBadgeSwitchStatePremiumOrTrial;
 }
