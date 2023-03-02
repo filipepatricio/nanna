@@ -7,11 +7,12 @@ import 'package:better_informed_mobile/presentation/page/settings/notifications/
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsNotificationsBody extends HookWidget {
@@ -30,7 +31,10 @@ class SettingsNotificationsBody extends HookWidget {
       physics: getPlatformScrollPhysics(),
       slivers: [
         SliverPadding(
-          padding: const EdgeInsets.fromLTRB(AppDimens.l, AppDimens.l, AppDimens.l, AppDimens.s),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.pageHorizontalMargin,
+            vertical: AppDimens.m,
+          ),
           sliver: SliverList(
             delegate: SliverChildListDelegate(
               [
@@ -52,31 +56,71 @@ class SettingsNotificationsBody extends HookWidget {
                   ),
                   const SizedBox(height: AppDimens.l),
                 ],
-                const SizedBox(height: AppDimens.l),
-                NotificationHeaderContainer(
-                  startWidget: Text(
-                    context.l10n.settings_notifications_title,
-                    style: AppTypography.h4Bold.copyWith(height: 1),
-                  ),
-                  trailingChildren: [
-                    Text(
-                      context.l10n.settings_push,
-                      style: AppTypography.b3Regular.copyWith(height: 1),
-                    ),
-                    Text(
-                      context.l10n.settings_email,
-                      style: AppTypography.b3Regular.copyWith(height: 1),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppDimens.l),
                 ...groups
+                    .asMap()
+                    .entries
                     .map(
-                      (group) => _NotificationGroup(group: group),
+                      (group) => _NotificationGroup(
+                        group: group.value,
+                        showNotificationTypeTitle: group.key == 0,
+                      ),
                     )
                     .expand(
                       (element) => [element, const SizedBox(height: AppDimens.l)],
                     ),
+                Padding(
+                  padding: const EdgeInsets.only(right: AppDimens.s),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Badges',
+                        style: AppTypography.subH1Bold.copyWith(
+                          color: AppColors.of(context).textTertiary,
+                        ),
+                      ),
+                      const SizedBox(height: AppDimens.m),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Indicate the number of new items in Today',
+                                  style: AppTypography.b2Medium,
+                                ),
+                                const SizedBox(height: AppDimens.s),
+                                Row(
+                                  children: [
+                                    InformedSvg(
+                                      AppVectorGraphics.locker,
+                                      color: Theme.of(context).iconTheme.color,
+                                      height: AppDimens.s + AppDimens.xxs,
+                                    ),
+                                    const SizedBox(width: AppDimens.xs),
+                                    Text(
+                                      'Unlock with Premium',
+                                      style: AppTypography.sansTextNanoLausanne
+                                          .copyWith(height: 1, color: AppColors.of(context).textSecondary),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: AppDimens.s),
+                          Switch.adaptive(
+                            // This bool value toggles the switch.
+                            value: true,
+                            activeColor: AppColors.of(context).switchPrimary,
+                            onChanged: null,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -92,29 +136,46 @@ class SettingsNotificationsBody extends HookWidget {
 class _NotificationGroup extends StatelessWidget {
   const _NotificationGroup({
     required this.group,
+    required this.showNotificationTypeTitle,
     Key? key,
   }) : super(key: key);
   final NotificationPreferencesGroup group;
+  final bool showNotificationTypeTitle;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: AppDimens.s),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        NotificationHeaderContainer(
+          startWidget: Text(
             group.name,
             style: AppTypography.subH1Bold.copyWith(
               color: AppColors.of(context).textTertiary,
             ),
           ),
-          const SizedBox(height: AppDimens.m),
-          ...group.channels.map(
-            (channel) => _NotificationChannel(channel: channel),
-          ),
-        ],
-      ),
+          trailingChildren: [
+            if (showNotificationTypeTitle) ...[
+              Text(
+                context.l10n.settings_push,
+                style: AppTypography.b3Regular.copyWith(
+                  color: AppColors.of(context).textTertiary,
+                ),
+              ),
+              Text(
+                context.l10n.settings_email,
+                style: AppTypography.b3Regular.copyWith(
+                  color: AppColors.of(context).textTertiary,
+                ),
+              ),
+            ],
+          ],
+        ),
+        const SizedBox(height: AppDimens.m),
+        ...group.channels.map(
+          (channel) => _NotificationChannel(channel: channel),
+        ),
+      ],
     );
   }
 }
