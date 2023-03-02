@@ -605,6 +605,18 @@
   "@settings_notifications_noPermissionAction": {
     "type": "text"
   },
+  "settings_notifications_badgeGroupTitle": "Badges",
+  "@settings_notifications_badgeGroupTitle": {
+    "type": "text"
+  },
+  "settings_notifications_badgeAction": "Indicate the number of new items in Today",
+  "@settings_notifications_badgeAction": {
+    "type": "text"
+  },
+  "settings_notifications_badgeActionInfo": "Unlock with Premium",
+  "@settings_notifications_badgeActionInfo": {
+    "type": "text"
+  },
   "settings_notifications_noPermissionContent": "Enable notifications to stay informed.",
   "@settings_notifications_noPermissionContent": {
     "type": "text"

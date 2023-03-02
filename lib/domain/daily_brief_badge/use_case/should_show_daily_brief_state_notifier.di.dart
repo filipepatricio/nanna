@@ -6,9 +6,7 @@ import 'package:injectable/injectable.dart';
 class ShouldShowDailyBriefBadgeStateNotifier {
   final StreamController<bool> _changeStream = StreamController.broadcast();
 
-  Stream<bool> get stream async* {
-    yield* _changeStream.stream;
-  }
+  Stream<bool> get stream => _changeStream.stream;
 
   void notify(bool shouldShowBadge) {
     _changeStream.sink.add(shouldShowBadge);

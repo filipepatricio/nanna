@@ -60,6 +60,7 @@ import 'package:better_informed_mobile/domain/bookmark/use_case/save_bookmarked_
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief_badge/use_case/should_show_daily_brief_badge_use_case.di.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
@@ -197,6 +198,7 @@ const _classes = [
   IncomingPushBadgeCountStreamUseCase,
   GetBookmarkStateUseCase,
   ConnectivityRepository,
+  ShouldShowDailyBriefBadgeUseCase,
 ];
 
 @GenerateMocks(_classes)

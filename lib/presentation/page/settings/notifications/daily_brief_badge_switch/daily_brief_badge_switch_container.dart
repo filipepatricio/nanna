@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/daily_brief_badge_switch/daily_brief_badge_switch_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -30,7 +31,7 @@ class DailyBriefBadgeSwitchContainer extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'Badges',
+          context.l10n.settings_notifications_badgeGroupTitle,
           style: AppTypography.subH1Bold.copyWith(
             color: AppColors.of(context).textTertiary,
           ),
@@ -42,8 +43,8 @@ class DailyBriefBadgeSwitchContainer extends HookWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Indicate the number of new items in Today',
+                  Text(
+                    context.l10n.settings_notifications_badgeAction,
                     style: AppTypography.b2Medium,
                   ),
                   const SizedBox(height: AppDimens.s),
@@ -57,7 +58,7 @@ class DailyBriefBadgeSwitchContainer extends HookWidget {
                         ),
                         const SizedBox(width: AppDimens.xs),
                         Text(
-                          'Unlock with Premium',
+                          context.l10n.settings_notifications_badgeActionInfo,
                           style: AppTypography.sansTextNanoLausanne
                               .copyWith(height: 1, color: AppColors.of(context).textSecondary),
                         ),
