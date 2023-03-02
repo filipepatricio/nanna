@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/util/badge_info_repository.dart';
+import 'package:better_informed_mobile/domain/daily_brief_badge/badge_info_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: BadgeInfoRepository, env: mockEnvs)
@@ -11,4 +11,12 @@ class BadgeInfoRepositoryMock implements BadgeInfoRepository {
 
   @override
   Future<void> needsRefreshDailyBrief(int badgeCount) async {}
+
+  @override
+  Future<bool> isShowingDailyBriefBadge() {
+    return Future.value(true);
+  }
+
+  @override
+  Future<void> setShouldShowDailyBriefBadge(bool showShowBadge) async {}
 }

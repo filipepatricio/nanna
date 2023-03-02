@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/util/badge_info_repository.dart';
+import 'package:better_informed_mobile/domain/daily_brief_badge/badge_info_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
