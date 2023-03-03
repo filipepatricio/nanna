@@ -21,10 +21,7 @@ class PublisherRow extends StatelessWidget {
     return Row(
       children: [
         if (article.type == ArticleType.premium)
-          PublisherLogo.dark(
-            publisher: article.publisher,
-            dimension: AppDimens.ml,
-          )
+          PublisherLogo.dark(publisher: article.publisher)
         else
           Padding(
             padding: const EdgeInsets.only(right: AppDimens.s),

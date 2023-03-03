@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_config.dart';
 import 'package:better_informed_mobile/presentation/widget/image_precaching_view/image_precaching_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/image_precaching_view/image_precaching_view_state.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -163,16 +164,24 @@ class ImagePrecachingView extends HookWidget {
   ) async {
     if (image.publicId.isEmpty) return;
 
-    const size = AppDimens.ml;
+    for (final sizeType in PublisherLogoSizeType.values) {
+      final size = sizeType.size;
 
-    final url = cloudinaryImageProvider
-        .withPublicId(image.publicId)
-        .transform()
-        .width(DimensionUtil.getPhysicalPixelsAsInt(size, context))
-        .fit()
-        .generateNotNull(image.publicId, imageType: ImageType.png);
+      final url = cloudinaryImageProvider
+          .withPublicId(image.publicId)
+          .transform()
+          .width(DimensionUtil.getPhysicalPixelsAsInt(size, context))
+          .fit()
+          .generateNotNull(image.publicId, imageType: ImageType.png);
 
-    await precacheImage(CachedNetworkImageProvider(url), context);
+      await precacheImage(
+        CachedNetworkImageProvider(
+          url,
+          cacheManager: PublisherLogoCacheManager(),
+        ),
+        context,
+      );
+    }
   }
 }
 
