@@ -1,7 +1,5 @@
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
-import 'package:better_informed_mobile/domain/article/data/article_content.dt.dart';
-import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/article/use_case/load_local_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
@@ -35,20 +33,15 @@ class GetArticleUseCase {
   }
 
   Future<Article> _getRemote(MediaItemArticle article, bool refreshMetadata) async {
-    final shouldGetAudioFile = article.hasAudioVersion && article.availableInSubscription;
+    final content = await _articleRepository.getArticleContent(article.slug);
+    final metadata = refreshMetadata ? await _articleRepository.getArticleHeader(article.slug) : article;
 
-    final articleComponents = await Future.wait(
-      [
-        _articleRepository.getArticleContent(article.slug),
-        if (refreshMetadata) _articleRepository.getArticleHeader(article.slug) else Future.value(article),
-        if (shouldGetAudioFile) _articleRepository.getArticleAudioFile(article.slug) else Future.value(null),
-      ],
-    );
+    final audioFile = metadata.canGetAudioFile ? await _articleRepository.getArticleAudioFile(article.slug) : null;
 
     return Article(
-      content: articleComponents[0] as ArticleContent,
-      metadata: articleComponents[1] as MediaItemArticle,
-      audioFile: articleComponents[2] as AudioFile?,
+      content: content,
+      metadata: metadata,
+      audioFile: audioFile,
     );
   }
 }

@@ -82,23 +82,26 @@ class PremiumArticleView extends HookWidget {
       },
     );
 
-    return ValueListenableBuilder<bool>(
-      valueListenable: isScrolled,
-      builder: (context, isScrolled, _) => Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: ArticleAppBar(
-          article: article.metadata,
-          briefId: briefId,
-          topicId: topicId,
-          shouldShowTitle: isScrolled,
-          actionsBarColorModeNotifier: actionsBarColorModeNotifier,
-          isConnected: context.watch<IsConnected>(),
-        ),
-        body: ScrollsToTop(
-          onScrollsToTop: (_) => mainController.animateToStart(),
-          child: PremiumArticleReadView(
-            cubit: cubit,
-            mainController: mainController,
+    return ScrollsToTop(
+      onScrollsToTop: (_) => mainController.animateToStart(),
+      child: ValueListenableBuilder<bool>(
+        valueListenable: isScrolled,
+        builder: (context, isScrolled, _) => Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: ArticleAppBar(
+            article: article.metadata,
+            briefId: briefId,
+            topicId: topicId,
+            shouldShowTitle: isScrolled,
+            actionsBarColorModeNotifier: actionsBarColorModeNotifier,
+            isConnected: context.watch<IsConnected>(),
+          ),
+          body: ScrollsToTop(
+            onScrollsToTop: (_) => mainController.animateToStart(),
+            child: PremiumArticleReadView(
+              cubit: cubit,
+              mainController: mainController,
+            ),
           ),
         ),
       ),

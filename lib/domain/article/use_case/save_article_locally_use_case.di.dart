@@ -38,7 +38,7 @@ class SaveArticleLocallyUseCase {
     final synchronizable = Synchronizable.createNotSynchronized<Article>(article.slug, timeToExpire);
     await _saveSynchronizableItemUseCase(_articleLocalRepository, synchronizable);
 
-    final fullArticle = await _getArticleUseCase(article);
+    final fullArticle = await _getArticleUseCase(article, refreshMetadata: true);
 
     await save(fullArticle, timeToExpire);
   }

@@ -142,6 +142,8 @@ class AppColors {
   static const Color categoriesTextSecondary = _darkerGrey;
   static const Color categoriesBackgroundShowMeEverything = _white;
 
+  static const Color publisherRowTextSecondary = _darkerGrey;
+
   static const Color snackBarSuccess = stateBackgroundSuccess;
   static const Color snackBarWarning = stateBackgroundWarning;
   static const Color snackBarError = stateBackgroundError;

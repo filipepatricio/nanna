@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/common/data/curation_info.dart';
 import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart';
+import 'package:better_informed_mobile/presentation/util/article_type_extension.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'media_item.dt.freezed.dart';
@@ -45,6 +46,8 @@ extension Getters on MediaItemArticle {
   bool get finished => progressState == ArticleProgressState.finished;
 
   bool get shouldShowArticleCoverNote => note != null;
+
+  bool get canGetAudioFile => hasAudioVersion && availableInSubscription && type.isPremium;
 
   String get imageUrl {
     if (image == null) return '';

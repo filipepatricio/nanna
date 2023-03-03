@@ -40,7 +40,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   final ShouldUsePaidSubscriptionsUseCase _shouldUsePaidSubscriptionsUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
 
-  late MediaItemArticle _currentArticle;
+  MediaItemArticle? _currentArticle;
   late String? _topicSlug;
   late String? _topicId;
   late String? _briefId;
@@ -170,9 +170,11 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     });
   }
 
-  Future<void> _refreshForSubscriptionState(MediaItemArticle article, ActiveSubscription subscription) async {
+  Future<void> _refreshForSubscriptionState(MediaItemArticle? article, ActiveSubscription subscription) async {
     int counter = 0;
     bool shouldRefresh = true;
+
+    if (article == null) return;
 
     while (shouldRefresh && counter < _maxRefreshTries) {
       try {
@@ -199,12 +201,12 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     }
   }
 
-  bool _doesSubscriptionMatchArticleState(MediaItemArticle article, ActiveSubscription subscription) {
+  bool _doesSubscriptionMatchArticleState(MediaItemArticle? article, ActiveSubscription subscription) {
     final expectedAvailability = subscription.maybeMap(
       free: (_) => false,
       orElse: () => true,
     );
 
-    return expectedAvailability == article.availableInSubscription;
+    return expectedAvailability == article?.availableInSubscription;
   }
 }

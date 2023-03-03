@@ -39,9 +39,9 @@ class PublisherLogoRow extends HookWidget {
               remainingPublishersIndicator,
               textAlign: TextAlign.start,
               style: AppTypography.sansTextSmallLausanne.copyWith(
-                color: AppColors.of(context).textSecondary.blendMultiply(
-                      backgroundColor: blendWithBackground ? topic.category.color : null,
-                    ),
+                color: AppColors.publisherRowTextSecondary.blendMultiply(
+                  backgroundColor: blendWithBackground ? topic.category.color : null,
+                ),
                 height: 1.2,
               ),
             ),
