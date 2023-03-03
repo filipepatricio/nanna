@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -114,7 +115,7 @@ class _ArticleHeader extends StatelessWidget {
                   showReadTime: false,
                   color: AppColors.categoriesTextPrimary,
                   textStyle: AppTypography.metadata1Medium,
-                  publisherLogoSize: AppDimens.l,
+                  publisherLogoSizeType: PublisherLogoSizeType.medium,
                 ),
                 const SizedBox(height: AppDimens.m),
                 InformedMarkdownBody(
