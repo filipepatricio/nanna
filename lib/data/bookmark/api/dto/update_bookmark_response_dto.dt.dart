@@ -10,5 +10,5 @@ class UpdateBookmarkResponseDTO {
   factory UpdateBookmarkResponseDTO.fromJson(Map<String, dynamic> json) => _$UpdateBookmarkResponseDTOFromJson(json);
 
   final bool successful;
-  final BookmarkIdDTO bookmark;
+  final BookmarkIdDTO? bookmark;
 }
