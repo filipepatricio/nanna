@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/daily_brief_badge/use_case/should_show_daily_brief_badge_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
@@ -23,8 +24,12 @@ void main() {
   testWidgets(
     'upcoming plan is correctly labeled, when available',
     (tester) async {
+      final shouldShowDailyBriefBadgeUseCase = MockShouldShowDailyBriefBadgeUseCase();
       final getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
       final getSubscriptionPlansUseCase = MockGetSubscriptionPlansUseCase();
+
+      when(shouldShowDailyBriefBadgeUseCase()).thenAnswer((_) => Future.value(false));
+      when(shouldShowDailyBriefBadgeUseCase.stream).thenAnswer((_) => Stream.value(false));
 
       final subscription = TestData.activeSubscription.copyWith(
         plan: TestData.subscriptionPlansWithoutTrial.first,
@@ -40,6 +45,7 @@ void main() {
       await tester.startApp(
         initialRoute: const ChangeSubscriptionPageRoute(),
         dependencyOverride: (getIt) async {
+          getIt.registerFactory<ShouldShowDailyBriefBadgeUseCase>(() => shouldShowDailyBriefBadgeUseCase);
           getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
           getIt.registerFactory<GetSubscriptionPlansUseCase>(() => getSubscriptionPlansUseCase);
         },

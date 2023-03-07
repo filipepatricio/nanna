@@ -16,10 +16,13 @@ class NotificationHeaderContainer extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 2,
+          flex: 5,
           child: startWidget,
         ),
-        _BaseRightRow(children: trailingChildren),
+        Expanded(
+          flex: 2,
+          child: _BaseRightRow(children: trailingChildren),
+        ),
       ],
     );
   }
@@ -35,11 +38,9 @@ class _BaseRightRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: children.map((e) => SizedBox(width: AppDimens.xxxl, child: e)).toList(),
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: children.map((e) => SizedBox(width: AppDimens.xxl, child: e)).toList(),
     );
   }
 }
