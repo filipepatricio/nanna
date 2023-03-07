@@ -15,12 +15,9 @@ class GetArticleUseCase {
   final ArticleRepository _articleRepository;
   final LoadLocalArticleUseCase _loadLocalArticleUseCase;
 
-  Future<Article> call(
-    MediaItemArticle article, {
-    bool refreshMetadata = false,
-  }) async {
+  Future<Article> single(MediaItemArticle article) async {
     try {
-      return await _getRemote(article, refreshMetadata);
+      return await _articleRepository.getArticle(article.slug, article.canGetAudioFile);
     } on NoInternetConnectionException {
       final localArticle = await _loadLocalArticleUseCase(article.slug);
 
@@ -32,16 +29,7 @@ class GetArticleUseCase {
     }
   }
 
-  Future<Article> _getRemote(MediaItemArticle article, bool refreshMetadata) async {
-    final content = await _articleRepository.getArticleContent(article.slug);
-    final metadata = refreshMetadata ? await _articleRepository.getArticleHeader(article.slug) : article;
-
-    final audioFile = metadata.canGetAudioFile ? await _articleRepository.getArticleAudioFile(article.slug) : null;
-
-    return Article(
-      content: content,
-      metadata: metadata,
-      audioFile: audioFile,
-    );
+  Future<List<Article>> multiple(List<MediaItemArticle> articles) async {
+    return _articleRepository.getArticleList(articles.map((item) => item.slug).toList(growable: false));
   }
 }

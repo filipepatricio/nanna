@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/data/article/api/article_api_data_source.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_content_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/audio_file_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/update_article_progress_response_dto_mapper.di.dart';
@@ -9,6 +10,7 @@ import 'package:better_informed_mobile/data/categories/mapper/category_item_dto_
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/media_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
@@ -30,6 +32,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
     this._mediaItemDTOMapper,
     this._categoryItemDTOMapper,
     this._updateArticleProgressResponseDTOMapper,
+    this._articleDTOMapper,
   );
 
   final ArticleApiDataSource _articleDataSource;
@@ -40,6 +43,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
   final MediaItemDTOMapper _mediaItemDTOMapper;
   final CategoryItemDTOMapper _categoryItemDTOMapper;
   final UpdateArticleProgressResponseDTOMapper _updateArticleProgressResponseDTOMapper;
+  final ArticleDTOMapper _articleDTOMapper;
 
   final Map<String, double> _audioProgress = {};
   final Map<String, int> _readProgress = {};
@@ -132,5 +136,17 @@ class ArticleRepositoryImpl implements ArticleRepository {
   Future<bool> markArticleAsSeen(String slug) async {
     final dto = await _articleDataSource.markArticleAsSeen(slug);
     return dto.successful;
+  }
+
+  @override
+  Future<Article> getArticle(String slug, bool hasAudio) async {
+    final dto = await _articleDataSource.getArticle(slug, hasAudio);
+    return _articleDTOMapper(dto);
+  }
+
+  @override
+  Future<List<Article>> getArticleList(List<String> slugs) async {
+    final dto = await _articleDataSource.getArticleBatch(slugs);
+    return dto.map<Article>(_articleDTOMapper).toList();
   }
 }

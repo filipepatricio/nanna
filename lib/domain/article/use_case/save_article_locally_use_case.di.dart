@@ -43,9 +43,17 @@ class SaveArticleLocallyUseCase {
     final synchronizable = Synchronizable.createNotSynchronized<Article>(article.slug, timeToExpire);
     await _saveSynchronizableItemUseCase(_articleLocalRepository, synchronizable);
 
-    final fullArticle = await _getArticleUseCase(article, refreshMetadata: true);
+    final fullArticle = await _getArticleUseCase.single(article);
 
     await save(fullArticle, timeToExpire);
+  }
+
+  Future<void> fetchListAndSave(List<String> slugs, Duration timeToExpire) async {
+    final articleList = await _articleRepository.getArticleList(slugs);
+
+    for (final article in articleList) {
+      await save(article, timeToExpire);
+    }
   }
 
   Future<void> save(Article article, Duration timeToExpire) async {

@@ -1,0 +1,7 @@
+fragment articleContentFragment on Article {
+    text {
+        content
+        markupLanguage
+    }
+    credits
+}

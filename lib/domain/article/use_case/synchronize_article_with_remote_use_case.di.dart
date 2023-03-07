@@ -23,7 +23,7 @@ class SynchronizeArticleWithRemoteUseCase implements SynchronizeWithRemoteUsecas
     if (!await _hasActiveSubscriptionUseCase()) return synchronizable;
 
     final header = await _getArticleHeaderUseCase(synchronizable.dataId);
-    final article = await _getArticleUseCase(header, refreshMetadata: true);
+    final article = await _getArticleUseCase.single(header);
 
     return synchronizable.synchronize(article);
   }

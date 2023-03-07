@@ -1,0 +1,13 @@
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/article_content_fragment.graphql';
+
+query fullArticleWithAudio($slug: String!) {
+    article(slug: $slug) {
+        ...articleFragment
+        ...articleContentFragment
+    }
+    getArticleAudioFile(slug: $slug) {
+        url
+        credits
+    }
+}
