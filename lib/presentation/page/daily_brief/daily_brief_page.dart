@@ -110,16 +110,20 @@ class _DailyBriefPage extends HookWidget {
           }
         },
         hasBeenUpdated: () {
-          snackbarController.showMessage(
-            SnackbarMessage.simple(
-              message: context.l10n.dailyBrief_refreshSnackBar_message,
-              type: SnackbarMessageType.info,
-              action: SnackbarAction(
-                label: context.l10n.dailyBrief_refreshSnackBar_action,
-                callback: () => cubit.refetchBriefs(),
+          if (context.routeData.isActive) {
+            snackbarController.showMessage(
+              SnackbarMessage.simple(
+                message: context.l10n.dailyBrief_refreshSnackBar_message,
+                type: SnackbarMessageType.info,
+                action: SnackbarAction(
+                  label: context.l10n.dailyBrief_refreshSnackBar_action,
+                  callback: () => cubit.refetchBriefs(),
+                ),
               ),
-            ),
-          );
+            );
+          } else {
+            cubit.refetchBriefs();
+          }
         },
       );
     });
