@@ -25,11 +25,13 @@ class TodayTabBarBadge extends HookWidget {
 
     return state.map(
       initializing: (_) => child,
-      idle: (state) => Badge.count(
-        count: state.unseenCount,
-        isLabelVisible: state.unseenCount > 0,
-        child: child,
-      ),
+      idle: (state) => state.shouldShowBadge
+          ? Badge.count(
+              count: state.unseenCount,
+              isLabelVisible: state.unseenCount > 0,
+              child: child,
+            )
+          : child,
     );
   }
 }
