@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_up
 import 'package:better_informed_mobile/domain/exception/brief_not_initialized_exception.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
+import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_badge_count_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
@@ -29,6 +30,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/util/connection_state_aware_cubit_mixin.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:bloc/bloc.dart';
@@ -45,7 +47,8 @@ final _requiredEventsCount = _trackEventTotalBufferTime.inMilliseconds / _trackE
 final firstTopicKey = GlobalKey();
 
 @injectable
-class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
+class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
+    with ConnectionStateAwareCubitMixin<DailyBriefPageState, void> {
   DailyBriefPageCubit(
     this._getCurrentBriefUseCase,
     this._getPastDaysBriefUseCase,
@@ -62,6 +65,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     this._markTopicAsSeenUseCase,
     this._shouldRefreshDailyBriefUseCase,
     this._incomingPushBadgeCountStreamUseCase,
+    this._isInternetConnectionAvailableUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
@@ -79,6 +83,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final MarkTopicAsSeenUseCase _markTopicAsSeenUseCase;
   final ShouldRefreshDailyBriefUseCase _shouldRefreshDailyBriefUseCase;
   final IncomingPushBadgeCountStreamUseCase _incomingPushBadgeCountStreamUseCase;
+  final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -99,6 +104,28 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   bool _shouldShowCalendar = false;
 
   @override
+  IsInternetConnectionAvailableUseCase get isInternetConnectionAvailableUseCase =>
+      _isInternetConnectionAvailableUseCase;
+
+  @override
+  Future<void> onOffline(void initialData) async {
+    if (_selectedBrief == null) {
+      await loadBriefs();
+    } else {
+      await refetchBriefs();
+    }
+  }
+
+  @override
+  Future<void> onOnline(void initialData) async {
+    if (_selectedBrief == null) {
+      await loadBriefs();
+    } else {
+      await refetchBriefs();
+    }
+  }
+
+  @override
   Future<void> close() async {
     await _dataRefreshSubscription?.cancel();
     await _currentBriefSubscription?.cancel();
@@ -110,7 +137,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   }
 
   Future<void> initialize() async {
-    await loadBriefs();
+    await initializeConnection(null);
 
     _currentBriefSubscription ??= _getCurrentBriefUseCase.stream.listen((currentBriefWrapper) {
       _briefsWrapper = currentBriefWrapper;
@@ -124,12 +151,12 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
     _badgeCountRefreshSubscription ??= _incomingPushBadgeCountStreamUseCase().listen((event) {
       Fimber.d('Incoming push - badge count');
-      emit(DailyBriefPageState.hasBeenUpdated());
+      _emitEvent(DailyBriefPageState.hasBeenUpdated());
     });
 
     _shouldUpdateBriefSubscription ??= _getShouldUpdateBriefStreamUseCase().listen((_) => refetchBriefs());
 
-    _itemPreviewTrackerSubscription ??= itemPreviewTrackerStream.listen((item) {
+    _itemPreviewTrackerSubscription ??= _itemPreviewTrackerStream.listen((item) {
       _markEntryAsSeen(item.entry);
       _trackActivityUseCase.trackEvent(item.event);
     });
@@ -137,7 +164,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     if (await _shouldUsePaidSubscriptionsUseCase()) {
       if (!(await _hasActiveSubscriptionUseCase()) && !(await _isOnboardingPaywallSeenUseCase())) {
         await _setOnboardingPaywallSeenUseCase();
-        emit(DailyBriefPageState.showPaywall());
+        _emitEvent(DailyBriefPageState.showPaywall());
       }
     }
   }
@@ -145,14 +172,14 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   Future<void> shouldRefreshBrief() async {
     final shouldRefreshBrief = await _shouldRefreshDailyBriefUseCase();
     if (shouldRefreshBrief) {
-      emit(DailyBriefPageState.hasBeenUpdated());
+      _emitEvent(DailyBriefPageState.hasBeenUpdated());
     }
   }
 
   Future<void> initializeTutorialSnackBar() async {
     final isDailyBriefTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     if (!isDailyBriefTutorialStepSeen) {
-      emit(DailyBriefPageState.showTutorialToast());
+      _emitEvent(DailyBriefPageState.showTutorialToast());
       await _setTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     }
   }
@@ -193,45 +220,20 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
-  void _updateIdleState({bool preCacheImages = false}) {
-    if (_selectedBrief != null) {
-      emit(
-        DailyBriefPageState.idle(
-          selectedBrief: _selectedBrief!,
-          pastDays: _briefsWrapper.pastDays,
-          showCalendar: _shouldShowCalendar,
-          showAppBarTitle: _shouldShowAppBarTitle,
-        ),
-      );
-
-      if (preCacheImages) {
-        emit(
-          DailyBriefPageState.preCacheImages(
-            briefEntryList: _selectedBrief!.allEntries,
-          ),
-        );
-      }
-      return;
-    }
-
-    throw BriefNotInitializedException();
-  }
-
   void toggleCalendar(bool showCalendar) {
     if (showCalendar != _shouldShowCalendar) {
       _shouldShowCalendar = showCalendar;
       _shouldShowCalendar
           ? _trackActivityUseCase.trackEvent(AnalyticsEvent.briefCalendarOpened(_briefsWrapper.currentBrief.id))
           : _trackActivityUseCase.trackEvent(AnalyticsEvent.briefCalendarClosed(_briefsWrapper.currentBrief.id));
-
-      _updateIdleState();
+      _refreshCurrentState();
     }
   }
 
   void toggleAppBarTitle(bool showTitle) {
     if (showTitle != _shouldShowAppBarTitle) {
       _shouldShowAppBarTitle = showTitle;
-      _updateIdleState();
+      _refreshCurrentState();
     }
   }
 
@@ -250,6 +252,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
           selectedPastDay: selectedDay,
           pastDays: _briefsWrapper.pastDays,
           showAppBarTitle: _shouldShowAppBarTitle,
+          showCalendar: _shouldShowCalendar,
         ),
       );
 
@@ -292,13 +295,63 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     throw BriefNotInitializedException();
   }
 
+  void _refreshCurrentState() {
+    final DailyBriefPageState? newState = state.maybeMap(
+      idle: (state) => state.copyWith(
+        showCalendar: _shouldShowCalendar,
+        showAppBarTitle: _shouldShowAppBarTitle,
+      ),
+      loadingPastDay: (state) => state.copyWith(
+        showAppBarTitle: _shouldShowAppBarTitle,
+        showCalendar: _shouldShowCalendar,
+      ),
+      loading: (state) => state,
+      error: (state) => state,
+      offline: (state) => state,
+      orElse: () => DailyBriefPageState.idle(
+        selectedBrief: _selectedBrief!,
+        pastDays: _briefsWrapper.pastDays,
+        showCalendar: _shouldShowCalendar,
+        showAppBarTitle: _shouldShowAppBarTitle,
+      ),
+    );
+
+    if (newState != null) {
+      emit(newState);
+    }
+  }
+
+  void _updateIdleState({bool preCacheImages = false}) {
+    if (_selectedBrief != null) {
+      if (preCacheImages) {
+        emit(
+          DailyBriefPageState.preCacheImages(
+            briefEntryList: _selectedBrief!.allEntries,
+          ),
+        );
+      }
+
+      emit(
+        DailyBriefPageState.idle(
+          selectedBrief: _selectedBrief!,
+          pastDays: _briefsWrapper.pastDays,
+          showCalendar: _shouldShowCalendar,
+          showAppBarTitle: _shouldShowAppBarTitle,
+        ),
+      );
+
+      return;
+    }
+
+    throw BriefNotInitializedException();
+  }
+
   void _emitItemPreviewedEvent(BriefEntry entry, AnalyticsEvent event, double visibility) {
     final visibilityEvent = _ItemVisibilityEvent(entry, visibility > _minVisibilityToTrack, event);
     if (!isClosed) _trackItemController.add(visibilityEvent);
   }
 
-  // ignore: library_private_types_in_public_api
-  Stream<_ItemVisibilityEvent> get itemPreviewTrackerStream => _trackItemController.stream
+  Stream<_ItemVisibilityEvent> get _itemPreviewTrackerStream => _trackItemController.stream
       .groupBy(
         (event) => event.entry.id,
         durationSelector: (grouped) => grouped.debounceTime(_trackEventTotalBufferTime * 2),
@@ -344,7 +397,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
     if (!isTopicCardTutorialStepSeen && _shouldShowTutorialCoachMark) {
       targets.clear();
-      emit(DailyBriefPageState.shouldShowTopicCardTutorialCoachMark());
+      _emitEvent(DailyBriefPageState.shouldShowTopicCardTutorialCoachMark());
       _initializeTopicCardTutorialCoachMarkTarget();
       _shouldShowTutorialCoachMark = false;
     }
@@ -379,7 +432,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
               return TutorialTooltip(
                 text: context.l10n.tutorial_topicCoachmarkText,
                 dismissButtonText: context.l10n.common_gotIt,
-                onDismiss: () => emit(DailyBriefPageState.finishTutorialCoachMark()),
+                onDismiss: () => _emitEvent(DailyBriefPageState.finishTutorialCoachMark()),
               );
             },
           )
@@ -394,7 +447,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   Future<void> showTopicCardTutorialCoachMark() async {
     bool isTopicCardTutorialStepSeen = await _isTutorialStepSeenUseCase.call(TutorialStep.dailyBriefTopicCard);
     if (!isTopicCardTutorialStepSeen) {
-      emit(DailyBriefPageState.showTopicCardTutorialCoachMark());
+      _emitEvent(DailyBriefPageState.showTopicCardTutorialCoachMark());
       await _setTutorialStepSeenUseCase.call(TutorialStep.dailyBriefTopicCard);
       isTopicCardTutorialStepSeen = true;
     }
@@ -406,10 +459,16 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
   Future<bool> onAndroidBackButtonPress(bool isShowingTutorialCoachMark) async {
     if (isShowingTutorialCoachMark) {
-      emit(DailyBriefPageState.skipTutorialCoachMark(jumpToNextCoachMark: false));
+      _emitEvent(DailyBriefPageState.skipTutorialCoachMark(jumpToNextCoachMark: false));
       return Future<bool>.value(false);
     }
     return Future<bool>.value(true);
+  }
+
+  void _emitEvent(DailyBriefPageState event) {
+    final currentState = state;
+    emit(event);
+    emit(currentState);
   }
 }
 

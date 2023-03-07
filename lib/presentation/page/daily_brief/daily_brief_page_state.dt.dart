@@ -21,6 +21,7 @@ class DailyBriefPageState with _$DailyBriefPageState {
   factory DailyBriefPageState.loadingPastDay({
     required BriefPastDay selectedPastDay,
     required BriefPastDays pastDays,
+    required bool showCalendar,
     required bool showAppBarTitle,
   }) = _DailyBriefPageStateLoadingPastDay;
 
