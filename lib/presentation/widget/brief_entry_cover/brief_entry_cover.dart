@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/common/data/curator.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
@@ -62,7 +63,7 @@ class BriefEntryCover extends HookWidget {
                   },
                   isNew: isNew,
                   showNote: true,
-                  showRecommendedBy: false,
+                  showRecommendedBy: article.showRecommendedBy,
                 ),
                 unknown: (_) => const SizedBox(),
               );
@@ -80,7 +81,7 @@ class BriefEntryCover extends HookWidget {
                       },
                       isNew: isNew,
                       showNote: true,
-                      showRecommendedBy: false,
+                      showRecommendedBy: article.showRecommendedBy,
                     );
                   } else {
                     return ArticleCover.large(
@@ -93,7 +94,7 @@ class BriefEntryCover extends HookWidget {
                       },
                       isNew: isNew,
                       showNote: true,
-                      showRecommendedBy: false,
+                      showRecommendedBy: article.showRecommendedBy,
                     );
                   }
                 },
@@ -154,4 +155,8 @@ extension on BuildContext {
       ),
     );
   }
+}
+
+extension on MediaItemArticle {
+  bool get showRecommendedBy => curationInfo.curator is ExpertCurator;
 }

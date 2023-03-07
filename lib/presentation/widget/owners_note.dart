@@ -36,7 +36,7 @@ class OwnersNote extends StatelessWidget {
 
     return AccentBorderContainer(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (isNoteCollapsible)
