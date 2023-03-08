@@ -11,5 +11,6 @@ class TodayTabBarBadgeState with _$TodayTabBarBadgeState {
   @Implements<BuildState>()
   factory TodayTabBarBadgeState.idle(
     int unseenCount,
+    bool shouldShowBadge,
   ) = _TodayTabBarBadgeStateIdle;
 }

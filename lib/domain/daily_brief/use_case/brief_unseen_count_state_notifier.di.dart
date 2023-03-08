@@ -7,9 +7,7 @@ class BriefUnseenCountStateNotifier {
   final StreamController<int> _changeStream = StreamController.broadcast();
   var _unseenCount = 0;
 
-  Stream<int> get stream async* {
-    yield* _changeStream.stream;
-  }
+  Stream<int> get stream => _changeStream.stream;
 
   void notify(int unseenCount) {
     _unseenCount = unseenCount;

@@ -110,15 +110,15 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
           state.state,
         );
 
-        bookmarkState.mapOrNull(
-          bookmarked: (_) {
+        await bookmarkState.mapOrNull(
+          bookmarked: (_) async {
             if (fromUndo == true) {
               _trackBookmarkRemoveUndo(state.data);
             } else {
-              _emitBookmarkAdded(l10n, state.data);
+              await _emitBookmarkAdded(l10n, state.data);
             }
           },
-          notBookmarked: (_) => emit(
+          notBookmarked: (_) async => emit(
             BookmarkButtonState.bookmarkRemoved(
               state.data.map(
                 article: (_) => l10n.bookmark_removeArticle,
