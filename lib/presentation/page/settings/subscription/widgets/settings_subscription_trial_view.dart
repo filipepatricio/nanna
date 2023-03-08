@@ -3,12 +3,12 @@ part of '../settings_subscription_page.dart';
 class _SettingsSubscriptionTrialView extends StatelessWidget {
   const _SettingsSubscriptionTrialView({
     required this.subscription,
-    required this.onCancelSubscriptionTap,
+    required this.onManageSubscriptionPressed,
     Key? key,
   }) : super(key: key);
 
   final ActiveSubscriptionTrial subscription;
-  final VoidCallback onCancelSubscriptionTap;
+  final VoidCallback onManageSubscriptionPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +40,9 @@ class _SettingsSubscriptionTrialView extends StatelessWidget {
               ),
               style: AppTypography.metadata1Medium.copyWith(color: AppColors.of(context).textSecondary),
             ),
+            const SizedBox(height: AppDimens.l),
+            SubscriptionSectionView(onManageSubscriptionPressed: onManageSubscriptionPressed),
             const SizedBox(height: AppDimens.xxl),
-            if (subscription.manageSubscriptionURL.isNotEmpty) ...[
-              LinkLabel(
-                label: context.l10n.subscription_cancelSubscription,
-                style: AppTypography.buttonBold,
-                align: TextAlign.start,
-                onTap: onCancelSubscriptionTap,
-              ),
-              const SizedBox(height: AppDimens.l),
-            ],
             const AudioPlayerBannerPlaceholder(),
           ],
         ),

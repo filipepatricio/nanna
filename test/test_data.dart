@@ -39,6 +39,7 @@ import 'package:better_informed_mobile/data/push_notification/incoming_push/mapp
 import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/push_notification_message_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/api/mapper/active_subscription_mapper.di.dart';
+import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_origin_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
@@ -212,7 +213,10 @@ class TestData {
 
   static final _subscriptionPlanMapper = SubscriptionPlanMapper();
 
-  static final _activeSubscriptionMapper = ActiveSubscriptionMapper(AppConfig.mock);
+  static final _activeSubscriptionMapper = ActiveSubscriptionMapper(
+    AppConfig.mock,
+    SubscriptionOriginMapper(),
+  );
 
   static final _audioFileMapper = AudioFileDTOMapper();
 

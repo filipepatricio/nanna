@@ -1,14 +1,19 @@
 import 'package:better_informed_mobile/data/bidirectional_mapper.dart';
 import 'package:better_informed_mobile/data/subscription/database/entity/active_subscription_entity.hv.dart';
+import 'package:better_informed_mobile/data/subscription/database/mapper/subscription_origin_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/database/mapper/subscription_plan_entity_mapper.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class ActiveSubscriptionEntityMapper implements BidirectionalMapper<ActiveSubscriptionEntity, ActiveSubscription> {
-  ActiveSubscriptionEntityMapper(this._subscriptionPlanEntityMapper);
+  ActiveSubscriptionEntityMapper(
+    this._subscriptionPlanEntityMapper,
+    this._subscriptionOriginEntityMapper,
+  );
 
   final SubscriptionPlanEntityMapper _subscriptionPlanEntityMapper;
+  final SubscriptionOriginEntityMapper _subscriptionOriginEntityMapper;
 
   @override
   ActiveSubscriptionEntity from(ActiveSubscription data) {
@@ -24,6 +29,7 @@ class ActiveSubscriptionEntityMapper implements BidirectionalMapper<ActiveSubscr
             remainingTrialDays: trial.remainingTrialDays,
             plan: _subscriptionPlanEntityMapper.from(trial.plan),
             nextPlan: nextPlan != null ? _subscriptionPlanEntityMapper.from(nextPlan) : null,
+            subscriptionOrigin: _subscriptionOriginEntityMapper.from(trial.origin),
           ),
         );
       },
@@ -38,6 +44,7 @@ class ActiveSubscriptionEntityMapper implements BidirectionalMapper<ActiveSubscr
             willRenew: premium.willRenew,
             plan: _subscriptionPlanEntityMapper.from(premium.plan),
             nextPlan: nextPlan != null ? _subscriptionPlanEntityMapper.from(nextPlan) : null,
+            subscriptionOrigin: _subscriptionOriginEntityMapper.from(premium.origin),
           ),
         );
       },
@@ -63,6 +70,7 @@ class ActiveSubscriptionEntityMapper implements BidirectionalMapper<ActiveSubscr
           trial.remainingTrialDays,
           _subscriptionPlanEntityMapper.to(trial.plan),
           nextPlan != null ? _subscriptionPlanEntityMapper.to(nextPlan) : null,
+          _subscriptionOriginEntityMapper.to(trial.subscriptionOrigin),
         );
       },
       premium: (premium) {
@@ -76,6 +84,7 @@ class ActiveSubscriptionEntityMapper implements BidirectionalMapper<ActiveSubscr
           premium.willRenew,
           _subscriptionPlanEntityMapper.to(premium.plan),
           nextPlan != null ? _subscriptionPlanEntityMapper.to(nextPlan) : null,
+          _subscriptionOriginEntityMapper.to(premium.subscriptionOrigin),
         );
       },
       manualPremium: (manualPremium) {

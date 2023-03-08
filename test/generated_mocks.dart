@@ -27,6 +27,7 @@ import 'package:better_informed_mobile/data/push_notification/api/push_notificat
 import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/push_notification_messenger.di.dart';
 import 'package:better_informed_mobile/data/subscription/api/mapper/active_subscription_mapper.di.dart';
+import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_origin_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/api/purchase_remote_data_source.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
@@ -91,6 +92,7 @@ import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
 import 'package:better_informed_mobile/domain/util/network_cache_manager.dart';
+import 'package:better_informed_mobile/domain/util/use_case/open_subscription_management_screen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
@@ -199,6 +201,8 @@ const _classes = [
   GetBookmarkStateUseCase,
   ConnectivityRepository,
   ShouldShowDailyBriefBadgeUseCase,
+  OpenSubscriptionManagementScreenUseCase,
+  SubscriptionOriginMapper,
 ];
 
 @GenerateMocks(_classes)

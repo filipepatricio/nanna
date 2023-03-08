@@ -3,12 +3,12 @@ part of '../settings_subscription_page.dart';
 class _SettingsSubscriptionPremiumView extends StatelessWidget {
   const _SettingsSubscriptionPremiumView({
     required this.subscription,
-    required this.onCancelSubscriptionTap,
+    required this.onManageSubscriptionPressed,
     Key? key,
   }) : super(key: key);
 
   final ActiveSubscriptionPremium subscription;
-  final VoidCallback onCancelSubscriptionTap;
+  final VoidCallback onManageSubscriptionPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -34,30 +34,27 @@ class _SettingsSubscriptionPremiumView extends StatelessWidget {
             ),
             const SizedBox(height: AppDimens.ml),
             const SubscriptionBenefits(),
-            const SizedBox(height: AppDimens.xl),
             if (subscription.expirationDate != null) ...[
+              const SizedBox(height: AppDimens.xl),
               Text(
                 subscription.willRenew ? context.l10n.subscription_renewalDate : context.l10n.subscription_endDate,
                 style: AppTypography.subH1Medium.copyWith(
                   color: AppColors.of(context).textTertiary,
+                  height: 2.1,
                 ),
               ),
-              const SizedBox(height: AppDimens.ml),
-              Text(
-                DateFormatUtil.formatFullMonthNameDayYear(subscription.expirationDate!),
-                style: AppTypography.subH1Medium,
+              const SizedBox(height: AppDimens.xs),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
+                child: Text(
+                  DateFormatUtil.formatFullMonthNameDayYear(subscription.expirationDate!),
+                  style: AppTypography.subH1Medium,
+                ),
               ),
             ],
+            const SizedBox(height: AppDimens.l),
+            SubscriptionSectionView(onManageSubscriptionPressed: onManageSubscriptionPressed),
             const SizedBox(height: AppDimens.xxl),
-            if (subscription.manageSubscriptionURL.isNotEmpty) ...[
-              LinkLabel(
-                label: context.l10n.subscription_cancelSubscription,
-                style: AppTypography.buttonBold,
-                align: TextAlign.start,
-                onTap: onCancelSubscriptionTap,
-              ),
-              const SizedBox(height: AppDimens.l),
-            ],
             const AudioPlayerBannerPlaceholder(),
           ],
         ),

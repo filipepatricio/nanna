@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/subscription/data/subscription_origin.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,6 +14,7 @@ class ActiveSubscription with _$ActiveSubscription {
     int remainingTrialDays,
     SubscriptionPlan plan,
     SubscriptionPlan? nextPlan,
+    SubscriptionOrigin origin,
   ) = ActiveSubscriptionTrial;
 
   factory ActiveSubscription.premium(
@@ -22,6 +24,7 @@ class ActiveSubscription with _$ActiveSubscription {
     bool willRenew,
     SubscriptionPlan plan,
     SubscriptionPlan? nextPlan,
+    SubscriptionOrigin origin,
   ) = ActiveSubscriptionPremium;
 
   factory ActiveSubscription.manualPremium(
