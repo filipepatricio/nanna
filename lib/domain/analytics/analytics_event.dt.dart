@@ -317,6 +317,10 @@ class AnalyticsEvent with _$AnalyticsEvent {
   factory AnalyticsEvent.promotedProductPurchaseStarted() => AnalyticsEvent._('PromotedProductPurchaseStarted');
 
   factory AnalyticsEvent.paywallTriggered() => AnalyticsEvent._('PaywallTriggered');
+
+  factory AnalyticsEvent.articleNoteUncollapsed() => AnalyticsEvent._('ArticleNoteUncollapsed');
+
+  factory AnalyticsEvent.articleNoteCollapsed() => AnalyticsEvent._('ArticleNoteCollapsed');
 }
 
 extension on BookmarkSortConfigName {
