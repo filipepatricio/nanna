@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/hive_types.dart';
+import 'package:better_informed_mobile/data/subscription/database/entity/subscription_origin_entity.hv.dart';
 import 'package:better_informed_mobile/data/subscription/database/entity/subscription_plan_entity.hv.dart';
 import 'package:hive/hive.dart';
 
@@ -77,6 +78,7 @@ class ActiveSubscriptionTrialEntity {
     required this.remainingTrialDays,
     required this.plan,
     required this.nextPlan,
+    required this.subscriptionOrigin,
   });
 
   @HiveField(0)
@@ -89,6 +91,8 @@ class ActiveSubscriptionTrialEntity {
   final SubscriptionPlanEntity plan;
   @HiveField(4)
   final SubscriptionPlanEntity? nextPlan;
+  @HiveField(5, defaultValue: SubscriptionOriginEntity.unknown())
+  final SubscriptionOriginEntity subscriptionOrigin;
 }
 
 @HiveType(typeId: HiveTypes.activeSubscriptionPremiumEntity)
@@ -100,6 +104,7 @@ class ActiveSubscriptionPremiumEntity {
     required this.willRenew,
     required this.plan,
     required this.nextPlan,
+    required this.subscriptionOrigin,
   });
 
   @HiveField(0)
@@ -114,6 +119,8 @@ class ActiveSubscriptionPremiumEntity {
   final SubscriptionPlanEntity plan;
   @HiveField(5)
   final SubscriptionPlanEntity? nextPlan;
+  @HiveField(6, defaultValue: SubscriptionOriginEntity.unknown())
+  final SubscriptionOriginEntity subscriptionOrigin;
 }
 
 @HiveType(typeId: HiveTypes.activeSubscriptionManualPremiumEntity)

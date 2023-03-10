@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/data/subscription/api/dto/active_subscrip
 import 'package:better_informed_mobile/data/subscription/api/mapper/active_subscription_mapper.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_origin.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -10,10 +11,15 @@ import 'package:purchases_flutter/object_wrappers.dart';
 import '../../../../../generated_mocks.mocks.dart';
 
 void main() {
+  late MockSubscriptionOriginMapper subscriptionOriginMapper;
   late ActiveSubscriptionMapper activeSubscriptionMapper;
 
   setUp(() {
-    activeSubscriptionMapper = ActiveSubscriptionMapper(AppConfig.dev);
+    subscriptionOriginMapper = MockSubscriptionOriginMapper();
+    activeSubscriptionMapper = ActiveSubscriptionMapper(
+      AppConfig.dev,
+      subscriptionOriginMapper,
+    );
   });
 
   test('returns free plan for user without any entitlements', () {
@@ -38,6 +44,7 @@ void main() {
       true,
       expirationDate: '2022-01-10',
       periodType: PeriodType.trial,
+      store: Store.appStore,
     );
 
     final customer = MockCustomerInfo();
@@ -62,6 +69,7 @@ void main() {
     );
     when(activePlan.productId).thenReturn(activeEntitlement.productIdentifier);
     when(customer.managementURL).thenReturn('www.google.com');
+    when(subscriptionOriginMapper(any)).thenAnswer((_) => SubscriptionOrigin.appStore);
 
     withClock(Clock.fixed(DateTime(2022, 01, 8)), () {
       final result = activeSubscriptionMapper(subscription);
@@ -74,6 +82,7 @@ void main() {
           2,
           activePlan,
           null,
+          SubscriptionOrigin.appStore,
         ),
       );
     });
@@ -90,6 +99,7 @@ void main() {
       true,
       expirationDate: '2022-01-10',
       periodType: PeriodType.normal,
+      store: Store.appStore,
     );
 
     final customer = MockCustomerInfo();
@@ -112,6 +122,7 @@ void main() {
     );
     when(activePlan.productId).thenReturn(activeEntitlement.productIdentifier);
     when(customer.managementURL).thenReturn('www.google.com');
+    when(subscriptionOriginMapper(any)).thenAnswer((_) => SubscriptionOrigin.appStore);
 
     withClock(Clock.fixed(DateTime(2022, 01, 8)), () {
       final result = activeSubscriptionMapper(subscription);
@@ -125,6 +136,7 @@ void main() {
           activeEntitlement.willRenew,
           activePlan,
           null,
+          SubscriptionOrigin.appStore,
         ),
       );
     });
@@ -143,6 +155,7 @@ void main() {
       true,
       expirationDate: '2022-01-10',
       periodType: PeriodType.normal,
+      store: Store.appStore,
     );
 
     final customer = MockCustomerInfo();
@@ -162,6 +175,7 @@ void main() {
     );
     when(activePlan.productId).thenReturn('different-identifier');
     when(customer.managementURL).thenReturn('www.google.com');
+    when(subscriptionOriginMapper(any)).thenAnswer((_) => SubscriptionOrigin.appStore);
 
     withClock(Clock.fixed(DateTime(2022, 01, 8)), () {
       final result = activeSubscriptionMapper(subscription);
@@ -191,6 +205,7 @@ void main() {
       true,
       expirationDate: '2022-01-12',
       periodType: PeriodType.normal,
+      store: Store.playStore,
     );
 
     final customer = MockCustomerInfo();
@@ -216,6 +231,7 @@ void main() {
     when(activePlan.productId).thenReturn(activeEntitlement.productIdentifier);
     when(nextPlan.productId).thenReturn(secondProductId);
     when(customer.managementURL).thenReturn('www.google.com');
+    when(subscriptionOriginMapper(any)).thenAnswer((_) => SubscriptionOrigin.playStore);
 
     withClock(Clock.fixed(DateTime(2022, 01, 11)), () {
       final result = activeSubscriptionMapper(subscription);
@@ -229,6 +245,7 @@ void main() {
           activeEntitlement.willRenew,
           activePlan,
           nextPlan,
+          SubscriptionOrigin.playStore,
         ),
       );
     });

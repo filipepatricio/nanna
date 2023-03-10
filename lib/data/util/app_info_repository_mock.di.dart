@@ -23,4 +23,7 @@ class AppInfoRepositoryMock implements AppInfoRepository {
   String getPlatform() {
     return 'platform';
   }
+
+  @override
+  Future<void> openSubscriptionManagementSystemPage(String? sku) async {}
 }

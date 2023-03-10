@@ -26,6 +26,7 @@ void main() {
     );
 
     when(getActiveSubscriptionUseCase()).thenAnswer((_) async => subscription);
+    when(getActiveSubscriptionUseCase.stream).thenAnswer((realInvocation) => const Stream.empty());
 
     await tester.startApp(
       initialRoute: const ChangeSubscriptionPageRoute(),

@@ -32,6 +32,7 @@ import 'package:better_informed_mobile/data/daily_brief/database/entity/headline
 import 'package:better_informed_mobile/data/daily_brief/database/entity/relax_entity.hv.dart';
 import 'package:better_informed_mobile/data/daily_brief/database/entity/synchronizable_brief_entity.hv.dart';
 import 'package:better_informed_mobile/data/subscription/database/entity/active_subscription_entity.hv.dart';
+import 'package:better_informed_mobile/data/subscription/database/entity/subscription_origin_entity.hv.dart';
 import 'package:better_informed_mobile/data/subscription/database/entity/subscription_plan_entity.hv.dart';
 import 'package:better_informed_mobile/data/subscription/database/entity/subscription_plan_type_entity.hv.dart';
 import 'package:better_informed_mobile/data/topic/database/entity/entry_style_entity.hv.dart';
@@ -110,4 +111,5 @@ Future<void> initializeHive() async {
   Hive.registerAdapter(TopicPreviewEntityAdapter());
   Hive.registerAdapter(SynchronizableBriefEntityAdapter());
   Hive.registerAdapter(BriefCalendarEntityAdapter());
+  Hive.registerAdapter(SubscriptionOriginEntityAdapter());
 }

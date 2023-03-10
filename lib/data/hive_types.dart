@@ -65,4 +65,5 @@ class HiveTypes {
   static const int topicPreviewEntity = 61;
   static const int synchronizableBriefEntity = 62;
   static const int briefCalendarEntity = 63;
+  static const int subscriptionOriginEntity = 64;
 }

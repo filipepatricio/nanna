@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/data/subscription/api/dto/active_subscription_dto.dart';
+import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_origin_mapper.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
@@ -12,9 +13,13 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 @injectable
 class ActiveSubscriptionMapper implements Mapper<ActiveSubscriptionDTO, ActiveSubscription> {
-  ActiveSubscriptionMapper(this._appConfig);
+  ActiveSubscriptionMapper(
+    this._appConfig,
+    this._subscriptionOriginMapper,
+  );
 
   final AppConfig _appConfig;
+  final SubscriptionOriginMapper _subscriptionOriginMapper;
 
   @override
   ActiveSubscription call(ActiveSubscriptionDTO dto) {
@@ -38,6 +43,7 @@ class ActiveSubscriptionMapper implements Mapper<ActiveSubscriptionDTO, ActiveSu
           DateTime.parse(activeEntitlement.expirationDate!).difference(clock.now()).inDays,
           activePlan,
           nextPlan,
+          _subscriptionOriginMapper(activeEntitlement.store),
         );
       }
 
@@ -48,6 +54,7 @@ class ActiveSubscriptionMapper implements Mapper<ActiveSubscriptionDTO, ActiveSu
         activeEntitlement.willRenew,
         activePlan,
         nextPlan,
+        _subscriptionOriginMapper(activeEntitlement.store),
       );
     }
 

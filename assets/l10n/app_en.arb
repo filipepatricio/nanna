@@ -820,6 +820,14 @@
   "@subscription_button_tryForFree": {
     "type": "text"
   },
+  "subscription_section_subscription": "Subscription",
+  "@subscription_section_subscription": {
+    "type": "text"
+  },
+  "subscription_manageSubscription": "Manage subscription",
+  "@subscription_manageSubscription": {
+    "type": "text"
+  },
   "subscription_cancelSubscription": "Cancel subscription",
   "@subscription_cancelSubscription": {
     "type": "text"
