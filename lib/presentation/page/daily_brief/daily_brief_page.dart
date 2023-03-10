@@ -110,16 +110,20 @@ class _DailyBriefPage extends HookWidget {
           }
         },
         hasBeenUpdated: () {
-          snackbarController.showMessage(
-            SnackbarMessage.simple(
-              message: context.l10n.dailyBrief_refreshSnackBar_message,
-              type: SnackbarMessageType.info,
-              action: SnackbarAction(
-                label: context.l10n.dailyBrief_refreshSnackBar_action,
-                callback: () => cubit.refetchBriefs(),
+          if (context.routeData.isActive) {
+            snackbarController.showMessage(
+              SnackbarMessage.simple(
+                message: context.l10n.dailyBrief_refreshSnackBar_message,
+                type: SnackbarMessageType.info,
+                action: SnackbarAction(
+                  label: context.l10n.dailyBrief_refreshSnackBar_action,
+                  callback: () => cubit.refetchBriefs(),
+                ),
               ),
-            ),
-          );
+            );
+          } else {
+            cubit.refetchBriefs();
+          }
         },
       );
     });
@@ -161,7 +165,7 @@ class _DailyBriefPage extends HookWidget {
                         cubit: cubit,
                       ),
                       loadingPastDay: (state) => DailyBriefAppBar(
-                        showCalendar: true,
+                        showCalendar: state.showCalendar,
                         scrollController: scrollController,
                         briefDate: state.selectedPastDay.date,
                         pastDays: state.pastDays,
@@ -186,7 +190,7 @@ class _DailyBriefPage extends HookWidget {
                       ),
                       loadingPastDay: (state) => SliverPinnedHeader(
                         child: DailyBriefCalendar(
-                          isVisible: true,
+                          isVisible: state.showCalendar,
                           selectedBriefDate: state.selectedPastDay.date,
                           pastDays: state.pastDays,
                           isFloating: state.showAppBarTitle,

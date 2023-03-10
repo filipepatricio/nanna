@@ -6,4 +6,6 @@ abstract class AppInfoRepository {
   Future<String?> getLatestAvailableVersion();
 
   String getPlatform();
+
+  Future<void> openSubscriptionManagementSystemPage(String? sku);
 }

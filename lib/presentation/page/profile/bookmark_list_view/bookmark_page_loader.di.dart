@@ -23,6 +23,8 @@ class BookmarkPageLoader implements NextPageLoader<Bookmark> {
 
   @override
   Future<List<Bookmark>> call(NextPageConfig config) {
+    if (!remote && config.offset != 0) return Future.value([]);
+
     return _getPaginatedBookmarksUseCase(
       limit: config.limit,
       offset: config.offset,

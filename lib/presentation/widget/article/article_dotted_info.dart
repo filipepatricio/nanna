@@ -24,7 +24,7 @@ class ArticleDottedInfo extends StatelessWidget {
     this.color,
     this.publisherMaxLines = 1,
     this.centerContent = false,
-    this.publisherLogoSize = AppDimens.publisherLogoSize,
+    this.publisherLogoSizeType = PublisherLogoSizeType.small,
     Key? key,
   })  : assert(
           showPublisher || showDate || showReadTime,
@@ -43,7 +43,7 @@ class ArticleDottedInfo extends StatelessWidget {
   final Color? color;
   final int publisherMaxLines;
   final bool centerContent;
-  final double publisherLogoSize;
+  final PublisherLogoSizeType publisherLogoSizeType;
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +85,9 @@ class ArticleDottedInfo extends StatelessWidget {
                 children: [
                   if (showLogo) ...[
                     if (darkMode)
-                      PublisherLogo.dark(publisher: article.publisher, dimension: publisherLogoSize)
+                      PublisherLogo.dark(publisher: article.publisher, sizeType: publisherLogoSizeType)
                     else
-                      PublisherLogo.light(publisher: article.publisher, dimension: publisherLogoSize),
+                      PublisherLogo.light(publisher: article.publisher, sizeType: publisherLogoSizeType),
                     const SizedBox(width: AppDimens.xs),
                   ],
                   Flexible(

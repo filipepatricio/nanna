@@ -5,6 +5,10 @@ import 'package:better_informed_mobile/data/article/database/mapper/synchronizab
 import 'package:better_informed_mobile/data/bookmark/database/bookmark_hive_local_repository.di.dart';
 import 'package:better_informed_mobile/data/bookmark/database/mapper/bookmark_sort_config_name_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/bookmark/database/mapper/synchronizable_bookmark_entity_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/database/daily_brief_calendar_hive_local_repository.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/database/daily_brief_hive_local_repository.dart';
+import 'package:better_informed_mobile/data/daily_brief/database/mapper/daily_brief_calendar_entity_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/database/mapper/synchronizable_brief_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/database/mapper/active_subscription_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/database/subscription_hive_local_repository.di.dart';
 import 'package:better_informed_mobile/data/topic/database/mapper/synchronziable_topic_entity_mapper.di.dart';
@@ -15,6 +19,8 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/article_local_repository.dart';
 import 'package:better_informed_mobile/domain/article/article_progress_local_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
+import 'package:better_informed_mobile/domain/daily_brief/daily_brief_calendar_local_repository.dart';
+import 'package:better_informed_mobile/domain/daily_brief/daily_brief_local_repository.dart';
 import 'package:better_informed_mobile/domain/subscription/subscription_local_repository.dart';
 import 'package:better_informed_mobile/domain/topic/topics_local_repository.dart';
 import 'package:better_informed_mobile/domain/user/user_local_repository.dart';
@@ -74,6 +80,28 @@ abstract class RepositoryModule {
   @preResolve
   Future<UserLocalRepository> getUserLocalRepository(UserEntityMapper userEntityMapper) {
     return UserHiveLocalRepository.create(userEntityMapper);
+  }
+
+  @dev
+  @test
+  @prod
+  @Environment(integrationProdTestName)
+  @Environment(integrationStageTestName)
+  @preResolve
+  Future<DailyBriefLocalRepository> getDailyBriefLocalRepository(SynchronizableBriefEntityMapper briefEntityMapper) {
+    return DailyBriefHiveLocalRepository.create(briefEntityMapper);
+  }
+
+  @dev
+  @test
+  @prod
+  @Environment(integrationProdTestName)
+  @Environment(integrationStageTestName)
+  @preResolve
+  Future<DailyBriefCalendarLocalRepository> getDailyBriefCalendarLocalRepository(
+    DailyBriefCalendarEntityMapper mapper,
+  ) {
+    return DailyBriefCalendarHiveLocalRepository.create(mapper);
   }
 
   @dev

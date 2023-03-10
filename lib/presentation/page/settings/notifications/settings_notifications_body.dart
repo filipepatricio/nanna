@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dt.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences_group.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/settings/notifications/daily_brief_badge_switch/daily_brief_badge_switch_container.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_header_container.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_setting_switch.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_type.dart';
@@ -11,7 +12,6 @@ import 'package:better_informed_mobile/presentation/widget/audio/player_banner/a
 import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsNotificationsBody extends HookWidget {
@@ -30,7 +30,10 @@ class SettingsNotificationsBody extends HookWidget {
       physics: getPlatformScrollPhysics(),
       slivers: [
         SliverPadding(
-          padding: const EdgeInsets.fromLTRB(AppDimens.l, AppDimens.l, AppDimens.l, AppDimens.s),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.pageHorizontalMargin,
+            vertical: AppDimens.m,
+          ),
           sliver: SliverList(
             delegate: SliverChildListDelegate(
               [
@@ -52,31 +55,19 @@ class SettingsNotificationsBody extends HookWidget {
                   ),
                   const SizedBox(height: AppDimens.l),
                 ],
-                const SizedBox(height: AppDimens.l),
-                NotificationHeaderContainer(
-                  startWidget: Text(
-                    context.l10n.settings_notifications_title,
-                    style: AppTypography.h4Bold.copyWith(height: 1),
-                  ),
-                  trailingChildren: [
-                    Text(
-                      context.l10n.settings_push,
-                      style: AppTypography.b3Regular.copyWith(height: 1),
-                    ),
-                    Text(
-                      context.l10n.settings_email,
-                      style: AppTypography.b3Regular.copyWith(height: 1),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppDimens.l),
                 ...groups
+                    .asMap()
+                    .entries
                     .map(
-                      (group) => _NotificationGroup(group: group),
+                      (group) => _NotificationGroup(
+                        group: group.value,
+                        showNotificationTypeTitle: group.key == 0,
+                      ),
                     )
                     .expand(
                       (element) => [element, const SizedBox(height: AppDimens.l)],
                     ),
+                const DailyBriefBadgeSwitchContainer(),
               ],
             ),
           ),
@@ -92,29 +83,46 @@ class SettingsNotificationsBody extends HookWidget {
 class _NotificationGroup extends StatelessWidget {
   const _NotificationGroup({
     required this.group,
+    required this.showNotificationTypeTitle,
     Key? key,
   }) : super(key: key);
   final NotificationPreferencesGroup group;
+  final bool showNotificationTypeTitle;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: AppDimens.s),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        NotificationHeaderContainer(
+          startWidget: Text(
             group.name,
             style: AppTypography.subH1Bold.copyWith(
               color: AppColors.of(context).textTertiary,
             ),
           ),
-          const SizedBox(height: AppDimens.m),
-          ...group.channels.map(
-            (channel) => _NotificationChannel(channel: channel),
-          ),
-        ],
-      ),
+          trailingChildren: [
+            if (showNotificationTypeTitle) ...[
+              Text(
+                context.l10n.settings_push,
+                style: AppTypography.b3Regular.copyWith(
+                  color: AppColors.of(context).textTertiary,
+                ),
+              ),
+              Text(
+                context.l10n.settings_email,
+                style: AppTypography.b3Regular.copyWith(
+                  color: AppColors.of(context).textTertiary,
+                ),
+              ),
+            ],
+          ],
+        ),
+        const SizedBox(height: AppDimens.m),
+        ...group.channels.map(
+          (channel) => _NotificationChannel(channel: channel),
+        ),
+      ],
     );
   }
 }

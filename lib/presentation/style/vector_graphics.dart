@@ -66,6 +66,7 @@ class AppVectorGraphics {
   static const String noImage = 'assets/vector_graphics/no_image.svg';
   static const String visitedCheckmark = 'assets/vector_graphics/read_checkmark.svg';
   static const String offline = 'assets/vector_graphics/offline.svg';
+  static const String subscriptionManage = 'assets/vector_graphics/subscription_manage.svg';
 
   static const String bookmarkFilled = 'assets/vector_graphics/bookmark_filled.svg';
   static const String bookmarkOutline = 'assets/vector_graphics/bookmark_outline.svg';

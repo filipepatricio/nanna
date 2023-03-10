@@ -237,7 +237,10 @@ class AppDimens {
   static const pillRadius = 70.0;
 
   /// 20.0
-  static const publisherLogoSize = 20.0;
+  static const smallPublisherLogoSize = 20.0;
+
+  /// 24.0
+  static const mediumPublisherLogoSize = 24.0;
 
   /// 40%
   static const unavailableItemOpacity = 0.4;

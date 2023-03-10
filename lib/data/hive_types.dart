@@ -45,4 +45,25 @@ class HiveTypes {
   static const int subscriptionPlanTypeEntity = 41;
   static const int synchronizableBookmarkEntity = 42;
   static const int synchronizableArticleProgressEntity = 43;
+  static const int briefEntity = 44;
+  static const int headlineEntity = 45;
+  static const int briefIntroductionEntity = 46;
+  static const int relaxEntity = 47;
+  static const int callToActionEntity = 48;
+  static const int briefSectionEntity = 49;
+  static const int briefSectionEntriesEntity = 50;
+  static const int briefSectionSubsectionEntity = 51;
+  static const int briefSectionUnknownEntity = 52;
+  static const int briefEntryEntity = 53;
+  static const int briefEntryItemEntity = 54;
+  static const int briefEntryItemArticleEntity = 55;
+  static const int briefEntryItemTopicEntity = 56;
+  static const int briefEntryItemUnknownEntity = 57;
+  static const int briefEntryStyleEntity = 58;
+  static const int briefEntryStyleTypeEntity = 59;
+  static const int briefSubsectionEntity = 60;
+  static const int topicPreviewEntity = 61;
+  static const int synchronizableBriefEntity = 62;
+  static const int briefCalendarEntity = 63;
+  static const int subscriptionOriginEntity = 64;
 }

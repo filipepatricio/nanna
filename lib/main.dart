@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_action_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/push_notification_message_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/util/badge_info_data_source.di.dart';
 import 'package:better_informed_mobile/data/util/badge_info_repository_impl.di.dart';
 import 'package:better_informed_mobile/data/util/reporting_tree_error_filter.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_analytics_use_case.di.dart';
@@ -37,7 +38,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   final incomingPushDTO = remoteMessageToIncomingPushDTOMapper.call(message);
   final incomingPush = incomingPushDTOMapper.call(incomingPushDTO);
   final sharedPreferences = await SharedPreferences.getInstance();
-  final badgeRepository = BadgeInfoRepositoryImpl(sharedPreferences);
+  final badgeInfoDataSource = BadgeInfoDataSource(sharedPreferences);
+  final badgeRepository = BadgeInfoRepositoryImpl(badgeInfoDataSource);
   final setNeedsRefreshDailyBriefUseCase = SetNeedsRefreshDailyBriefUseCase(badgeRepository);
 
   final action = incomingPush.actions.first;

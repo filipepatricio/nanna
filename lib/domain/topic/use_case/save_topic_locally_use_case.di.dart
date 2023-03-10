@@ -25,6 +25,11 @@ class SaveTopicLocallyUseCase {
   final SaveSynchronizableItemUseCase _saveSynchronizableItemUseCase;
   final ImagePrecacheBroadcaster _imagePrecacheBroadcaster;
 
+  Future<void> saveUnsynchronized(String slug, Duration timeToExpire) async {
+    final synchronizable = Synchronizable.createNotSynchronized<Topic>(slug, timeToExpire);
+    await _saveSynchronizableItemUseCase(_topicsLocalRepository, synchronizable);
+  }
+
   Future<void> fetchAndSave(String slug, Duration timeToExpire) async {
     final synchronizable = Synchronizable.createNotSynchronized<Topic>(slug, timeToExpire);
     await _saveSynchronizableItemUseCase(_topicsLocalRepository, synchronizable);

@@ -38,12 +38,16 @@ class _SettingsSubscriptionManualPremiumView extends StatelessWidget {
                 context.l10n.subscription_endDate,
                 style: AppTypography.subH1Medium.copyWith(
                   color: AppColors.of(context).textTertiary,
+                  height: 2.1,
                 ),
               ),
-              const SizedBox(height: AppDimens.ml),
-              Text(
-                DateFormatUtil.formatFullMonthNameDayYear(subscription.expirationDate!),
-                style: AppTypography.subH1Medium,
+              const SizedBox(height: AppDimens.xs),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
+                child: Text(
+                  DateFormatUtil.formatFullMonthNameDayYear(subscription.expirationDate!),
+                  style: AppTypography.b2Regular,
+                ),
               ),
             ],
             const SizedBox(height: AppDimens.l),

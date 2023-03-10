@@ -24,7 +24,7 @@ class PublisherLogoRow extends HookWidget {
     final remainingPublishersIndicator = topic.publisherInformation.remainingPublishersIndicator;
 
     return SizedBox(
-      height: AppDimens.publisherLogoSize,
+      height: AppDimens.smallPublisherLogoSize,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,

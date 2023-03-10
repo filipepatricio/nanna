@@ -7,43 +7,46 @@ import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
+enum PublisherLogoSizeType { small, medium }
 
 class PublisherLogo extends HookWidget {
   const PublisherLogo._({
     required this.publisher,
     required this.image,
-    required this.dimension,
+    required this.sizeType,
     Key? key,
   }) : super(key: key);
 
   factory PublisherLogo.dark({
     required Publisher publisher,
-    double dimension = AppDimens.publisherLogoSize,
+    PublisherLogoSizeType sizeType = PublisherLogoSizeType.small,
     Key? key,
   }) =>
       PublisherLogo._(
         publisher: publisher,
         image: kIsTest ? informed.Image(publicId: AppRasterGraphics.testPublisherLogoDark) : publisher.darkLogo,
-        dimension: dimension,
+        sizeType: sizeType,
         key: key,
       );
 
   factory PublisherLogo.light({
     required Publisher publisher,
-    double dimension = AppDimens.publisherLogoSize,
+    PublisherLogoSizeType sizeType = PublisherLogoSizeType.small,
     Key? key,
   }) =>
       PublisherLogo._(
         publisher: publisher,
         image: kIsTest ? informed.Image(publicId: AppRasterGraphics.testPublisherLogoLight) : publisher.lightLogo,
-        dimension: dimension,
+        sizeType: sizeType,
         key: key,
       );
 
   final Publisher publisher;
   final informed.Image? image;
-  final double dimension;
+  final PublisherLogoSizeType sizeType;
 
   @override
   Widget build(BuildContext context) {
@@ -61,23 +64,54 @@ class PublisherLogo extends HookWidget {
                 child: kIsTest
                     ? Image.asset(
                         publisherLogoId,
-                        width: dimension,
-                        height: dimension,
+                        width: sizeType.size,
+                        height: sizeType.size,
                         fit: BoxFit.contain,
                       )
                     : CachedNetworkImage(
                         imageUrl: cloudinaryProvider
                             .withPublicId(publisherLogoId)
                             .transform()
-                            .width(DimensionUtil.getPhysicalPixelsAsInt(dimension, context))
+                            .width(DimensionUtil.getPhysicalPixelsAsInt(sizeType.size, context))
                             .fit()
                             .generateNotNull(publisherLogoId, imageType: ImageType.png),
-                        width: dimension,
-                        height: dimension,
+                        width: sizeType.size,
+                        height: sizeType.size,
                         fit: BoxFit.contain,
+                        cacheManager: PublisherLogoCacheManager(),
                       ),
               ),
             ),
           );
   }
+}
+
+extension PublisherLogoSizeTypeExt on PublisherLogoSizeType {
+  double get size {
+    switch (this) {
+      case PublisherLogoSizeType.small:
+        return AppDimens.smallPublisherLogoSize;
+      case PublisherLogoSizeType.medium:
+        return AppDimens.mediumPublisherLogoSize;
+    }
+  }
+}
+
+class PublisherLogoCacheManager extends CacheManager with ImageCacheManager {
+  factory PublisherLogoCacheManager() {
+    return _instance;
+  }
+
+  PublisherLogoCacheManager._()
+      : super(
+          Config(
+            key,
+            stalePeriod: const Duration(days: 30),
+            maxNrOfCacheObjects: 200,
+          ),
+        );
+
+  static const key = 'publisherLogoCachedImageData';
+
+  static final PublisherLogoCacheManager _instance = PublisherLogoCacheManager._();
 }

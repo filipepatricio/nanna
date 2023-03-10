@@ -28,6 +28,7 @@ class AppColors {
     required this.shadowDividerColors,
     required this.blackWhitePrimary,
     required this.blackWhiteSecondary,
+    required this.switchPrimary,
   });
 
   static AppColors of(BuildContext context) {
@@ -61,6 +62,7 @@ class AppColors {
     blackWhitePrimary: _black,
     blackWhiteSecondary: _white,
     shadowDividerColors: [_lightGrey, brandSecondary],
+    switchPrimary: brandPrimary,
   );
 
   static const dark = AppColors._(
@@ -85,6 +87,7 @@ class AppColors {
     blackWhitePrimary: _white,
     blackWhiteSecondary: _black,
     shadowDividerColors: [_darkCharcoal, brandPrimary],
+    switchPrimary: _switchActiveGreen,
   );
 
   final Color textPrimary;
@@ -108,6 +111,7 @@ class AppColors {
   final Color blackWhitePrimary;
   final Color blackWhiteSecondary;
   final List<Color> shadowDividerColors;
+  final Color switchPrimary;
 
   // How to set opacity in Hex https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
 
@@ -151,6 +155,8 @@ class AppColors {
 
   static const String shareBackgroundTopColor = "#FFFFFF";
   static const String shareBackgroundBottomColor = "#FFFFFF";
+
+  static const Color _switchActiveGreen = Color(0xFFA7DF6F);
 
   static const Color _black = Color(0xFF000000);
   static const Color _white = Color(0xFFFFFFFF);
