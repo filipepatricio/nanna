@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
@@ -35,6 +36,7 @@ class OnboardingPage extends HookWidget {
     final pageIndex = useState(0);
     final controller = usePageController();
     final isLastPage = pageIndex.value == _pageList.length - 1;
+    final brightness = AdaptiveTheme.of(context).brightness;
 
     useEffect(
       () {
@@ -55,7 +57,9 @@ class OnboardingPage extends HookWidget {
     );
 
     return AnnotatedRegion(
-      value: InformedTheme.systemUIOverlayStyleLight,
+      value: brightness == Brightness.dark
+          ? InformedTheme.systemUIOverlayStyleLight
+          : InformedTheme.systemUIOverlayStyleDark,
       child: Scaffold(
         body: SafeArea(
           top: false,
