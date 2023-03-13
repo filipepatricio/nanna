@@ -16,6 +16,7 @@ import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_p
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 @injectable
 class OnboardingPageCubit extends Cubit<OnboardingPageState> {
@@ -43,6 +44,8 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
 
   List<Category> _categories = [];
 
+  final BehaviorSubject<bool> _uiActiveStateSubject = BehaviorSubject.seeded(true);
+
   Future<void> initialize() async {
     _onboardingCategoriesStreamSubscription =
         _getCurrentOnboardingCategoriesUseCase.stream.listen(_onboardingCategoriesListener);
@@ -61,9 +64,13 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   }
 
   Future<void> setOnboardingCompleted() async {
+    await _requestNotificationPermissionUseCase();
+
+    // Tracking can be requested only after the UI becomes active again
+    await _uiActiveStateSubject.firstWhere((isActive) => isActive);
     await _requestTrackingPermissionUseCase();
     _initializeAttributionUseCase().ignore();
-    await _requestNotificationPermissionUseCase();
+
     _trackOnboardingCompleted();
     await _setOnboardingSeenUseCase();
     await _setPreferredCategories();
@@ -77,6 +84,10 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
         Fimber.e('Updating preferred categories failed', ex: e, stacktrace: s);
       }
     }
+  }
+
+  void setUiActiveState(bool isActive) {
+    _uiActiveStateSubject.add(isActive);
   }
 
   void trackOnboardingPage(int index) {
@@ -95,5 +106,6 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   Future<void> close() async {
     await super.close();
     await _onboardingCategoriesStreamSubscription?.cancel();
+    await _uiActiveStateSubject.close();
   }
 }
