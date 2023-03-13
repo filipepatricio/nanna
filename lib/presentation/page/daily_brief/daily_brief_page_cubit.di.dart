@@ -238,6 +238,9 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   }
 
   Future<void> selectBrief(DateTime briefDate) async {
+    _shouldShowCalendar = false;
+    _refreshCurrentState();
+
     final localSelectedBrief = _selectedBrief ?? _briefsWrapper.currentBrief;
 
     if (briefDate.isSameDateAs(localSelectedBrief.date)) return;
