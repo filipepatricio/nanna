@@ -226,6 +226,31 @@ void main() {
   );
 
   testWidgets(
+    'changing date in calendar closes calendar',
+    (tester) async {
+      await withClock(
+        Clock(() => DateTime(2022, 07, 14)),
+        () async {
+          await tester.startApp();
+
+          await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
+          await tester.pumpAndSettle();
+
+          final calendarItem = find.descendant(
+            of: find.byType(DailyBriefCalendar),
+            matching: find.byText("13"),
+          );
+
+          await tester.tap(calendarItem);
+          await tester.pumpAndSettle();
+
+          expect(calendarItem, findsNothing);
+        },
+      );
+    },
+  );
+
+  testWidgets(
     "can't change date in calendar if brief is null",
     (tester) async {
       await withClock(
@@ -255,6 +280,9 @@ void main() {
           await tester.pumpAndSettle();
 
           expect(appBarTitle, findsOneWidget);
+
+          await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
+          await tester.pumpAndSettle();
 
           await tester.tap(calendarItemNull);
           await tester.pumpAndSettle();
