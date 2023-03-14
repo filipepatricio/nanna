@@ -11,7 +11,7 @@ class IncomingPushActionDTOMapper implements Mapper<IncomingPushActionDTO, Incom
       refreshDailyBrief: (data) => IncomingPushAction.refreshDailyBrief(),
       navigateTo: (data) => IncomingPushAction.navigateTo(data.args.path),
       unknown: (data) => IncomingPushAction.unknown(data.type),
-      briefEntrySeenByUser: (data) => IncomingPushAction.briefEntriesUpdated(data.args.badgeCount),
+      briefEntrySeenByUser: (data) => IncomingPushAction.briefEntrySeenByUser(data.args.badgeCount),
       briefEntriesUpdated: (data) => IncomingPushAction.briefEntriesUpdated(data.args.badgeCount),
       newBriefPublished: (data) => IncomingPushAction.newBriefPublished(data.args.badgeCount),
     );
