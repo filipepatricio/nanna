@@ -61,6 +61,7 @@ import 'package:better_informed_mobile/domain/bookmark/use_case/save_bookmarked_
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief_badge/badge_info_repository.dart';
 import 'package:better_informed_mobile/domain/daily_brief_badge/use_case/should_show_daily_brief_badge_use_case.di.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
@@ -100,6 +101,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mockito/annotations.dart';
 import 'package:purchases_flutter/object_wrappers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const _classes = [
   AudioRepository,
@@ -203,6 +205,8 @@ const _classes = [
   ShouldShowDailyBriefBadgeUseCase,
   OpenSubscriptionManagementScreenUseCase,
   SubscriptionOriginMapper,
+  BadgeInfoRepository,
+  SharedPreferences,
 ];
 
 @GenerateMocks(_classes)
