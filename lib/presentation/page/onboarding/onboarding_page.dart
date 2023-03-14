@@ -56,6 +56,10 @@ class OnboardingPage extends HookWidget {
       },
     );
 
+    useOnAppLifecycleStateChange((previous, current) {
+      cubit.setUiActiveState(current == AppLifecycleState.resumed);
+    });
+
     return AnnotatedRegion(
       value: brightness == Brightness.dark
           ? InformedTheme.systemUIOverlayStyleLight
