@@ -8,9 +8,9 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_data.dt.dar
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/synchronization/exception/synchronizable_invalidated_exception.dart';
 import 'package:better_informed_mobile/domain/synchronization/synchronizable.dt.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/synchronize_with_remote_use_case.di.dart';
-import 'package:clock/clock.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -30,7 +30,7 @@ class SynchronizaArticleProgressWithRemoteUseCase implements SynchronizeWithRemo
   @override
   Future<Synchronizable<ArticleProgress>> call(Synchronizable<ArticleProgress> synchronizable) async {
     final progress = synchronizable.data;
-    if (progress == null) throw Exception('Progress is null');
+    if (progress == null) throw SynchronizableInvalidatedException();
 
     final updatedProgress = await _articleRepository.trackReadingProgress(
       synchronizable.dataId,
@@ -38,15 +38,7 @@ class SynchronizaArticleProgressWithRemoteUseCase implements SynchronizeWithRemo
     );
     await _notifyAboutProgressUpdate(synchronizable.dataId, updatedProgress);
 
-    final updatedSynchronizable = Synchronizable.synchronized(
-      data: progress,
-      dataId: synchronizable.dataId,
-      createdAt: synchronizable.createdAt,
-      synchronizedAt: clock.now(),
-      expirationDate: synchronizable.createdAt,
-    );
-
-    return updatedSynchronizable;
+    throw SynchronizableInvalidatedException();
   }
 
   Future<void> _notifyAboutProgressUpdate(

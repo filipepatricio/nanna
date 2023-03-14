@@ -1,11 +1,16 @@
 import 'package:better_informed_mobile/domain/daily_brief/use_case/brief_unseen_count_state_notifier.di.dart';
 import 'package:injectable/injectable.dart';
 
-@injectable
+@lazySingleton
 class DecreaseBriefUnseenCountStateNotifierUseCase {
-  const DecreaseBriefUnseenCountStateNotifierUseCase(this._notifier);
+  DecreaseBriefUnseenCountStateNotifierUseCase(this._notifier);
 
   final BriefUnseenCountStateNotifier _notifier;
+  final Set<String> _slugs = {};
 
-  void call() => _notifier.decrease();
+  void call(String slug) {
+    if (_slugs.add(slug)) {
+      _notifier.decrease();
+    }
+  }
 }

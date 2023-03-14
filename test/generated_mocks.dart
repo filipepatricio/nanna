@@ -43,7 +43,6 @@ import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_audio_progress_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_free_articles_left_warning_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/load_local_article_use_case.di.dart';
-import 'package:better_informed_mobile/domain/article/use_case/mark_article_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/save_article_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/save_article_read_progress_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/update_article_progress_state_notifier_use_case.di.dart';
@@ -59,9 +58,13 @@ import 'package:better_informed_mobile/domain/bookmark/profile_bookmark_change_n
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_paginated_bookmarks_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/save_bookmarked_media_item_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/brief_entry_new_state_notifier.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/decrease_brief_unseen_count_state_notifier_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/mark_entry_as_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/save_seen_entry_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief_badge/badge_info_repository.dart';
 import 'package:better_informed_mobile/domain/daily_brief_badge/use_case/should_show_daily_brief_badge_use_case.di.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
@@ -88,7 +91,6 @@ import 'package:better_informed_mobile/domain/synchronization/synchronizable_rep
 import 'package:better_informed_mobile/domain/synchronization/use_case/save_synchronizable_item_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/synchronize_with_remote_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/topics_repository.dart';
-import 'package:better_informed_mobile/domain/topic/use_case/mark_topic_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/save_topic_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
@@ -191,8 +193,6 @@ const _classes = [
   SynchronizableRepository,
   SynchronizeWithRemoteUsecase,
   SaveSynchronizableItemUseCase,
-  MarkTopicAsSeenUseCase,
-  MarkArticleAsSeenUseCase,
   GetFreeArticlesLeftWarningStreamUseCase,
   IsInternetConnectionAvailableUseCase,
   ArticleLocalRepository,
@@ -206,6 +206,10 @@ const _classes = [
   ShouldShowDailyBriefBadgeUseCase,
   OpenSubscriptionManagementScreenUseCase,
   SubscriptionOriginMapper,
+  MarkEntryAsSeenUseCase,
+  SaveSeenEntryLocallyUseCase,
+  BriefEntryNewStateNotifier,
+  DecreaseBriefUnseenCountStateNotifierUseCase,
   BadgeInfoRepository,
   SharedPreferences,
   GetPaginatedBookmarksUseCase,
