@@ -6,7 +6,7 @@ description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # Version handled in CD workflows - check out .github/workflows/cd_prod.yml and .github/workflows/cd_staging.yml
-version: 1.54.0+0
+version: 1.57.0+0
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
