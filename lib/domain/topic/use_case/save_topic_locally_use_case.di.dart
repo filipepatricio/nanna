@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/domain/topic/topics_local_repository.dart
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/image_precache/image_precache_broadcaster.di.dart';
 import 'package:better_informed_mobile/domain/util/image_precache/image_precache_data.dt.dart';
+import 'package:better_informed_mobile/presentation/util/article_type_extension.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -49,11 +50,13 @@ class SaveTopicLocallyUseCase {
   }
 
   Future<void> _prefetchAllArticles(Topic topic, Duration timeToExpire) async {
-    final articles = topic.entries
+    final slugs = topic.entries
         .map((entry) => entry.item)
         .whereType<MediaItemArticle>()
-        .map((article) => _saveArticleLocallyUseCase.fetchDetailsAndSave(article, timeToExpire));
+        .where((element) => element.type.isPremium)
+        .map((item) => item.slug)
+        .toList(growable: false);
 
-    await Future.wait(articles);
+    await _saveArticleLocallyUseCase.fetchListAndSave(slugs, timeToExpire);
   }
 }

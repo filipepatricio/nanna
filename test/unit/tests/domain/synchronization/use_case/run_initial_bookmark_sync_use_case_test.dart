@@ -112,10 +112,14 @@ void main() {
     );
   });
 
-  test('should save bookmark when it is not already saved locally', () async {
+  test('should save all fetched bookmarks', () async {
+    final bookmarks = [
+      Bookmark('000', BookmarkData.article(TestData.article)),
+      Bookmark('001', BookmarkData.article(TestData.article)),
+    ];
+
     when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => true);
     when(bookmarkLocalRepository.loadLastSynchronizationTime()).thenAnswer((_) async => null);
-    when(bookmarkLocalRepository.getAllIds()).thenAnswer((_) async => ['000']);
     when(
       bookmarkRepository.getPaginatedBookmarks(
         limit: anyNamed('limit'),
@@ -124,12 +128,7 @@ void main() {
         order: anyNamed('order'),
         sort: anyNamed('sort'),
       ),
-    ).thenAnswer(
-      (_) async => [
-        Bookmark('000', BookmarkData.article(TestData.article)),
-        Bookmark('001', BookmarkData.article(TestData.article)),
-      ],
-    );
+    ).thenAnswer((_) async => bookmarks);
 
     await useCase();
 
@@ -143,7 +142,6 @@ void main() {
       ),
     );
 
-    verifyNever(saveBookmarkedMediaItemUseCase.usingBookmarkData(any, '000'));
-    verify(saveBookmarkedMediaItemUseCase.usingBookmarkData(any, '001'));
+    verify(saveBookmarkedMediaItemUseCase.usingBookmarkList(bookmarks));
   });
 }

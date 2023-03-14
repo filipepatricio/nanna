@@ -7,6 +7,12 @@ import 'package:better_informed_mobile/data/article/api/documents/__generated__/
     as article_content;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/article_header.ast.gql.dart'
     as article_header;
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/full_article.ast.gql.dart'
+    as full_article;
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/full_article_with_audio.ast.gql.dart'
+    as full_article_with_audio;
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_offline_articles.ast.gql.dart'
+    as get_offline_articles;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_other_brief_entries.ast.gql.dart'
     as get_other_brief_entries;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_other_topic_entries.ast.gql.dart'
@@ -20,6 +26,7 @@ import 'package:better_informed_mobile/data/article/api/documents/__generated__/
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/update_article_content_progress.ast.gql.dart'
     as update_article_content_progress;
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
@@ -31,6 +38,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item
 import 'package:better_informed_mobile/data/networking/gql_customs/gql_options_with_custom_exception_mapper.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:gql/ast.dart' as ast;
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -262,5 +270,72 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     );
 
     return dto ?? SuccessfulResponseDTO(false);
+  }
+
+  @override
+  Future<ArticleDTO> getArticle(String slug, bool hasAudio) async {
+    final document = hasAudio ? full_article_with_audio.document : full_article.document;
+    final operationName = document.definitions.whereType<ast.OperationDefinitionNode>().first.name?.value;
+
+    final result = await _client.query(
+      QueryOptionsWithCustomExceptionMapper(
+        document: document,
+        operationName: operationName,
+        fetchPolicy: FetchPolicy.networkOnly,
+        exceptionMapper: _articleExceptionMapperFacade,
+        variables: {
+          'slug': slug,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) {
+        final header = ArticleHeaderDTO.fromJson(raw['article'] as Map<String, dynamic>);
+        final content = ArticleContentDTO.fromJson(raw['article'] as Map<String, dynamic>);
+        final audio = raw['getArticleAudioFile'] != null
+            ? AudioFileDTO.fromJson(raw['getArticleAudioFile'] as Map<String, dynamic>)
+            : null;
+        return ArticleDTO(header: header, content: content, audioFile: audio);
+      },
+    );
+
+    if (dto == null) throw Exception('Response for article is null');
+
+    return dto;
+  }
+
+  @override
+  Future<List<ArticleDTO>> getArticleBatch(List<String> slugs) async {
+    final result = await _client.query(
+      QueryOptionsWithCustomExceptionMapper(
+        document: get_offline_articles.document,
+        operationName: get_offline_articles.getOfflineArticles.name?.value,
+        fetchPolicy: FetchPolicy.networkOnly,
+        exceptionMapper: _articleExceptionMapperFacade,
+        variables: {
+          'slugs': slugs,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) {
+        final list = raw['getOfflineArticles'] as List<dynamic>;
+        return list.cast<Map<String, dynamic>>().map((json) {
+          final header = ArticleHeaderDTO.fromJson(json['article'] as Map<String, dynamic>);
+          final content = ArticleContentDTO.fromJson(json['article'] as Map<String, dynamic>);
+          final audio =
+              raw['audioFile'] != null ? AudioFileDTO.fromJson(json['audioFile'] as Map<String, dynamic>) : null;
+          return ArticleDTO(header: header, content: content, audioFile: audio);
+        }).toList(growable: false);
+      },
+    );
+
+    if (dto == null) throw Exception('Response for article batch is null');
+
+    return dto;
   }
 }

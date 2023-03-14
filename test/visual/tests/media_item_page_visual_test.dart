@@ -156,7 +156,7 @@ void main() {
 
 class FakeGetArticleUseCase extends Fake implements GetArticleUseCase {
   @override
-  Future<Article> call(MediaItemArticle article, {bool refreshMetadata = false}) => throw ArticleGeoblockedException();
+  Future<Article> single(MediaItemArticle article) => throw ArticleGeoblockedException();
 }
 
 class FakeMediaItemCubit extends Fake implements MediaItemCubit {

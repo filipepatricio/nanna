@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
@@ -16,6 +17,10 @@ abstract class ArticleRepository {
   Future<ArticleContent> getArticleContent(String slug);
 
   Future<AudioFile> getArticleAudioFile(String slug, [bool forceFresh = false]);
+
+  Future<Article> getArticle(String slug, bool hasAudio);
+
+  Future<List<Article>> getArticleList(List<String> slugs);
 
   Future<List<BriefEntryItem>> getOtherBriefEntries(String articleSlug, String briefId);
 
