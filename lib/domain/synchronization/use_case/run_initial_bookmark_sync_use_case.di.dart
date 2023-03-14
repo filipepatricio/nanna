@@ -30,8 +30,6 @@ class RunIntitialBookmarkSyncUseCase {
     final lastSyncedAt = await _bookmarkLocalRepository.loadLastSynchronizationTime();
     if (!force && lastSyncedAt != null) return;
 
-    final localBookmarks = await _bookmarkLocalRepository.getAllIds();
-
     var offset = 0;
     var hasMore = true;
 
@@ -50,11 +48,7 @@ class RunIntitialBookmarkSyncUseCase {
         hasMore = false;
       }
 
-      for (final bookmark in bookmarksBatch) {
-        if (!localBookmarks.contains(bookmark.id)) {
-          await _saveBookmarkedMediaItemUseCase.usingBookmarkData(bookmark.data, bookmark.id);
-        }
-      }
+      await _saveBookmarkedMediaItemUseCase.usingBookmarkList(bookmarksBatch);
     }
 
     await _bookmarkLocalRepository.saveSynchronizationTime(clock.now());

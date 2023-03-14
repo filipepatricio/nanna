@@ -143,7 +143,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
 
   Future<void> _loadPremiumArticle(MediaItemArticle article) async {
     try {
-      final fullArticle = await _getArticleUseCase(article);
+      final fullArticle = await _getArticleUseCase.single(article);
       _currentArticle = fullArticle.metadata;
       emit(MediaItemState.idlePremium(fullArticle));
     } on ArticleGeoblockedException {
@@ -178,7 +178,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
 
     while (shouldRefresh && counter < _maxRefreshTries) {
       try {
-        final fullArticle = await _getArticleUseCase(article, refreshMetadata: true);
+        final fullArticle = await _getArticleUseCase.single(article);
         _currentArticle = fullArticle.metadata;
 
         if (_doesSubscriptionMatchArticleState(fullArticle.metadata, subscription)) {

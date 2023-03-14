@@ -156,7 +156,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   Future<void> refreshArticle() async {
     emit(const PremiumArticleViewState.initial());
 
-    _currentFullArticle = await _getArticleUseCase(_currentFullArticle.metadata);
+    _currentFullArticle = await _getArticleUseCase.single(_currentFullArticle.metadata);
 
     emit(
       PremiumArticleViewState.idle(
