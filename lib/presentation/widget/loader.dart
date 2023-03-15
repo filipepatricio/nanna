@@ -1,11 +1,9 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/theme_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
-
-const _logoHeight = 63.0;
-const _logoWidth = 270.0;
 
 class Loader extends StatelessWidget {
   const Loader({
@@ -34,11 +32,10 @@ class LoaderLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: InformedSvg(
-        AppVectorGraphics.launcherLogoInformed,
-        width: _logoWidth,
-        height: _logoHeight,
+        Theme.of(context).isDark ? AppVectorGraphics.launcherLogoInformedDark : AppVectorGraphics.launcherLogoInformed,
+        colored: false,
       ),
     );
   }
