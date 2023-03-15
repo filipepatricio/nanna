@@ -27,7 +27,7 @@ class MagicLinkContent extends StatelessWidget {
             const Align(
               alignment: Alignment.centerLeft,
               child: InformedSvg(
-                AppVectorGraphics.launcherLogoInformed,
+                AppVectorGraphics.informedLogo,
                 width: AppDimens.logoWidth,
                 height: AppDimens.logoHeight,
               ),
