@@ -106,13 +106,20 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
       [
         _pushNotificationMessenger.initialMessage().asStream().whereType<IncomingPushDTO>(),
         _pushNotificationMessenger.onMessageOpenedApp(),
-        _pushNotificationMessenger.onMessage(),
       ],
     ).map<IncomingPush>(_incomingPushDTOMapper).map<IncomingPush>(_logUnknownActions);
 
     _incomingPushSubscription = incomingPushStream.listen(_incomingPushNotificationStream!.sink.add);
 
     return _incomingPushNotificationStream!.stream;
+  }
+
+  @override
+  Stream<IncomingPush> pushNotificationMessageStream() {
+    return _pushNotificationMessenger
+        .onMessage()
+        .map<IncomingPush>(_incomingPushDTOMapper)
+        .map<IncomingPush>(_logUnknownActions);
   }
 
   bool _isAuthorized(NotificationSettings result) => result.authorizationStatus == AuthorizationStatus.authorized;
