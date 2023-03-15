@@ -18,8 +18,8 @@ class SynchronizeOnConnectionChangeUseCase {
   StreamSubscription call() {
     return _isInternetConnectionAvailableUseCase.stream
         .distinct()
-        .where((isAvailable) => isAvailable)
         .debounceTime(const Duration(seconds: 5))
+        .where((isAvailable) => isAvailable)
         .listen((event) => _synchronizeAllUseCase());
   }
 }
