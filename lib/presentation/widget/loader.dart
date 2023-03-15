@@ -5,9 +5,6 @@ import 'package:better_informed_mobile/presentation/util/theme_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
 
-const _logoHeight = 206.0;
-const _logoWidth = 237.0;
-
 class Loader extends StatelessWidget {
   const Loader({
     Key? key,
@@ -39,8 +36,6 @@ class LoaderLogo extends StatelessWidget {
       child: InformedSvg(
         Theme.of(context).isDark ? AppVectorGraphics.launcherLogoInformedDark : AppVectorGraphics.launcherLogoInformed,
         colored: false,
-        width: _logoWidth,
-        height: _logoHeight,
       ),
     );
   }
