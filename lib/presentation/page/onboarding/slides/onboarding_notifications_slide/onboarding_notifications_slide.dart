@@ -62,7 +62,7 @@ class _IdleContent extends StatelessWidget {
           const Spacer(flex: 5),
           NotificationHeaderContainer(
             startWidget: Text(
-              context.l10n.onboarding_headerSlideThree,
+              context.l10n.onboarding_headerSlideNotifications,
               style: AppTypography.b3Medium.copyWith(color: AppColors.of(context).textSecondary),
             ),
             trailingChildren: [

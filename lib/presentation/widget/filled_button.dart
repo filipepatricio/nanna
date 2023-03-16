@@ -16,6 +16,7 @@ class InformedFilledButton extends StatelessWidget {
     this.leading,
     this.trailing,
     this.withOutline = false,
+    this.style,
     Key? key,
   }) : super(key: key);
 
@@ -110,6 +111,30 @@ class InformedFilledButton extends StatelessWidget {
         withOutline: withOutline,
       );
 
+  factory InformedFilledButton.tertiary({
+    required BuildContext context,
+    required String text,
+    String? subtext,
+    VoidCallback? onTap,
+    Widget? leading,
+    Widget? trailing,
+    bool withOutline = false,
+  }) =>
+      InformedFilledButton._(
+        text: text,
+        subtext: subtext,
+        isEnabled: true,
+        onTap: onTap,
+        fillColor: AppColors.of(context).buttonSecondaryBackground,
+        disableColor: AppColors.of(context).buttonSecondaryBackground,
+        textColor: AppColors.of(context).buttonSecondaryText,
+        isLoading: false,
+        leading: leading,
+        trailing: trailing,
+        withOutline: withOutline,
+        style: AppTypography.sansTextNanoLausanne,
+      );
+
   factory InformedFilledButton.color({
     required String text,
     required Color fillColor,
@@ -146,6 +171,7 @@ class InformedFilledButton extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final bool withOutline;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +179,7 @@ class InformedFilledButton extends StatelessWidget {
     final trailing = this.trailing;
 
     final textStyle =
-        (subtext != null ? AppTypography.buttonBold : AppTypography.buttonMedium).copyWith(color: textColor);
+        style ?? (subtext != null ? AppTypography.buttonBold : AppTypography.buttonMedium).copyWith(color: textColor);
 
     return GestureDetector(
       onTap: isEnabled ? onTap : () {},

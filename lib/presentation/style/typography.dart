@@ -74,7 +74,7 @@ class AppTypography {
   static const TextStyle onBoardingHeader = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 36,
+    fontSize: 28,
   );
 
   static const TextStyle h0Medium = TextStyle(

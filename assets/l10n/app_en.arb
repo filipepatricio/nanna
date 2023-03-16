@@ -397,6 +397,18 @@
   "@noConnection_snackbar_subMessage": {
     "type": "text"
   },
+  "onboarding_get_started_with_premium": "Get started with Premium",
+  "@onboarding_get_started_with_premium": {
+    "type": "text"
+  },
+  "onboarding_get_started": "Get started",
+  "@onboarding_get_started": {
+    "type": "text"
+  },
+  "onboarding_already_have_an_account": "I already have an account",
+  "@onboarding_already_have_an_account": {
+    "type": "text"
+  },
   "onboarding_categories_everything": "Show me everything",
   "@onboarding_categories_everything": {
     "type": "text"
@@ -405,20 +417,36 @@
   "@onboarding_descriptionSlideCategories": {
     "type": "text"
   },
-  "onboarding_descriptionSlideOne": "Get a daily curation of must-read articles – all in one app.",
+  "onboarding_descriptionSlideOne": "Explore articles from diverse international publishers and read ad-free. You'll see names you already love and find new favorites.",
   "@onboarding_descriptionSlideOne": {
+    "type": "text"
+  },
+  "onboarding_descriptionSlideTwo": "Read less and know more with your Daily Brief, curated by our editors and updated throughout the day. Every Brief comes with a key summary and editorial commentary.",
+  "@onboarding_descriptionSlideTwo": {
+    "type": "text"
+  },
+  "onboarding_descriptionSlideThree": "Choose to read now or bookmark articles for later. Premium subscribers can read or listen to all our publishers and enjoy stories offline.",
+  "@onboarding_descriptionSlideThree": {
     "type": "text"
   },
   "onboarding_headerSlideCategories": "Add your interests",
   "@onboarding_headerSlideCategories": {
     "type": "text"
   },
-  "onboarding_headerSlideOne": "Access trusted, premium news sources",
+  "onboarding_headerSlideOne": "Access premium publishers, all in one app",
   "@onboarding_headerSlideOne": {
     "type": "text"
   },
-  "onboarding_headerSlideThree": "Notifications",
+  "onboarding_headerSlideTwo": "Enjoy a concise, curated Daily Brief",
+  "@onboarding_headerSlideTwo": {
+    "type": "text"
+  },
+  "onboarding_headerSlideThree": "News to fit your schedule  ",
   "@onboarding_headerSlideThree": {
+    "type": "text"
+  },
+  "onboarding_headerSlideNotifications": "Notifications",
+  "@onboarding_headerSlideNotifications": {
     "type": "text"
   },
   "onboarding_notifications_email": "Email",

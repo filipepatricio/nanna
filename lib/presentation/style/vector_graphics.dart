@@ -52,6 +52,7 @@ class AppVectorGraphics {
 
   static const String openWeb = 'assets/vector_graphics/open_web_ic.svg';
 
+  static const String gift = 'assets/vector_graphics/gift.svg';
   static const String newspaper = 'assets/vector_graphics/newspaper.svg';
   static const String checkmark = 'assets/vector_graphics/checkmark.svg';
   static const String done = 'assets/vector_graphics/done.svg';

@@ -2,26 +2,22 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_categories_slide/onboarding_categories_slide.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_notifications_slide/onboarding_notifications_slide.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_publishers_slide.dart';
-import 'package:better_informed_mobile/presentation/style/app_animation.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
-import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
+import 'package:better_informed_mobile/presentation/widget/link_label.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
-final List<Widget> _pageList = [
-  const OnboardingPublishersSlide(),
-  const OnboardingCategoriesSlide(),
-  const OnboardingNotificationsSlide(),
-];
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 const _notificationSlide = 2;
 const _trackingSlide = 2;
@@ -29,11 +25,39 @@ const _trackingSlide = 2;
 class OnboardingPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pageList = [
+      OnboardingSlide(
+        imagePath: AppRasterGraphics.onboardingSlideOne,
+        title: context.l10n.onboarding_headerSlideOne,
+        body: context.l10n.onboarding_descriptionSlideOne,
+      ),
+      OnboardingSlide(
+        imagePath: AppRasterGraphics.onboardingSlideTwo,
+        title: context.l10n.onboarding_headerSlideTwo,
+        body: context.l10n.onboarding_descriptionSlideTwo,
+      ),
+      OnboardingSlide(
+        imagePath: AppRasterGraphics.onboardingSlideThree,
+        title: context.l10n.onboarding_headerSlideThree,
+        body: context.l10n.onboarding_descriptionSlideThree,
+      ),
+    ];
+
     final cubit = useCubit<OnboardingPageCubit>();
+    final snackbarController = useMemoized(() => SnackbarController());
 
     final pageIndex = useState(0);
     final controller = usePageController();
-    final isLastPage = pageIndex.value == _pageList.length - 1;
+    final isLastPage = pageIndex.value == pageList.length - 1;
+
+    Future<void> openInBrowser(String uri) async {
+      await openInAppBrowser(
+        uri,
+        (error, stacktrace) {
+          showBrowserError(context, uri, snackbarController);
+        },
+      );
+    }
 
     useEffect(
       () {
@@ -59,58 +83,107 @@ class OnboardingPage extends HookWidget {
 
     return Scaffold(
       body: SafeArea(
-        top: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               flex: 20,
-              child: PageView(
-                controller: controller,
-                onPageChanged: (index) {
-                  cubit.trackOnboardingPage(index);
-                  pageIndex.value = index;
-                },
-                children: _pageList,
+              child: Stack(
+                children: [
+                  PageView(
+                    physics: const ClampingScrollPhysics(),
+                    controller: controller,
+                    onPageChanged: (index) {
+                      cubit.trackOnboardingPage(index);
+                      pageIndex.value = index;
+                    },
+                    children: pageList,
+                  ),
+                  Positioned(
+                    top: AppDimens.s,
+                    right: AppDimens.s,
+                    child: _SkipButton(
+                      cubit: cubit,
+                      controller: controller,
+                    ),
+                  ),
+                  Positioned(
+                    top: AppDimens.s,
+                    left: AppDimens.s,
+                    child: _GiftButton(
+                      cubit: cubit,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const Spacer(flex: 1),
+            const Spacer(),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: Row(
+                children: [
+                  SmoothPageIndicator(
+                    controller: controller,
+                    count: pageList.length,
+                    effect: ExpandingDotsEffect(
+                      expansionFactor: 4,
+                      activeDotColor: AppColors.of(context).iconPrimary,
+                      dotColor: AppColors.of(context).iconSecondary,
+                      spacing: AppDimens.xs,
+                      dotHeight: AppDimens.xs,
+                      dotWidth: AppDimens.xs,
+                      // strokeWidth: 5,
+                    ),
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    height: AppDimens.xxl,
+                    child: !isLastPage
+                        ? _NextPageButton(
+                            cubit: cubit,
+                            controller: controller,
+                            currentPage: pageIndex.value,
+                          )
+                        : const SizedBox.shrink(),
+                  )
+                ],
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  PageDotIndicator(
-                    pageCount: _pageList.length,
-                    controller: controller,
+                  InformedFilledButton.primary(
+                    context: context,
+                    text: context.l10n.onboarding_get_started_with_premium,
+                    onTap: () => _navigateToMainPage(context, cubit),
                   ),
-                  const SizedBox(height: AppDimens.m),
+                  const SizedBox(height: AppDimens.s),
+                  InformedFilledButton.tertiary(
+                    context: context,
+                    text: context.l10n.onboarding_already_have_an_account,
+                    onTap: () => _navigateToMainPage(context, cubit),
+                    withOutline: true,
+                  ),
+                  const SizedBox(height: AppDimens.ml),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AnimatedOpacity(
-                        duration: const Duration(milliseconds: AppAnimation.skipButton),
-                        opacity: pageIndex.value == _pageList.length - 1 ? 0 : 1,
-                        child: AbsorbPointer(
-                          absorbing: pageIndex.value == _pageList.length - 1,
-                          child: _SkipButton(
-                            cubit: cubit,
-                            controller: controller,
-                          ),
-                        ),
+                      LinkLabel(
+                        label: context.l10n.settings_termsAndConditions,
+                        style: AppTypography.sansTextNanoLausanne,
+                        decoration: TextDecoration.none,
+                        onTap: () => openInBrowser(''),
                       ),
-                      const Spacer(),
-                      if (isLastPage)
-                        InformedFilledButton.primary(
-                          context: context,
-                          text: context.l10n.common_continue,
-                          onTap: () => _navigateToMainPage(context, cubit),
-                        )
-                      else
-                        _NextPageButton(
-                          cubit: cubit,
-                          controller: controller,
-                          currentPage: pageIndex.value,
-                        ),
+                      const SizedBox(width: AppDimens.m),
+                      LinkLabel(
+                        label: context.l10n.settings_privacyPolicy,
+                        style: AppTypography.sansTextNanoLausanne,
+                        decoration: TextDecoration.none,
+                        onTap: () => openInBrowser(''),
+                      ),
                     ],
                   ),
                 ],
@@ -149,7 +222,7 @@ class _SkipButton extends StatelessWidget {
       },
       child: Text(
         context.l10n.common_skip,
-        style: AppTypography.buttonBold,
+        style: AppTypography.buttonBold.copyWith(color: AppColors.brandPrimary),
       ),
     );
   }
@@ -179,6 +252,29 @@ class _NextPageButton extends StatelessWidget {
       icon: const InformedSvg(
         AppVectorGraphics.fullArrowRight,
         fit: BoxFit.contain,
+      ),
+    );
+  }
+}
+
+class _GiftButton extends StatelessWidget {
+  const _GiftButton({
+    required this.cubit,
+    Key? key,
+  }) : super(key: key);
+
+  final OnboardingPageCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () async {
+        //TODO:
+      },
+      icon: const InformedSvg(
+        AppVectorGraphics.gift,
+        fit: BoxFit.contain,
+        color: AppColors.brandPrimary,
       ),
     );
   }
