@@ -397,12 +397,16 @@
   "@noConnection_snackbar_subMessage": {
     "type": "text"
   },
-  "onboarding_button_getStartedWithPremium": "Get started with Premium",
-  "@onboarding_button_getStartedWithPremium": {
+  "onboarding_get_started_with_premium": "Get started with Premium",
+  "@onboarding_get_started_with_premium": {
     "type": "text"
   },
-  "onboarding_button_alreadyHaveAnAccount": "I already have an account",
-  "@onboarding_button_alreadyHaveAnAccount": {
+  "onboarding_get_started": "Get started",
+  "@onboarding_get_started": {
+    "type": "text"
+  },
+  "onboarding_already_have_an_account": "I already have an account",
+  "@onboarding_already_have_an_account": {
     "type": "text"
   },
   "onboarding_categories_everything": "Show me everything",

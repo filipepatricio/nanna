@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
@@ -6,6 +7,7 @@ import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboa
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/informed_theme.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -49,6 +51,7 @@ class OnboardingPage extends HookWidget {
     final pageIndex = useState(0);
     final controller = usePageController();
     final isLastPage = pageIndex.value == pageList.length - 1;
+    final brightness = AdaptiveTheme.of(context).brightness;
 
     Future<void> openInBrowser(String uri) async {
       await openInAppBrowser(
@@ -81,116 +84,121 @@ class OnboardingPage extends HookWidget {
       cubit.setUiActiveState(current == AppLifecycleState.resumed);
     });
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 20,
-              child: Stack(
-                children: [
-                  PageView(
-                    physics: const ClampingScrollPhysics(),
-                    controller: controller,
-                    onPageChanged: (index) {
-                      cubit.trackOnboardingPage(index);
-                      pageIndex.value = index;
-                    },
-                    children: pageList,
-                  ),
-                  Positioned(
-                    top: AppDimens.s,
-                    right: AppDimens.xl,
-                    child: _SkipButton(
-                      cubit: cubit,
+    return AnnotatedRegion(
+      value: brightness == Brightness.dark
+          ? InformedTheme.systemUIOverlayStyleLight
+          : InformedTheme.systemUIOverlayStyleDark,
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                flex: 20,
+                child: Stack(
+                  children: [
+                    PageView(
+                      physics: const ClampingScrollPhysics(),
                       controller: controller,
+                      onPageChanged: (index) {
+                        cubit.trackOnboardingPage(index);
+                        pageIndex.value = index;
+                      },
+                      children: pageList,
                     ),
-                  ),
-                  Positioned(
-                    top: AppDimens.s,
-                    left: AppDimens.xl,
-                    child: _GiftButton(
-                      cubit: cubit,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-              child: Row(
-                children: [
-                  SmoothPageIndicator(
-                    controller: controller,
-                    count: pageList.length,
-                    effect: ExpandingDotsEffect(
-                      expansionFactor: 4,
-                      activeDotColor: AppColors.of(context).iconPrimary,
-                      dotColor: AppColors.of(context).iconSecondary,
-                      spacing: AppDimens.xs,
-                      dotHeight: AppDimens.xs,
-                      dotWidth: AppDimens.xs,
-                      // strokeWidth: 5,
-                    ),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    height: AppDimens.xxl,
-                    child: !isLastPage
-                        ? _NextPageButton(
-                            cubit: cubit,
-                            controller: controller,
-                            currentPage: pageIndex.value,
-                          )
-                        : const SizedBox.shrink(),
-                  )
-                ],
-              ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  InformedFilledButton.primary(
-                    context: context,
-                    text: context.l10n.onboarding_button_getStartedWithPremium,
-                    onTap: () => _navigateToMainPage(context, cubit),
-                  ),
-                  const SizedBox(height: AppDimens.s),
-                  InformedFilledButton.tertiary(
-                    context: context,
-                    text: context.l10n.onboarding_button_alreadyHaveAnAccount,
-                    onTap: () => _navigateToMainPage(context, cubit),
-                    withOutline: true,
-                  ),
-                  const SizedBox(height: AppDimens.ml),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      LinkLabel(
-                        label: context.l10n.settings_termsAndConditions,
-                        style: AppTypography.sansTextNanoLausanne,
-                        decoration: TextDecoration.none,
-                        onTap: () => openInBrowser(''),
+                    Positioned(
+                      top: AppDimens.s,
+                      right: AppDimens.s,
+                      child: _SkipButton(
+                        cubit: cubit,
+                        controller: controller,
                       ),
-                      const SizedBox(width: AppDimens.m),
-                      LinkLabel(
-                        label: context.l10n.settings_privacyPolicy,
-                        style: AppTypography.sansTextNanoLausanne,
-                        decoration: TextDecoration.none,
-                        onTap: () => openInBrowser(''),
+                    ),
+                    Positioned(
+                      top: AppDimens.s,
+                      left: AppDimens.s,
+                      child: _GiftButton(
+                        cubit: cubit,
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: AppDimens.m),
-          ],
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: Row(
+                  children: [
+                    SmoothPageIndicator(
+                      controller: controller,
+                      count: pageList.length,
+                      effect: ExpandingDotsEffect(
+                        expansionFactor: 4,
+                        activeDotColor: AppColors.of(context).iconPrimary,
+                        dotColor: AppColors.of(context).iconSecondary,
+                        spacing: AppDimens.xs,
+                        dotHeight: AppDimens.xs,
+                        dotWidth: AppDimens.xs,
+                        // strokeWidth: 5,
+                      ),
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      height: AppDimens.xxl,
+                      child: !isLastPage
+                          ? _NextPageButton(
+                              cubit: cubit,
+                              controller: controller,
+                              currentPage: pageIndex.value,
+                            )
+                          : const SizedBox.shrink(),
+                    )
+                  ],
+                ),
+              ),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    InformedFilledButton.primary(
+                      context: context,
+                      text: context.l10n.onboarding_get_started_with_premium,
+                      onTap: () => _navigateToMainPage(context, cubit),
+                    ),
+                    const SizedBox(height: AppDimens.s),
+                    InformedFilledButton.tertiary(
+                      context: context,
+                      text: context.l10n.onboarding_already_have_an_account,
+                      onTap: () => _navigateToMainPage(context, cubit),
+                      withOutline: true,
+                    ),
+                    const SizedBox(height: AppDimens.ml),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LinkLabel(
+                          label: context.l10n.settings_termsAndConditions,
+                          style: AppTypography.sansTextNanoLausanne,
+                          decoration: TextDecoration.none,
+                          onTap: () => openInBrowser(''),
+                        ),
+                        const SizedBox(width: AppDimens.m),
+                        LinkLabel(
+                          label: context.l10n.settings_privacyPolicy,
+                          style: AppTypography.sansTextNanoLausanne,
+                          decoration: TextDecoration.none,
+                          onTap: () => openInBrowser(''),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: AppDimens.m),
+            ],
+          ),
         ),
       ),
     );
@@ -222,7 +230,7 @@ class _SkipButton extends StatelessWidget {
       },
       child: Text(
         context.l10n.common_skip,
-        style: AppTypography.buttonSmallBold.copyWith(color: AppColors.brandPrimary),
+        style: AppTypography.buttonBold.copyWith(color: AppColors.brandPrimary),
       ),
     );
   }
@@ -269,13 +277,11 @@ class _GiftButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PaddingTapWidget(
-      alignment: AlignmentDirectional.centerStart,
-      tapPadding: const EdgeInsets.all(AppDimens.l),
-      onTap: () {
+    return IconButton(
+      onPressed: () async {
         //TODO:
       },
-      child: const InformedSvg(
+      icon: const InformedSvg(
         AppVectorGraphics.gift,
         fit: BoxFit.contain,
         color: AppColors.brandPrimary,
