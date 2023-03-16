@@ -107,6 +107,9 @@ class FakePushNotificationRepository extends Fake implements PushNotificationRep
   Stream<IncomingPush> pushNotificationOpenStream() => const Stream.empty();
 
   @override
+  Stream<IncomingPush> pushNotificationMessageStream() => const Stream.empty();
+
+  @override
   Future<NotificationPreferences> getNotificationPreferences() async => TestData.notificationPreferences;
 
   @override

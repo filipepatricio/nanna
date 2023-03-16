@@ -18,6 +18,8 @@ abstract class PushNotificationRepository {
 
   Stream<IncomingPush> pushNotificationOpenStream();
 
+  Stream<IncomingPush> pushNotificationMessageStream();
+
   Future<NotificationPreferences> getNotificationPreferences();
 
   Future<NotificationChannel> setNotificationChannel(String id, bool? pushEnabled, bool? emailEnabled);
