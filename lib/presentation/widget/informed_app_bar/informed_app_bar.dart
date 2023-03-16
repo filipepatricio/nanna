@@ -10,6 +10,7 @@ class InformedAppBar extends HookWidget implements PreferredSizeWidget {
   const InformedAppBar({
     this.leading,
     this.title,
+    this.titleColor,
     this.backgroundColor,
     this.actions,
     this.isConnected = true,
@@ -18,6 +19,7 @@ class InformedAppBar extends HookWidget implements PreferredSizeWidget {
 
   final Widget? leading;
   final String? title;
+  final Color? titleColor;
   final Color? backgroundColor;
   final List<Widget>? actions;
   final bool isConnected;
@@ -51,7 +53,7 @@ class InformedAppBar extends HookWidget implements PreferredSizeWidget {
           : Text(
               title,
               style: AppTypography.h4Medium.w550.copyWith(
-                color: AppColors.of(context).textPrimary,
+                color: titleColor ?? AppColors.of(context).textPrimary,
                 height: 1.11,
               ),
             ),
