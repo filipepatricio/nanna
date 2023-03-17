@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_audio_file_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_header_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_free_articles_left_warning_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_audio_position_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_playback_state_stream_use_case.di.dart';
@@ -22,6 +23,7 @@ class AudioPlayerBannerCubit extends Cubit<AudioPlayerBannerState> {
     this._audioPositionStreamUseCase,
     this._getArticleHeaderUseCase,
     this._getArticleAudioFileUseCase,
+    this._getFreeArticlesLeftWarningStreamUseCase,
   ) : super(AudioPlayerBannerState.notInitialized());
 
   final AudioPlaybackStateStreamUseCase _audioPlaybackStateStreamUseCase;
@@ -30,9 +32,11 @@ class AudioPlayerBannerCubit extends Cubit<AudioPlayerBannerState> {
   final AudioPositionStreamUseCase _audioPositionStreamUseCase;
   final GetArticleHeaderUseCase _getArticleHeaderUseCase;
   final GetArticleAudioFileUseCase _getArticleAudioFileUseCase;
+  final GetFreeArticlesLeftWarningStreamUseCase _getFreeArticlesLeftWarningStreamUseCase;
 
   StreamSubscription? _audioStateSubscription;
   StreamSubscription? _audioPositionSubscription;
+  StreamSubscription? _freeArticlesLeftWarningSubscription;
 
   Duration? _currentPosition;
 
@@ -40,6 +44,7 @@ class AudioPlayerBannerCubit extends Cubit<AudioPlayerBannerState> {
   Future<void> close() async {
     await _audioStateSubscription?.cancel();
     await _audioPositionSubscription?.cancel();
+    await _freeArticlesLeftWarningSubscription?.cancel();
     return super.close();
   }
 
@@ -60,15 +65,23 @@ class AudioPlayerBannerCubit extends Cubit<AudioPlayerBannerState> {
     _audioPositionSubscription = _audioPositionStreamUseCase().listen((audioPosition) {
       _currentPosition = audioPosition.position;
     });
+
+    _freeArticlesLeftWarningSubscription = _getFreeArticlesLeftWarningStreamUseCase().distinct().listen((event) {
+      final curentState = state;
+      emit(AudioPlayerBannerState.freeArticlesLeft(event));
+      emit(curentState);
+    });
   }
 
   Future<void> stop() async {
     final audioItem = state.mapOrNull(visible: (value) => value.audioItem);
     if (audioItem != null && _currentPosition != null) {
-      _trackArticleAudioPositionUseCase(
-        audioItem.slug,
-        _currentPosition!.inSeconds,
-        audioItem.duration?.inSeconds,
+      unawaited(
+        _trackArticleAudioPositionUseCase(
+          audioItem.slug,
+          _currentPosition!.inSeconds,
+          audioItem.duration?.inSeconds,
+        ),
       );
     }
     await _stopAudioUseCase();

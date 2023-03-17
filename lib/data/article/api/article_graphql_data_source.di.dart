@@ -9,8 +9,6 @@ import 'package:better_informed_mobile/data/article/api/documents/__generated__/
     as article_header;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/full_article.ast.gql.dart'
     as full_article;
-import 'package:better_informed_mobile/data/article/api/documents/__generated__/full_article_with_audio.ast.gql.dart'
-    as full_article_with_audio;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_offline_articles.ast.gql.dart'
     as get_offline_articles;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_other_brief_entries.ast.gql.dart'
@@ -38,7 +36,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item
 import 'package:better_informed_mobile/data/networking/gql_customs/gql_options_with_custom_exception_mapper.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:gql/ast.dart' as ast;
+import 'package:better_informed_mobile/domain/article/exception/article_blocked_by_subscription_exception.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -167,16 +165,28 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
-  void trackAudioPosition(String slug, int position) => _client.mutate(
-        MutationOptions(
-          document: update_article_audio_position.document,
-          operationName: update_article_audio_position.updateArticleAudioPosition.name?.value,
-          variables: {
-            'slug': slug,
-            'position': position,
-          },
-        ),
-      );
+  Future<UpdateArticleProgressResponseDTO> trackAudioPosition(String slug, int position) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: update_article_audio_position.document,
+        operationName: update_article_audio_position.updateArticleAudioPosition.name?.value,
+        variables: {
+          'slug': slug,
+          'position': position,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      rootKey: 'updateArticleAudioPosition',
+      UpdateArticleProgressResponseDTO.fromJson,
+    );
+
+    if (dto == null) throw Exception('Response for article audio position update is null');
+
+    return dto;
+  }
 
   @override
   Future<UpdateArticleProgressResponseDTO> trackReadingProgress(String slug, int progress) async {
@@ -274,13 +284,10 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
 
   @override
   Future<ArticleDTO> getArticle(String slug, bool hasAudio) async {
-    final document = hasAudio ? full_article_with_audio.document : full_article.document;
-    final operationName = document.definitions.whereType<ast.OperationDefinitionNode>().first.name?.value;
-
     final result = await _client.query(
       QueryOptionsWithCustomExceptionMapper(
-        document: document,
-        operationName: operationName,
+        document: full_article.document,
+        operationName: full_article.fullArticle.name?.value,
         fetchPolicy: FetchPolicy.networkOnly,
         exceptionMapper: _articleExceptionMapperFacade,
         variables: {
@@ -289,14 +296,22 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
       ),
     );
 
+    AudioFileDTO? audioFile;
+
+    if (hasAudio) {
+      try {
+        audioFile = await getArticleAudioFile(slug, false);
+      } on ArticleBlockedBySubscriptionException {
+        audioFile = null;
+      }
+    }
+
     final dto = _responseResolver.resolve(
       result,
       (raw) {
         final header = ArticleHeaderDTO.fromJson(raw['article'] as Map<String, dynamic>);
         final content = ArticleContentDTO.fromJson(raw['article'] as Map<String, dynamic>);
-        final audio = raw['getArticleAudioFile'] != null
-            ? AudioFileDTO.fromJson(raw['getArticleAudioFile'] as Map<String, dynamic>)
-            : null;
+        final audio = audioFile;
         return ArticleDTO(header: header, content: content, audioFile: audio);
       },
     );

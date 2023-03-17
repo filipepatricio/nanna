@@ -5,11 +5,13 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/current_audio_progress_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -26,6 +28,25 @@ class AudioPlayerBanner extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<AudioPlayerBannerCubit>(closeOnDispose: false);
     final state = useCubitBuilder(cubit);
+    final snackbarController = useSnackbarController();
+
+    useCubitListener<AudioPlayerBannerCubit, AudioPlayerBannerState>(cubit, (cubit, current, context) {
+      current.mapOrNull(
+        freeArticlesLeft: (value) {
+          snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: value.message,
+              subMessage: context.l10n.subscription_snackbar_link,
+              action: SnackbarAction(
+                label: context.l10n.subscription_snackbar_action,
+                callback: () => context.pushRoute(const SubscriptionPageRoute()),
+              ),
+              type: SnackbarMessageType.subscription,
+            ),
+          );
+        },
+      );
+    });
 
     useEffect(
       () {
@@ -201,6 +222,7 @@ extension on AudioPlayerBannerState {
       notInitialized: (_) => '',
       visible: (state) => state.audioItem.title,
       hidden: (_) => '',
+      freeArticlesLeft: (_) => '',
     );
   }
 
@@ -221,6 +243,7 @@ extension on AudioPlayerBannerState {
             }
           },
       hidden: (_) => null,
+      freeArticlesLeft: (_) => null,
     );
   }
 
@@ -229,6 +252,7 @@ extension on AudioPlayerBannerState {
       notInitialized: (_) => controller.reverse(),
       visible: (_) => controller.forward(),
       hidden: (_) => controller.reverse(),
+      freeArticlesLeft: (_) {},
     );
   }
 }

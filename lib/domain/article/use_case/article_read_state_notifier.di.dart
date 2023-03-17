@@ -17,9 +17,11 @@ class ArticleReadStateNotifier {
   }
 
   void notify(MediaItemArticle article) {
-    _articles[article.id] = article;
+    _articles[article.slug] = article;
     _changeStream.sink.add(article);
   }
+
+  MediaItemArticle? getArticle(String slug) => _articles[slug];
 
   @disposeMethod
   void dispose() {

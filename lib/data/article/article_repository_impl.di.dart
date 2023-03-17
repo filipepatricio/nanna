@@ -83,9 +83,16 @@ class ArticleRepositoryImpl implements ArticleRepository {
   }
 
   @override
-  void trackAudioPosition(String articleSlug, int position, [int? duration]) {
-    _articleDataSource.trackAudioPosition(articleSlug, position);
+  Future<UpdateArticleProgressResponse> trackAudioPosition(String articleSlug, int position, [int? duration]) async {
     _audioProgress[articleSlug] = position / (duration ?? 1);
+
+    final dto = await _articleDataSource.trackAudioPosition(articleSlug, position);
+
+    if (dto.freeArticlesLeftWarning != null) {
+      _freeArticlesLeftWarningStream.add(dto.freeArticlesLeftWarning!);
+    }
+
+    return _updateArticleProgressResponseDTOMapper(dto);
   }
 
   @override
