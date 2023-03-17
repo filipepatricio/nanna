@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
@@ -194,10 +195,12 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
       playing: (state) async {
         await _pauseAudioUseCase();
         _trackActivityUseCase.trackEvent(AnalyticsEvent.pausedArticleAudio(state.audioItem.id));
-        _trackArticleAudioPositionUseCase(
-          state.audioItem.slug,
-          _currentPosition.inSeconds,
-          state.audioItem.duration?.inSeconds,
+        unawaited(
+          _trackArticleAudioPositionUseCase(
+            state.audioItem.slug,
+            _currentPosition.inSeconds,
+            state.audioItem.duration?.inSeconds,
+          ),
         );
       },
       orElse: () {
@@ -212,10 +215,12 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
       paused: (state) async {
         await _playAudioUseCase();
         _trackActivityUseCase.trackEvent(AnalyticsEvent.playedArticleAudio(state.audioItem.id));
-        _trackArticleAudioPositionUseCase(
-          state.audioItem.slug,
-          _currentPosition.inSeconds,
-          state.audioItem.duration?.inSeconds,
+        unawaited(
+          _trackArticleAudioPositionUseCase(
+            state.audioItem.slug,
+            max(_currentPosition.inSeconds, 1),
+            state.audioItem.duration?.inSeconds,
+          ),
         );
       },
       orElse: () {
@@ -281,7 +286,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
   Future<void> pause() async {
     await _pauseAudioUseCase();
     _trackActivityUseCase.trackEvent(AnalyticsEvent.pausedArticleAudio(_article.id));
-    _trackArticleAudioPositionUseCase(_article.slug, _currentPosition.inSeconds);
+    unawaited(_trackArticleAudioPositionUseCase(_article.slug, _currentPosition.inSeconds));
   }
 
   @override
@@ -293,10 +298,12 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
           if (forceNewAudio || state.completed) {
             if (!state.completed) {
               // Tracking current audio position before being replaced by new audio
-              _trackArticleAudioPositionUseCase(
-                state.currentAudioItem.slug,
-                _currentPosition.inSeconds,
-                state.currentAudioItem.duration?.inSeconds,
+              unawaited(
+                _trackArticleAudioPositionUseCase(
+                  state.currentAudioItem.slug,
+                  _currentPosition.inSeconds,
+                  state.currentAudioItem.duration?.inSeconds,
+                ),
               );
             }
             await _prepareNewAudio();
@@ -307,8 +314,13 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
         },
         paused: (_) => _playAudioUseCase(),
       );
-      _trackArticleAudioPositionUseCase(_article.slug, _currentPosition.inSeconds);
       _trackActivityUseCase.trackEvent(AnalyticsEvent.playedArticleAudio(_article.id));
+      unawaited(
+        _trackArticleAudioPositionUseCase(
+          _article.slug,
+          max(_currentPosition.inSeconds, 1),
+        ),
+      );
     } else {
       emit(AudioControlButtonState.needsSubscription());
       emit(AudioControlButtonState.notInitilized(_getArticleAudioProgressUseCase(_article)));

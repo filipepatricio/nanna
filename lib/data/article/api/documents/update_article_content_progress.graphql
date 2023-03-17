@@ -5,8 +5,8 @@ mutation updateArticleContentProgress($slug: String!, $progress: Int!) {
     successful
     freeArticlesLeftWarning
     progressState
-    progress{
-        ...progressFragment
+    progress {
+      ...progressFragment
     }
   }
 }

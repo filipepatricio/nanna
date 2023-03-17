@@ -27,7 +27,7 @@ abstract class ArticleApiDataSource {
 
   Future<UpdateArticleProgressResponseDTO> trackReadingProgress(String articleSlug, int progress);
 
-  void trackAudioPosition(String articleSlug, int position);
+  Future<UpdateArticleProgressResponseDTO> trackAudioPosition(String slug, int position);
 
   Future<SuccessfulResponseDTO> markArticleAsSeen(String slug);
 }

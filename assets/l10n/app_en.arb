@@ -990,6 +990,10 @@
   "@subscription_snackbar_link": {
     "type": "text"
   },
+  "subscription_snackbar_action": "Upgrade",
+  "@subscription_snackbar_action": {
+    "type": "text"
+  },
   "subscription_startReading": "Start reading",
   "@subscription_startReading": {
     "type": "text"

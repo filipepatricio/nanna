@@ -44,7 +44,9 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
-  void trackAudioPosition(String articleSlug, int position) {}
+  Future<UpdateArticleProgressResponseDTO> trackAudioPosition(String slug, int position) async {
+    return MockDTO.updateArticleProgressResponse;
+  }
 
   @override
   Future<UpdateArticleProgressResponseDTO> trackReadingProgress(String articleSlug, int progress) async {
