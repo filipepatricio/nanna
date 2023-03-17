@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
@@ -14,6 +15,10 @@ abstract class ArticleApiDataSource {
 
   Future<AudioFileDTO> getArticleAudioFile(String slug, bool forceFresh);
 
+  Future<ArticleDTO> getArticle(String slug, bool hasAudio);
+
+  Future<List<ArticleDTO>> getArticleBatch(List<String> slugs);
+
   Future<List<BriefEntryItemDTO>> getOtherBriefEntries(String articleSlug, String briefId);
 
   Future<TopicMediaItemsDTO> getOtherTopicEntries(String articleSlug, String topicSlug);
@@ -22,7 +27,7 @@ abstract class ArticleApiDataSource {
 
   Future<UpdateArticleProgressResponseDTO> trackReadingProgress(String articleSlug, int progress);
 
-  void trackAudioPosition(String articleSlug, int position);
+  Future<UpdateArticleProgressResponseDTO> trackAudioPosition(String slug, int position);
 
   Future<SuccessfulResponseDTO> markArticleAsSeen(String slug);
 }

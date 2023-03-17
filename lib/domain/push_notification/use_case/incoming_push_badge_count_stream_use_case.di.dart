@@ -8,7 +8,7 @@ class IncomingPushBadgeCountStreamUseCase {
   final PushNotificationRepository _repository;
 
   Stream<void> call() {
-    return _repository.pushNotificationOpenStream().where(
+    return _repository.pushNotificationMessageStream().where(
           (event) =>
               event.actions.whereType<IncomingPushActionBriefEntriesUpdated>().isNotEmpty ||
               event.actions.whereType<IncomingPushActionNewBriefPublished>().isNotEmpty,

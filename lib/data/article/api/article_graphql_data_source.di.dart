@@ -7,6 +7,10 @@ import 'package:better_informed_mobile/data/article/api/documents/__generated__/
     as article_content;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/article_header.ast.gql.dart'
     as article_header;
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/full_article.ast.gql.dart'
+    as full_article;
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_offline_articles.ast.gql.dart'
+    as get_offline_articles;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_other_brief_entries.ast.gql.dart'
     as get_other_brief_entries;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_other_topic_entries.ast.gql.dart'
@@ -20,6 +24,7 @@ import 'package:better_informed_mobile/data/article/api/documents/__generated__/
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/update_article_content_progress.ast.gql.dart'
     as update_article_content_progress;
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
@@ -31,6 +36,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item
 import 'package:better_informed_mobile/data/networking/gql_customs/gql_options_with_custom_exception_mapper.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/article/exception/article_blocked_by_subscription_exception.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -159,16 +165,28 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
-  void trackAudioPosition(String slug, int position) => _client.mutate(
-        MutationOptions(
-          document: update_article_audio_position.document,
-          operationName: update_article_audio_position.updateArticleAudioPosition.name?.value,
-          variables: {
-            'slug': slug,
-            'position': position,
-          },
-        ),
-      );
+  Future<UpdateArticleProgressResponseDTO> trackAudioPosition(String slug, int position) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: update_article_audio_position.document,
+        operationName: update_article_audio_position.updateArticleAudioPosition.name?.value,
+        variables: {
+          'slug': slug,
+          'position': position,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      rootKey: 'updateArticleAudioPosition',
+      UpdateArticleProgressResponseDTO.fromJson,
+    );
+
+    if (dto == null) throw Exception('Response for article audio position update is null');
+
+    return dto;
+  }
 
   @override
   Future<UpdateArticleProgressResponseDTO> trackReadingProgress(String slug, int progress) async {
@@ -262,5 +280,77 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     );
 
     return dto ?? SuccessfulResponseDTO(false);
+  }
+
+  @override
+  Future<ArticleDTO> getArticle(String slug, bool hasAudio) async {
+    final result = await _client.query(
+      QueryOptionsWithCustomExceptionMapper(
+        document: full_article.document,
+        operationName: full_article.fullArticle.name?.value,
+        fetchPolicy: FetchPolicy.networkOnly,
+        exceptionMapper: _articleExceptionMapperFacade,
+        variables: {
+          'slug': slug,
+        },
+      ),
+    );
+
+    AudioFileDTO? audioFile;
+
+    if (hasAudio) {
+      try {
+        audioFile = await getArticleAudioFile(slug, false);
+      } on ArticleBlockedBySubscriptionException {
+        audioFile = null;
+      }
+    }
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) {
+        final header = ArticleHeaderDTO.fromJson(raw['article'] as Map<String, dynamic>);
+        final content = ArticleContentDTO.fromJson(raw['article'] as Map<String, dynamic>);
+        final audio = audioFile;
+        return ArticleDTO(header: header, content: content, audioFile: audio);
+      },
+    );
+
+    if (dto == null) throw Exception('Response for article is null');
+
+    return dto;
+  }
+
+  @override
+  Future<List<ArticleDTO>> getArticleBatch(List<String> slugs) async {
+    final result = await _client.query(
+      QueryOptionsWithCustomExceptionMapper(
+        document: get_offline_articles.document,
+        operationName: get_offline_articles.getOfflineArticles.name?.value,
+        fetchPolicy: FetchPolicy.networkOnly,
+        exceptionMapper: _articleExceptionMapperFacade,
+        variables: {
+          'slugs': slugs,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) {
+        final list = raw['getOfflineArticles'] as List<dynamic>;
+        return list.cast<Map<String, dynamic>>().map((json) {
+          final header = ArticleHeaderDTO.fromJson(json['article'] as Map<String, dynamic>);
+          final content = ArticleContentDTO.fromJson(json['article'] as Map<String, dynamic>);
+          final audio =
+              raw['audioFile'] != null ? AudioFileDTO.fromJson(json['audioFile'] as Map<String, dynamic>) : null;
+          return ArticleDTO(header: header, content: content, audioFile: audio);
+        }).toList(growable: false);
+      },
+    );
+
+    if (dto == null) throw Exception('Response for article batch is null');
+
+    return dto;
   }
 }

@@ -3,13 +3,13 @@ import 'dart:collection';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/article/use_case/mark_article_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/mark_entry_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/brief_not_initialized_exception.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
@@ -19,7 +19,6 @@ import 'package:better_informed_mobile/domain/push_notification/use_case/incomin
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/set_onboarding_paywall_seen_use_case.di.dart';
-import 'package:better_informed_mobile/domain/topic/use_case/mark_topic_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
@@ -61,8 +60,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._isOnboardingPaywallSeenUseCase,
     this._hasActiveSubscriptionUseCase,
     this._setOnboardingPaywallSeenUseCase,
-    this._markArticleAsSeenUseCase,
-    this._markTopicAsSeenUseCase,
+    this._markEntryAsSeenUseCase,
     this._shouldRefreshDailyBriefUseCase,
     this._incomingPushBadgeCountStreamUseCase,
     this._isInternetConnectionAvailableUseCase,
@@ -79,8 +77,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final IsOnboardingPaywallSeenUseCase _isOnboardingPaywallSeenUseCase;
   final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
   final SetOnboardingPaywallSeenUseCase _setOnboardingPaywallSeenUseCase;
-  final MarkArticleAsSeenUseCase _markArticleAsSeenUseCase;
-  final MarkTopicAsSeenUseCase _markTopicAsSeenUseCase;
+  final MarkEntryAsSeenUseCase _markEntryAsSeenUseCase;
   final ShouldRefreshDailyBriefUseCase _shouldRefreshDailyBriefUseCase;
   final IncomingPushBadgeCountStreamUseCase _incomingPushBadgeCountStreamUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
@@ -238,6 +235,9 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   }
 
   Future<void> selectBrief(DateTime briefDate) async {
+    _shouldShowCalendar = false;
+    _refreshCurrentState();
+
     final localSelectedBrief = _selectedBrief ?? _briefsWrapper.currentBrief;
 
     if (briefDate.isSameDateAs(localSelectedBrief.date)) return;
@@ -381,14 +381,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
 
   Future<void> _markEntryAsSeen(BriefEntry entry) async {
     if (entry.isNew) {
-      await entry.item.mapOrNull(
-        article: (_) async {
-          await _markArticleAsSeenUseCase.call(entry);
-        },
-        topicPreview: (_) async {
-          await _markTopicAsSeenUseCase.call(entry);
-        },
-      );
+      await _markEntryAsSeenUseCase(entry);
     }
   }
 

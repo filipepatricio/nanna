@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/domain/push_notification/use_case/incomin
 import 'package:better_informed_mobile/domain/push_notification/use_case/maybe_register_push_notification_token_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/use_case/get_current_release_note_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/initialize_synchronization_engine_use_case.di.dart';
+import 'package:better_informed_mobile/domain/synchronization/use_case/synchronize_on_connection_change_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dt.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.dart';
@@ -27,6 +28,7 @@ class MainCubit extends Cubit<MainState> {
     this._getCurrentReleaseNoteUseCase,
     this._usePaidSubscriptionChangeStreamUseCase,
     this._initializeSynchronizationEngineUseCase,
+    this._synchronizeOnConnectionChangeUseCase,
   ) : super(const MainState.init());
 
   final GetTokenExpirationStreamUseCase _getTokenExpirationStreamUseCase;
@@ -36,11 +38,13 @@ class MainCubit extends Cubit<MainState> {
   final GetCurrentReleaseNoteUseCase _getCurrentReleaseNoteUseCase;
   final UsePaidSubscriptionChangeStreamUseCase _usePaidSubscriptionChangeStreamUseCase;
   final InitializeSynchronizationEngineUseCase _initializeSynchronizationEngineUseCase;
+  final SynchronizeOnConnectionChangeUseCase _synchronizeOnConnectionChangeUseCase;
 
   StreamSubscription? _incomingPushNavigationSubscription;
   StreamSubscription? _tokenExpirationSubscription;
   StreamSubscription? _deepLinkSubscription;
   StreamSubscription? _usePaidSubscriptionFlagChangeSubscription;
+  StreamSubscription? _syncOnConnectionChangeSubscription;
 
   @override
   Future<void> close() async {
@@ -48,6 +52,7 @@ class MainCubit extends Cubit<MainState> {
     await _tokenExpirationSubscription?.cancel();
     await _deepLinkSubscription?.cancel();
     await _usePaidSubscriptionFlagChangeSubscription?.cancel();
+    await _syncOnConnectionChangeSubscription?.cancel();
     return super.close();
   }
 
@@ -63,7 +68,7 @@ class MainCubit extends Cubit<MainState> {
 
     unawaited(_maybeRegisterPushNotificationTokenUseCase());
     unawaited(_getReleaseNote());
-    unawaited(_initializeSynchronizationEngineUseCase());
+    unawaited(_initializeSynchronizationEngine());
   }
 
   void _subscribeToPushNavigationStream() {
@@ -85,6 +90,14 @@ class MainCubit extends Cubit<MainState> {
       emit(const MainState.resetRouteStack());
       emit(const MainState.init());
     });
+  }
+
+  Future<void> _initializeSynchronizationEngine() async {
+    try {
+      await _initializeSynchronizationEngineUseCase();
+    } finally {
+      _syncOnConnectionChangeSubscription = _synchronizeOnConnectionChangeUseCase();
+    }
   }
 
   Future<void> _getReleaseNote() async {

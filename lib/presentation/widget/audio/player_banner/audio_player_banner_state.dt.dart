@@ -18,4 +18,6 @@ class AudioPlayerBannerState with _$AudioPlayerBannerState {
 
   @Implements<BuildState>()
   factory AudioPlayerBannerState.hidden() = _AudioPlayerBannerStateHidden;
+
+  factory AudioPlayerBannerState.freeArticlesLeft(String message) = _AudioPlayerBannerStateFreeArticlesLeft;
 }

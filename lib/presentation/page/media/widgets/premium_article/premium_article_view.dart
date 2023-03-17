@@ -115,7 +115,7 @@ void showFreeArticlesWarning(BuildContext context, SnackbarController snackbarCo
       message: message,
       subMessage: context.l10n.subscription_snackbar_link,
       action: SnackbarAction(
-        label: 'Upgrade',
+        label: context.l10n.subscription_snackbar_action,
         callback: () => context.pushRoute(const SubscriptionPageRoute()),
       ),
       type: SnackbarMessageType.subscription,

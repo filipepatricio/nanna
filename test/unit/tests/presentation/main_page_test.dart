@@ -37,6 +37,8 @@ void main() {
     when(pushNotificationRepository.registerToken()).thenAnswer(
       (_) async => RegisteredPushToken(token: '000-000', updatedAt: clock.now()),
     );
+    when(pushNotificationRepository.pushNotificationMessageStream())
+        .thenAnswer((realInvocation) => const Stream.empty());
   });
 
   group('handles applinks', () {

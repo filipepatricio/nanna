@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/article/api/article_api_data_source.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
@@ -43,7 +44,9 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
-  void trackAudioPosition(String articleSlug, int position) {}
+  Future<UpdateArticleProgressResponseDTO> trackAudioPosition(String slug, int position) async {
+    return MockDTO.updateArticleProgressResponse;
+  }
 
   @override
   Future<UpdateArticleProgressResponseDTO> trackReadingProgress(String articleSlug, int progress) async {
@@ -63,5 +66,19 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   @override
   Future<SuccessfulResponseDTO> markArticleAsSeen(String articleSlug) async {
     return SuccessfulResponseDTO(true);
+  }
+
+  @override
+  Future<ArticleDTO> getArticle(String slug, bool hasAudio) async {
+    return ArticleDTO(
+      header: await getArticleHeader(slug),
+      content: await getArticleContent(slug),
+      audioFile: hasAudio ? await getArticleAudioFile(slug, false) : null,
+    );
+  }
+
+  @override
+  Future<List<ArticleDTO>> getArticleBatch(List<String> slugs) async {
+    return [];
   }
 }

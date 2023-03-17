@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/synchronization/exception/synchronizable_invalidated_exception.dart';
 import 'package:better_informed_mobile/domain/synchronization/synchronizable.dt.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -34,7 +35,7 @@ void main() {
     );
   });
 
-  test('marks itself as synced and expired on successful api call', () async {
+  test('invalidates itself on successful api call', () async {
     final article = TestData.article;
     final progress = ArticleProgress(
       audioPosition: 5,
@@ -79,10 +80,7 @@ void main() {
       ),
     );
 
-    final result = await useCase(synchronizable);
-
-    expect(result, isA<Synchronized<ArticleProgress>>());
-    expect(result.expirationDate, result.createdAt);
+    await expectLater(useCase(synchronizable), throwsA(isA<SynchronizableInvalidatedException>()));
 
     verify(
       bookmarkLocalRepository.save(

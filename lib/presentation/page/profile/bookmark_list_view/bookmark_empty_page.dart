@@ -20,21 +20,17 @@ class _BookmarkEmptyView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const InformedSvg(AppVectorGraphics.bookmarkOutline),
-                const SizedBox(height: AppDimens.m),
-                Text.rich(
+                const SizedBox(height: AppDimens.l),
+                Text(
+                  context.l10n.profile_emptyPage_title,
+                  style: AppTypography.b2Medium,
                   textAlign: TextAlign.center,
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: context.l10n.profile_emptyPage_title,
-                        style: AppTypography.b2Medium,
-                      ),
-                      TextSpan(
-                        text: filter.emptyBodyText(context),
-                        style: AppTypography.b2Regular,
-                      ),
-                    ],
-                  ),
+                ),
+                const SizedBox(height: AppDimens.l),
+                Text(
+                  filter.emptyBodyText(context),
+                  style: AppTypography.b2Regular,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: AppDimens.xl),
                 Center(

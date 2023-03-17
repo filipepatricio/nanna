@@ -80,6 +80,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
             text: fromTopic ? context.l10n.topic_label : context.l10n.common_back,
           ),
           title: shouldShowTitle ? article.publisher.name : null,
+          titleColor: foregroundColorAnimation.value,
           actions: [
             BookmarkButton.article(
               article: article,

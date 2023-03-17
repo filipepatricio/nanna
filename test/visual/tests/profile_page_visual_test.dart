@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/bookmark/use_case/get_paginated_bookmarks_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
@@ -44,6 +45,32 @@ void main() {
         initialRoute: const ProfileTabGroupRouter(),
         dependencyOverride: (getIt) async {
           getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+        },
+      );
+      await tester.matchGoldenFile();
+    },
+  );
+
+  visualTest(
+    '${ProfilePage}_(empty)',
+    (tester) async {
+      final getPaginatedBookmarkUseCase = MockGetPaginatedBookmarksUseCase();
+      when(
+        getPaginatedBookmarkUseCase.call(
+          limit: anyNamed('limit'),
+          offset: anyNamed('offset'),
+          filter: anyNamed('filter'),
+          order: anyNamed('order'),
+          sort: anyNamed('sort'),
+        ),
+      ).thenAnswer((_) async => []);
+
+      await tester.startApp(
+        initialRoute: const ProfileTabGroupRouter(),
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<GetPaginatedBookmarksUseCase>(
+            () => getPaginatedBookmarkUseCase,
+          );
         },
       );
       await tester.matchGoldenFile();

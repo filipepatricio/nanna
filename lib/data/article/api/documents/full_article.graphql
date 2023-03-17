@@ -1,0 +1,9 @@
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/article_content_fragment.graphql';
+
+query fullArticle($slug: String!) {
+    article(slug: $slug) {
+        ...articleFragment
+        ...articleContentFragment
+    }
+}

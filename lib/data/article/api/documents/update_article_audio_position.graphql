@@ -3,8 +3,10 @@
 mutation updateArticleAudioPosition($slug: String!, $position: Int!) {
   updateArticleAudioPosition(slug: $slug, position: $position) {
     successful
-    progress{
-        ...progressFragment
+    freeArticlesLeftWarning
+    progressState
+    progress {
+      ...progressFragment
     }
   }
 }

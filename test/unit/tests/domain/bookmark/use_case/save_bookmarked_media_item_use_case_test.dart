@@ -100,6 +100,21 @@ void main() {
       verifyNever(articleRepository.getArticleHeader(any));
       verifyNever(saveArticleLocallyUseCase.fetchDetailsAndSave(any, bookmarkExpirationTime));
     });
+
+    test('skip saving freemium article', () async {
+      final article = TestData.article.copyWith(type: ArticleType.free);
+      const bookmarkId = 'bookmarkId';
+      const bookmark = BookmarkTypeData.article('slug', 'id', ArticleType.free);
+
+      when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => true);
+      when(articleRepository.getArticleHeader('slug')).thenAnswer((_) async => article);
+
+      await useCase.usingBookmarkType(bookmark, bookmarkId);
+
+      verify(articleRepository.getArticleHeader(any));
+      verify(saveSynchronizableItemUseCase(bookmarkLocalRepository, any));
+      verifyNever(saveArticleLocallyUseCase.fetchDetailsAndSave(article, bookmarkExpirationTime));
+    });
   });
 
   group('usingBookmarkData', () {
@@ -157,9 +172,45 @@ void main() {
 
       await useCase.usingBookmarkData(bookmark, bookmarkId);
 
-      verifyNever(saveSynchronizableItemUseCase(bookmarkLocalRepository, any));
+      verifyNever(saveSynchronizableItemUseCase(any, any));
       verifyNever(articleRepository.getArticleHeader(any));
-      verifyNever(saveArticleLocallyUseCase.fetchDetailsAndSave(any, bookmarkExpirationTime));
+      verifyNever(saveArticleLocallyUseCase.fetchDetailsAndSave(any, any));
+    });
+  });
+
+  group('usingBookmarkList', () {
+    test('skip for unsubscribed user', () async {
+      final bookmark0 = Bookmark('000', BookmarkData.article(TestData.article.copyWith(slug: '000')));
+      final bookmark1 = Bookmark('001', BookmarkData.article(TestData.article.copyWith(slug: '001')));
+      final bookmarks = [bookmark0, bookmark1];
+
+      when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => false);
+
+      await useCase.usingBookmarkList(bookmarks);
+
+      verifyNever(saveSynchronizableItemUseCase(any, any));
+      verifyNever(saveTopicLocallyUseCase.save(any, any));
+      verifyNever(saveArticleLocallyUseCase.fetchDetailsAndSave(any, any));
+    });
+
+    test('saves only premium articles', () async {
+      final article0 = TestData.article.copyWith(slug: '000');
+      final article1 = TestData.article.copyWith(slug: '001', type: ArticleType.free);
+      final article2 = TestData.article.copyWith(slug: '002');
+      final bookmark0 = Bookmark('000', BookmarkData.article(article0));
+      final bookmark1 = Bookmark('001', BookmarkData.article(article1));
+      final bookmark2 = Bookmark('002', BookmarkData.article(article2));
+      final bookmarks = [bookmark0, bookmark1, bookmark2];
+
+      when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => true);
+      when(saveArticleLocallyUseCase.fetchListAndSave(any, bookmarkExpirationTime))
+          .thenAnswer((realInvocation) async {});
+      when(articleRepository.getArticleHeader('000')).thenAnswer((_) async => article0);
+      when(articleRepository.getArticleHeader('001')).thenAnswer((_) async => article1);
+
+      await useCase.usingBookmarkList(bookmarks);
+
+      verify(saveArticleLocallyUseCase.fetchListAndSave(['000', '002'], bookmarkExpirationTime));
     });
   });
 }

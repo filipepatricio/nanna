@@ -27,8 +27,9 @@ class BriefEntryCoverCubit extends Cubit<BriefEntryCoverState> {
   Future<void> initialize(BriefEntry entry) async {
     _entry = entry;
     emit(BriefEntryCoverState.idle(_entry));
-    _shouldUpdateBriefEntryNewStateSubscription = _getBriefEntryNewStateStreamUseCase(_entry.id).listen((updatedEntry) {
-      _entry = updatedEntry;
+    _shouldUpdateBriefEntryNewStateSubscription =
+        _getBriefEntryNewStateStreamUseCase(_entry.slug).listen((updatedEntry) {
+      _entry = _entry.copyWith(isNew: false);
       emit(BriefEntryCoverState.idle(_entry));
     });
   }

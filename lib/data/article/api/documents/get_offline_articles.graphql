@@ -1,0 +1,15 @@
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/article_content_fragment.graphql';
+
+query getOfflineArticles($slugs: [String!]) {
+   getOfflineArticles(slugs: $slugs) {
+     article {
+          ...articleFragment
+          ...articleContentFragment
+     }
+     audioFile {
+          url
+          credits
+     }
+   }
+}

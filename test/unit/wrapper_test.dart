@@ -36,6 +36,9 @@ import 'tests/domain/bookmark/use_case/remove_bookmark_use_case_test.dart' as re
 import 'tests/domain/bookmark/use_case/save_bookmarked_media_item_use_case_test.dart'
     as save_bookmarked_media_item_use_case_test;
 import 'tests/domain/bookmark/use_case/switch_bookmark_state_use_case_test.dart' as switch_bookmark_state_use_case_test;
+import 'tests/domain/daily_brief/use_case/mark_entry_as_seen_use_case_test.dart' as mark_entry_as_seen_use_case_test;
+import 'tests/domain/daily_brief_badge/should_show_daily_brief_badge_use_case_test.dart'
+    as should_show_daily_brief_badge_use_case_test;
 import 'tests/domain/feature_flags/use_case/use_paid_subscription_change_stream_use_case_test.dart'
     as use_paid_subscription_change_stream_use_case_test;
 import 'tests/domain/general/article_read_state_notifier_test.dart' as article_read_state_notifier_test;
@@ -132,6 +135,7 @@ void main() {
   group('subscription_plan_group_test', subscription_plan_group_test.main);
   group('save_synchronizable_item_use_case_test', save_synchronizable_item_use_case_test.main);
   group('informed_audio_handler_test', informed_audio_handler_test.main);
+  group('mark_entry_as_seen_use_case_test', mark_entry_as_seen_use_case_test.main);
 
   // Presentation
   group('app_connectivity_checker_test', app_connectivity_checker_test.main);
@@ -152,4 +156,5 @@ void main() {
   group('settings_subscription_page_cubit_test', settings_subscription_page_cubit_test.main);
   group('profile_page_test', profile_page_test.main);
   group('change_subscription_page_test', change_subscription_page_test.main);
+  group('should_show_daily_brief_badge_use_case_test', should_show_daily_brief_badge_use_case_test.main);
 }
