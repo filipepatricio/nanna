@@ -66,4 +66,6 @@ class HiveTypes {
   static const int synchronizableBriefEntity = 62;
   static const int briefCalendarEntity = 63;
   static const int subscriptionOriginEntity = 64;
+  static const int briefEntrySeenEntity = 65;
+  static const int synchronizableBriefEntrySeenEntity = 66;
 }

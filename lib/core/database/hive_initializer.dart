@@ -22,6 +22,7 @@ import 'package:better_informed_mobile/data/daily_brief/database/entity/brief_ca
 import 'package:better_informed_mobile/data/daily_brief/database/entity/brief_entity.hv.dart';
 import 'package:better_informed_mobile/data/daily_brief/database/entity/brief_entry_entity.hv.dart';
 import 'package:better_informed_mobile/data/daily_brief/database/entity/brief_entry_item_entity.hv.dart';
+import 'package:better_informed_mobile/data/daily_brief/database/entity/brief_entry_seen_entity.hv.dart';
 import 'package:better_informed_mobile/data/daily_brief/database/entity/brief_entry_style_entity.hv.dart';
 import 'package:better_informed_mobile/data/daily_brief/database/entity/brief_entry_style_type_entity.hv.dart';
 import 'package:better_informed_mobile/data/daily_brief/database/entity/brief_introduction_entity.hv.dart';
@@ -31,6 +32,7 @@ import 'package:better_informed_mobile/data/daily_brief/database/entity/call_to_
 import 'package:better_informed_mobile/data/daily_brief/database/entity/headline_entity.hv.dart';
 import 'package:better_informed_mobile/data/daily_brief/database/entity/relax_entity.hv.dart';
 import 'package:better_informed_mobile/data/daily_brief/database/entity/synchronizable_brief_entity.hv.dart';
+import 'package:better_informed_mobile/data/daily_brief/database/entity/synchronizable_brief_entry_seen_entity.hv.dart';
 import 'package:better_informed_mobile/data/subscription/database/entity/active_subscription_entity.hv.dart';
 import 'package:better_informed_mobile/data/subscription/database/entity/subscription_origin_entity.hv.dart';
 import 'package:better_informed_mobile/data/subscription/database/entity/subscription_plan_entity.hv.dart';
@@ -112,4 +114,6 @@ Future<void> initializeHive() async {
   Hive.registerAdapter(SynchronizableBriefEntityAdapter());
   Hive.registerAdapter(BriefCalendarEntityAdapter());
   Hive.registerAdapter(SubscriptionOriginEntityAdapter());
+  Hive.registerAdapter(BriefEntrySeenEntityAdapter());
+  Hive.registerAdapter(SynchronizableBriefEntrySeenEntityAdapter());
 }

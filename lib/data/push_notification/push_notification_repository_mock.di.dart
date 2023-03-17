@@ -61,4 +61,7 @@ class PushNotificationRepositoryMock implements PushNotificationRepository {
 
   @override
   void dispose() {}
+
+  @override
+  Stream<IncomingPush> pushNotificationMessageStream() => const Stream.empty();
 }

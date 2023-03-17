@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_seen.dt.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class BriefEntryNewStateNotifier {
-  final StreamController<BriefEntry> _changeStream = StreamController.broadcast();
-  final Map<String, BriefEntry> _briefEntries = {};
+  final StreamController<BriefEntrySeen> _changeStream = StreamController.broadcast();
+  final Map<String, BriefEntrySeen> _briefEntries = {};
 
-  Stream<BriefEntry> get stream async* {
+  Stream<BriefEntrySeen> get stream async* {
     for (final entry in _briefEntries.values) {
       yield entry;
     }
@@ -16,8 +16,8 @@ class BriefEntryNewStateNotifier {
     yield* _changeStream.stream;
   }
 
-  void notify(BriefEntry entry) {
-    _briefEntries[entry.id] = entry;
+  void notify(BriefEntrySeen entry) {
+    _briefEntries[entry.slug] = entry;
     _changeStream.sink.add(entry);
   }
 

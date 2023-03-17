@@ -33,8 +33,7 @@ void main() {
   late MockIsOnboardingPaywallSeenUseCase isOnboardingPaywallSeenUseCase;
   late MockHasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
   late MockSetOnboardingPaywallSeenUseCase setOnboardingPaywallSeenUseCase;
-  late MockMarkTopicAsSeenUseCase markTopicAsSeenUseCase;
-  late MockMarkArticleAsSeenUseCase markArticleAsSeenUseCase;
+  late MockMarkEntryAsSeenUseCase mockMarkEntryAsSeenUseCase;
   late MockShouldRefreshDailyBriefUseCase shouldRefreshDailyBriefUseCase;
   late MockIncomingPushBadgeCountStreamUseCase incomingPushBadgeCountStreamUseCase;
   late MockIsInternetConnectionAvailableUseCase isInternetConnectionAvailableUseCase;
@@ -59,8 +58,7 @@ void main() {
     isOnboardingPaywallSeenUseCase = MockIsOnboardingPaywallSeenUseCase();
     hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
     setOnboardingPaywallSeenUseCase = MockSetOnboardingPaywallSeenUseCase();
-    markTopicAsSeenUseCase = MockMarkTopicAsSeenUseCase();
-    markArticleAsSeenUseCase = MockMarkArticleAsSeenUseCase();
+    mockMarkEntryAsSeenUseCase = MockMarkEntryAsSeenUseCase();
     shouldRefreshDailyBriefUseCase = MockShouldRefreshDailyBriefUseCase();
     incomingPushBadgeCountStreamUseCase = MockIncomingPushBadgeCountStreamUseCase();
     isInternetConnectionAvailableUseCase = MockIsInternetConnectionAvailableUseCase();
@@ -77,8 +75,7 @@ void main() {
       isOnboardingPaywallSeenUseCase,
       hasActiveSubscriptionUseCase,
       setOnboardingPaywallSeenUseCase,
-      markArticleAsSeenUseCase,
-      markTopicAsSeenUseCase,
+      mockMarkEntryAsSeenUseCase,
       shouldRefreshDailyBriefUseCase,
       incomingPushBadgeCountStreamUseCase,
       isInternetConnectionAvailableUseCase,
