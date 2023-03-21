@@ -6,15 +6,19 @@ import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/article_read_state_notifier.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
+import 'package:better_informed_mobile/domain/bookmark/profile_bookmark_change_notifier.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/daily_brief_calendar_local_repository.dart';
 import 'package:better_informed_mobile/domain/daily_brief/daily_brief_entry_seen_local_repository.dart';
 import 'package:better_informed_mobile/domain/daily_brief/daily_brief_local_repository.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/brief_entry_new_state_notifier.di.dart';
+import 'package:better_informed_mobile/domain/general/should_refresh_page_notifier.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:better_informed_mobile/domain/topic/topics_local_repository.dart';
 import 'package:better_informed_mobile/domain/user/user_local_repository.dart';
 import 'package:better_informed_mobile/domain/user_store/user_store.dart';
+import 'package:better_informed_mobile/domain/util/network_cache_manager.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
@@ -37,6 +41,7 @@ class SignOutUseCase {
     this._dailyBriefLocalRepository,
     this._dailyBriefCalendarLocalRepository,
     this._dailyBriefItemSeenLocalRepository,
+    this._networkCacheManager,
     this._getIt,
   );
   final AuthStore _authStore;
@@ -55,6 +60,8 @@ class SignOutUseCase {
   final DailyBriefLocalRepository _dailyBriefLocalRepository;
   final DailyBriefCalendarLocalRepository _dailyBriefCalendarLocalRepository;
   final DailyBriefEntrySeenLocalRepository _dailyBriefItemSeenLocalRepository;
+
+  final NetworkCacheManager _networkCacheManager;
   final GetIt _getIt;
 
   Future<void> call() async {
@@ -77,6 +84,11 @@ class SignOutUseCase {
     await _userStore.clearCurrentUserUuid();
     await _analyticsRepository.logout();
 
+    await _networkCacheManager.clear();
+
+    _getIt.resetLazySingleton<ProfileBookmarkChangeNotifier>();
+    _getIt.resetLazySingleton<ShouldRefreshPageNotifier>();
+    _getIt.resetLazySingleton<BriefEntryNewStateNotifier>();
     _getIt.resetLazySingleton<ArticleReadStateNotifier>();
   }
 }
