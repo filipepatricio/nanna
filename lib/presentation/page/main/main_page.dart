@@ -23,6 +23,17 @@ class MainPage extends HookWidget {
 
     useOnAppLifecycleStateChange((previous, current) {
       if (current == AppLifecycleState.resumed) previousAppState.value = previous;
+
+      switch (current) {
+        case AppLifecycleState.resumed:
+        case AppLifecycleState.inactive:
+          cubit.appMovedToForeground();
+          break;
+        case AppLifecycleState.paused:
+        case AppLifecycleState.detached:
+          cubit.appMovedToBackground();
+          break;
+      }
     });
 
     useCubitListener<MainCubit, MainState>(cubit, (cubit, state, context) {
