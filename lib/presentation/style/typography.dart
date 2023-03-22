@@ -342,6 +342,13 @@ class AppTypography {
     letterSpacing: 0.15,
   );
 
+  static const TextStyle buttonSmallBold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 14,
+    height: 1,
+  );
+
   static const TextStyle buttonBold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: _fontFamilyLausanne,

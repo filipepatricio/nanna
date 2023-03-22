@@ -101,7 +101,7 @@ class OnboardingPage extends HookWidget {
                   ),
                   Positioned(
                     top: AppDimens.s,
-                    right: AppDimens.s,
+                    right: AppDimens.xl,
                     child: _SkipButton(
                       cubit: cubit,
                       controller: controller,
@@ -109,7 +109,7 @@ class OnboardingPage extends HookWidget {
                   ),
                   Positioned(
                     top: AppDimens.s,
-                    left: AppDimens.s,
+                    left: AppDimens.xl,
                     child: _GiftButton(
                       cubit: cubit,
                     ),
@@ -157,13 +157,13 @@ class OnboardingPage extends HookWidget {
                 children: [
                   InformedFilledButton.primary(
                     context: context,
-                    text: context.l10n.onboarding_get_started_with_premium,
+                    text: context.l10n.onboarding_button_getStartedWithPremium,
                     onTap: () => _navigateToMainPage(context, cubit),
                   ),
                   const SizedBox(height: AppDimens.s),
                   InformedFilledButton.tertiary(
                     context: context,
-                    text: context.l10n.onboarding_already_have_an_account,
+                    text: context.l10n.onboarding_button_alreadyHaveAnAccount,
                     onTap: () => _navigateToMainPage(context, cubit),
                     withOutline: true,
                   ),
@@ -210,7 +210,7 @@ class _SkipButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PaddingTapWidget(
-      alignment: AlignmentDirectional.centerStart,
+      alignment: AlignmentDirectional.centerEnd,
       tapPadding: const EdgeInsets.all(AppDimens.l),
       onTap: () {
         controller.animateToPage(
@@ -222,7 +222,7 @@ class _SkipButton extends StatelessWidget {
       },
       child: Text(
         context.l10n.common_skip,
-        style: AppTypography.buttonBold.copyWith(color: AppColors.brandPrimary),
+        style: AppTypography.buttonSmallBold.copyWith(color: AppColors.brandPrimary),
       ),
     );
   }
@@ -242,14 +242,16 @@ class _NextPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () async {
+    return PaddingTapWidget(
+      alignment: AlignmentDirectional.centerEnd,
+      tapPadding: const EdgeInsets.all(AppDimens.l),
+      onTap: () async {
         await controller.nextPage(
           duration: const Duration(milliseconds: 400),
           curve: Curves.easeIn,
         );
       },
-      icon: const InformedSvg(
+      child: const InformedSvg(
         AppVectorGraphics.fullArrowRight,
         fit: BoxFit.contain,
       ),
@@ -267,11 +269,13 @@ class _GiftButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () async {
+    return PaddingTapWidget(
+      alignment: AlignmentDirectional.centerStart,
+      tapPadding: const EdgeInsets.all(AppDimens.l),
+      onTap: () {
         //TODO:
       },
-      icon: const InformedSvg(
+      child: const InformedSvg(
         AppVectorGraphics.gift,
         fit: BoxFit.contain,
         color: AppColors.brandPrimary,
