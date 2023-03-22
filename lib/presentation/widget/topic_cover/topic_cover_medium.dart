@@ -33,20 +33,26 @@ class _TopicCoverMedium extends TopicCover {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: coverSize,
-                    child: _CoverContentList(topic: topic),
-                  ),
-                ),
-                const SizedBox(width: AppDimens.m),
-                TopicSquareImageFrame(
+            DropCapText(
+              topic.strippedTitle,
+              style: AppTypography.sansTitleMediumLausanne.copyWith(
+                color: AppColors.of(context).textPrimary,
+              ),
+              dropCapPadding: const EdgeInsets.only(left: AppDimens.m),
+              dropCapPosition: DropCapPosition.end,
+              belowTextWidget: Padding(
+                padding: const EdgeInsets.only(top: AppDimens.sl),
+                child: PublisherLogoRow(topic: topic),
+              ),
+              mode: DropCapMode.baseline,
+              dropCap: DropCap(
+                width: coverSize,
+                height: coverSize,
+                child: TopicSquareImageFrame(
                   topic: topic,
                   size: coverSize,
                 ),
-              ],
+              ),
             ),
             const SizedBox(height: AppDimens.m),
             if (ownersNote != null) ...[
@@ -60,34 +66,6 @@ class _TopicCoverMedium extends TopicCover {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _CoverContentList extends HookWidget {
-  const _CoverContentList({
-    required this.topic,
-    Key? key,
-  }) : super(key: key);
-
-  final TopicPreview topic;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          InformedMarkdownBody(
-            markdown: topic.title,
-            maxLines: 3,
-            baseTextStyle: AppTypography.sansTitleMediumLausanne.copyWith(height: 1.25),
-          ),
-          const SizedBox(height: AppDimens.sl),
-          PublisherLogoRow(topic: topic),
-        ],
       ),
     );
   }

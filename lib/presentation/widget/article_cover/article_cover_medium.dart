@@ -52,42 +52,35 @@ class _ArticleCoverMedium extends ArticleCover {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Stack(
+              fit: StackFit.loose,
               children: [
-                Expanded(
-                  child: _ArticleOpacity(
-                    article: state.map(
-                      initializing: (_) => article,
-                      idle: (state) => state.article,
-                      offline: (state) => state.article,
-                    ),
-                    available: state.maybeMap(offline: (_) => false, orElse: () => true),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        PublisherRow(article: article),
-                        const SizedBox(height: AppDimens.sl),
-                        Text(
-                          article.strippedTitle,
-                          style: AppTypography.serifTitleLargeIvar,
-                          maxLines: article.hasImage ? 4 : null,
-                          overflow: article.hasImage ? TextOverflow.ellipsis : null,
-                        ),
-                      ],
+                DropCapText(
+                  article.strippedTitle,
+                  style: AppTypography.serifTitleLargeIvar.copyWith(color: AppColors.of(context).textPrimary),
+                  indentation: const Offset(0, AppDimens.smallPublisherLogoSize + AppDimens.sl),
+                  dropCapPadding: const EdgeInsets.only(left: AppDimens.m),
+                  dropCapPosition: DropCapPosition.end,
+                  mode: DropCapMode.baseline,
+                  dropCap: DropCap(
+                    width: coverWidth,
+                    height: coverWidth,
+                    child: _ArticleCoverImage.aspectRatio(
+                      article: article,
+                      aspectRatio: AppDimens.articleSmallCoverAspectRatio,
+                      width: coverWidth,
+                      available: state.maybeMap(offline: (_) => false, orElse: () => true),
                     ),
                   ),
                 ),
-                if (article.hasImage) ...[
-                  const SizedBox(width: AppDimens.m),
-                  _ArticleCoverImage.aspectRatio(
-                    article: article,
-                    aspectRatio: AppDimens.articleSmallCoverAspectRatio,
-                    width: coverWidth,
-                    available: state.maybeMap(offline: (_) => false, orElse: () => true),
-                  ),
-                ],
+                // Perfect solution would be to have overTextWidget field (similar to belowTextWidget) in DropCapText
+                // we wouldn't have to set manually indentation, something to improve
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: coverWidth + AppDimens.m,
+                  child: PublisherRow(article: article),
+                ),
               ],
             ),
             if (articleNote != null && article.shouldShowArticleCoverNote && showNote) ...[
