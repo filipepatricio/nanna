@@ -137,7 +137,7 @@ jobs:
         id: get-flutter-version
         uses: zgosalvez/github-actions-get-flutter-version-env@v2
 
-      - uses: subosito/flutter-action@v2.8.0
+      - uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
           cache: true
@@ -201,7 +201,7 @@ jobs:
         uses: zgosalvez/github-actions-get-flutter-version-env@v2
 
       - name: Setup
-        uses: subosito/flutter-action@v2.8.0
+        uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
           cache: true
@@ -262,7 +262,7 @@ jobs:
         uses: zgosalvez/github-actions-get-flutter-version-env@v2
 
       - name: Setup
-        uses: subosito/flutter-action@v2.8.0
+        uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
           # cache: true
