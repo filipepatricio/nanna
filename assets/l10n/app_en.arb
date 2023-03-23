@@ -1189,5 +1189,13 @@
       "version": {
       }
     }
+  },
+  "addInterests_title": "Add your interests",
+  "@addInterests_title": {
+    "type": "text"
+  },
+  "addInterests_description": "Get personalized suggestions alongside wider curations. Please choose at least 4 topics.",
+  "@addInterests_description": {
+    "type": "text"
   }
 }

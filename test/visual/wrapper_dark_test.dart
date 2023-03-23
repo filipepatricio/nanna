@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'tests/add_interests_page_visual_test.dart' as add_interests_page_visual_test;
 import 'tests/app_connectivity_dialog_visual_test.dart' as app_connectivity_dialog_visual_test;
 import 'tests/app_update_dialog_visual_test.dart' as app_update_dialog_visual_test;
 import 'tests/article_cover_visual_test.dart' as article_cover_visual_test;
@@ -89,6 +90,7 @@ void main() {
   group('change_subscription_page_visual_test', change_subscription_page_visual_test.main);
   group('audio_page_visual_test', audio_page_visual_test.main);
   group('settings_legal_page_visual_test', settings_legal_page_visual_test.main);
+  group('add_interests_page_visual_test', add_interests_page_visual_test.main);
 }
 
 ThemeMode themeModeFromString(String mode) {

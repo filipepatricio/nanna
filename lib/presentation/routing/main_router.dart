@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/empty_router_widgets.dart';
+import 'package:better_informed_mobile/presentation/page/add_interests/add_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/audio/audio_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/empty_page.dart';
@@ -84,6 +85,7 @@ const mainPageRoute = CustomRoute(
       page: TopicPage,
     ),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
+    CustomRoute(page: AddInterestsPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(
       path: subscribePath,
       page: SubscriptionPage,
