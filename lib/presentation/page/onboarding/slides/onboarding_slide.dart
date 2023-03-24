@@ -49,7 +49,7 @@ class OnboardingSlide extends StatelessWidget {
                     flex: 2,
                     child: AutoSizeText(
                       title,
-                      style: AppTypography.onBoardingHeader.copyWith(height: 1.14),
+                      style: AppTypography.sansTitleLargeLausanne.copyWith(height: 1.14),
                       maxLines: 3,
                       stepGranularity: 0.1,
                     ),
