@@ -52,7 +52,7 @@ class ChangeSubscriptionPage extends HookWidget {
         success: () {
           InformedDialog.removeRestorePurchase(context);
           AutoRouter.of(context).replace(
-            SubscriptionSuccessPageRoute(trialMode: false),
+            SubscriptionSuccessPageRoute(trialDays: 0, reminderDays: 0),
           );
         },
         generalError: (message) {

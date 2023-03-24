@@ -49,6 +49,13 @@ class AppTypography {
   );
 
   // Sans Text
+  static const TextStyle sansTextDefaultLausanne = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 16,
+    height: 1.5,
+  );
+
   static const TextStyle sansTextSmallLausanne = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,

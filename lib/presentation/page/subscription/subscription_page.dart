@@ -62,10 +62,10 @@ class SubscriptionPage extends HookWidget {
         idle: (_, __) => InformedDialog.removeRestorePurchase(context),
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
         redeemingCode: () => shouldRestorePurchase.value = true,
-        success: (trialMode) {
+        success: (trialDays, reminderDays) {
           InformedDialog.removeRestorePurchase(context);
           AutoRouter.of(context).replace(
-            SubscriptionSuccessPageRoute(trialMode: trialMode),
+            SubscriptionSuccessPageRoute(trialDays: trialDays, reminderDays: reminderDays),
           );
         },
         generalError: (message) {

@@ -1054,17 +1054,25 @@
   "@subscription_success_body_standard": {
     "type": "text"
   },
-  "subscription_success_body_trial": "Thanks for subscribing and enjoy unlimited access to informed.",
+  "subscription_success_body_trial": "Welcome to informed! You'll be notified by email {days} days before your trial ends.",
   "@subscription_success_body_trial": {
-    "type": "text"
+    "type": "text",
+    "placeholders": {
+      "days": {
+      }
+    }
   },
   "subscription_success_title_standard": "_Thank you_ for subscribing",
   "@subscription_success_title_standard": {
     "type": "text"
   },
-  "subscription_success_title_trial": "You _free trial_ starts now",
+  "subscription_success_title_trial": "Your {days}-day free trial starts now",
   "@subscription_success_title_trial": {
-    "type": "text"
+    "type": "text",
+    "placeholders": {
+      "days": {
+      }
+    }
   },
   "subscription_title_article": "Subscribe for _unlimited_ access",
   "@subscription_title_article": {
