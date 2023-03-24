@@ -738,7 +738,7 @@
   "@signIn_consentParts_and": {
     "type": "text"
   },
-  "signIn_consentParts_info": "By signing up, you agree to our ",
+  "signIn_consentParts_info": "By signing in, you agree to our ",
   "@signIn_consentParts_info": {
     "type": "text"
   },
@@ -766,8 +766,16 @@
       }
     }
   },
-  "signIn_header_signIn": "Sign up or log in below to access world-class journalism from premium publishers, curated by editors & experts.",
-  "@signIn_header_signIn": {
+  "signIn_description_featureOne": "Curated articles from premium publishers",
+  "@signIn_description_featureOne": {
+    "type": "text"
+  },
+  "signIn_description_featureTwo": "Concise Daily Briefs with editorial commentary",
+  "@signIn_description_featureTwo": {
+    "type": "text"
+  },
+  "signIn_description_featureThree": "Read, listen, save for later, or enjoy offline",
+  "@signIn_description_featureThree": {
     "type": "text"
   },
   "signIn_orContinue": "Or continue with",
@@ -786,6 +794,10 @@
   "@signIn_providerButton_linkedin": {
     "type": "text"
   },
+  "signIn_withEmailButton": "Get magic link",
+  "@signIn_withEmailButton": {
+    "type": "text"
+  },
   "signIn_receiveNews": "I’d like to receive news and updates from informed",
   "@signIn_receiveNews": {
     "type": "text"
@@ -794,7 +806,7 @@
   "@signIn_unauthorized": {
     "type": "text"
   },
-  "signIn_welcome": "Welcome to informed ",
+  "signIn_welcome": "Sign in to informed",
   "@signIn_welcome": {
     "type": "text"
   },
