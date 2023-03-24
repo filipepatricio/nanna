@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_event.dart';
 import 'package:injectable/injectable.dart';
 
-@singleton
+@lazySingleton
 class ProfileBookmarkChangeNotifier {
   final StreamController<BookmarkEvent> _changeStream = StreamController.broadcast();
 
