@@ -67,17 +67,7 @@ Future<void> main() async {
 
   await initializeHive();
   final getIt = await configureDependencies(environment);
-
   final appConfig = getIt.get<AppConfig>();
-  await _setupAccessToken(getIt);
-  _setupFimber(getIt);
-  await _setupAnalytics(getIt);
-
-  if (appConfig.phraseConfig != null) {
-    Phrase.setup(appConfig.phraseConfig!.phraseDistributionID, appConfig.phraseConfig!.phraseEnvironmentID);
-  }
-
-  final currentThemeMode = await AdaptiveTheme.getThemeMode();
 
   final filterController = getIt<ReportingTreeErrorFilterController>();
   await SentryFlutter.init(
@@ -90,25 +80,37 @@ Future<void> main() async {
       ..dsn = (kDebugMode || kProfileMode) ? '' : appConfig.sentryEventDns
       ..tracesSampleRate = 0.2
       ..environment = environment,
-    appRunner: () => runApp(
-      DefaultAssetBundle(
-        bundle: SentryAssetBundle(),
-        child: InformedApp(
-          getIt: getIt,
-          themeMode: currentThemeMode,
-          mainRouter: kDebugMode ? MainRouter() : null,
+    appRunner: () async {
+      await _setupAccessToken(getIt);
+      _setupFimber(getIt);
+      await _setupAnalytics(getIt);
+
+      if (appConfig.phraseConfig != null) {
+        Phrase.setup(appConfig.phraseConfig!.phraseDistributionID, appConfig.phraseConfig!.phraseEnvironmentID);
+      }
+
+      final currentThemeMode = await AdaptiveTheme.getThemeMode();
+
+      runApp(
+        DefaultAssetBundle(
+          bundle: SentryAssetBundle(),
+          child: InformedApp(
+            getIt: getIt,
+            themeMode: currentThemeMode,
+            mainRouter: kDebugMode ? MainRouter() : null,
+          ),
         ),
-      ),
-    ),
+      );
+    },
   );
 }
 
 void _setupFimber(GetIt getIt) {
-  if (kDebugMode) {
-    Fimber.plantTree(DebugTree(useColors: true));
-  } else {
-    Fimber.plantTree(getIt());
-  }
+  // if (kDebugMode) {
+  Fimber.plantTree(DebugTree(useColors: true));
+  // } else {
+  //   Fimber.plantTree(getIt());
+  // }
 }
 
 Future<void> _setupAnalytics(GetIt getIt) => getIt<InitializeAnalyticsUseCase>()();
