@@ -143,7 +143,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
 
     _dataRefreshSubscription ??= _incomingPushDataRefreshStreamUseCase().listen((event) {
       Fimber.d('Incoming push - refreshing daily brief');
-      loadBriefs();
+      _emitEvent(DailyBriefPageState.hasBeenUpdated());
     });
 
     _badgeCountRefreshSubscription ??= _incomingPushBadgeCountStreamUseCase().listen((event) {

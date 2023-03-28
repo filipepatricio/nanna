@@ -117,12 +117,16 @@ class _DailyBriefPage extends HookWidget {
                 type: SnackbarMessageType.info,
                 action: SnackbarAction(
                   label: context.l10n.dailyBrief_refreshSnackBar_action,
-                  callback: () => cubit.refetchBriefs(),
+                  callback: () async {
+                    await cubit.loadBriefs();
+                    await scrollController.animateToStart();
+                  },
                 ),
               ),
             );
           } else {
-            cubit.refetchBriefs();
+            scrollController.jumpTo(0.0);
+            cubit.loadBriefs();
           }
         },
       );
@@ -140,6 +144,7 @@ class _DailyBriefPage extends HookWidget {
         body: TabBarListener(
           currentPage: context.routeData,
           scrollController: scrollController,
+          onTabSelected: () => cubit.shouldRefreshBrief,
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
             child: RefreshIndicator(
