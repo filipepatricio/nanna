@@ -10,6 +10,7 @@ import '../../../../../generated_mocks.mocks.dart';
 void main() {
   late List<SynchronizableGroup> groups;
   late MockSaveSynchronizableItemUseCase saveSynchronizableItemUseCase;
+  late MockHasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
   late SynchronizeAllUseCase useCase;
 
   setUp(() {
@@ -19,7 +20,10 @@ void main() {
       SynchronizableGroup<C>(MockSynchronizableRepository(), MockSynchronizeWithRemoteUsecase()),
     ];
     saveSynchronizableItemUseCase = MockSaveSynchronizableItemUseCase();
-    useCase = SynchronizeAllUseCase(groups, saveSynchronizableItemUseCase);
+    hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
+    useCase = SynchronizeAllUseCase(groups, saveSynchronizableItemUseCase, hasActiveSubscriptionUseCase);
+
+    when(hasActiveSubscriptionUseCase()).thenAnswer((realInvocation) async => true);
   });
 
   test('should call synchronizeWithRemote for each unsynchronized element', () async {
@@ -53,9 +57,9 @@ void main() {
 
     await useCase();
 
-    verify(aGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableA[0])).called(1);
-    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[0])).called(1);
-    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[1])).called(1);
+    verify(aGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableA[0], true)).called(1);
+    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[0], true)).called(1);
+    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[1], true)).called(1);
   });
 
   test('should delete all expired elements', () async {
@@ -126,13 +130,13 @@ void main() {
     when(cGroup.repository.load('c1')).thenAnswer((realInvocation) async => allSynchronizableC[0]);
     when(cGroup.repository.load('c2')).thenAnswer((realInvocation) async => allSynchronizableC[1]);
 
-    when(aGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableA[0])).thenThrow(Exception('error'));
+    when(aGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableA[0], true)).thenThrow(Exception('error'));
 
     await useCase();
 
-    verify(aGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableA[0])).called(1);
-    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[0])).called(1);
-    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[1])).called(1);
+    verify(aGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableA[0], true)).called(1);
+    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[0], true)).called(1);
+    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[1], true)).called(1);
   });
 
   test('should delete element when it throws SynchronizableInvalidatedException during synchronization', () async {
@@ -164,15 +168,15 @@ void main() {
     when(cGroup.repository.load('c1')).thenAnswer((realInvocation) async => allSynchronizableC[0]);
     when(cGroup.repository.load('c2')).thenAnswer((realInvocation) async => allSynchronizableC[1]);
 
-    when(aGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableA[0]))
+    when(aGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableA[0], true))
         .thenThrow(SynchronizableInvalidatedException());
 
     await useCase();
 
-    verify(aGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableA[0])).called(1);
+    verify(aGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableA[0], true)).called(1);
     verify(aGroup.repository.delete('a1')).called(1);
-    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[0])).called(1);
-    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[1])).called(1);
+    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[0], true)).called(1);
+    verify(cGroup.synchronizeWithRemoteUseCase!.call(allSynchronizableC[1], true)).called(1);
   });
 }
 
