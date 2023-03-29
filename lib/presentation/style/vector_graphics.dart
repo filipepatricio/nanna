@@ -63,7 +63,7 @@ class AppVectorGraphics {
   static const String chevronNext = 'assets/vector_graphics/chevron_next.svg';
   static const String chevronBack = 'assets/vector_graphics/chevron_back.svg';
   static const String chevronDown = 'assets/vector_graphics/chevron_down.svg';
-  static const String noImage = 'assets/vector_graphics/no_image.svg';
+  static const String imageFallback = 'assets/vector_graphics/image_fallback.svg';
   static const String visitedCheckmark = 'assets/vector_graphics/read_checkmark.svg';
   static const String offline = 'assets/vector_graphics/offline.svg';
   static const String subscriptionManage = 'assets/vector_graphics/subscription_manage.svg';
