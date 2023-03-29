@@ -80,7 +80,7 @@ void main() {
       ),
     );
 
-    await expectLater(useCase(synchronizable), throwsA(isA<SynchronizableInvalidatedException>()));
+    await expectLater(useCase(synchronizable, true), throwsA(isA<SynchronizableInvalidatedException>()));
 
     verify(
       bookmarkLocalRepository.save(
@@ -125,6 +125,6 @@ void main() {
     when(articleRepository.trackReadingProgress(synchronizable.dataId, progress.contentProgress))
         .thenAnswer((realInvocation) async => throw exception);
 
-    expect(useCase(synchronizable), throwsA(exception));
+    expect(useCase(synchronizable, true), throwsA(exception));
   });
 }

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 
-@singleton
+@lazySingleton
 class ShouldRefreshPageNotifier {
   final StreamController<bool> _changeStream = StreamController.broadcast();
 
