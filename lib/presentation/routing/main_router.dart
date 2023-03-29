@@ -12,7 +12,7 @@ import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
 import 'package:better_informed_mobile/presentation/page/photo_caption/photo_caption_page.dart';
-import 'package:better_informed_mobile/presentation/page/profile/profile_page.dart';
+import 'package:better_informed_mobile/presentation/page/saved/saved_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/appearance/settings_appearance_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
@@ -129,7 +129,7 @@ const dashboardTabRouter = CustomRoute(
       name: 'ProfileTabGroupRouter',
       page: EmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: ProfilePage, initial: true),
+        AutoRoute(path: '', page: SavedPage, initial: true),
         AutoRoute(path: settingsPath, page: SettingsMainPage),
         AutoRoute(path: notificationsPath, page: SettingsNotificationsPage),
         AutoRoute(path: appearancePath, page: SettingsAppearancePage),

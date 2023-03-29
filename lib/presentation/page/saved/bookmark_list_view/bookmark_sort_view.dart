@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view.dart';
+import 'package:better_informed_mobile/presentation/page/saved/bookmark_list_view/bookmark_list_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';

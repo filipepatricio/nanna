@@ -3,20 +3,20 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'profile_page_state.dt.freezed.dart';
+part 'saved_page_state.dt.freezed.dart';
 
 @Freezed(toJson: false)
-class ProfilePageState with _$ProfilePageState {
+class SavedPageState with _$SavedPageState {
   @Implements<BuildState>()
-  factory ProfilePageState.initializing() = _ProfilePageStateInitializing;
+  factory SavedPageState.initializing() = _SavedPageStateInitializing;
 
   @Implements<BuildState>()
-  factory ProfilePageState.idle(
+  factory SavedPageState.idle(
     BookmarkFilter filter,
     BookmarkSortConfigName sortConfigName,
     bool hasActiveSubscription, [
     @Default(0) int version,
-  ]) = _ProfilePageStateIdle;
+  ]) = _SavedPageStateIdle;
 
-  factory ProfilePageState.showTutorialToast(String text) = _ProfilePageStateShowTutorialToast;
+  factory SavedPageState.showTutorialToast(String text) = _SavedPageStateShowTutorialToast;
 }

@@ -6,17 +6,17 @@ import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_sor
 import 'package:better_informed_mobile/domain/bookmark/use_case/store_last_selected_sort_option_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
-import 'package:better_informed_mobile/presentation/page/profile/profile_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/saved/saved_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class ProfilePageCubit extends Cubit<ProfilePageState> {
-  ProfilePageCubit(
+class SavedPageCubit extends Cubit<SavedPageState> {
+  SavedPageCubit(
     this._getBookmarkSortOptionUseCase,
     this._storeLastSelectedSortOptionUseCase,
     this._getActiveSubscriptionUseCase,
-  ) : super(ProfilePageState.initializing());
+  ) : super(SavedPageState.initializing());
 
   final GetBookmarkSortOptionUseCase _getBookmarkSortOptionUseCase;
   final StoreLastSelectedSortOptionUseCase _storeLastSelectedSortOptionUseCase;
@@ -36,7 +36,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     final sortConfig = await _getBookmarkSortOptionUseCase();
     _hasActiveSubscription = (await _getActiveSubscriptionUseCase()).isPremium;
 
-    emit(ProfilePageState.idle(BookmarkFilter.all, sortConfig, _hasActiveSubscription));
+    emit(SavedPageState.idle(BookmarkFilter.all, sortConfig, _hasActiveSubscription));
 
     _activeSubscriptionSub = _getActiveSubscriptionUseCase.stream.listen((subscription) async {
       _hasActiveSubscription = subscription.isPremium;
