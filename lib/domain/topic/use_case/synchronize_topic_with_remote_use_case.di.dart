@@ -21,7 +21,10 @@ class SynchronizeTopicWithRemoteUseCase extends SynchronizeWithRemoteUsecase<Top
   final SaveSynchronizableItemUseCase _saveSynchronizableItemUseCase;
 
   @override
-  Future<Synchronizable<Topic>> call(Synchronizable<Topic> synchronizable) async {
+  Future<Synchronizable<Topic>> call(
+    Synchronizable<Topic> synchronizable,
+    bool hasActiveSubscription,
+  ) async {
     final topic = await _topicsRepository.getTopicBySlug(synchronizable.dataId);
 
     final articlesToSave = topic.entries

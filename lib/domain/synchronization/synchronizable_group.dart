@@ -10,7 +10,10 @@ class SynchronizableGroup<T> {
   final SynchronizableRepository<T> repository;
   final SynchronizeWithRemoteUsecase<T>? synchronizeWithRemoteUseCase;
 
-  Future<void> runSync(Future<void> Function<T>(SynchronizableGroup<T>) sync) async {
-    return sync<T>(this);
+  Future<void> runSync(
+    Future<void> Function<T>(SynchronizableGroup<T>, bool) sync,
+    bool hasActiveSubscription,
+  ) async {
+    return sync<T>(this, hasActiveSubscription);
   }
 }
