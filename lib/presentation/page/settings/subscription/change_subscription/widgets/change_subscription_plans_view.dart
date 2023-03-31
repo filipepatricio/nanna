@@ -85,6 +85,7 @@ class _ChangeSubscriptionPlansView extends HookWidget {
                 return SubscriptionLinksFooter(
                   subscriptionPlan: selectedPlan,
                   onRestorePressed: cubit.restorePurchase,
+                  onRedeemCode: cubit.redeemOfferCode,
                   openInBrowser: openInBrowser,
                 );
               },

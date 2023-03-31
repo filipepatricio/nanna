@@ -2,76 +2,79 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/link_label.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionLinksFooter extends StatelessWidget {
   const SubscriptionLinksFooter({
     required this.subscriptionPlan,
     required this.onRestorePressed,
+    required this.onRedeemCode,
     required this.openInBrowser,
     Key? key,
   }) : super(key: key);
 
   final SubscriptionPlan subscriptionPlan;
   final VoidCallback onRestorePressed;
+  final VoidCallback onRedeemCode;
   final OpenInBrowserFunction openInBrowser;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          _getChargeInfoText(context, subscriptionPlan),
-          textAlign: TextAlign.center,
-          style: AppTypography.metadata1Medium.copyWith(color: AppColors.of(context).textSecondary),
-        ),
-        const SizedBox(height: AppDimens.m),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            LinkLabel(
-              label: context.l10n.subscription_restorePurchase,
-              style: AppTypography.metadata1Medium,
-              onTap: onRestorePressed,
+            Expanded(
+              child: InformedFilledButton.tertiary(
+                context: context,
+                text: context.l10n.subscription_redeemCode,
+                withOutline: true,
+                onTap: onRedeemCode,
+              ),
             ),
-            LinkLabel(
-              label: context.l10n.settings_termsAndConditions,
-              style: AppTypography.metadata1Medium,
+            const SizedBox(width: AppDimens.s),
+            Expanded(
+              child: InformedFilledButton.tertiary(
+                context: context,
+                text: context.l10n.subscription_restorePurchase,
+                withOutline: true,
+                onTap: onRestorePressed,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppDimens.s),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InformedFilledButton.tertiary(
+              context: context,
+              text: context.l10n.settings_termsOfService,
               onTap: () => context.pushRoute(
                 SettingsTermsOfServicePageRoute(
                   fromRoute: context.l10n.subscription_button_standard,
                 ),
               ),
+              padding: const EdgeInsets.symmetric(vertical: AppDimens.sl),
             ),
-            LinkLabel(
-              label: context.l10n.settings_privacyPolicy,
-              style: AppTypography.metadata1Medium,
+            const SizedBox(width: AppDimens.m),
+            InformedFilledButton.tertiary(
+              context: context,
+              text: context.l10n.settings_privacyPolicy,
               onTap: () => context.pushRoute(
                 SettingsPrivacyPolicyPageRoute(
                   fromRoute: context.l10n.subscription_button_standard,
                 ),
               ),
+              padding: const EdgeInsets.symmetric(vertical: AppDimens.sl),
             ),
           ],
         ),
         const SizedBox(height: AppDimens.l),
       ],
     );
-  }
-}
-
-String _getChargeInfoText(BuildContext context, SubscriptionPlan plan) {
-  if (plan.hasTrial) {
-    return context.l10n.subscription_chargeInfo_trial(
-      context.l10n.date_daySuffix('${plan.trialDays}'),
-    );
-  } else {
-    return context.l10n.subscription_chargeInfo_standard;
   }
 }

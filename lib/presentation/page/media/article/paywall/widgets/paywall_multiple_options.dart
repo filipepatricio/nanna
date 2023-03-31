@@ -73,6 +73,7 @@ class _PaywallMultipleOptions extends HookWidget {
         SubscriptionLinksFooter(
           subscriptionPlan: selectedPlan.value,
           onRestorePressed: onRestorePressed,
+          onRedeemCode: onRedeemCodePressed,
           openInBrowser: openInBrowser,
         ),
       ],

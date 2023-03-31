@@ -56,7 +56,8 @@ class BottomListFadeView extends HookWidget {
           child: ValueListenableBuilder(
             valueListenable: visibilityFactor,
             builder: (context, value, child) {
-              final height = _fadeViewHeight * value;
+              final positiveValue = value >= 0.0 ? value : 0.0;
+              final height = _fadeViewHeight * positiveValue;
               return SizedBox(
                 height: height,
                 child: child,

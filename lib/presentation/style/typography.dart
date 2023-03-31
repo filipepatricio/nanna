@@ -10,6 +10,10 @@ extension TextStyleExt on TextStyle {
   double get lineHeight => fontSize! * (height ?? 1);
 }
 
+extension FontWeightExt on FontWeight {
+  static final FontWeight w550 = FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5)!;
+}
+
 class AppTypography {
   // Serif Title
   static const TextStyle serifTitleSmallIvar = TextStyle(
@@ -43,6 +47,13 @@ class AppTypography {
 
   static const TextStyle sansTitleSmallLausanne = TextStyle(
     fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 20,
+    height: 1.1,
+  );
+
+  static TextStyle sansTitleXSmallLausanne = TextStyle(
+    fontWeight: FontWeightExt.w550,
     fontFamily: _fontFamilyLausanne,
     fontSize: 20,
     height: 1.1,

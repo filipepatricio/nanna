@@ -17,8 +17,10 @@ class InformedFilledButton extends StatelessWidget {
     this.trailing,
     this.withOutline = false,
     this.style,
+    EdgeInsets? padding,
     Key? key,
-  }) : super(key: key);
+  })  : padding = padding ?? const EdgeInsets.symmetric(vertical: AppDimens.m, horizontal: AppDimens.l),
+        super(key: key);
 
   factory InformedFilledButton.accent({
     required BuildContext context,
@@ -119,6 +121,7 @@ class InformedFilledButton extends StatelessWidget {
     Widget? leading,
     Widget? trailing,
     bool withOutline = false,
+    EdgeInsets? padding,
   }) =>
       InformedFilledButton._(
         text: text,
@@ -133,6 +136,7 @@ class InformedFilledButton extends StatelessWidget {
         trailing: trailing,
         withOutline: withOutline,
         style: AppTypography.sansTextNanoLausanne,
+        padding: padding,
       );
 
   factory InformedFilledButton.color({
@@ -172,6 +176,7 @@ class InformedFilledButton extends StatelessWidget {
   final Widget? trailing;
   final bool withOutline;
   final TextStyle? style;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -185,10 +190,7 @@ class InformedFilledButton extends StatelessWidget {
       onTap: isEnabled ? onTap : () {},
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(
-          vertical: AppDimens.m,
-          horizontal: AppDimens.l,
-        ),
+        padding: padding,
         decoration: BoxDecoration(
           color: isEnabled ? fillColor : disableColor,
           border: withOutline

@@ -63,9 +63,6 @@ class SubscribeButton extends StatelessWidget {
       return InformedFilledButton.primary(
         context: context,
         text: text,
-        subtext: contentType == SubscriptionButtonContentType.full && plan.hasTrial
-            ? context.l10n.subscription_button_trialSubtext(plan.priceString, plan.periodString(context))
-            : null,
         onTap: () => onPurchasePressed(plan),
         isLoading: isLoading,
       );
@@ -74,15 +71,8 @@ class SubscribeButton extends StatelessWidget {
     return InformedFilledButton.accent(
       context: context,
       text: text,
-      subtext: contentType == SubscriptionButtonContentType.full && plan.hasTrial
-          ? context.l10n.subscription_button_trialSubtext(plan.priceString, plan.periodString(context))
-          : null,
       onTap: () => onPurchasePressed(plan),
       isLoading: isLoading,
     );
   }
-}
-
-extension on SubscriptionPlan {
-  String periodString(BuildContext context) => isAnnual ? context.l10n.date_year : context.l10n.date_month;
 }

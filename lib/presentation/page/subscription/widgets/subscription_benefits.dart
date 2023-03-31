@@ -13,14 +13,14 @@ class SubscriptionBenefits extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ...[
-          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_access),
-          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_fresh),
-          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_read),
+          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_one),
+          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_two),
+          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_three),
         ].withDividers(
-          divider: const SizedBox(height: AppDimens.m),
+          divider: const SizedBox(height: AppDimens.xs),
         )
       ],
     );
@@ -38,13 +38,22 @@ class _SubscriptionBenefitLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const InformedSvg(AppVectorGraphics.checkmark),
+        const Padding(
+          padding: EdgeInsets.only(top: 2),
+          child: InformedSvg(
+            AppVectorGraphics.checkmark,
+            height: 18,
+            width: 18,
+          ),
+        ),
         const SizedBox(width: AppDimens.s),
-        Text(
-          text,
-          style: AppTypography.subH1Medium,
+        Expanded(
+          child: Text(
+            text,
+            style: AppTypography.sansTextSmallLausanne,
+          ),
         ),
       ],
     );

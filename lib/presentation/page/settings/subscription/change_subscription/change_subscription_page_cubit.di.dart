@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/subscription/data/subscription_pla
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/redeem_offer_code_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/subscription/change_subscription/change_subscription_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -17,12 +18,14 @@ class ChangeSubscriptionPageCubit extends Cubit<ChangeSubscriptionPageState> {
     this._getActiveSubscriptionUseCase,
     this._restorePurchaseUseCase,
     this._purchaseSubscriptionUseCase,
+    this._redeemOfferCodeUseCase,
   ) : super(const ChangeSubscriptionPageState.initializing());
 
   final GetSubscriptionPlansUseCase _getSubscriptionPlansUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
   final RestorePurchaseUseCase _restorePurchaseUseCase;
   final PurchaseSubscriptionUseCase _purchaseSubscriptionUseCase;
+  final RedeemOfferCodeUseCase _redeemOfferCodeUseCase;
 
   late SubscriptionPlanGroup _planGroup;
   late ActiveSubscription _subscription;
@@ -88,6 +91,10 @@ class ChangeSubscriptionPageCubit extends Cubit<ChangeSubscriptionPageState> {
       emit(ChangeSubscriptionPageState.restoringPurchaseError());
       _emitIdle();
     }
+  }
+
+  Future<void> redeemOfferCode() async {
+    await _redeemOfferCodeUseCase();
   }
 
   void _emitIdle() {

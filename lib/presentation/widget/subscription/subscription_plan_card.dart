@@ -14,6 +14,7 @@ part 'timeline.dart';
 
 typedef OnPlanPressed = void Function(SubscriptionPlan plan);
 
+@Deprecated('Replace all usages with [SubscriptionPlanCell]')
 class SubscriptionPlanCard extends HookWidget {
   const SubscriptionPlanCard({
     required this.plan,

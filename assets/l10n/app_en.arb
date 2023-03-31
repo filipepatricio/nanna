@@ -822,15 +822,15 @@
   "@social_whatsapp": {
     "type": "text"
   },
-  "subscription_benefit_access": "Unlimited news access",
+  "subscription_benefit_one": "Curated articles from premium publishers",
   "@subscription_benefit_access": {
     "type": "text"
   },
-  "subscription_benefit_fresh": "Fresh curations every day",
+  "subscription_benefit_two": "Concise Daily Briefs with editorial commentary",
   "@subscription_benefit_fresh": {
     "type": "text"
   },
-  "subscription_benefit_read": "Read or listen to articles",
+  "subscription_benefit_three": "Read, listen, save for later, or enjoy offline",
   "@subscription_benefit_read": {
     "type": "text"
   },
@@ -838,17 +838,7 @@
   "@subscription_button_standard": {
     "type": "text"
   },
-  "subscription_button_trialSubtext": "then {price} / {period}",
-  "@subscription_button_trialSubtext": {
-    "type": "text",
-    "placeholders": {
-      "price": {
-      },
-      "period": {
-      }
-    }
-  },
-  "subscription_button_trialText": "Start your free {period} trial",
+  "subscription_button_trialText": "Start your free trial now",
   "@subscription_button_trialText": {
     "type": "text",
     "placeholders": {
@@ -868,8 +858,44 @@
   "@subscription_manageSubscription": {
     "type": "text"
   },
+  "subscription_card_price": "{price} / {time}",
+  "@subscription_card_price": {
+    "type": "text",
+    "placeholders": {
+      "price": {
+      },
+      "time": {
+      }
+    }
+  },
+  "subscription_card_monthlyPrice": "(that's {price} / {time})",
+  "@subscription_card_monthlyPrice": {
+    "type": "text",
+    "placeholders": {
+      "price": {
+      },
+      "time": {
+      }
+    }
+  },
+  "subscription_card_trialDays": "with {days}-day free trial",
+  "@subscription_card_trialDays": {
+    "type": "text",
+    "placeholders": {
+      "days": {
+      }
+    }
+  },
   "subscription_cancelSubscription": "Cancel subscription",
   "@subscription_cancelSubscription": {
+    "type": "text"
+  },
+  "subscription_info_cancelTitle": "How to cancel?",
+  "@subscription_info_cancelTitle": {
+    "type": "text"
+  },
+  "subscription_info_cancelDescription": "Simply open the informed app, tap Saved > Settings, and tap on your subscription. You'll see the option to cancel your subscription here.",
+  "@subscription_info_cancelDescription": {
     "type": "text"
   },
   "subscription_change_confirm": "Confirm change",
@@ -988,7 +1014,15 @@
       }
     }
   },
-  "subscription_redeemCode": "Redeem Code",
+  "subscription_subscribeWithTrial": "Start your free trial now",
+  "@subscription_subscribeWithTrial": {
+    "type": "text"
+  },
+  "subscription_subscribeWithoutTrial": "Get started with Premium",
+  "@subscription_subscribeWithoutTrial": {
+    "type": "text"
+  },
+  "subscription_redeemCode": "Redeem code",
   "@subscription_redeemCode": {
     "type": "text"
   },
@@ -1033,6 +1067,45 @@
   "subscription_snackbar_action": "Upgrade",
   "@subscription_snackbar_action": {
     "type": "text"
+  },
+  "subscription_trialTimeline_step1_title": "Now",
+  "@subscription_trialTimeline_step1_title": {
+    "type": "text"
+  },
+  "subscription_trialTimeline_step1_description": "Start your free trial of Premium. 0€ charged today.",
+  "@subscription_trialTimeline_step1_description": {
+    "type": "text"
+  },
+  "subscription_trialTimeline_step2_title": "Day {day}",
+  "@subscription_trialTimeline_step2_title": {
+    "type": "text",
+    "placeholders": {
+      "day": {
+      }
+    }
+  },
+  "subscription_trialTimeline_step2_description": "Get an email reminder that your trial ends soon.",
+  "@subscription_trialTimeline_step2_description": {
+    "type": "text"
+  },
+  "subscription_trialTimeline_step3_title": "Day {day}",
+  "@subscription_trialTimeline_step3_title": {
+    "type": "text",
+    "placeholders": {
+      "day": {
+      }
+    }
+  },
+  "subscription_trialTimeline_step3_description": "You'll be charged {price} on {date}. Cancel before and you won't be charged.",
+  "@subscription_trialTimeline_step3_description": {
+    "type": "text",
+    "placeholders": {
+      "price": {
+      },
+      "date": {
+
+      }
+    }
   },
   "subscription_startReading": "Start reading",
   "@subscription_startReading": {
@@ -1080,6 +1153,10 @@
   },
   "subscription_title_standard": "Subscribe to Premium",
   "@subscription_title_standard": {
+    "type": "text"
+  },
+  "subscription_subtitle_noTrial": "Your trial has expired. Subscribe to Premium now to enjoy everything informed has to offer, including:",
+  "@subscription_subtitle_noTrial": {
     "type": "text"
   },
   "subscription_title_trial": "Subscribe now",

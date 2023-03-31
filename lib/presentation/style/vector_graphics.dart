@@ -76,6 +76,7 @@ class AppVectorGraphics {
   static const String headphones = 'assets/vector_graphics/headphones.svg';
   static const String lines = 'assets/vector_graphics/lines.svg';
   static const String locker = 'assets/vector_graphics/locker.svg';
+  static const String alert = 'assets/vector_graphics/alert.svg';
 
   static const String playArrow = 'assets/vector_graphics/play_arrow.svg';
   static const String pause = 'assets/vector_graphics/pause.svg';
