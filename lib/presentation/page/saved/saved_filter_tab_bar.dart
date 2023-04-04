@@ -16,8 +16,8 @@ const _filterList = [
   BookmarkFilter.article,
 ];
 
-class ProfileFilterTabBar extends StatelessWidget {
-  const ProfileFilterTabBar({
+class SavedFilterTabBar extends StatelessWidget {
+  const SavedFilterTabBar({
     required this.controller,
     required this.onChange,
     Key? key,

@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view.dart';
-import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_loading_view.dart';
-import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_sort_view.dart';
-import 'package:better_informed_mobile/presentation/page/profile/profile_filter_tab_bar.dart';
-import 'package:better_informed_mobile/presentation/page/profile/profile_page_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/profile/profile_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/saved/bookmark_list_view/bookmark_list_view.dart';
+import 'package:better_informed_mobile/presentation/page/saved/bookmark_list_view/bookmark_loading_view.dart';
+import 'package:better_informed_mobile/presentation/page/saved/bookmark_list_view/bookmark_sort_view.dart';
+import 'package:better_informed_mobile/presentation/page/saved/saved_filter_tab_bar.dart';
+import 'package:better_informed_mobile/presentation/page/saved/saved_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/saved/saved_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -20,12 +20,12 @@ import 'package:scrolls_to_top/scrolls_to_top.dart';
 
 part 'profile_page_app_bar.dart';
 
-class ProfilePage extends HookWidget {
-  const ProfilePage();
+class SavedPage extends HookWidget {
+  const SavedPage();
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<ProfilePageCubit>();
+    final cubit = useCubit<SavedPageCubit>();
     final state = useCubitBuilder(cubit);
     final tabController = useTabController(initialLength: 3);
     final scrollController = useScrollController();
@@ -43,7 +43,7 @@ class ProfilePage extends HookWidget {
         scrollController: scrollController,
         currentPage: context.routeData,
         child: Scaffold(
-          appBar: _ProfilePageAppBar(
+          appBar: _SavedPageAppBar(
             isConnected: context.watch<IsConnected>(),
             tabController: tabController,
             cubit: cubit,

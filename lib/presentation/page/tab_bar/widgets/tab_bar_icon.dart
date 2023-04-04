@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/presentation/widget/today_tab_bar_badge/t
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-enum MainTab { today, explore, profile }
+enum MainTab { today, explore, saved }
 
 extension MainTabExtension on MainTab {
   Widget icon(BuildContext context) {
@@ -16,8 +16,8 @@ extension MainTabExtension on MainTab {
         return TodayTabBarBadge(child: _TabBarIcon(AppVectorGraphics.today, title(context), isActive: false));
       case MainTab.explore:
         return _TabBarIcon(AppVectorGraphics.explore, title(context), isActive: false);
-      case MainTab.profile:
-        return _TabBarIcon(AppVectorGraphics.profile, title(context), isActive: false);
+      case MainTab.saved:
+        return _TabBarIcon(AppVectorGraphics.bookmarkOutline, title(context), isActive: false);
     }
   }
 
@@ -27,8 +27,8 @@ extension MainTabExtension on MainTab {
         return TodayTabBarBadge(child: _TabBarIcon(AppVectorGraphics.today, title(context)));
       case MainTab.explore:
         return _TabBarIcon(AppVectorGraphics.explore, title(context));
-      case MainTab.profile:
-        return _TabBarIcon(AppVectorGraphics.profile, title(context));
+      case MainTab.saved:
+        return _TabBarIcon(AppVectorGraphics.bookmarkOutline, title(context));
     }
   }
 
@@ -38,8 +38,8 @@ extension MainTabExtension on MainTab {
         return context.l10n.main_todayTab;
       case MainTab.explore:
         return context.l10n.main_exploreTab;
-      case MainTab.profile:
-        return context.l10n.main_profileTab;
+      case MainTab.saved:
+        return context.l10n.main_savedTab;
     }
   }
 

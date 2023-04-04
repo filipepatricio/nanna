@@ -45,12 +45,14 @@ class TabBarListener extends HookWidget {
     required this.scrollController,
     required this.currentPage,
     required this.child,
+    this.onTabSelected,
     Key? key,
   }) : super(key: key);
 
   final ScrollController scrollController;
   final RouteData currentPage;
   final Widget child;
+  final VoidCallback? onTabSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +68,8 @@ class TabBarListener extends HookWidget {
               if (currentPage.isActive && tab == MainTabExtension.fromIndex(context.tabsRouter.activeIndex)) {
                 scrollController.animateToStart();
               }
+              final onTabSelected = this.onTabSelected;
+              onTabSelected?.call();
             },
             orElse: () {},
           );

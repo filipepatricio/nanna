@@ -28,7 +28,10 @@ class SynchronizaArticleProgressWithRemoteUseCase implements SynchronizeWithRemo
   final BookmarkLocalRepository _bookmarkLocalRepository;
 
   @override
-  Future<Synchronizable<ArticleProgress>> call(Synchronizable<ArticleProgress> synchronizable) async {
+  Future<Synchronizable<ArticleProgress>> call(
+    Synchronizable<ArticleProgress> synchronizable,
+    bool hasActiveSubscription,
+  ) async {
     final progress = synchronizable.data;
     if (progress == null) throw SynchronizableInvalidatedException();
 

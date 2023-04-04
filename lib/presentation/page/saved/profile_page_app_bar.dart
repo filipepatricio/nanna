@@ -1,7 +1,7 @@
-part of 'profile_page.dart';
+part of 'saved_page.dart';
 
-class _ProfilePageAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _ProfilePageAppBar({
+class _SavedPageAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _SavedPageAppBar({
     required this.tabController,
     required this.cubit,
     required this.state,
@@ -9,8 +9,8 @@ class _ProfilePageAppBar extends StatelessWidget implements PreferredSizeWidget 
   });
 
   final TabController tabController;
-  final ProfilePageCubit cubit;
-  final ProfilePageState state;
+  final SavedPageCubit cubit;
+  final SavedPageState state;
   final bool isConnected;
 
   @override
@@ -19,7 +19,7 @@ class _ProfilePageAppBar extends StatelessWidget implements PreferredSizeWidget 
       automaticallyImplyLeading: false,
       centerTitle: true,
       titleSpacing: AppDimens.zero,
-      title: ProfileFilterTabBar(
+      title: SavedFilterTabBar(
         controller: tabController,
         onChange: cubit.changeFilter,
       ),
