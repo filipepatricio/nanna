@@ -834,7 +834,7 @@
   "@subscription_benefit_read": {
     "type": "text"
   },
-  "subscription_button_standard": "Subscribe",
+  "subscription_button_standard": "Get started with Premium",
   "@subscription_button_standard": {
     "type": "text"
   },

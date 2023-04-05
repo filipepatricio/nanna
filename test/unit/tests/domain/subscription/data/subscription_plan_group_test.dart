@@ -46,7 +46,7 @@ void main() {
     test('returns true if all plans have a trial', () {
       const group = SubscriptionPlanGroup(plans: plans);
 
-      expect(group.hasTrail, true);
+      expect(group.hasTrial, true);
     });
 
     test('returns false if any plan does not have a trial', () {
@@ -83,7 +83,7 @@ void main() {
 
       const group = SubscriptionPlanGroup(plans: plans);
 
-      expect(group.hasTrail, false);
+      expect(group.hasTrial, false);
     });
   });
 }
