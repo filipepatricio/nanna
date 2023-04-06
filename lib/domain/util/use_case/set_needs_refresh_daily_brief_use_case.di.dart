@@ -7,5 +7,6 @@ class SetNeedsRefreshDailyBriefUseCase {
 
   final BadgeInfoRepository _badgeInfoRepository;
 
-  Future<void> call(int badgeCount) => _badgeInfoRepository.needsRefreshDailyBrief(badgeCount);
+  Future<void> call(bool needsRefreshDailyBrief) =>
+      _badgeInfoRepository.setNeedsRefreshDailyBrief(needsRefreshDailyBrief);
 }

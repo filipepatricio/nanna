@@ -15,7 +15,8 @@ import 'package:better_informed_mobile/domain/exception/no_internet_connection_e
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_observable_queries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
-import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_badge_count_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/background_incoming_push_data_refresh_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_brief_entries_updated_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
@@ -25,6 +26,7 @@ import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
@@ -56,6 +58,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._setTutorialStepSeenUseCase,
     this._trackActivityUseCase,
     this._incomingPushDataRefreshStreamUseCase,
+    this._backgroundIncomingPushDataRefreshStreamUseCase,
     this._getShouldUpdateBriefStreamUseCase,
     this._shouldUsePaidSubscriptionsUseCase,
     this._isOnboardingPaywallSeenUseCase,
@@ -63,9 +66,10 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._setOnboardingPaywallSeenUseCase,
     this._markEntryAsSeenUseCase,
     this._shouldRefreshDailyBriefUseCase,
-    this._incomingPushBadgeCountStreamUseCase,
+    this._incomingPushBriefEntriesUpdatedStreamUseCase,
     this._isInternetConnectionAvailableUseCase,
     this._shouldUseObservableQueriesUseCase,
+    this._setNeedsRefreshDailyBriefUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
@@ -74,6 +78,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final IncomingPushDataRefreshStreamUseCase _incomingPushDataRefreshStreamUseCase;
+  final BackgroundIncomingPushDataRefreshStreamUseCase _backgroundIncomingPushDataRefreshStreamUseCase;
   final GetShouldUpdateBriefStreamUseCase _getShouldUpdateBriefStreamUseCase;
   final ShouldUsePaidSubscriptionsUseCase _shouldUsePaidSubscriptionsUseCase;
   final IsOnboardingPaywallSeenUseCase _isOnboardingPaywallSeenUseCase;
@@ -81,9 +86,10 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final SetOnboardingPaywallSeenUseCase _setOnboardingPaywallSeenUseCase;
   final MarkEntryAsSeenUseCase _markEntryAsSeenUseCase;
   final ShouldRefreshDailyBriefUseCase _shouldRefreshDailyBriefUseCase;
-  final IncomingPushBadgeCountStreamUseCase _incomingPushBadgeCountStreamUseCase;
+  final IncomingPushBriefEntriesUpdatedStreamUseCase _incomingPushBriefEntriesUpdatedStreamUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
   final ShouldUseObservableQueriesUseCase _shouldUseObservableQueriesUseCase;
+  final SetNeedsRefreshDailyBriefUseCase _setNeedsRefreshDailyBriefUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -91,6 +97,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   Brief? _selectedBrief;
 
   StreamSubscription? _dataRefreshSubscription;
+  StreamSubscription? _backgroundDataRefreshSubscription;
   StreamSubscription? _badgeCountRefreshSubscription;
   StreamSubscription? _currentBriefSubscription;
   StreamSubscription? _shouldUpdateBriefSubscription;
@@ -128,6 +135,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   @override
   Future<void> close() async {
     await _dataRefreshSubscription?.cancel();
+    await _backgroundDataRefreshSubscription?.cancel();
     await _currentBriefSubscription?.cancel();
     await _shouldUpdateBriefSubscription?.cancel();
     await _trackItemController.close();
@@ -150,11 +158,17 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     }
 
     _dataRefreshSubscription ??= _incomingPushDataRefreshStreamUseCase().listen((event) {
-      Fimber.d('Incoming push - refreshing daily brief');
+      Fimber.d('Foreground Incoming push - refreshing daily brief');
       _emitEvent(DailyBriefPageState.hasBeenUpdated());
     });
 
-    _badgeCountRefreshSubscription ??= _incomingPushBadgeCountStreamUseCase().listen((event) {
+    _backgroundDataRefreshSubscription ??= _backgroundIncomingPushDataRefreshStreamUseCase().listen((event) {
+      Fimber.d('Background Incoming push - refreshing daily brief');
+      loadBriefs();
+      _setNeedsRefreshDailyBriefUseCase.call(false);
+    });
+
+    _badgeCountRefreshSubscription ??= _incomingPushBriefEntriesUpdatedStreamUseCase().listen((event) {
       Fimber.d('Incoming push - badge count');
       _emitEvent(DailyBriefPageState.hasBeenUpdated());
     });

@@ -75,7 +75,8 @@ import 'package:better_informed_mobile/domain/networking/connectivity_repository
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
-import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_badge_count_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/background_incoming_push_data_refresh_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_brief_entries_updated_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_local_repository.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_remote_repository.dart';
@@ -98,6 +99,7 @@ import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_ste
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
 import 'package:better_informed_mobile/domain/util/network_cache_manager.dart';
 import 'package:better_informed_mobile/domain/util/use_case/open_subscription_management_screen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
@@ -144,7 +146,7 @@ const _classes = [
   IsTutorialStepSeenUseCase,
   SetTutorialStepSeenUseCase,
   TrackActivityUseCase,
-  IncomingPushDataRefreshStreamUseCase,
+  BackgroundIncomingPushDataRefreshStreamUseCase,
   GetPastBriefUseCase,
   AudioPlaybackStateStreamUseCase,
   AudioPositionStreamUseCase,
@@ -201,7 +203,7 @@ const _classes = [
   SaveArticleReadProgressLocallyUseCase,
   LoadLocalArticleUseCase,
   ShouldRefreshDailyBriefUseCase,
-  IncomingPushBadgeCountStreamUseCase,
+  IncomingPushBriefEntriesUpdatedStreamUseCase,
   GetBookmarkStateUseCase,
   ConnectivityRepository,
   ShouldShowDailyBriefBadgeUseCase,
@@ -215,6 +217,8 @@ const _classes = [
   SharedPreferences,
   GetPaginatedBookmarksUseCase,
   ShouldUseObservableQueriesUseCase,
+  IncomingPushDataRefreshStreamUseCase,
+  SetNeedsRefreshDailyBriefUseCase
 ];
 
 @GenerateMocks(_classes)

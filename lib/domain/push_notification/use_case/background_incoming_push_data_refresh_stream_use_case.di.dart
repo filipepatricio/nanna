@@ -3,12 +3,12 @@ import 'package:better_informed_mobile/domain/push_notification/push_notificatio
 import 'package:injectable/injectable.dart';
 
 @injectable
-class IncomingPushDataRefreshStreamUseCase {
-  IncomingPushDataRefreshStreamUseCase(this._repository);
+class BackgroundIncomingPushDataRefreshStreamUseCase {
+  BackgroundIncomingPushDataRefreshStreamUseCase(this._repository);
   final PushNotificationRepository _repository;
 
   Stream<void> call() {
-    return _repository.pushNotificationMessageStream().where(
+    return _repository.pushNotificationOpenStream().where(
           (event) =>
               event.actions.whereType<IncomingPushActionRefreshDailyBrief>().isNotEmpty ||
               event.actions.whereType<IncomingPushActionNewBriefPublished>().isNotEmpty,

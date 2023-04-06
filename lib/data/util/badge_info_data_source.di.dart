@@ -16,8 +16,8 @@ class BadgeInfoDataSource {
     return shouldRefreshBrief;
   }
 
-  Future<void> needsRefreshDailyBrief() async {
-    await _sharedPreferences.setBool(_shouldRefreshBriefKey, true);
+  Future<void> needsRefreshDailyBrief(bool needsRefreshDailyBrief) async {
+    await _sharedPreferences.setBool(_shouldRefreshBriefKey, needsRefreshDailyBrief);
   }
 
   Future<void> setShouldShowDailyBriefBadge(bool shouldShowDailyBriefBadge) async {
