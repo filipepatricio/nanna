@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -36,12 +38,27 @@ class ArticleNoImageView extends StatelessWidget {
             ),
           )
         else
-          const Positioned.fill(
-            child: Center(
-              child: InformedSvg(
-                AppVectorGraphics.noImage,
-                color: AppColors.brandPrimary,
-              ),
+          Positioned.fill(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth / 2;
+                final height = constraints.maxHeight / 2;
+
+                final size = min(width, height) - AppDimens.sl * 2;
+
+                return Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppDimens.sl),
+                    child: InformedSvg(
+                      AppVectorGraphics.imageFallback,
+                      color: AppColors.brandPrimary,
+                      width: size,
+                      height: size,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
       ],

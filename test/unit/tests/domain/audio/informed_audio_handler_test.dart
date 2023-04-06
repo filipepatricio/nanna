@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/audio/handler/informed_audio_handler.dart';
+import 'package:better_informed_mobile/data/util/audio_util.dart';
 import 'package:better_informed_mobile/domain/audio/exception/unknown_audio_file_duration_exception.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:just_audio/just_audio.dart';
@@ -25,6 +26,9 @@ class FakeAudioPlayer extends Fake implements AudioPlayer {
 
   @override
   Stream<PlaybackEvent> get playbackEventStream => Stream.value(PlaybackEvent());
+
+  @override
+  double get speed => defaultSpeed;
 }
 
 class FakeAudioPlayerFail extends Fake implements AudioPlayer {

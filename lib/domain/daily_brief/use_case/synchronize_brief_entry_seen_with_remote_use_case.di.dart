@@ -20,7 +20,10 @@ class SynchronizeBriefEntrySeenWithRemoteUseCase extends SynchronizeWithRemoteUs
   final BriefEntryNewStateNotifier _briefEntryNewStateNotifier;
 
   @override
-  Future<Synchronizable<BriefEntrySeen>> call(Synchronizable<BriefEntrySeen> synchronizable) async {
+  Future<Synchronizable<BriefEntrySeen>> call(
+    Synchronizable<BriefEntrySeen> synchronizable,
+    bool hasActiveSubscription,
+  ) async {
     final seenItem = synchronizable.data;
 
     if (seenItem == null) throw SynchronizableInvalidatedException();

@@ -11,8 +11,8 @@ import 'package:better_informed_mobile/domain/bookmark/use_case/add_bookmark_use
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/remove_bookmark_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
-import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_page_loader.di.dart';
+import 'package:better_informed_mobile/presentation/page/saved/bookmark_list_view/bookmark_list_view_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/saved/bookmark_list_view/bookmark_page_loader.di.dart';
 import 'package:better_informed_mobile/presentation/util/connection_state_aware_cubit_mixin.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:bloc/bloc.dart';

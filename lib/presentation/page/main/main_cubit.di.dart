@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/get_token_expiration_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/deep_link/use_case/subscribe_for_deep_link_use_case.di.dart';
@@ -124,6 +125,11 @@ class MainCubit extends Cubit<MainState> {
   }
 
   Future<void> _initializeSynchronizationEngine() async {
+    if (!kIsTest) {
+      await Future.delayed(const Duration(seconds: 5));
+      if (isClosed) return;
+    }
+
     try {
       await _initializeSynchronizationEngineUseCase();
     } finally {

@@ -361,8 +361,8 @@
   "@main_exploreTab": {
     "type": "text"
   },
-  "main_profileTab": "Profile",
-  "@main_profileTab": {
+  "main_savedTab": "Saved",
+  "@main_savedTab": {
     "type": "text"
   },
   "main_todayTab": "Today",

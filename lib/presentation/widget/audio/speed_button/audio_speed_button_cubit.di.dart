@@ -6,8 +6,8 @@ import 'package:better_informed_mobile/presentation/widget/audio/speed_button/au
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
+const _minSpeed = 1.0;
 const _maxSpeed = 1.5;
-const _defaultSpeed = 1.0;
 const _speedStep = 0.25;
 
 @injectable
@@ -50,7 +50,7 @@ class AudioSpeedButtonCubit extends Cubit<AudioSpeedButtonState> {
 
         double newSpeed;
         if (potentialSpeed > _maxSpeed) {
-          newSpeed = _defaultSpeed;
+          newSpeed = _minSpeed;
         } else {
           newSpeed = potentialSpeed;
         }
