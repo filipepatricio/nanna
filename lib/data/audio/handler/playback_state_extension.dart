@@ -6,13 +6,15 @@ extension PlaybackStateExtension on PlaybackState {
         processingState: AudioProcessingState.idle,
       );
 
-  static PlaybackState getLoading() => PlaybackState(
+  static PlaybackState getLoading(double speed) => PlaybackState(
         playing: false,
+        speed: speed,
         processingState: AudioProcessingState.loading,
       );
 
-  static PlaybackState getLoaded(Duration duration) => PlaybackState(
+  static PlaybackState getLoaded(Duration duration, double speed) => PlaybackState(
         playing: false,
+        speed: speed,
         processingState: AudioProcessingState.ready,
         controls: [
           MediaControl.rewind,

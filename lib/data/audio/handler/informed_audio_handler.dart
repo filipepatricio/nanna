@@ -4,6 +4,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:better_informed_mobile/data/audio/handler/current_audio_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/audio/handler/informed_base_audio_handler.dart';
 import 'package:better_informed_mobile/data/audio/handler/playback_state_extension.dart';
+import 'package:better_informed_mobile/data/util/audio_util.dart';
 import 'package:better_informed_mobile/domain/audio/exception/audio_file_loading_exception.dart';
 import 'package:better_informed_mobile/domain/audio/exception/unknown_audio_file_duration_exception.dart';
 import 'package:just_audio/just_audio.dart';
@@ -29,15 +30,17 @@ class InformedAudioHandler extends InformedBaseAudioHandler with SeekHandler {
         mediaItem: mediaItme,
       ),
     ).listen(_currentAudioItemSubject.add);
+
+    await _audioPlayer.setSpeed(defaultSpeed);
   }
 
   @override
   Future<void> notifyLoading(MediaItem item) async {
     await _audioPlayer.pause();
-    await _audioPlayer.setSpeed(1.0);
 
     mediaItem.add(item);
-    playbackState.add(PlaybackStateExtension.getLoading());
+
+    playbackState.add(PlaybackStateExtension.getLoading(_audioPlayer.speed));
   }
 
   @override
@@ -49,7 +52,7 @@ class InformedAudioHandler extends InformedBaseAudioHandler with SeekHandler {
       await _registerPlaybackEventListener();
 
       mediaItem.add(mediaItem.value?.copyWith(duration: duration));
-      playbackState.add(PlaybackStateExtension.getLoaded(duration));
+      playbackState.add(PlaybackStateExtension.getLoaded(duration, _audioPlayer.speed));
 
       return duration;
     } on PlayerInterruptedException catch (e) {
