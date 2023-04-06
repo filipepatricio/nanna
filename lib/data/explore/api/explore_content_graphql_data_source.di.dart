@@ -22,6 +22,8 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
 
+  ObservableQuery<Object>? _exploreContentObservable;
+
   int? _exploreContentHashCode;
 
   @override
@@ -68,7 +70,7 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
 
   @override
   Stream<ExploreContentDTO?> exploreContentStream() async* {
-    final observableQuery = _client.watchQuery(
+    _exploreContentObservable = _client.watchQuery(
       WatchQueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
         document: get_explore_section.document,
@@ -79,7 +81,7 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
       ),
     );
 
-    yield* observableQuery.stream.map(
+    yield* _exploreContentObservable!.stream.map(
       (result) => _responseResolver.resolve<ExploreContentDTO?>(
         result,
         (raw) {
@@ -92,5 +94,11 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
         },
       ),
     );
+  }
+
+  @override
+  @disposeMethod
+  void dispose() {
+    _exploreContentObservable?.close();
   }
 }

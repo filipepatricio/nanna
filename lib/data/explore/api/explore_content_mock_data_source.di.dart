@@ -24,4 +24,8 @@ class ExploreMockDataSource implements ExploreContentApiDataSource {
   Stream<ExploreContentDTO?> exploreContentStream() async* {
     yield MockDTO.exploreContent;
   }
+
+  @override
+  @disposeMethod
+  void dispose() {}
 }

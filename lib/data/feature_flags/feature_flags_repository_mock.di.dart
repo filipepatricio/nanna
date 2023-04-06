@@ -33,4 +33,9 @@ class FeatureFlagsRepositoryMock implements FeaturesFlagsRepository {
 
   @override
   Stream<bool> usePaidSubscriptionStream() async* {}
+
+  @override
+  Future<bool> useObservableQueries() async {
+    return true;
+  }
 }

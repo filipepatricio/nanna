@@ -17,6 +17,7 @@ const attributionMediaSourceKey = 'afMediaSource';
 const attributionAdSet = 'afAdset';
 
 const _usePaidSubscriptionFlag = 'use-paid-subscriptions';
+const _useObservableQueriesFlag = 'use-observable-queries';
 
 const _rootRouteFlag = 'root-route';
 const _rootRouteFlagDefaultValue = '';
@@ -65,6 +66,11 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   @override
   Future<bool> usePaidSubscriptions() async {
     return LDClient.boolVariation(_usePaidSubscriptionFlag, false);
+  }
+
+  @override
+  Future<bool> useObservableQueries() async {
+    return LDClient.boolVariation(_useObservableQueriesFlag, true);
   }
 
   @override
