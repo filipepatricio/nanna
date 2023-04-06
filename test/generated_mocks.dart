@@ -69,6 +69,7 @@ import 'package:better_informed_mobile/domain/daily_brief_badge/badge_info_repos
 import 'package:better_informed_mobile/domain/daily_brief_badge/use_case/should_show_daily_brief_badge_use_case.di.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_observable_queries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/connectivity_repository.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
@@ -213,6 +214,7 @@ const _classes = [
   BadgeInfoRepository,
   SharedPreferences,
   GetPaginatedBookmarksUseCase,
+  ShouldUseObservableQueriesUseCase,
 ];
 
 @GenerateMocks(_classes)

@@ -22,6 +22,8 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
 
+  ObservableQuery<Object>? _currentBriefObservable;
+
   int? _currentBriefHashCode;
 
   @override
@@ -69,7 +71,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
 
   @override
   Stream<BriefsWrapperDTO?> currentBriefStream() async* {
-    final observableQuery = _client.watchQuery(
+    _currentBriefObservable = _client.watchQuery(
       WatchQueryOptions(
         document: current_brief.document,
         operationName: current_brief.currentBriefForStartupScreen.name?.value,
@@ -81,7 +83,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
       ),
     );
 
-    yield* observableQuery.stream.map(
+    yield* _currentBriefObservable!.stream.map(
       (result) => _responseResolver.resolve<BriefsWrapperDTO?>(
         result,
         (raw) {
@@ -94,5 +96,11 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
         },
       ),
     );
+  }
+
+  @override
+  @disposeMethod
+  void dispose() {
+    _currentBriefObservable?.close();
   }
 }

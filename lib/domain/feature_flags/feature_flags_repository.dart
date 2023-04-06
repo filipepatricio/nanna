@@ -13,4 +13,6 @@ abstract class FeaturesFlagsRepository {
   Stream<bool> usePaidSubscriptionStream();
 
   Future<String> defaultPaywall();
+
+  Future<bool> useObservableQueries();
 }

@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_up
 import 'package:better_informed_mobile/domain/daily_brief/use_case/mark_entry_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/brief_not_initialized_exception.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_observable_queries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_badge_count_stream_use_case.di.dart';
@@ -64,6 +65,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._shouldRefreshDailyBriefUseCase,
     this._incomingPushBadgeCountStreamUseCase,
     this._isInternetConnectionAvailableUseCase,
+    this._shouldUseObservableQueriesUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
@@ -81,6 +83,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final ShouldRefreshDailyBriefUseCase _shouldRefreshDailyBriefUseCase;
   final IncomingPushBadgeCountStreamUseCase _incomingPushBadgeCountStreamUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
+  final ShouldUseObservableQueriesUseCase _shouldUseObservableQueriesUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -136,10 +139,15 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   Future<void> initialize() async {
     await initializeConnection(null);
 
-    _currentBriefSubscription ??= _getCurrentBriefUseCase.stream.listen((currentBriefWrapper) {
-      _briefsWrapper = currentBriefWrapper;
-      _updateIdleState(preCacheImages: true);
-    });
+    if (await _shouldUseObservableQueriesUseCase()) {
+      _currentBriefSubscription ??= _getCurrentBriefUseCase.stream.listen((updatedBriefWrapper) {
+        _briefsWrapper = updatedBriefWrapper;
+        if (_selectedBrief?.id == updatedBriefWrapper.currentBrief.id) {
+          _selectedBrief = updatedBriefWrapper.currentBrief;
+        }
+        _updateIdleState(preCacheImages: true);
+      });
+    }
 
     _dataRefreshSubscription ??= _incomingPushDataRefreshStreamUseCase().listen((event) {
       Fimber.d('Incoming push - refreshing daily brief');
