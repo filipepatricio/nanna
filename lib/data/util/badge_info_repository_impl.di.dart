@@ -18,11 +18,15 @@ class BadgeInfoRepositoryImpl implements BadgeInfoRepository {
   }
 
   @override
-  Future<void> needsRefreshDailyBrief(int badgeCount) async {
+  Future<void> updateBadgeCount(int badgeCount) async {
     if (await FlutterAppBadger.isAppBadgeSupported()) {
       await FlutterAppBadger.updateBadgeCount(badgeCount);
     }
-    await _badgeInfoDataSource.needsRefreshDailyBrief();
+  }
+
+  @override
+  Future<void> setNeedsRefreshDailyBrief(bool needsRefreshDailyBrief) async {
+    await _badgeInfoDataSource.needsRefreshDailyBrief(needsRefreshDailyBrief);
   }
 
   @override

@@ -14,6 +14,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/auth/data/auth_token.dart';
 import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/update_daily_brief_badge_count_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
 import 'package:fimber/fimber.dart';
@@ -40,14 +41,21 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   final sharedPreferences = await SharedPreferences.getInstance();
   final badgeInfoDataSource = BadgeInfoDataSource(sharedPreferences);
   final badgeRepository = BadgeInfoRepositoryImpl(badgeInfoDataSource);
-  final setNeedsRefreshDailyBriefUseCase = SetNeedsRefreshDailyBriefUseCase(badgeRepository);
+  final updateBadgeCount = UpdateDailyBriefBadgeCountUseCase(badgeRepository);
+  final setNeedsRefreshDailyBriefOnAppResumed = SetNeedsRefreshDailyBriefUseCase(badgeRepository);
 
   final action = incomingPush.actions.first;
 
   await action.mapOrNull(
-    briefEntriesUpdated: (args) => setNeedsRefreshDailyBriefUseCase(args.badgeCount),
-    briefEntrySeenByUser: (args) => setNeedsRefreshDailyBriefUseCase(args.badgeCount),
-    newBriefPublished: (args) => setNeedsRefreshDailyBriefUseCase(args.badgeCount),
+    briefEntriesUpdated: (args) {
+      updateBadgeCount(args.badgeCount);
+      setNeedsRefreshDailyBriefOnAppResumed(true);
+    },
+    briefEntrySeenByUser: (args) => updateBadgeCount(args.badgeCount),
+    newBriefPublished: (args) {
+      updateBadgeCount(args.badgeCount);
+      setNeedsRefreshDailyBriefOnAppResumed(true);
+    },
   );
 }
 
