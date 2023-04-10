@@ -8,26 +8,28 @@ part 'article_paywall_state.dt.freezed.dart';
 @Freezed(toJson: false)
 class ArticlePaywallState with _$ArticlePaywallState {
   @Implements<BuildState>()
-  factory ArticlePaywallState.initializing() = _ArticlePaywallStateInitializing;
+  const factory ArticlePaywallState.initializing() = _ArticlePaywallStateInitializing;
 
   @Implements<BuildState>()
-  factory ArticlePaywallState.loading() = _ArticlePaywallStateLoading;
+  const factory ArticlePaywallState.loading() = _ArticlePaywallStateLoading;
 
   @Implements<BuildState>()
-  factory ArticlePaywallState.disabled() = _ArticlePaywallStateDisabled;
+  const factory ArticlePaywallState.disabled() = _ArticlePaywallStateDisabled;
 
   @Implements<BuildState>()
-  factory ArticlePaywallState.trial(SubscriptionPlan plan, bool processing) = _ArticlePaywallStateTrial;
+  const factory ArticlePaywallState.trial(SubscriptionPlan plan, bool processing) = _ArticlePaywallStateTrial;
 
   @Implements<BuildState>()
-  factory ArticlePaywallState.multiplePlans(SubscriptionPlanGroup planGroup, bool processing) =
+  const factory ArticlePaywallState.multiplePlans(SubscriptionPlanGroup planGroup, bool processing) =
       _ArticlePaywallStateMultiplePlans;
 
-  factory ArticlePaywallState.purchaseSuccess() = _ArticlePaywallStatePurchaseSuccess;
+  const factory ArticlePaywallState.redeemingCode() = _ArticlePaywallStateRedeemingCode;
 
-  factory ArticlePaywallState.restoringPurchase() = _ArticlePaywallStateRestoringPurchase;
+  const factory ArticlePaywallState.purchaseSuccess() = _ArticlePaywallStatePurchaseSuccess;
 
-  factory ArticlePaywallState.restoringPurchaseError() = _ArticlePaywallStateRestoringPurchaseError;
+  const factory ArticlePaywallState.restoringPurchase() = _ArticlePaywallStateRestoringPurchase;
 
-  factory ArticlePaywallState.generalError([String? message]) = _ArticlePaywallStateGeneralError;
+  const factory ArticlePaywallState.restoringPurchaseError() = _ArticlePaywallStateRestoringPurchaseError;
+
+  const factory ArticlePaywallState.generalError([String? message]) = _ArticlePaywallStateGeneralError;
 }

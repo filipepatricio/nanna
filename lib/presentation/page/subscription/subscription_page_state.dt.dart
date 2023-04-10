@@ -25,6 +25,8 @@ class SubscriptionPageState with _$SubscriptionPageState {
   @Implements<BuildState>()
   const factory SubscriptionPageState.success({required bool withTrial}) = _SubscriptionPageStateSuccess;
 
+  const factory SubscriptionPageState.redeemingCode() = _SubscriptionPageStateRedeemingCode;
+
   const factory SubscriptionPageState.restoringPurchase() = _SubscriptionPageStateRestoringPurchase;
 
   const factory SubscriptionPageState.restoringPurchaseError() = _SubscriptionPageStateRestoringPurchaseError;

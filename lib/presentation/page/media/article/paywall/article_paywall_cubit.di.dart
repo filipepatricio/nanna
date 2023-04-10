@@ -1,8 +1,8 @@
+import 'package:better_informed_mobile/core/util/app_link.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
-import 'package:better_informed_mobile/domain/subscription/use_case/redeem_offer_code_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -15,21 +15,19 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
     this._getArticlePaywallPreferredPlanUseCase,
     this._restorePurchaseUseCase,
     this._purchaseSubscriptionUseCase,
-    this._redeemOfferCodeUseCase,
-  ) : super(ArticlePaywallState.initializing());
+  ) : super(const ArticlePaywallState.initializing());
 
   final GetArticlePaywallPreferredPlanUseCase _getArticlePaywallPreferredPlanUseCase;
   final RestorePurchaseUseCase _restorePurchaseUseCase;
   final PurchaseSubscriptionUseCase _purchaseSubscriptionUseCase;
-  final RedeemOfferCodeUseCase _redeemOfferCodeUseCase;
 
   Future<void> initialize(Article article) async {
     if (article.metadata.availableInSubscription) {
-      emit(ArticlePaywallState.disabled());
+      emit(const ArticlePaywallState.disabled());
       return;
     }
 
-    emit(ArticlePaywallState.loading());
+    emit(const ArticlePaywallState.loading());
     await _setupPaywall();
   }
 
@@ -40,8 +38,8 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
       final result = await _purchaseSubscriptionUseCase(plan);
 
       if (result) {
-        emit(ArticlePaywallState.purchaseSuccess());
-        emit(ArticlePaywallState.loading());
+        emit(const ArticlePaywallState.purchaseSuccess());
+        emit(const ArticlePaywallState.loading());
       } else {
         await _setupPaywall();
       }
@@ -51,17 +49,17 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
         ex: e,
         stacktrace: s,
       );
-      emit(ArticlePaywallState.generalError());
+      emit(const ArticlePaywallState.generalError());
     }
   }
 
-  Future<void> restore() async {
+  Future<void> restorePurchase() async {
     try {
-      emit(ArticlePaywallState.restoringPurchase());
+      emit(const ArticlePaywallState.restoringPurchase());
       final successful = await _restorePurchaseUseCase();
 
       if (successful) {
-        emit(ArticlePaywallState.purchaseSuccess());
+        emit(const ArticlePaywallState.purchaseSuccess());
       } else {
         await _setupPaywall();
       }
@@ -71,11 +69,17 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
         ex: e,
         stacktrace: s,
       );
-      emit(ArticlePaywallState.restoringPurchaseError());
+      emit(const ArticlePaywallState.restoringPurchaseError());
     }
   }
 
-  Future<void> redeemOfferCode() async => await _redeemOfferCodeUseCase();
+  Future<void> redeemOfferCode() async {
+    emit(const ArticlePaywallState.redeemingCode());
+    await openUrlWithAnyApp(
+      appleCodeRedemptionLink,
+      (error, stackTrace) => Fimber.e('Error launching code redemption sheet', ex: error, stacktrace: stackTrace),
+    );
+  }
 
   Future<void> _setupPaywall() async {
     final planPack = await _getArticlePaywallPreferredPlanUseCase();
