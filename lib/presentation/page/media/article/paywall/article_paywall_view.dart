@@ -45,6 +45,14 @@ class ArticlePaywallView extends HookWidget {
     final cubit = useCubit<ArticlePaywallCubit>();
     final state = useCubitBuilder(cubit);
     final snackbarController = useSnackbarController();
+    final shouldRestorePurchase = useValueNotifier(false);
+
+    useOnAppLifecycleStateChange((previous, current) {
+      if (current == AppLifecycleState.resumed && shouldRestorePurchase.value) {
+        cubit.restorePurchase();
+        shouldRestorePurchase.value = false;
+      }
+    });
 
     useCubitListener<ArticlePaywallCubit, ArticlePaywallState>(cubit, (cubit, state, context) {
       state.whenOrNull(
@@ -52,6 +60,7 @@ class ArticlePaywallView extends HookWidget {
         purchaseSuccess: () => InformedDialog.removeRestorePurchase(context),
         multiplePlans: (planGroup, processing) => InformedDialog.removeRestorePurchase(context),
         trial: (plan, processing) => InformedDialog.removeRestorePurchase(context),
+        redeemingCode: () => shouldRestorePurchase.value = true,
         generalError: (message) {
           snackbarController.showMessage(
             SnackbarMessage.simple(
@@ -109,7 +118,7 @@ class ArticlePaywallView extends HookWidget {
               multiplePlans: (state) => _PaywallMultipleOptions(
                 planGroup: state.planGroup,
                 onPurchasePressed: cubit.purchase,
-                onRestorePressed: cubit.restore,
+                onRestorePressed: cubit.restorePurchase,
                 onRedeemCodePressed: cubit.redeemOfferCode,
                 isProcessing: state.processing,
               ),

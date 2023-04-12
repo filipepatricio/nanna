@@ -1,9 +1,9 @@
+import 'package:better_informed_mobile/core/util/app_link.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_preferred_subscription_plan_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
-import 'package:better_informed_mobile/domain/subscription/use_case/redeem_offer_code_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -17,14 +17,12 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
     this._getPreferredSubscriptionPlanUseCase,
     this._restorePurchaseUseCase,
     this._purchaseSubscriptionUseCase,
-    this._redeemOfferCodeUseCase,
   ) : super(const SubscriptionPageState.initializing());
 
   final GetSubscriptionPlansUseCase _getSubscriptionPlansUseCase;
   final GetPreferredSubscriptionPlanUseCase _getPreferredSubscriptionPlanUseCase;
   final RestorePurchaseUseCase _restorePurchaseUseCase;
   final PurchaseSubscriptionUseCase _purchaseSubscriptionUseCase;
-  final RedeemOfferCodeUseCase _redeemOfferCodeUseCase;
 
   late SubscriptionPlanGroup _planGroup;
   late SubscriptionPlan _selectedPlan;
@@ -84,5 +82,11 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
     }
   }
 
-  Future<void> redeemOfferCode() async => await _redeemOfferCodeUseCase();
+  Future<void> redeemOfferCode() async {
+    emit(const SubscriptionPageState.redeemingCode());
+    await openUrlWithAnyApp(
+      appleCodeRedemptionLink,
+      (error, stackTrace) => Fimber.e('Error launching code redemption sheet', ex: error, stacktrace: stackTrace),
+    );
+  }
 }
