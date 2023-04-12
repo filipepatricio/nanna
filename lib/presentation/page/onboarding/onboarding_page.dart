@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
@@ -8,7 +7,6 @@ import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboa
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_publishers_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/informed_theme.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -36,7 +34,6 @@ class OnboardingPage extends HookWidget {
     final pageIndex = useState(0);
     final controller = usePageController();
     final isLastPage = pageIndex.value == _pageList.length - 1;
-    final brightness = AdaptiveTheme.of(context).brightness;
 
     useEffect(
       () {
@@ -60,72 +57,67 @@ class OnboardingPage extends HookWidget {
       cubit.setUiActiveState(current == AppLifecycleState.resumed);
     });
 
-    return AnnotatedRegion(
-      value: brightness == Brightness.dark
-          ? InformedTheme.systemUIOverlayStyleLight
-          : InformedTheme.systemUIOverlayStyleDark,
-      child: Scaffold(
-        body: SafeArea(
-          top: false,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 20,
-                child: PageView(
-                  controller: controller,
-                  onPageChanged: (index) {
-                    cubit.trackOnboardingPage(index);
-                    pageIndex.value = index;
-                  },
-                  children: _pageList,
-                ),
+    return Scaffold(
+      body: SafeArea(
+        top: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              flex: 20,
+              child: PageView(
+                controller: controller,
+                onPageChanged: (index) {
+                  cubit.trackOnboardingPage(index);
+                  pageIndex.value = index;
+                },
+                children: _pageList,
               ),
-              const Spacer(flex: 1),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    PageDotIndicator(
-                      pageCount: _pageList.length,
-                      controller: controller,
-                    ),
-                    const SizedBox(height: AppDimens.m),
-                    Row(
-                      children: [
-                        AnimatedOpacity(
-                          duration: const Duration(milliseconds: AppAnimation.skipButton),
-                          opacity: pageIndex.value == _pageList.length - 1 ? 0 : 1,
-                          child: AbsorbPointer(
-                            absorbing: pageIndex.value == _pageList.length - 1,
-                            child: _SkipButton(
-                              cubit: cubit,
-                              controller: controller,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        if (isLastPage)
-                          InformedFilledButton.primary(
-                            context: context,
-                            text: context.l10n.common_continue,
-                            onTap: () => _navigateToMainPage(context, cubit),
-                          )
-                        else
-                          _NextPageButton(
+            ),
+            const Spacer(flex: 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  PageDotIndicator(
+                    pageCount: _pageList.length,
+                    controller: controller,
+                  ),
+                  const SizedBox(height: AppDimens.m),
+                  Row(
+                    children: [
+                      AnimatedOpacity(
+                        duration: const Duration(milliseconds: AppAnimation.skipButton),
+                        opacity: pageIndex.value == _pageList.length - 1 ? 0 : 1,
+                        child: AbsorbPointer(
+                          absorbing: pageIndex.value == _pageList.length - 1,
+                          child: _SkipButton(
                             cubit: cubit,
                             controller: controller,
-                            currentPage: pageIndex.value,
                           ),
-                      ],
-                    ),
-                  ],
-                ),
+                        ),
+                      ),
+                      const Spacer(),
+                      if (isLastPage)
+                        InformedFilledButton.primary(
+                          context: context,
+                          text: context.l10n.common_continue,
+                          onTap: () => _navigateToMainPage(context, cubit),
+                        )
+                      else
+                        _NextPageButton(
+                          cubit: cubit,
+                          controller: controller,
+                          currentPage: pageIndex.value,
+                        ),
+                    ],
+                  ),
+                ],
               ),
-              const SizedBox(height: AppDimens.m),
-            ],
-          ),
+            ),
+            const SizedBox(height: AppDimens.m),
+          ],
         ),
       ),
     );
