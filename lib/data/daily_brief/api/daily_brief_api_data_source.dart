@@ -9,4 +9,6 @@ abstract class DailyBriefApiDataSource {
   Future<BriefDTO> pastBrief(DateTime dateTime);
 
   Stream<BriefsWrapperDTO?> currentBriefStream();
+
+  void dispose();
 }

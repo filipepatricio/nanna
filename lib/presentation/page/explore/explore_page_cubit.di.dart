@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/exception/no_internet_connection_e
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_should_update_explore_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_observable_queries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/use_case/get_search_history_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/use_case/remove_search_history_query_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
@@ -26,6 +27,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     this._getSearchHistoryUseCase,
     this._removeSearchHistoryQueryUseCase,
     this._getShouldUpdateExploreStreamUseCase,
+    this._shouldUseObservableQueriesUseCase,
   ) : super(const ExplorePageState.initialLoading());
 
   final GetExploreContentUseCase _getExploreContentUseCase;
@@ -33,7 +35,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final GetShouldUpdateExploreStreamUseCase _getShouldUpdateExploreStreamUseCase;
-
+  final ShouldUseObservableQueriesUseCase _shouldUseObservableQueriesUseCase;
   final GetSearchHistoryUseCase _getSearchHistoryUseCase;
   final RemoveSearchHistoryQueryUseCase _removeSearchHistoryQueryUseCase;
 
@@ -56,14 +58,16 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     await _exploreContentSubscription?.cancel();
     await _shouldUpdateExploreSubscription?.cancel();
 
-    _exploreContentSubscription = _getExploreContentUseCase.highlightedContentStream.listen((content) async {
-      final idleState = await _processAndEmitExploreContent(content);
-      state.maybeMap(
-        search: (_) => {},
-        searchHistory: (_) => {},
-        orElse: () => emit(idleState),
-      );
-    });
+    if (await _shouldUseObservableQueriesUseCase()) {
+      _exploreContentSubscription = _getExploreContentUseCase.highlightedContentStream.listen((content) async {
+        final idleState = await _processAndEmitExploreContent(content);
+        state.maybeMap(
+          search: (_) => {},
+          searchHistory: (_) => {},
+          orElse: () => emit(idleState),
+        );
+      });
+    }
 
     _shouldUpdateExploreSubscription = _getShouldUpdateExploreStreamUseCase().listen((_) {
       state.mapOrNull(

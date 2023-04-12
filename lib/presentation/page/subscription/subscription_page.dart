@@ -41,6 +41,7 @@ class SubscriptionPage extends HookWidget {
     final state = useCubitBuilder<SubscriptionPageCubit, SubscriptionPageState>(cubit);
     final snackbarController = useMemoized(() => SnackbarController());
     final eventController = useEventTrackingController();
+    final shouldRestorePurchase = useValueNotifier(false);
 
     useEffect(
       () {
@@ -49,12 +50,18 @@ class SubscriptionPage extends HookWidget {
       [cubit],
     );
 
+    useOnAppLifecycleStateChange((previous, current) {
+      if (current == AppLifecycleState.resumed && shouldRestorePurchase.value) {
+        cubit.restorePurchase();
+        shouldRestorePurchase.value = false;
+      }
+    });
+
     useCubitListener<SubscriptionPageCubit, SubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        idle: (group, selectedPlan) {
-          InformedDialog.removeRestorePurchase(context);
-        },
+        idle: (_, __) => InformedDialog.removeRestorePurchase(context),
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
+        redeemingCode: () => shouldRestorePurchase.value = true,
         success: (trialMode) {
           InformedDialog.removeRestorePurchase(context);
           AutoRouter.of(context).replace(

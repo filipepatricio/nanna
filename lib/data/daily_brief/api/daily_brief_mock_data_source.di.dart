@@ -27,4 +27,8 @@ class DailyBriefMockDataSource implements DailyBriefApiDataSource {
   Future<BriefDTO> pastBrief(DateTime dateTime) async {
     return MockDTO.currentBrief(date: dateTime);
   }
+
+  @override
+  @disposeMethod
+  void dispose() {}
 }

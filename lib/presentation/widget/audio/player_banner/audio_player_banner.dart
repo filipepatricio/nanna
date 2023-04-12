@@ -26,6 +26,7 @@ class AudioPlayerBanner extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final cubit = useCubit<AudioPlayerBannerCubit>(closeOnDispose: false);
     final state = useCubitBuilder(cubit);
     final snackbarController = useSnackbarController();
@@ -36,9 +37,9 @@ class AudioPlayerBanner extends HookWidget {
           snackbarController.showMessage(
             SnackbarMessage.simple(
               message: value.message,
-              subMessage: context.l10n.subscription_snackbar_link,
+              subMessage: l10n.subscription_snackbar_link,
               action: SnackbarAction(
-                label: context.l10n.subscription_snackbar_action,
+                label: l10n.subscription_snackbar_action,
                 callback: () => context.pushRoute(const SubscriptionPageRoute()),
               ),
               type: SnackbarMessageType.subscription,

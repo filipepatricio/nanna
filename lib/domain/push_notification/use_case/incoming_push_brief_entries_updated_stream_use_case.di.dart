@@ -3,8 +3,8 @@ import 'package:better_informed_mobile/domain/push_notification/push_notificatio
 import 'package:injectable/injectable.dart';
 
 @injectable
-class IncomingPushBadgeCountStreamUseCase {
-  IncomingPushBadgeCountStreamUseCase(this._repository);
+class IncomingPushBriefEntriesUpdatedStreamUseCase {
+  IncomingPushBriefEntriesUpdatedStreamUseCase(this._repository);
   final PushNotificationRepository _repository;
 
   Stream<void> call() {

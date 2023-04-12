@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_observable_queries_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
@@ -26,6 +27,7 @@ void main() {
   late MockGetCurrentBriefUseCase getCurrentBriefUseCase;
   late MockGetPastBriefUseCase getPastBriefUseCase;
   late MockIncomingPushDataRefreshStreamUseCase incomingPushDataRefreshStreamUseCase;
+  late MockBackgroundIncomingPushDataRefreshStreamUseCase backgroundIncomingPushDataRefreshStreamUseCase;
   late MockIsTutorialStepSeenUseCase isTutorialStepSeenUseCase;
   late MockSetTutorialStepSeenUseCase setTutorialStepSeenUseCase;
   late MockGetShouldUpdateBriefStreamUseCase getShouldUpdateBriefStreamUseCase;
@@ -35,8 +37,10 @@ void main() {
   late MockSetOnboardingPaywallSeenUseCase setOnboardingPaywallSeenUseCase;
   late MockMarkEntryAsSeenUseCase mockMarkEntryAsSeenUseCase;
   late MockShouldRefreshDailyBriefUseCase shouldRefreshDailyBriefUseCase;
-  late MockIncomingPushBadgeCountStreamUseCase incomingPushBadgeCountStreamUseCase;
+  late MockIncomingPushBriefEntriesUpdatedStreamUseCase incomingPushBriefEntriesUpdatedStreamUseCase;
   late MockIsInternetConnectionAvailableUseCase isInternetConnectionAvailableUseCase;
+  late ShouldUseObservableQueriesUseCase shouldUseObservableQueriesUseCase;
+  late MockSetNeedsRefreshDailyBriefUseCase setNeedsRefreshDailyBriefUseCase;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(
@@ -51,6 +55,7 @@ void main() {
     getCurrentBriefUseCase = MockGetCurrentBriefUseCase();
     getPastBriefUseCase = MockGetPastBriefUseCase();
     incomingPushDataRefreshStreamUseCase = MockIncomingPushDataRefreshStreamUseCase();
+    backgroundIncomingPushDataRefreshStreamUseCase = MockBackgroundIncomingPushDataRefreshStreamUseCase();
     isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
     setTutorialStepSeenUseCase = MockSetTutorialStepSeenUseCase();
     getShouldUpdateBriefStreamUseCase = MockGetShouldUpdateBriefStreamUseCase();
@@ -60,8 +65,10 @@ void main() {
     setOnboardingPaywallSeenUseCase = MockSetOnboardingPaywallSeenUseCase();
     mockMarkEntryAsSeenUseCase = MockMarkEntryAsSeenUseCase();
     shouldRefreshDailyBriefUseCase = MockShouldRefreshDailyBriefUseCase();
-    incomingPushBadgeCountStreamUseCase = MockIncomingPushBadgeCountStreamUseCase();
+    incomingPushBriefEntriesUpdatedStreamUseCase = MockIncomingPushBriefEntriesUpdatedStreamUseCase();
     isInternetConnectionAvailableUseCase = MockIsInternetConnectionAvailableUseCase();
+    shouldUseObservableQueriesUseCase = MockShouldUseObservableQueriesUseCase();
+    setNeedsRefreshDailyBriefUseCase = MockSetNeedsRefreshDailyBriefUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -70,6 +77,7 @@ void main() {
       setTutorialStepSeenUseCase,
       trackActivityUseCase,
       incomingPushDataRefreshStreamUseCase,
+      backgroundIncomingPushDataRefreshStreamUseCase,
       getShouldUpdateBriefStreamUseCase,
       shouldUsePaidSubscriptionsUseCase,
       isOnboardingPaywallSeenUseCase,
@@ -77,8 +85,10 @@ void main() {
       setOnboardingPaywallSeenUseCase,
       mockMarkEntryAsSeenUseCase,
       shouldRefreshDailyBriefUseCase,
-      incomingPushBadgeCountStreamUseCase,
+      incomingPushBriefEntriesUpdatedStreamUseCase,
       isInternetConnectionAvailableUseCase,
+      shouldUseObservableQueriesUseCase,
+      setNeedsRefreshDailyBriefUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
@@ -90,14 +100,17 @@ void main() {
     when(getShouldUpdateBriefStreamUseCase.call()).thenAnswer((_) async* {});
     when(isTutorialStepSeenUseCase.call(any)).thenAnswer((_) async => true);
     when(incomingPushDataRefreshStreamUseCase.call()).thenAnswer((_) async* {});
+    when(backgroundIncomingPushDataRefreshStreamUseCase.call()).thenAnswer((_) async* {});
     when(shouldUsePaidSubscriptionsUseCase.call()).thenAnswer((_) async => true);
     when(hasActiveSubscriptionUseCase.call()).thenAnswer((_) async => true);
     when(isOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async => true);
     when(setOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async {});
     when(shouldRefreshDailyBriefUseCase.call()).thenAnswer((_) async => false);
-    when(incomingPushBadgeCountStreamUseCase.call()).thenAnswer((_) async* {});
+    when(incomingPushBriefEntriesUpdatedStreamUseCase.call()).thenAnswer((_) async* {});
     when(isInternetConnectionAvailableUseCase.call()).thenAnswer((_) async => true);
     when(isInternetConnectionAvailableUseCase.stream).thenAnswer((_) async* {});
+    when(shouldUseObservableQueriesUseCase.call()).thenAnswer((_) async => true);
+    when(setNeedsRefreshDailyBriefUseCase.call(any)).thenAnswer((_) async => false);
   });
 
   test('brief entry preview is being tracked correctly', () async {
@@ -321,6 +334,21 @@ void main() {
 
       verify(hasActiveSubscriptionUseCase.call()).called(1);
       expect(find.byType(SubscriptionPage), findsNothing);
+    },
+  );
+
+  testWidgets(
+    'current brief stream is not called if feature flag is off',
+    (tester) async {
+      when(shouldUseObservableQueriesUseCase.call()).thenAnswer((_) async => false);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+        },
+      );
+
+      verifyNever(getCurrentBriefUseCase.stream);
     },
   );
 }

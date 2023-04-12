@@ -7,4 +7,6 @@ abstract class ExploreContentApiDataSource {
   Future<ExploreContentAreaDTO> getPaginatedExploreArea(String id, int limit, int offset);
 
   Stream<ExploreContentDTO?> exploreContentStream();
+
+  void dispose();
 }
