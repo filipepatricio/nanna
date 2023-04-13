@@ -15,6 +15,8 @@ import 'package:better_informed_mobile/presentation/page/photo_caption/photo_cap
 import 'package:better_informed_mobile/presentation/page/saved/saved_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/appearance/settings_appearance_page.dart';
+import 'package:better_informed_mobile/presentation/page/settings/legal/settings_privacy_policy_page.dart';
+import 'package:better_informed_mobile/presentation/page/settings/legal/settings_terms_of_service_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
@@ -52,6 +54,8 @@ const appearancePath = 'appearance';
 const interestsPath = 'interests';
 const accountPath = 'account';
 const subscriptionPath = 'subscription';
+const termsPagePath = 'terms';
+const privacyPagePath = 'privacy';
 
 @AdaptiveAutoRouter(
   routes: [
@@ -136,6 +140,8 @@ const dashboardTabRouter = CustomRoute(
         AutoRoute(path: accountPath, page: SettingsAccountPage),
         AutoRoute(path: interestsPath, page: SettingsManageMyInterestsPage),
         AutoRoute(path: subscriptionPath, page: SettingsSubscriptionPage),
+        AutoRoute(path: privacyPagePath, page: SettingsPrivacyPolicyPage),
+        AutoRoute(path: termsPagePath, page: SettingsTermsOfServicePage),
       ],
     ),
     RedirectRoute(path: '', redirectTo: topicsPath),

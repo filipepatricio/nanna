@@ -1,0 +1,16 @@
+{
+  "name": "DatoCMS Legal Pages GraphQL Schema",
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "https://graphql.datocms.com/",
+        "headers": {
+          "user-agent": "Flutter GraphQL Schema Generator",
+          "authorization": "Bearer 9374c71d76037db54b450d2510de26"
+        },
+        "introspect": false
+      }
+    }
+  }
+}

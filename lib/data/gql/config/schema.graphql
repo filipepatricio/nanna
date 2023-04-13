@@ -117,6 +117,15 @@ type Article {
   wordCount: Int
 }
 
+"""Gift code for an article"""
+type ArticleGiftCode {
+  article: Article!
+  code: String!
+  createdAt: DateTime
+  id: UUID!
+  redeemedAt: DateTime
+}
+
 """Article image"""
 union ArticleImage = CloudinaryImage | RemoteImage
 
@@ -175,31 +184,6 @@ type ArticlesExploreArea implements ExploreArea {
 }
 
 type ArticlesListExploreArea implements ExploreArea {
-  articles(pagination: PaginationInput): [Article]!
-
-  """The background color to be used for styling"""
-  backgroundColor: HexColor
-
-  """The area's description"""
-  description: String
-
-  """The stream's icon"""
-  icon: SVG
-
-  """Globally unique identifier for this area"""
-  id: String!
-
-  """Should the area be highlighted"""
-  isHighlighted: Boolean!
-
-  """Area was selected by user as preferred"""
-  isPreferred: Boolean!
-
-  """The name of the area"""
-  name: String!
-}
-
-type ArticlesWithFeatureExploreArea implements ExploreArea {
   articles(pagination: PaginationInput): [Article]!
 
   """The background color to be used for styling"""
@@ -502,6 +486,22 @@ type DeleteAccountResponse {
   successful: Boolean!
 }
 
+"""Error codes for deleteArticleGiftCode mutation"""
+enum DeleteArticleGiftCodeError {
+  """Gift code is already redeemed"""
+  ALREADY_REDEEMED
+
+  """Gift code not found"""
+  NOT_FOUND
+}
+
+"""Response for deleting an article gift code"""
+type DeleteArticleGiftCodeResponse {
+  errorCode: DeleteArticleGiftCodeError
+  errorMessage: String
+  successful: Boolean!
+}
+
 """A push notification token for a user's device"""
 type DeviceRegistrationToken {
   """The token itself"""
@@ -620,6 +620,23 @@ type HighlightedTopicsExploreArea implements ExploreArea {
   topics(pagination: PaginationInput): [Topic]!
 }
 
+"""Error codes for issueArticleGiftCode mutation"""
+enum IssueArticleGiftCodeError {
+  """Article not found"""
+  ARTICLE_NOT_FOUND
+
+  """Limit of gifts for this month exceeded"""
+  LIMIT_EXCEEDED
+}
+
+"""Response for issuing an article gift code"""
+type IssueArticleGiftCodeResponse {
+  errorCode: IssueArticleGiftCodeError
+  errorMessage: String
+  giftCode: ArticleGiftCode
+  successful: Boolean!
+}
+
 """Response for marking entity seen"""
 type MarkEntitySeenResponse {
   successful: Boolean!
@@ -636,10 +653,22 @@ enum MarkupLanguage {
   MARKDOWN
 }
 
+"""An article for offline use"""
+type OfflineArticle {
+  """Article"""
+  article: Article!
+
+  """Audio file"""
+  audioFile: AudioFile
+}
+
 input PaginationInput {
   limit: Int
   offset: Int
 }
+
+"""Publication"""
+union Publication = Article | Topic
 
 """A publisher"""
 type Publisher {
@@ -657,6 +686,23 @@ type Publisher {
 
   """The name of the publishing house"""
   name: String!
+}
+
+"""Error codes for redeemArticleGiftCode mutation"""
+enum RedeemArticleGiftCodeError {
+  """Gift code is already redeemed"""
+  ALREADY_REDEEMED
+
+  """Gift code not found"""
+  NOT_FOUND
+}
+
+"""Response for redeeming an article gift code"""
+type RedeemArticleGiftCodeResponse {
+  article: Article
+  errorCode: RedeemArticleGiftCodeError
+  errorMessage: String
+  successful: Boolean!
 }
 
 """Payload returned when refreshing the token"""
@@ -688,6 +734,12 @@ type RootMutationType {
   """Soft delete user account (GDPR сompliant)"""
   deleteAccount: DeleteAccountResponse
 
+  """Delete an article gift code"""
+  deleteArticleGiftCode(id: UUID!): DeleteArticleGiftCodeResponse
+
+  """Issue an article gift code"""
+  issueArticleGiftCode(slug: String!): IssueArticleGiftCodeResponse
+
   """Mark article as seen by user"""
   markArticleSeen(slug: String!): MarkEntitySeenResponse
 
@@ -698,7 +750,10 @@ type RootMutationType {
   markTopicVisited(slug: String!): MarkTopicVisitedResponse
 
   """Mark category with given id as preferred"""
-  preferCategory(categoryId: UUID!): UpdatePreferredCategoriesResponse
+  preferCategory(categoryId: UUID!): SetPreferredCategoriesResponse
+
+  """Redeem an an article gift code"""
+  redeemArticleGiftCode(code: String!): RedeemArticleGiftCodeResponse
 
   """Exchange the refresh token for a new access token"""
   refresh(refreshToken: String!): RefreshPayload
@@ -731,7 +786,7 @@ type RootMutationType {
   subscriptionPurchased(productId: String): SubscriptionPurchasedResponse
 
   """Mark category with given id as non-preferred"""
-  unpreferCategory(categoryId: UUID!): UpdatePreferredCategoriesResponse
+  unpreferCategory(categoryId: UUID!): SetPreferredCategoriesResponse
   unsubscribeFromEmailChannel(channelId: String!, email: String!, token: String!): UnsubscriptionResult
 
   """Update position in seconds of article audio for the current user"""
@@ -753,7 +808,7 @@ type RootMutationType {
   ): UpdateArticleProgressResponse
 
   """Update preferred categories for the current user"""
-  updatePreferredCategories(categoryIds: [UUID!]): UpdatePreferredCategoriesResponse
+  updatePreferredCategories(categoryIds: [UUID!]): SetPreferredCategoriesResponse
 
   """Store meta information about the current user"""
   updateUserMeta(information: UserMeta!): Account
@@ -772,6 +827,9 @@ type RootQueryType {
 
   """Get article bookmark"""
   getArticleBookmark(slug: String!): Bookmark
+
+  """Returns all gift codes issued by current user"""
+  getArticleGiftCodes: [ArticleGiftCode]
 
   """Get user's progress in article with given slug"""
   getArticleProgress(slug: String!): ArticleProgress
@@ -794,6 +852,9 @@ type RootQueryType {
   """Returns Category preferences of user"""
   getCategoryPreferences: [CategoryPreference]
 
+  """Number of article gift codes available for user per month"""
+  getCurrentGiftLimit: Int!
+
   """Retrieve one area in the explore section"""
   getExploreArea(id: String!): ExploreArea
 
@@ -805,6 +866,9 @@ type RootQueryType {
 
   """Retrieve the user's notification preferences"""
   getNotificationPreferences: [ChannelCategory]
+
+  """Get articles for saving for offline mode"""
+  getOfflineArticles(slugs: [String]): [OfflineArticle]
 
   """Categories that can be selected as preferred"""
   getOnboardingCategories: [Category] @deprecated(reason: "Use getPreferableCategories instead")
@@ -823,6 +887,9 @@ type RootQueryType {
 
   """Get content related to given article"""
   getRelatedContent(pagination: PaginationInput = {limit: 10, offset: 0}, slug: String!): [CategoryItem]
+
+  """Number of article gift codes left for user for this month"""
+  getRemainingArticleGiftCodesCount: Int!
 
   """Get topic bookmark"""
   getTopicBookmark(slug: String!): Bookmark
@@ -881,6 +948,21 @@ type SendLinkToAppStoreResponse {
   successful: Boolean!
 }
 
+"""Error codes for seting preferred categories mutations"""
+enum SetPreferredCategoriesError {
+  """It is required to select minimal number of categories"""
+  MIN_CATEGORIES_REQUIRED
+}
+
+"""Response for updating preferred categories"""
+type SetPreferredCategoriesResponse {
+  errorCode: SetPreferredCategoriesError
+  errorMessage: String
+  minCategoriesRequired: Int
+  successful: Boolean!
+  updatedPreference: CategoryPreference
+}
+
 """Payload returned from the sign in mutation"""
 type SignInPayload {
   account: Account
@@ -888,6 +970,30 @@ type SignInPayload {
   errorMessage: String
   successful: Boolean!
   tokens: AuthTokens
+}
+
+type SmallPublicationExploreArea implements ExploreArea {
+  """The background color to be used for styling"""
+  backgroundColor: HexColor
+
+  """The area's description"""
+  description: String
+
+  """The stream's icon"""
+  icon: SVG
+
+  """Globally unique identifier for this area"""
+  id: String!
+
+  """Should the area be highlighted"""
+  isHighlighted: Boolean!
+
+  """Area was selected by user as preferred"""
+  isPreferred: Boolean!
+
+  """The name of the area"""
+  name: String!
+  publications(pagination: PaginationInput): [Publication]!
 }
 
 type SmallTopicsExploreArea implements ExploreArea {
@@ -1125,18 +1231,17 @@ type UnsubscriptionResult {
 """Response for article progress mutation"""
 type UpdateArticleProgressResponse {
   """
+  Number of free articles left in current period or null if user has other subscription policy
+  """
+  freeArticlesLeftCount: Int
+
+  """
   Text of warning about number of free articles left in current period or null if warning is not necessary
   """
   freeArticlesLeftWarning: String
   progress: ArticleProgress
   progressState: ArticleProgressState!
   successful: Boolean!
-}
-
-"""Response for updating preferred categories"""
-type UpdatePreferredCategoriesResponse {
-  successful: Boolean!
-  updatedPreference: CategoryPreference
 }
 
 """User meta information"""

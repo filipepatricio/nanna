@@ -1,4 +1,4 @@
-query getRealiseNotes($version: String!){
+query getReleaseNotes($version: String!){
     releaseNote(filter: {version: {eq: $version}}) {
         headline
         date
