@@ -21,6 +21,7 @@ import 'tests/quote_editor_view_visual_test.dart' as quote_editor_view_visual_te
 import 'tests/release_note_popup_visual_test.dart' as release_note_popup_visual_test;
 import 'tests/settings_account_page_visual_test.dart' as settings_account_page_visual_test;
 import 'tests/settings_appearance_page_visual_test.dart' as settings_appearance_page_visual_test;
+import 'tests/settings_legal_page_visual_test.dart' as settings_legal_page_visual_test;
 import 'tests/settings_main_page_visual_test.dart' as settings_main_page_visual_test;
 import 'tests/settings_manage_my_interests_page_visual_test.dart' as settings_manage_my_interests_page_visual_test;
 import 'tests/settings_notifications_page_visual_test.dart' as settings_notifications_page_visual_test;
@@ -81,6 +82,7 @@ void main() {
   group('change_subscription_page_visual_test', change_subscription_page_visual_test.main);
   group('audio_page_visual_test', audio_page_visual_test.main);
   group('settings_appearance_page_visual_test', settings_appearance_page_visual_test.main);
+  group('settings_legal_page_visual_test', settings_legal_page_visual_test.main);
 }
 
 ThemeMode themeModeFromString(String mode) {

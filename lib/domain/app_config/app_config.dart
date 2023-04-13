@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:better_informed_mobile/domain/app_config/datocms_config.dart';
 import 'package:better_informed_mobile/domain/app_config/linkedin_config.dart';
 import 'package:better_informed_mobile/domain/app_config/phrase_config.dart';
 import 'package:injectable/injectable.dart';
@@ -32,7 +33,7 @@ class AppConfig {
     required this.sentryEventDns,
     required this.appId,
     required this.appleStoreId,
-    required this.datoCMSKey,
+    required this.datoCMSConfig,
     required this.linkedinConfig,
     required this.facebookAppIdiOS,
     required this.facebookAppIdAndroid,
@@ -52,7 +53,7 @@ class AppConfig {
   final String sentryEventDns;
   final String appId;
   final String appleStoreId;
-  final String datoCMSKey;
+  final DatoCMSConfig datoCMSConfig;
   final LinkedinConfig linkedinConfig;
   final String facebookAppIdiOS;
   final String facebookAppIdAndroid;
@@ -72,7 +73,7 @@ class AppConfig {
     sentryEventDns: '',
     appId: 'so.informed.dev',
     appleStoreId: '',
-    datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
+    datoCMSConfig: DatoCMSConfig.global(),
     linkedinConfig: LinkedinConfig.dev(),
     facebookAppIdiOS: '',
     facebookAppIdAndroid: '',
@@ -91,7 +92,7 @@ class AppConfig {
     sentryEventDns: '',
     appId: 'so.informed.mock',
     appleStoreId: '',
-    datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
+    datoCMSConfig: DatoCMSConfig.global(),
     linkedinConfig: LinkedinConfig.dev(),
     facebookAppIdiOS: '',
     facebookAppIdAndroid: '',
@@ -109,7 +110,7 @@ class AppConfig {
     segmentWriteKey: 'jmJAkhCovDOdxwUqbDBgpFW4xWkpLUte',
     appId: 'so.informed.staging',
     appleStoreId: '1587844260',
-    datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
+    datoCMSConfig: DatoCMSConfig.global(),
     linkedinConfig: LinkedinConfig.staging(),
     facebookAppIdiOS: '5582742288476971',
     facebookAppIdAndroid: '1152910382298060',
@@ -130,7 +131,7 @@ class AppConfig {
     segmentWriteKey: 'Jp2reNsfGRxapvFlgmDYBsRJ2LA2TLSP',
     appId: 'so.informed',
     appleStoreId: '1577915307',
-    datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
+    datoCMSConfig: DatoCMSConfig.global(),
     linkedinConfig: LinkedinConfig.prod(),
     facebookAppIdiOS: '525120512609664',
     facebookAppIdAndroid: '345458011020663',

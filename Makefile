@@ -73,6 +73,8 @@ fvm_ui_changes_report:
 
 graphql_schema:
 	get-graphql-schema https://api.staging.informed.so/graphql > lib/data/gql/config/schema.graphql
+	get-graphql-schema -h "authorization=Bearer 1ecd2461c830b09d98d34b7cc9cd25" https://graphql.datocms.com/ > lib/data/gql_dato_cms/release_notes/schema.graphql
+	get-graphql-schema -h "authorization=Bearer 9374c71d76037db54b450d2510de26" https://graphql.datocms.com/ > lib/data/gql_dato_cms/legal_pages/schema.graphql
 
 start_app_sksl:
 	fvm flutter run --profile --cache-sksl --flavor prod --dart-define=env=prod
