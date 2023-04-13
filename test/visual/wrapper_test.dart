@@ -16,9 +16,9 @@ import 'tests/how_do_we_curate_content_page_visual_test.dart' as how_do_we_curat
 import 'tests/magic_link_view_visual_test.dart' as magic_link_view_visual_test;
 import 'tests/media_item_page_visual_test.dart' as media_item_page_visual_test;
 import 'tests/onboarding_page_visual_test.dart' as onboarding_page_visual_test;
-import 'tests/profile_page_visual_test.dart' as profile_page_visual_test;
 import 'tests/quote_editor_view_visual_test.dart' as quote_editor_view_visual_test;
 import 'tests/release_note_popup_visual_test.dart' as release_note_popup_visual_test;
+import 'tests/saved_page_visual_test.dart' as saved_page_visual_test;
 import 'tests/settings_account_page_visual_test.dart' as settings_account_page_visual_test;
 import 'tests/settings_appearance_page_visual_test.dart' as settings_appearance_page_visual_test;
 import 'tests/settings_legal_page_visual_test.dart' as settings_legal_page_visual_test;
@@ -57,7 +57,7 @@ void main() {
   group('magic_link_view_visual_test', magic_link_view_visual_test.main);
   group('media_item_page_visual_test', media_item_page_visual_test.main);
   group('onboarding_page_visual_test', onboarding_page_visual_test.main);
-  group('profile_page_visual_test', profile_page_visual_test.main);
+  group('saved_page_visual_test', saved_page_visual_test.main);
   group('quote_editor_view_visual_test', quote_editor_view_visual_test.main);
   group('share_quote_view_visual_test', share_quote_view_visual_test.main);
   group('settings_account_page_visual_test', settings_account_page_visual_test.main);

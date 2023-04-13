@@ -618,6 +618,10 @@ class MockDTO {
         '0000',
         BookmarkDataDTO.topic(MockDTO.topic),
       ),
+      BookmarkDTO(
+        '0001',
+        BookmarkDataDTO.article(MockDTO.premiumArticleWithoutImage),
+      ),
     ],
   );
 
