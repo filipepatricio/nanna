@@ -1,0 +1,6 @@
+query getPage($slug: String!){
+    legalPage(filter: { slug: { eq: $slug } }) {
+        title
+        content
+    }
+}

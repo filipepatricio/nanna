@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/app_config/app_urls.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_state.dt.dart';
@@ -10,7 +9,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
@@ -99,11 +97,11 @@ class SettingsMainBody extends HookWidget {
         const SizedBox(height: AppDimens.s),
         SettingsMainItem(
           label: context.l10n.settings_privacyPolicy,
-          onTap: () => _openInBrowser(context, policyPrivacyUri, snackbarController),
+          onTap: () => context.pushRoute(const SettingsPrivacyPolicyPageRoute()),
         ),
         SettingsMainItem(
           label: context.l10n.settings_termsOfService,
-          onTap: () => _openInBrowser(context, termsOfServiceUri, snackbarController),
+          onTap: () => context.pushRoute(const SettingsTermsOfServicePageRoute()),
         ),
         SettingsMainItem(
           label: context.l10n.settings_feedbackButton,
@@ -129,15 +127,6 @@ class SettingsMainBody extends HookWidget {
         ),
         const AudioPlayerBannerPlaceholder(),
       ],
-    );
-  }
-
-  Future<void> _openInBrowser(BuildContext context, String uri, SnackbarController snackbarController) async {
-    await openInAppBrowser(
-      uri,
-      (error, stacktrace) {
-        showBrowserError(context, uri, snackbarController);
-      },
     );
   }
 
