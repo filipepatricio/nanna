@@ -3,10 +3,15 @@ import 'package:better_informed_mobile/presentation/page/settings/legal/settings
 import 'package:flutter/material.dart';
 
 class SettingsPrivacyPolicyPage extends StatelessWidget {
-  const SettingsPrivacyPolicyPage();
+  const SettingsPrivacyPolicyPage({this.fromRoute});
+
+  final String? fromRoute;
 
   @override
   Widget build(BuildContext context) {
-    return const SettingsLegalPagePage(type: LegalPageType.privacyPolicy);
+    return SettingsLegalPagePage(
+      type: LegalPageType.privacyPolicy,
+      fromRoute: fromRoute,
+    );
   }
 }

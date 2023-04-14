@@ -65,6 +65,8 @@ const privacyPagePath = 'privacy';
     mainPageRoute,
     CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
     AutoRoute(page: EmptyPage),
+    AutoRoute(path: privacyPagePath, page: SettingsPrivacyPolicyPage),
+    AutoRoute(path: termsPagePath, page: SettingsTermsOfServicePage),
   ],
 )
 class $MainRouter {}

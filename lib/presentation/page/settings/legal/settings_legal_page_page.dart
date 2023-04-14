@@ -15,9 +15,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsLegalPagePage extends HookWidget {
-  const SettingsLegalPagePage({required this.type});
+  const SettingsLegalPagePage({
+    required this.type,
+    this.fromRoute,
+  });
 
   final LegalPageType type;
+  final String? fromRoute;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +39,7 @@ class SettingsLegalPagePage extends HookWidget {
       appBar: InformedAppBar(
         isConnected: context.watch<IsConnected>(),
         leading: BackTextButton(
-          text: context.l10n.settings_settings,
+          text: fromRoute,
         ),
         title: state.when(
           idle: (page) => page.title,
