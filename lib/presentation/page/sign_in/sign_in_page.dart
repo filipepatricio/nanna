@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/app_config/app_urls.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/magic_link_view.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_cubit.di.dart';
@@ -9,8 +8,6 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
-import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_apple_button.dart';

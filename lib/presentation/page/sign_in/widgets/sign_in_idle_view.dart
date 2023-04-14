@@ -97,7 +97,7 @@ class _SignInIdleView extends StatelessWidget {
                 ),
                 const SizedBox(height: AppDimens.m),
               ] else ...[
-                const _TermsPolicy(),
+                const _SignInTermsView(),
                 const SizedBox(height: AppDimens.xl),
               ],
             ],

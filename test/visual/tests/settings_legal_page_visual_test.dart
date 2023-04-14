@@ -6,7 +6,7 @@ import '../visual_test_utils.dart';
 void main() {
   visualTest(SettingsLegalPagePage, (tester) async {
     await tester.startApp(
-      initialRoute: const ProfileTabGroupRouter(
+      initialRoute: ProfileTabGroupRouter(
         children: [
           SettingsPrivacyPolicyPageRoute(),
         ],
