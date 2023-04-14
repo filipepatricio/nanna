@@ -97,11 +97,19 @@ class SettingsMainBody extends HookWidget {
         const SizedBox(height: AppDimens.s),
         SettingsMainItem(
           label: context.l10n.settings_privacyPolicy,
-          onTap: () => context.pushRoute(const SettingsPrivacyPolicyPageRoute()),
+          onTap: () => context.pushRoute(
+            SettingsPrivacyPolicyPageRoute(
+              fromRoute: context.l10n.settings_settings,
+            ),
+          ),
         ),
         SettingsMainItem(
           label: context.l10n.settings_termsOfService,
-          onTap: () => context.pushRoute(const SettingsTermsOfServicePageRoute()),
+          onTap: () => context.pushRoute(
+            SettingsTermsOfServicePageRoute(
+              fromRoute: context.l10n.settings_settings,
+            ),
+          ),
         ),
         SettingsMainItem(
           label: context.l10n.settings_feedbackButton,

@@ -1,14 +1,12 @@
 part of '../sign_in_page.dart';
 
-class _TermsPolicy extends HookWidget {
-  const _TermsPolicy({
+class _SignInTermsView extends StatelessWidget {
+  const _SignInTermsView({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final snackbarController = useSnackbarController();
-
     return Text.rich(
       TextSpan(
         style: AppTypography.metadata1Regular.copyWith(
@@ -24,7 +22,11 @@ class _TermsPolicy extends HookWidget {
               color: AppColors.of(context).textSecondary,
             ),
             recognizer: TapGestureRecognizer()
-              ..onTap = () => _openInBrowser(context, termsOfServiceUri, snackbarController),
+              ..onTap = () => context.pushRoute(
+                    SettingsTermsOfServicePageRoute(
+                      fromRoute: context.l10n.signIn_welcome,
+                    ),
+                  ),
           ),
           TextSpan(text: context.l10n.signIn_consentParts_and),
           TextSpan(
@@ -35,19 +37,14 @@ class _TermsPolicy extends HookWidget {
               color: AppColors.of(context).textSecondary,
             ),
             recognizer: TapGestureRecognizer()
-              ..onTap = () => _openInBrowser(context, policyPrivacyUri, snackbarController),
+              ..onTap = () => context.pushRoute(
+                    SettingsPrivacyPolicyPageRoute(
+                      fromRoute: context.l10n.signIn_welcome,
+                    ),
+                  ),
           ),
         ],
       ),
-    );
-  }
-
-  Future<void> _openInBrowser(BuildContext context, String uri, SnackbarController controller) async {
-    await openInAppBrowser(
-      uri,
-      (error, stacktrace) {
-        showBrowserError(context, uri, controller);
-      },
     );
   }
 }

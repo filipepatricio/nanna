@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/app_config/app_urls.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -43,12 +43,20 @@ class SubscriptionLinksFooter extends StatelessWidget {
             LinkLabel(
               label: context.l10n.settings_termsAndConditions,
               style: AppTypography.metadata1Medium,
-              onTap: () => openInBrowser(termsOfServiceUri),
+              onTap: () => context.pushRoute(
+                SettingsTermsOfServicePageRoute(
+                  fromRoute: context.l10n.subscription_button_standard,
+                ),
+              ),
             ),
             LinkLabel(
               label: context.l10n.settings_privacyPolicy,
               style: AppTypography.metadata1Medium,
-              onTap: () => openInBrowser(policyPrivacyUri),
+              onTap: () => context.pushRoute(
+                SettingsPrivacyPolicyPageRoute(
+                  fromRoute: context.l10n.subscription_button_standard,
+                ),
+              ),
             ),
           ],
         ),
