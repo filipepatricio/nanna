@@ -87,8 +87,8 @@ class SignOutUseCase {
     await _networkCacheManager.clear();
 
     _getIt.resetLazySingleton<ProfileBookmarkChangeNotifier>();
-    _getIt.resetLazySingleton<ShouldRefreshPageNotifier>();
     _getIt.resetLazySingleton<BriefEntryNewStateNotifier>();
     _getIt.resetLazySingleton<ArticleReadStateNotifier>();
+    _getIt.resetLazySingleton<ShouldRefreshPageNotifier>();
   }
 }
