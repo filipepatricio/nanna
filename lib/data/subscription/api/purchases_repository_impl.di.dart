@@ -204,8 +204,12 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
       await _purchaseRemoteDataSource.callWithResolver(
         () async {
           unawaited(_analyticsFacade.event(AnalyticsEvent.promotedProductPurchaseStarted()));
-          final result = await startPurchase();
-          await _updateActiveSubscriptionStream(result.customerInfo);
+          try {
+            final result = await startPurchase();
+            await _updateActiveSubscriptionStream(result.customerInfo);
+          } on PurchaseCancelledException {
+            return;
+          }
           return;
         },
       );
