@@ -24,6 +24,7 @@ class ReportingTreeErrorFilterController {
     _ErrorFilter<UnauthorizedException>(),
     _ErrorFilter<ServerErrorException>(),
     _ErrorFilter<PurchaseNetworkException>(),
+    _ErrorFilter<PurchaseNotAllowedException>(),
     _ErrorFilter<SocketException>(),
   ];
 
