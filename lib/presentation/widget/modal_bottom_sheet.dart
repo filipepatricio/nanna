@@ -8,13 +8,13 @@ import 'package:flutter/material.dart';
 class ModalBottomSheet extends StatelessWidget {
   const ModalBottomSheet({
     required this.child,
-    required this.snackbarController,
+    this.snackbarController,
     this.onClose,
     Key? key,
   }) : super(key: key);
 
   final Widget child;
-  final SnackbarController snackbarController;
+  final SnackbarController? snackbarController;
   final VoidCallback? onClose;
 
   @override

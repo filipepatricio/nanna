@@ -9,7 +9,6 @@ import 'package:better_informed_mobile/domain/article/use_case/get_article_heade
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
-import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
@@ -29,7 +28,6 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     this._getArticleHeaderUseCase,
     this._tradeTopicIdForSlugUseCase,
     this._getActiveSubscriptionUseCase,
-    this._shouldUsePaidSubscriptionsUseCase,
     this._isInternetConnectionAvailableUseCase,
   ) : super(const MediaItemState.initializing());
 
@@ -38,7 +36,6 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   final GetArticleHeaderUseCase _getArticleHeaderUseCase;
   final TradeTopicIdForSlugUseCase _tradeTopicIdForSlugUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
-  final ShouldUsePaidSubscriptionsUseCase _shouldUsePaidSubscriptionsUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
 
   MediaItemArticle? _currentArticle;
@@ -158,9 +155,6 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   }
 
   Future<void> _setupSubscriptionListener() async {
-    final shouldUsePaidSubscription = await _shouldUsePaidSubscriptionsUseCase();
-
-    if (!shouldUsePaidSubscription) return;
     if (_activeSubscriptionSub != null) return;
 
     _activeSubscriptionSub = _getActiveSubscriptionUseCase.stream.distinct().listen((subscription) async {

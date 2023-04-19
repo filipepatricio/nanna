@@ -20,12 +20,14 @@ class PurchaseRemoteDataSource {
 
   final PurchaseExceptionResolver _purchaseExceptionResolver;
 
-  Future<void> configure(String apiKey, String userId) async {
+  Future<void> configure(String apiKey, String? userId) async {
     final configuration = PurchasesConfiguration(apiKey)..appUserID = userId;
     await _purchaseExceptionResolver.callWithResolver(() => Purchases.configure(configuration));
   }
 
   Future<bool> get isConfigured => Purchases.isConfigured;
+
+  Future<String> get userId => Purchases.appUserID;
 
   Future<CustomerInfo> getCustomerInfo() async {
     return _purchaseExceptionResolver.callWithResolver(Purchases.getCustomerInfo);
@@ -35,8 +37,12 @@ class PurchaseRemoteDataSource {
     return _purchaseExceptionResolver.callWithResolver(Purchases.getOfferings);
   }
 
-  Future<LogInResult> logIn(String userId) async {
+  Future<void> logIn(String userId) async {
     return _purchaseExceptionResolver.callWithResolver(() => Purchases.logIn(userId));
+  }
+
+  Future<void> logOut() async {
+    return _purchaseExceptionResolver.callWithResolver(() => Purchases.logOut());
   }
 
   Future<CustomerInfo> purchasePackage(Package package, {UpgradeInfo? upgradeInfo}) async {
@@ -70,10 +76,6 @@ class PurchaseRemoteDataSource {
 
   Future<void> callWithResolver(FutureOr<dynamic> Function() callback) async {
     return _purchaseExceptionResolver.callWithResolver(callback);
-  }
-
-  Future<void> redeemOfferCode() async {
-    await _purchaseExceptionResolver.callWithResolver(Purchases.presentCodeRedemptionSheet);
   }
 
   void addCustomerInfoUpdateListener(Function(CustomerInfo info) callback) {

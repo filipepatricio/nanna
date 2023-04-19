@@ -67,8 +67,8 @@ class SignOutUseCase {
   Future<void> call() async {
     _refreshTokenServiceCache.clear();
     _pushNotificationRepository.dispose();
-    _purchasesRepository.dispose();
     _articleRepository.dispose();
+    await _purchasesRepository.dispose();
 
     await _articleLocalRepository.deleteAll();
     await _topicsLocalRepository.deleteAll();

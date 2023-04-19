@@ -13,7 +13,6 @@ import 'tests/data/images/cloudinary_test.dart' as cloudinary_test;
 import 'tests/data/networking/app_version_link/app_version_link_transformer_test.dart'
     as app_version_link_transformer_test;
 import 'tests/data/networking/should_refresh_validator_test.dart' as should_refresh_validator_test;
-import 'tests/data/onboarding/onboarding_store_impl_test.dart' as onboarding_store_impl_test;
 import 'tests/data/push_notificaton/push_notification_repository_impl_test.dart'
     as push_notification_repository_impl_test;
 import 'tests/data/subscription/exception/purchase_exception_resolver_test.dart' as purchase_exception_resolver_test;
@@ -39,8 +38,7 @@ import 'tests/domain/bookmark/use_case/switch_bookmark_state_use_case_test.dart'
 import 'tests/domain/daily_brief/use_case/mark_entry_as_seen_use_case_test.dart' as mark_entry_as_seen_use_case_test;
 import 'tests/domain/daily_brief_badge/should_show_daily_brief_badge_use_case_test.dart'
     as should_show_daily_brief_badge_use_case_test;
-import 'tests/domain/feature_flags/use_case/use_paid_subscription_change_stream_use_case_test.dart'
-    as use_paid_subscription_change_stream_use_case_test;
+import 'tests/domain/general/app_initialization_test.dart' as app_initialization_test;
 import 'tests/domain/general/article_read_state_notifier_test.dart' as article_read_state_notifier_test;
 import 'tests/domain/push_notification/use_case/maybe_register_push_notification_token_use_case_test.dart'
     as maybe_register_push_notification_token_use_case_test;
@@ -63,6 +61,7 @@ import 'tests/presentation/app_update_checker_test.dart' as app_update_checker_t
 import 'tests/presentation/article_paywall_view_test.dart' as article_paywall_view_test;
 import 'tests/presentation/audio_page_test.dart' as audio_page_test;
 import 'tests/presentation/daily_brief_page_test.dart' as daily_brief_page_test;
+import 'tests/presentation/entry_page_test.dart' as entry_page_test;
 import 'tests/presentation/explore_page_test.dart' as explore_page_test;
 import 'tests/presentation/main_page_test.dart' as main_page_test;
 import 'tests/presentation/media_item_page_test.dart' as media_item_page_test;
@@ -102,7 +101,6 @@ void main() {
   group('purchase_repository_impl_test', purchase_repository_impl_test.main);
   group('push_notification_repository_impl_test', push_notification_repository_impl_test.main);
   group('firebase_exception_mapper_test', firebase_exception_mapper_test.main);
-  group('onboarding_store_impl_test', onboarding_store_impl_test.main);
 
   // Domain
   group('get_current_release_note_use_case_test', get_current_release_note_use_case_test.main);
@@ -133,7 +131,7 @@ void main() {
   group('save_synchronizable_item_use_case_test', save_synchronizable_item_use_case_test.main);
   group('informed_audio_handler_test', informed_audio_handler_test.main);
   group('mark_entry_as_seen_use_case_test', mark_entry_as_seen_use_case_test.main);
-  group('use_paid_subscription_change_stream_use_case_test', use_paid_subscription_change_stream_use_case_test.main);
+  group('app_initialization_test', app_initialization_test.main);
 
   // Presentation
   group('app_connectivity_checker_test', app_connectivity_checker_test.main);
@@ -154,4 +152,5 @@ void main() {
   group('profile_page_test', profile_page_test.main);
   group('should_show_daily_brief_badge_use_case_test', should_show_daily_brief_badge_use_case_test.main);
   group('settings_appearance_page_test', settings_appearance_page_test.main);
+  group('entry_page_test', entry_page_test.main);
 }

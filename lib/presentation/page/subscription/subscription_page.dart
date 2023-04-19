@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/presentation/page/subscription/subscripti
 import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_plans_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_plans_view.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
 import 'package:better_informed_mobile/presentation/widget/modal_bottom_sheet.dart';
@@ -17,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SubscriptionPage extends HookWidget {
-  const SubscriptionPage({Key? key}) : super(key: key);
+  const SubscriptionPage();
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +47,11 @@ class SubscriptionPage extends HookWidget {
         redeemingCode: () => shouldRestorePurchase.value = true,
         success: (trialDays, reminderDays) {
           InformedDialog.removeRestorePurchase(context);
-          AutoRouter.of(context).replace(
-            SubscriptionSuccessPageRoute(trialDays: trialDays, reminderDays: reminderDays),
-          );
+          if (context.topRoute is MainPageRoute) {
+            context.router.replace(
+              SubscriptionSuccessPageRoute(trialDays: trialDays, reminderDays: reminderDays),
+            );
+          }
         },
         generalError: (message) {
           snackbarController.showMessage(
@@ -72,15 +73,6 @@ class SubscriptionPage extends HookWidget {
       );
     });
 
-    Future<void> openInBrowser(BuildContext context, String uri) async {
-      await openInAppBrowser(
-        uri,
-        (error, stacktrace) {
-          showBrowserError(context, uri, snackbarController);
-        },
-      );
-    }
-
     return GeneralEventTracker(
       controller: eventController,
       child: ModalBottomSheet(
@@ -93,14 +85,12 @@ class SubscriptionPage extends HookWidget {
           child: state.maybeMap(
             idle: (state) => SubscriptionPlansView(
               cubit: cubit,
-              openInBrowser: (uri) => openInBrowser(context, uri),
               trialViewMode: state.group.hasTrial,
               planGroup: state.group,
               selectedPlan: state.selectedPlan,
             ),
             processing: (state) => SubscriptionPlansView(
               cubit: cubit,
-              openInBrowser: (uri) => openInBrowser(context, uri),
               trialViewMode: state.group.hasTrial,
               planGroup: state.group,
               selectedPlan: state.selectedPlan,

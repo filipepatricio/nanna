@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dt.dart';
+import 'package:better_informed_mobile/presentation/style/informed_theme.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/release_notes/release_note_popup.dart';
 import 'package:better_informed_mobile/presentation/widget/restart_app_widget.dart';
@@ -93,11 +95,18 @@ class MainPage extends HookWidget {
       [cubit],
     );
 
-    return AutoRouter(navigatorKey: _navigatorKey);
+    return AnnotatedRegion(
+      value: AdaptiveTheme.of(context).brightness == Brightness.dark
+          ? InformedTheme.systemUIOverlayStyleDark
+          : InformedTheme.systemUIOverlayStyleLight,
+      child: AutoRouter(
+        navigatorKey: _navigatorKey,
+      ),
+    );
   }
 
   void _onTokenExpiredEvent(BuildContext context) {
-    AutoRouter.of(context).replaceAll([const SignInPageRoute()]);
+    context.router.replaceAll([const EntryPageRoute()]);
   }
 
   void _resetNestedRouters() {

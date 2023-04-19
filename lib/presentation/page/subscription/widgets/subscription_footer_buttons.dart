@@ -5,14 +5,12 @@ class _SubscriptionFooterButtons extends StatelessWidget {
     required this.subscriptionPlan,
     required this.onRestorePressed,
     required this.onRedeemCode,
-    required this.openInBrowser,
     Key? key,
   }) : super(key: key);
 
   final SubscriptionPlan subscriptionPlan;
   final VoidCallback onRestorePressed;
   final VoidCallback onRedeemCode;
-  final OpenInBrowserFunction openInBrowser;
 
   @override
   Widget build(BuildContext context) {

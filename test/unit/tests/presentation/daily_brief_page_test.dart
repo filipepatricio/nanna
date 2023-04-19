@@ -31,7 +31,6 @@ void main() {
   late MockIsTutorialStepSeenUseCase isTutorialStepSeenUseCase;
   late MockSetTutorialStepSeenUseCase setTutorialStepSeenUseCase;
   late MockGetShouldUpdateBriefStreamUseCase getShouldUpdateBriefStreamUseCase;
-  late MockShouldUsePaidSubscriptionsUseCase shouldUsePaidSubscriptionsUseCase;
   late MockIsOnboardingPaywallSeenUseCase isOnboardingPaywallSeenUseCase;
   late MockHasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
   late MockSetOnboardingPaywallSeenUseCase setOnboardingPaywallSeenUseCase;
@@ -59,7 +58,6 @@ void main() {
     isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
     setTutorialStepSeenUseCase = MockSetTutorialStepSeenUseCase();
     getShouldUpdateBriefStreamUseCase = MockGetShouldUpdateBriefStreamUseCase();
-    shouldUsePaidSubscriptionsUseCase = MockShouldUsePaidSubscriptionsUseCase();
     isOnboardingPaywallSeenUseCase = MockIsOnboardingPaywallSeenUseCase();
     hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
     setOnboardingPaywallSeenUseCase = MockSetOnboardingPaywallSeenUseCase();
@@ -79,7 +77,6 @@ void main() {
       incomingPushDataRefreshStreamUseCase,
       backgroundIncomingPushDataRefreshStreamUseCase,
       getShouldUpdateBriefStreamUseCase,
-      shouldUsePaidSubscriptionsUseCase,
       isOnboardingPaywallSeenUseCase,
       hasActiveSubscriptionUseCase,
       setOnboardingPaywallSeenUseCase,
@@ -101,7 +98,6 @@ void main() {
     when(isTutorialStepSeenUseCase.call(any)).thenAnswer((_) async => true);
     when(incomingPushDataRefreshStreamUseCase.call()).thenAnswer((_) async* {});
     when(backgroundIncomingPushDataRefreshStreamUseCase.call()).thenAnswer((_) async* {});
-    when(shouldUsePaidSubscriptionsUseCase.call()).thenAnswer((_) async => true);
     when(hasActiveSubscriptionUseCase.call()).thenAnswer((_) async => true);
     when(isOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async => true);
     when(setOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async {});

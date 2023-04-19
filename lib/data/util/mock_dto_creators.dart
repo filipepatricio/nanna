@@ -51,6 +51,7 @@ import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/category_preference_dto.dt.dart';
+import 'package:better_informed_mobile/data/user/api/dto/user_dto.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
@@ -733,6 +734,8 @@ class MockDTO {
       _freeArticle.asMediaItem,
     ],
   );
+
+  static final user = UserDTO('1', 'User', 'Test', 'test@betterinformed.io');
 
   /// Internal
 

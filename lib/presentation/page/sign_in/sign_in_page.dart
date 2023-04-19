@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/modal_bottom_sheet.dart';
 import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_apple_button.dart';
 import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_google_button.dart';
 import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_linkedin_button.dart';
@@ -41,6 +42,7 @@ class SignInPage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final emailController = useTextEditingController();
     final snackbarController = useMemoized(() => SnackbarController());
+    // final shouldRestorePurchase = useValueNotifier(false);
 
     void showSnackbar(String message) => snackbarController.showMessage(
           SnackbarMessage.simple(
@@ -50,21 +52,25 @@ class SignInPage extends HookWidget {
         );
 
     useOnAppLifecycleStateChange((previous, current) {
-      if (current != previous && current == AppLifecycleState.resumed) {
-        cubit.cancelLinkedInSignIn();
+      if (current == AppLifecycleState.resumed) {
+        if (current != previous) cubit.cancelLinkedInSignIn();
+
+        // if (shouldRestorePurchase.value) {
+        //   cubit.restorePurchase();
+        //   shouldRestorePurchase.value = false;
+        // }
       }
     });
 
     useCubitListener<SignInPageCubit, SignInPageState>(cubit, (cubit, state, context) {
-      state.maybeMap(
-        success: (state) => AutoRouter.of(context).replaceAll(
-          [
-            if (!state.isOnboardingSeen) const OnboardingPageRoute() else const MainPageRoute(),
-          ],
+      state.whenOrNull(
+        success: () => context.router.replaceAll(
+          [const MainPageRoute()],
         ),
-        unauthorizedError: (_) => showSnackbar(context.l10n.signIn_unauthorized),
-        generalError: (_) => showSnackbar(context.l10n.common_generalError),
-        orElse: () {},
+        // restoringPurchase: () => InformedDialog.showRestorePurchase(context),
+        // redeemingCode: () => shouldRestorePurchase.value = true,
+        unauthorizedError: () => showSnackbar(context.l10n.signIn_unauthorized),
+        generalError: () => showSnackbar(context.l10n.common_generalError),
       );
     });
 
@@ -75,48 +81,49 @@ class SignInPage extends HookWidget {
       [cubit],
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: state.maybeMap(
-          magicLink: (_) => Padding(
-            padding: const EdgeInsets.only(left: AppDimens.m + AppDimens.xxs),
-            child: IconButton(
-              icon: const Icon(Icons.close_rounded),
-              highlightColor: AppColors.transparent,
-              splashColor: AppColors.transparent,
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.zero,
-              onPressed: () {
-                cubit.closeMagicLinkView();
-              },
-            ),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        ),
-      ),
-      body: Container(
-        color: AppColors.of(context).backgroundPrimary,
-        child: KeyboardVisibilityBuilder(
-          builder: (context, visible) => AnimatedSwitcher(
-            duration: const Duration(milliseconds: 250),
-            child: SnackbarParentView(
-              controller: snackbarController,
-              child: state.maybeMap(
-                processing: (_) => _loadingLogo,
-                processingLinkedIn: (_) => _loadingLogo,
-                magicLink: (state) => MagicLinkContent(email: state.email),
-                idle: (state) => _SignInIdleView(
-                  cubit: cubit,
-                  isEmailValid: state.emailCorrect,
-                  keyboardVisible: visible,
-                  emailController: emailController,
+    return _ConditionalModalWrapper(
+      wrap: context.router.canPop(),
+      child: Scaffold(
+        appBar: context.router.canPop() ? null : AppBar(automaticallyImplyLeading: false),
+        body: Container(
+          color: AppColors.of(context).backgroundPrimary,
+          child: KeyboardVisibilityBuilder(
+            builder: (context, visible) => AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: SnackbarParentView(
+                controller: snackbarController,
+                child: state.maybeMap(
+                  processing: (_) => _loadingLogo,
+                  processingLinkedIn: (_) => _loadingLogo,
+                  magicLink: (state) => MagicLinkContent(email: state.email),
+                  idle: (state) => _SignInIdleView(
+                    cubit: cubit,
+                    isEmailValid: state.emailCorrect,
+                    keyboardVisible: visible,
+                    emailController: emailController,
+                  ),
+                  orElse: SizedBox.shrink,
                 ),
-                orElse: () => const SizedBox.shrink(),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+class _ConditionalModalWrapper extends StatelessWidget {
+  const _ConditionalModalWrapper({
+    required this.wrap,
+    required this.child,
+  });
+
+  final bool wrap;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return wrap ? ModalBottomSheet(child: child) : child;
   }
 }

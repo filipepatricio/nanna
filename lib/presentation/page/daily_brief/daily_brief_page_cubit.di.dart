@@ -13,7 +13,6 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/mark_entry_as
 import 'package:better_informed_mobile/domain/exception/brief_not_initialized_exception.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_observable_queries_use_case.di.dart';
-import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/background_incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_brief_entries_updated_stream_use_case.di.dart';
@@ -60,7 +59,6 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._incomingPushDataRefreshStreamUseCase,
     this._backgroundIncomingPushDataRefreshStreamUseCase,
     this._getShouldUpdateBriefStreamUseCase,
-    this._shouldUsePaidSubscriptionsUseCase,
     this._isOnboardingPaywallSeenUseCase,
     this._hasActiveSubscriptionUseCase,
     this._setOnboardingPaywallSeenUseCase,
@@ -80,7 +78,6 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final IncomingPushDataRefreshStreamUseCase _incomingPushDataRefreshStreamUseCase;
   final BackgroundIncomingPushDataRefreshStreamUseCase _backgroundIncomingPushDataRefreshStreamUseCase;
   final GetShouldUpdateBriefStreamUseCase _getShouldUpdateBriefStreamUseCase;
-  final ShouldUsePaidSubscriptionsUseCase _shouldUsePaidSubscriptionsUseCase;
   final IsOnboardingPaywallSeenUseCase _isOnboardingPaywallSeenUseCase;
   final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
   final SetOnboardingPaywallSeenUseCase _setOnboardingPaywallSeenUseCase;
@@ -180,11 +177,9 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
       _trackActivityUseCase.trackEvent(item.event);
     });
 
-    if (await _shouldUsePaidSubscriptionsUseCase()) {
-      if (!(await _hasActiveSubscriptionUseCase()) && !(await _isOnboardingPaywallSeenUseCase())) {
-        await _setOnboardingPaywallSeenUseCase();
-        _emitEvent(DailyBriefPageState.showPaywall());
-      }
+    if (!(await _hasActiveSubscriptionUseCase()) && !(await _isOnboardingPaywallSeenUseCase())) {
+      await _setOnboardingPaywallSeenUseCase();
+      _emitEvent(DailyBriefPageState.showPaywall());
     }
   }
 

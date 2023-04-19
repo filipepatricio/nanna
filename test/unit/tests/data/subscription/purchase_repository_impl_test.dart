@@ -40,13 +40,23 @@ void main() {
     const userId = 'userId';
 
     test('should call configure and prefetch customer and offerings (if configure was successful)', () async {
+      var configuredCalledWithUserId = false;
+
       when(appConfig.revenueCatKeyiOS).thenReturn('revenueCatKeyiOS');
       when(appConfig.revenueCatKeyAndroid).thenReturn('revenueCatKeyAndroid');
       when(purchaseRemoteDataSource.getCustomerInfo()).thenAnswer((_) async => _customerInfo());
       when(purchaseRemoteDataSource.getOfferings()).thenAnswer((_) async => const Offerings({}));
       when(purchaseRemoteDataSource.addCustomerInfoUpdateListener(any)).thenAnswer((_) async {});
-      when(purchaseRemoteDataSource.isConfigured).thenAnswer((_) async => true);
-      when(purchaseRemoteDataSource.configure(any, any)).thenAnswer((_) async {});
+      when(purchaseRemoteDataSource.isConfigured).thenAnswer((_) async {
+        return configuredCalledWithUserId;
+      });
+      when(purchaseRemoteDataSource.configure(any, userId)).thenAnswer((_) async {
+        if (userId == 'userId') {
+          configuredCalledWithUserId = true;
+        }
+      });
+      when(purchaseRemoteDataSource.userId).thenAnswer((_) async => 'anonymous');
+      when(purchaseRemoteDataSource.logIn(any)).thenAnswer((_) async {});
 
       await repository.initialize(userId);
 

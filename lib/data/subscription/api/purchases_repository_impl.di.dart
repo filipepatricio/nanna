@@ -41,7 +41,19 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   Stream<ActiveSubscription> get activeSubscriptionStream => _activeSubscriptionStream.stream.distinct();
 
   @override
-  Future<void> initialize(String userId) async {
+  Future<void> initialize(String? userId) async {
+    if (await _purchaseRemoteDataSource.isConfigured) {
+      if (await _purchaseRemoteDataSource.userId == userId) {
+        return;
+      }
+
+      if (userId != null) {
+        await _purchaseRemoteDataSource.logIn(userId);
+        _preCachePurchaseData();
+        return;
+      }
+    }
+
     try {
       _purchaseRemoteDataSource.addReadyForPromotedProductPurchaseListener(_promotedProductPurchaseListener);
 
@@ -55,14 +67,26 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
         },
         retryIf: _shouldRetry,
       );
+    } on PurchaseConfigurationException catch (_) {}
 
-      if (await _purchaseRemoteDataSource.isConfigured) {
-        // Prefetches and caches available customer info and offerings
-        unawaited(_purchaseRemoteDataSource.getCustomerInfo());
-        unawaited(_purchaseRemoteDataSource.getOfferings());
+    if (await _purchaseRemoteDataSource.isConfigured) {
+      _preCachePurchaseData();
+    }
+  }
 
-        _purchaseRemoteDataSource.addCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
-      }
+  void _preCachePurchaseData() {
+    try {
+      // Prefetches and caches available customer info and offerings
+      unawaited(_purchaseRemoteDataSource.getCustomerInfo());
+      unawaited(_purchaseRemoteDataSource.getOfferings());
+      _purchaseRemoteDataSource.addCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
+    } on PurchaseConfigurationException catch (_) {}
+  }
+
+  @override
+  Future<void> login(String userId) async {
+    try {
+      await _purchaseRemoteDataSource.logIn(userId);
     } on PurchaseConfigurationException catch (_) {}
   }
 
@@ -147,11 +171,12 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   @override
-  void dispose() {
-    _activeSubscriptionStream.close();
+  Future<void> dispose() async {
+    await _activeSubscriptionStream.close();
     _activeSubscriptionStream = StreamController.broadcast();
     _purchaseRemoteDataSource.removeCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
     _purchaseRemoteDataSource.removeReadyForPromotedProductPurchaseListener(_promotedProductPurchaseListener);
+    await _purchaseRemoteDataSource.logOut();
   }
 
   @override
@@ -182,11 +207,6 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   @override
   Future<void> collectAppleSearchAdsAttributionData() async {
     await _purchaseRemoteDataSource.enableAdServicesAttributionTokenCollection();
-  }
-
-  @override
-  Future<void> redeemOfferCode() async {
-    await _purchaseRemoteDataSource.redeemOfferCode();
   }
 
   Future<void> _updateActiveSubscriptionStream(CustomerInfo customerInfo) async {

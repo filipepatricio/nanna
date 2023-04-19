@@ -63,6 +63,16 @@ const privacyPagePath = 'privacy';
     CustomRoute(page: EntryPage, initial: true, customRouteBuilder: fadePageRouteBuilder),
     AutoRoute(page: OnboardingPage),
     AutoRoute(page: SignInPage),
+    CustomRoute(
+      name: 'SignInPageModal',
+      page: SignInPage,
+      customRouteBuilder: modalBottomSheetPageRouteBuilder,
+    ),
+    CustomRoute(
+      path: subscribePath,
+      page: SubscriptionPage,
+      customRouteBuilder: modalBottomSheetPageRouteBuilder,
+    ),
     mainPageRoute,
     CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
     AutoRoute(page: EmptyPage),

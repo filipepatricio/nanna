@@ -44,6 +44,7 @@ import 'package:better_informed_mobile/data/subscription/api/mapper/subscription
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/user/api/mapper/user_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -65,6 +66,7 @@ import 'package:better_informed_mobile/domain/push_notification/incoming_push/da
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/user/data/user.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class TestData {
@@ -387,4 +389,6 @@ class TestData {
   static IncomingPush get settingsAppearancePushNotification => _incomingPushDTOMapper.call(
         _remoteMessageToIncomingPushDTOMapper.call(setingsAppearanceRemoteMessage),
       );
+
+  static User get user => UserDTOMapper().to(MockDTO.user);
 }

@@ -33,10 +33,7 @@ class SettingsMainPage extends HookWidget {
       body: SnackbarParentView(
         audioPlayerResponsive: true,
         child: state.maybeWhen(
-          idle: (useSubscriptions) => SettingsMainBody(
-            cubit: cubit,
-            useSubscriptions: useSubscriptions,
-          ),
+          idle: () => SettingsMainBody(cubit: cubit),
           loading: Loader.new,
           orElse: Container.new,
         ),

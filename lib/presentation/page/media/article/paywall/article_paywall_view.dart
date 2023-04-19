@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/page/subscription/widgets/su
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
@@ -75,15 +74,6 @@ class ArticlePaywallView extends HookWidget {
       [cubit],
     );
 
-    Future<void> openInBrowser(BuildContext context, String uri) async {
-      await openInAppBrowser(
-        uri,
-        (error, stacktrace) {
-          showBrowserError(context, uri, snackbarController);
-        },
-      );
-    }
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -105,7 +95,6 @@ class ArticlePaywallView extends HookWidget {
           state.maybeMap(
             idle: (state) => SubscriptionPlansView(
               cubit: cubit,
-              openInBrowser: (uri) => openInBrowser(context, uri),
               trialViewMode: state.group.hasTrial,
               planGroup: state.group,
               selectedPlan: state.selectedPlan,
@@ -113,7 +102,6 @@ class ArticlePaywallView extends HookWidget {
             ),
             processing: (state) => SubscriptionPlansView(
               cubit: cubit,
-              openInBrowser: (uri) => openInBrowser(context, uri),
               trialViewMode: state.group.hasTrial,
               planGroup: state.group,
               selectedPlan: state.selectedPlan,

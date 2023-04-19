@@ -17,7 +17,7 @@ const informedPlatformsVariant = TargetPlatformVariant({
 });
 
 extension WidgetTesterExtension on WidgetTester {
-  Future<void> startApp({
+  Future<MainRouter> startApp({
     PageRouteInfo initialRoute = defaultInitialRoute,
     DependencyOverrideCallback? dependencyOverride,
   }) async {
@@ -45,5 +45,7 @@ extension WidgetTesterExtension on WidgetTester {
       }
       await pumpAndSettle();
     }
+
+    return mainRouter;
   }
 }

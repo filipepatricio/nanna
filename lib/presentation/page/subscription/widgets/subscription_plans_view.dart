@@ -26,7 +26,6 @@ part 'subscription_footer_buttons.dart';
 class SubscriptionPlansView extends HookWidget {
   const SubscriptionPlansView({
     required this.cubit,
-    required this.openInBrowser,
     required this.trialViewMode,
     required this.planGroup,
     required this.selectedPlan,
@@ -35,7 +34,6 @@ class SubscriptionPlansView extends HookWidget {
   }) : super(key: key);
 
   final SubscriptionPageCubit cubit;
-  final OpenInBrowserFunction openInBrowser;
   final bool trialViewMode;
   final SubscriptionPlanGroup planGroup;
   final SubscriptionPlan selectedPlan;
@@ -173,7 +171,6 @@ class SubscriptionPlansView extends HookWidget {
                 subscriptionPlan: selectedPlan,
                 onRestorePressed: cubit.restorePurchase,
                 onRedeemCode: cubit.redeemOfferCode,
-                openInBrowser: openInBrowser,
               ),
             ],
           ),

@@ -1296,5 +1296,9 @@
   "addInterests_description": "Get personalized suggestions alongside wider curations. Please choose at least 4 topics.",
   "@addInterests_description": {
     "type": "text"
+  },
+  "onboarding": "Onboarding",
+  "@onboarding": {
+    "type": "text"
   }
 }

@@ -9,7 +9,7 @@ class SettingsMainState with _$SettingsMainState {
   const factory SettingsMainState.init() = _SettingsMainStateInit;
 
   @Implements<BuildState>()
-  const factory SettingsMainState.idle({required bool subscriptionsEnabled}) = _SettingsMainStateIdle;
+  const factory SettingsMainState.idle() = _SettingsMainStateIdle;
 
   @Implements<BuildState>()
   const factory SettingsMainState.loading() = _SettingsMainStateLoading;
