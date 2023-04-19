@@ -52,7 +52,16 @@ class SubscriptionHiveLocalRepository extends SubscriptionLocalRepository {
 
   @override
   Future<ActiveSubscription?> loadActiveSubscription() async {
-    final activeSubscriptionEntity = await _subscriptionBox.get(_subscriptionKey);
+    ActiveSubscriptionEntity? activeSubscriptionEntity;
+
+    try {
+      activeSubscriptionEntity = await _subscriptionBox.get(_subscriptionKey);
+    } on RangeError {
+      // If saved structure is outdated or corrupt, clear box
+      await _subscriptionBox.clear();
+      return null;
+    }
+
     if (activeSubscriptionEntity == null) return null;
 
     return _activeSubscriptionEntityMapper.to(activeSubscriptionEntity);
