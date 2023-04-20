@@ -41,11 +41,11 @@ class _SubscriptionBenefitLine extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
-          padding: EdgeInsets.only(top: 2),
+          padding: EdgeInsets.only(top: AppDimens.xxs),
           child: InformedSvg(
             AppVectorGraphics.checkmark,
-            height: 18,
-            width: 18,
+            height: AppDimens.ml,
+            width: AppDimens.ml,
           ),
         ),
         const SizedBox(width: AppDimens.s),

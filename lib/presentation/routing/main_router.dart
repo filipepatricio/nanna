@@ -22,7 +22,6 @@ import 'package:better_informed_mobile/presentation/page/settings/legal/settings
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
-import 'package:better_informed_mobile/presentation/page/settings/subscription/change_subscription/change_subscription_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/subscription/settings_subscription_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
@@ -91,7 +90,6 @@ const mainPageRoute = CustomRoute(
       page: SubscriptionPage,
       customRouteBuilder: modalBottomSheetPageRouteBuilder,
     ),
-    CustomRoute(page: ChangeSubscriptionPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: SubscriptionSuccessPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: PhotoCaptionPage, customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder),

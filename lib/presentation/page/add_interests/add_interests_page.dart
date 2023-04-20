@@ -85,7 +85,7 @@ class AddInterestsPage extends HookWidget {
                     padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                     child: Text(
                       context.l10n.addInterests_title,
-                      style: AppTypography.sansTitleLargeLausanne.w550,
+                      style: AppTypography.sansTitleLargeLausanne,
                     ),
                   ),
                   const SizedBox(height: AppDimens.m),

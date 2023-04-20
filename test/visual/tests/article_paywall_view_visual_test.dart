@@ -1,7 +1,5 @@
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
-import 'package:better_informed_mobile/domain/subscription/data/article_paywall_subscription_plan_pack.dt.dart';
-import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
-import 'package:better_informed_mobile/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/content/article_content_markdown.dart';
@@ -26,10 +24,8 @@ void main() {
 
       await tester.startApp(
         dependencyOverride: (getIt) async {
-          getIt.registerFactory<GetArticlePaywallPreferredPlanUseCase>(
-            () => FakeGetArticlePaywallPreferredPlanUseCase(
-              ArticlePaywallSubscriptionPlanPack.singleTrial(TestData.subscriptionPlansWithTrial.first),
-            ),
+          getIt.registerFactory<GetSubscriptionPlansUseCase>(
+            () => FakeGetSubscriptionPlansUseCase(),
           );
         },
         initialRoute: PlaceholderPageRoute(
@@ -69,14 +65,8 @@ void main() {
 
       await tester.startApp(
         dependencyOverride: (getIt) async {
-          getIt.registerFactory<GetArticlePaywallPreferredPlanUseCase>(
-            () => FakeGetArticlePaywallPreferredPlanUseCase(
-              ArticlePaywallSubscriptionPlanPack.multiple(
-                SubscriptionPlanGroup(
-                  plans: TestData.subscriptionPlansWithoutTrial,
-                ),
-              ),
-            ),
+          getIt.registerFactory<GetSubscriptionPlansUseCase>(
+            () => FakeGetSubscriptionPlansUseCase(),
           );
         },
         initialRoute: PlaceholderPageRoute(

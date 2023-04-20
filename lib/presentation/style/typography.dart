@@ -31,28 +31,21 @@ class AppTypography {
   );
 
   // Sans Title
-  static const TextStyle sansTitleLargeLausanne = TextStyle(
-    fontWeight: FontWeight.w500,
+  static TextStyle sansTitleLargeLausanne = TextStyle(
+    fontWeight: FontWeightExt.w550,
     fontFamily: _fontFamilyLausanne,
     fontSize: 28,
     height: 1.1,
   );
 
-  static const TextStyle sansTitleMediumLausanne = TextStyle(
-    fontWeight: FontWeight.w500,
+  static TextStyle sansTitleMediumLausanne = TextStyle(
+    fontWeight: FontWeightExt.w550,
     fontFamily: _fontFamilyLausanne,
     fontSize: 24,
     height: 1.1,
   );
 
-  static const TextStyle sansTitleSmallLausanne = TextStyle(
-    fontWeight: FontWeight.w500,
-    fontFamily: _fontFamilyLausanne,
-    fontSize: 20,
-    height: 1.1,
-  );
-
-  static TextStyle sansTitleXSmallLausanne = TextStyle(
+  static TextStyle sansTitleSmallLausanne = TextStyle(
     fontWeight: FontWeightExt.w550,
     fontFamily: _fontFamilyLausanne,
     fontSize: 20,
@@ -78,6 +71,20 @@ class AppTypography {
     fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,
     fontSize: 12,
+    height: 1.5,
+  );
+
+  static TextStyle sansTextDefaultLausanneBold = TextStyle(
+    fontWeight: FontWeightExt.w550,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 16,
+    height: 1.5,
+  );
+
+  static TextStyle sansTextSmallLausanneBold = TextStyle(
+    fontWeight: FontWeightExt.w550,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 14,
     height: 1.5,
   );
 

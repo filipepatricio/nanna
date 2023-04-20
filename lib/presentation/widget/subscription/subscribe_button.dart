@@ -9,7 +9,8 @@ enum SubscriptionButtonContentType { lite, full }
 
 class SubscribeButton extends StatelessWidget {
   const SubscribeButton._({
-    required this.plan,
+    required this.currentPlan,
+    required this.selectedPlan,
     required this.mode,
     required this.isLoading,
     required this.onPurchasePressed,
@@ -18,13 +19,15 @@ class SubscribeButton extends StatelessWidget {
   }) : super(key: key);
 
   factory SubscribeButton.light({
-    required SubscriptionPlan plan,
+    required SubscriptionPlan? currentPlan,
+    required SubscriptionPlan selectedPlan,
     required bool isLoading,
     required OnPurchasePressed onPurchasePressed,
     SubscriptionButtonContentType contentType = SubscriptionButtonContentType.full,
   }) =>
       SubscribeButton._(
-        plan: plan,
+        currentPlan: currentPlan,
+        selectedPlan: selectedPlan,
         isLoading: isLoading,
         onPurchasePressed: onPurchasePressed,
         contentType: contentType,
@@ -32,20 +35,23 @@ class SubscribeButton extends StatelessWidget {
       );
 
   factory SubscribeButton.dark({
-    required SubscriptionPlan plan,
+    required SubscriptionPlan? currentPlan,
+    required SubscriptionPlan selectedPlan,
     required bool isLoading,
     required OnPurchasePressed onPurchasePressed,
     SubscriptionButtonContentType contentType = SubscriptionButtonContentType.full,
   }) =>
       SubscribeButton._(
-        plan: plan,
+        currentPlan: currentPlan,
+        selectedPlan: selectedPlan,
         isLoading: isLoading,
         onPurchasePressed: onPurchasePressed,
         contentType: contentType,
         mode: Brightness.dark,
       );
 
-  final SubscriptionPlan plan;
+  final SubscriptionPlan? currentPlan;
+  final SubscriptionPlan selectedPlan;
   final Brightness mode;
   final bool isLoading;
   final OnPurchasePressed onPurchasePressed;
@@ -53,17 +59,17 @@ class SubscribeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final text = plan.hasTrial && contentType == SubscriptionButtonContentType.full
-        ? context.l10n.subscription_button_trialText(
-            context.l10n.date_daySuffix('${plan.trialDays}'),
-          )
-        : context.l10n.subscription_button_standard;
+    final text = currentPlan != null
+        ? context.l10n.subscription_change_confirm
+        : selectedPlan.hasTrial && contentType == SubscriptionButtonContentType.full
+            ? context.l10n.subscription_button_trialText
+            : context.l10n.subscription_button_standard;
 
     if (mode == Brightness.dark) {
       return InformedFilledButton.primary(
         context: context,
         text: text,
-        onTap: () => onPurchasePressed(plan),
+        onTap: () => onPurchasePressed(selectedPlan),
         isLoading: isLoading,
       );
     }
@@ -71,7 +77,7 @@ class SubscribeButton extends StatelessWidget {
     return InformedFilledButton.accent(
       context: context,
       text: text,
-      onTap: () => onPurchasePressed(plan),
+      onTap: () => onPurchasePressed(selectedPlan),
       isLoading: isLoading,
     );
   }

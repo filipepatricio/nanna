@@ -1,12 +1,7 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
-import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
-import 'package:flutter/material.dart';
+part of 'subscription_plans_view.dart';
 
-class SubscriptionLinksFooter extends StatelessWidget {
-  const SubscriptionLinksFooter({
+class _SubscriptionFooterButtons extends StatelessWidget {
+  const _SubscriptionFooterButtons({
     required this.subscriptionPlan,
     required this.onRestorePressed,
     required this.onRedeemCode,

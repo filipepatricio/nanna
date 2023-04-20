@@ -840,11 +840,7 @@
   },
   "subscription_button_trialText": "Start your free trial now",
   "@subscription_button_trialText": {
-    "type": "text",
-    "placeholders": {
-      "period": {
-      }
-    }
+    "type": "text"
   },
   "subscription_button_tryForFree": "Try for free",
   "@subscription_button_tryForFree": {
@@ -894,7 +890,7 @@
   "@subscription_info_cancelTitle": {
     "type": "text"
   },
-  "subscription_info_cancelDescription": "Simply open the informed app, tap Saved > Settings, and tap on your subscription. You'll see the option to cancel your subscription here.",
+  "subscription_info_cancelDescription": "It’s easy: Open the informed app, tap Settings, and head to Manage your subscription. Now you are in your iTunes subscription. Select informed, “Cancel Trial” and confirm.",
   "@subscription_info_cancelDescription": {
     "type": "text"
   },
@@ -914,28 +910,26 @@
       }
     }
   },
-  "subscription_change_title": "Change _your plan_",
+  "subscription_change_title": "Change your plan",
   "@subscription_change_title": {
     "type": "text"
   },
-  "subscription_change_upcomingPlan": "Upcoming plan",
-  "@subscription_change_upcomingPlan": {
-    "type": "text"
-  },
-  "subscription_chargeInfo_standard": "Recurring billing · Cancel anytime",
-  "@subscription_chargeInfo_standard": {
-    "type": "text"
-  },
-  "subscription_chargeInfo_trial": "Cancel anytime during your {period} trial and you won't be charged.",
-  "@subscription_chargeInfo_trial": {
+  "subscription_change_subtitle": "You currently have {currentPlan} payment plan, you can change it to {nextPlan} plan at any time.",
+  "@subscription_change_subtitle": {
     "type": "text",
     "placeholders": {
-      "period": {
+      "currentPlan": {
+      },
+      "nextPlan": {
       }
     }
   },
-  "subscription_description": "Read or listen to all of our curated articles.\nCancel anytime during your trial.",
-  "@subscription_description": {
+  "subscription_change_annual": "an annual",
+  "@subscription_change_annual": {
+    "type": "text"
+  },
+  "subscription_change_monthly": "a monthly",
+  "@subscription_change_monthly": {
     "type": "text"
   },
   "subscription_endDate": "End date",
@@ -1067,6 +1061,14 @@
   "subscription_snackbar_action": "Upgrade",
   "@subscription_snackbar_action": {
     "type": "text"
+  },
+  "subscription_trialTimeline_title": "How your {trialDays}-day free trial works",
+  "@subscription_trialTimeline_title": {
+    "type": "text",
+    "placeholders": {
+      "trialDays": {
+      }
+    }
   },
   "subscription_trialTimeline_step1_title": "Now",
   "@subscription_trialTimeline_step1_title": {

@@ -1,11 +1,7 @@
-import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:flutter/material.dart';
+part of 'subscription_plans_view.dart';
 
-class SubscriptionCancelInfoCard extends StatelessWidget {
-  const SubscriptionCancelInfoCard({super.key});
+class _SubscriptionCancelInfoCard extends StatelessWidget {
+  const _SubscriptionCancelInfoCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +16,7 @@ class SubscriptionCancelInfoCard extends StatelessWidget {
         children: [
           Text(
             context.l10n.subscription_info_cancelTitle,
-            style: AppTypography.sansTextSmallLausanne.w550,
+            style: AppTypography.sansTextSmallLausanneBold,
           ),
           Text(
             context.l10n.subscription_info_cancelDescription,

@@ -32,7 +32,7 @@ class _InterestListItem extends StatelessWidget {
           children: [
             Text(
               category.name,
-              style: AppTypography.sansTitleSmallLausanne.w550.copyWith(
+              style: AppTypography.sansTitleSmallLausanne.copyWith(
                 color: AppColors.of(context).textPrimary,
               ),
             ),

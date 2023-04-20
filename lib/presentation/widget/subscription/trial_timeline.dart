@@ -24,8 +24,8 @@ class TrialTimeline extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'How your ${plan.trialDays}-day free trial works',
-          style: AppTypography.sansTitleXSmallLausanne,
+          context.l10n.subscription_trialTimeline_title(plan.trialDays),
+          style: AppTypography.sansTextSmallLausanneBold,
         ),
         const SizedBox(height: AppDimens.l),
         _TimelineStep(
@@ -77,7 +77,7 @@ class _TimelineStep extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: AppTypography.sansTextSmallLausanne.w550,
+                style: AppTypography.sansTextSmallLausanneBold,
               ),
               const SizedBox(height: AppDimens.xs),
               Text(

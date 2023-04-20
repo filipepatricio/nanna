@@ -53,8 +53,6 @@ import 'tests/domain/release_notes/use_case/get_current_release_note_use_case_te
 import 'tests/domain/release_notes/use_case/save_release_note_if_first_run_use_case_test.dart'
     as save_release_note_if_first_run_use_case_test;
 import 'tests/domain/subscription/data/subscription_plan_group_test.dart' as subscription_plan_group_test;
-import 'tests/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case_test.dart'
-    as get_article_paywall_preferred_plan_use_case_test;
 import 'tests/domain/synchronization/use_case/run_initial_bookmark_sync_use_case_test.dart'
     as run_initial_bookmark_sync_use_case_test;
 import 'tests/domain/synchronization/use_case/save_synchronizable_item_use_case_test.dart'
@@ -62,9 +60,7 @@ import 'tests/domain/synchronization/use_case/save_synchronizable_item_use_case_
 import 'tests/domain/synchronization/use_case/synchroniza_all_use_case_test.dart' as synchroniza_all_use_case_test;
 import 'tests/presentation/app_connectivity_checker_test.dart' as app_connectivity_checker_test;
 import 'tests/presentation/app_update_checker_test.dart' as app_update_checker_test;
-import 'tests/presentation/article_paywall_view_test.dart' as article_paywall_view_test;
 import 'tests/presentation/audio_page_test.dart' as audio_page_test;
-import 'tests/presentation/change_subscription_page_test.dart' as change_subscription_page_test;
 import 'tests/presentation/daily_brief_page_test.dart' as daily_brief_page_test;
 import 'tests/presentation/explore_page_test.dart' as explore_page_test;
 import 'tests/presentation/main_page_test.dart' as main_page_test;
@@ -119,7 +115,6 @@ void main() {
   );
   group('set_channel_email_setting_use_case_test', set_channel_email_setting_use_case_test.main);
   group('set_channel_push_setting_use_case_test', set_channel_push_setting_use_case_test.main);
-  group('get_article_paywall_preferred_plan_use_case_test', get_article_paywall_preferred_plan_use_case_test.main);
   group('use_paid_subscription_change_stream_use_case_test', use_paid_subscription_change_stream_use_case_test.main);
   group('track_article_reading_progress_use_case_test', track_article_reading_progress_use_case_test.main);
   group('article_read_state_notifier_test', article_read_state_notifier_test.main);
@@ -150,13 +145,11 @@ void main() {
   group('date_format_util_test', date_format_util_test.main);
   group('audio_progress_bar_cubit_test', audio_progress_bar_cubit_test.main);
   group('subscription_page_test', subscription_page_test.main);
-  group('article_paywall_view_test', article_paywall_view_test.main);
   group('audio_page_test', audio_page_test.main);
   group('audio_banner_test', audio_banner_test.main);
   group('subscription_card_cubit_test', subscription_card_cubit_test.main);
   group('settings_subscription_page_cubit_test', settings_subscription_page_cubit_test.main);
   group('profile_page_test', profile_page_test.main);
-  group('change_subscription_page_test', change_subscription_page_test.main);
   group('should_show_daily_brief_badge_use_case_test', should_show_daily_brief_badge_use_case_test.main);
   group('settings_appearance_page_test', settings_appearance_page_test.main);
 }

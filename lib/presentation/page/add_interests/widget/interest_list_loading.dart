@@ -36,7 +36,7 @@ class _InterestListLoadingItem extends StatelessWidget {
             opacity: 0,
             child: Text(
               '-',
-              style: AppTypography.sansTitleSmallLausanne.w550,
+              style: AppTypography.sansTitleSmallLausanne,
             ),
           ),
           const Spacer(),

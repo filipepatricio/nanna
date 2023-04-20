@@ -1,7 +1,4 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
-import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
-import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_state.dt.dart';
@@ -9,28 +6,15 @@ import 'package:better_informed_mobile/presentation/page/subscription/widgets/su
 import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_plans_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
-import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
-import 'package:better_informed_mobile/presentation/util/platform_util.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/link_label.dart';
-import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
-import 'package:better_informed_mobile/presentation/widget/subscription/subscribe_button.dart';
-import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_card.dart';
-import 'package:better_informed_mobile/presentation/widget/subscription/subscrption_links_footer.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'widgets/paywall_background_fade.dart';
-part 'widgets/paywall_loading_view.dart';
-part 'widgets/paywall_multiple_options.dart';
-part 'widgets/paywall_trial_option.dart';
 
 class ArticlePaywallView extends HookWidget {
   const ArticlePaywallView({
@@ -58,16 +42,11 @@ class ArticlePaywallView extends HookWidget {
 
     useCubitListener<SubscriptionPageCubit, SubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        idle: (group, selectedPlan) {
+        idle: (_, __, ___) {
           InformedDialog.removeRestorePurchase(context);
         },
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
-        success: (trialDays, reminderDays) {
-          InformedDialog.removeRestorePurchase(context);
-          // AutoRouter.of(context).replace(
-          //   SubscriptionSuccessPageRoute(trialDays: trialDays, reminderDays: reminderDays),
-          // );
-        },
+        success: (trialDays, reminderDays) => InformedDialog.removeRestorePurchase(context),
         redeemingCode: () => shouldRestorePurchase.value = true,
         generalError: (message) {
           snackbarController.showMessage(

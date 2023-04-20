@@ -125,7 +125,7 @@ class _SignInIdleView extends StatelessWidget {
               ] else ...[
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: AppDimens.xxl),
-                  child: _TermsPolicy(),
+                  child: _SignInTermsView(),
                 ),
                 const SizedBox(height: AppDimens.l),
                 Row(

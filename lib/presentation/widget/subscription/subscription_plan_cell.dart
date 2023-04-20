@@ -106,7 +106,7 @@ class _Price extends StatelessWidget {
       children: [
         Text(
           context.l10n.subscription_card_price(plan.priceString, plan.periodString(context)),
-          style: AppTypography.sansTextDefaultLausanne.w550,
+          style: AppTypography.sansTextDefaultLausanneBold,
           textAlign: TextAlign.center,
         ),
         if (plan.monthlyPrice < highestMonthlyCostPlan.monthlyPrice) ...[
