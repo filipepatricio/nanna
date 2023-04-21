@@ -55,9 +55,16 @@ class SubscriptionPlanCell extends HookWidget {
           children: [
             _SaveBadge(plan.discountPercentage),
             const Spacer(),
-            _Price(plan: plan, highestMonthlyCostPlan: highestMonthlyCostPlan),
+            _Price(
+              plan: plan,
+              highestMonthlyCostPlan: highestMonthlyCostPlan,
+              isSelected: isSelected,
+            ),
             const Spacer(),
-            _TrialInfo(plan),
+            _TrialInfo(
+              plan: plan,
+              isSelected: isSelected,
+            ),
           ],
         ),
       ),
@@ -93,10 +100,12 @@ class _Price extends StatelessWidget {
   const _Price({
     required this.plan,
     required this.highestMonthlyCostPlan,
+    required this.isSelected,
   });
 
   final SubscriptionPlan plan;
   final SubscriptionPlan highestMonthlyCostPlan;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -106,14 +115,15 @@ class _Price extends StatelessWidget {
       children: [
         Text(
           context.l10n.subscription_card_price(plan.priceString, plan.periodString(context)),
-          style: AppTypography.sansTextDefaultLausanneBold,
+          style: AppTypography.sansTextDefaultLausanneBold
+              .copyWith(color: isSelected ? AppColors.light.textPrimary : AppColors.of(context).textPrimary),
           textAlign: TextAlign.center,
         ),
         if (plan.monthlyPrice < highestMonthlyCostPlan.monthlyPrice) ...[
           Text(
             context.l10n.subscription_card_monthlyPrice(plan.monthlyPriceString, context.l10n.date_month),
             style: AppTypography.sansTextNanoLausanne.copyWith(
-              color: AppColors.of(context).textSecondary,
+              color: isSelected ? AppColors.light.textSecondary : AppColors.of(context).textSecondary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -124,9 +134,13 @@ class _Price extends StatelessWidget {
 }
 
 class _TrialInfo extends StatelessWidget {
-  const _TrialInfo(this.plan);
+  const _TrialInfo({
+    required this.plan,
+    required this.isSelected,
+  });
 
   final SubscriptionPlan plan;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +149,7 @@ class _TrialInfo extends StatelessWidget {
       child: Text(
         context.l10n.subscription_card_trialDays(plan.trialDays),
         style: AppTypography.sansTextNanoLausanne.copyWith(
-          color: AppColors.of(context).textSecondary,
+          color: isSelected ? AppColors.light.textSecondary : AppColors.of(context).textSecondary,
         ),
       ),
     );
