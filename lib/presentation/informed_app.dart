@@ -62,54 +62,6 @@ class InformedApp extends HookWidget {
   Widget build(BuildContext context) {
     final initialThemeMode = themeMode ?? AdaptiveThemeMode.system;
 
-    if (kIsTest) {
-      return Provider.value(
-        value: getIt,
-        child: RestartAppWidget(
-          child: AppConnectivityChecker(
-            child: Builder(
-              builder: (context) {
-                final MainRouter router = mainRouter ?? MainRouter();
-
-                return AdaptiveTheme(
-                  light: InformedTheme.light,
-                  dark: InformedTheme.dark,
-                  initial: initialThemeMode,
-                  builder: (lightTheme, darkTheme) {
-                    return MaterialApp.router(
-                      debugShowCheckedModeBanner: false,
-                      theme: lightTheme,
-                      darkTheme: darkTheme,
-                      localizationsDelegates: PhraseLocalizations.localizationsDelegates,
-                      supportedLocales: PhraseLocalizations.supportedLocales,
-                      routeInformationParser: router.defaultRouteParser(),
-                      routerDelegate: router.delegate(
-                        navigatorObservers: () => [
-                          HeroController(),
-                          getIt<MainNavigationObserver>(),
-                        ],
-                      ),
-                      builder: (context, child) {
-                        final mediaQuery = MediaQuery.of(context);
-                        return NoScrollGlow(
-                          child: responsiveBuilder(
-                            mediaQuery,
-                            ImagePrecachingView(
-                              child: child!,
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ),
-      );
-    }
-
     return Provider.value(
       value: getIt,
       child: RestartAppWidget(
@@ -124,6 +76,7 @@ class InformedApp extends HookWidget {
                 initial: initialThemeMode,
                 builder: (lightTheme, darkTheme) {
                   return MaterialApp.router(
+                    debugShowCheckedModeBanner: !kIsTest,
                     theme: lightTheme,
                     darkTheme: darkTheme,
                     localizationsDelegates: PhraseLocalizations.localizationsDelegates,
@@ -134,7 +87,7 @@ class InformedApp extends HookWidget {
                         // To solve issue with Hero animations in tab navigation - https://github.com/Milad-Akarie/auto_route_library/issues/418#issuecomment-997704836
                         HeroController(),
                         getIt<MainNavigationObserver>(),
-                        SentryNavigatorObserver(),
+                        if (!kIsTest) SentryNavigatorObserver(),
                       ],
                     ),
                     builder: (context, child) {
