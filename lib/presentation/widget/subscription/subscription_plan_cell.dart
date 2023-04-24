@@ -79,8 +79,8 @@ class _SaveBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: discountPercentage > 0 ? 1 : 0,
+    return Visibility.maintain(
+      visible: discountPercentage > 0,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.s, vertical: AppDimens.xs),
         decoration: BoxDecoration(
@@ -89,7 +89,11 @@ class _SaveBadge extends StatelessWidget {
         ),
         child: Text(
           context.l10n.subscription_off('$discountPercentage'),
-          style: AppTypography.sansTextNanoLausanne.copyWith(color: Colors.white),
+          textAlign: TextAlign.center,
+          style: AppTypography.sansTextNanoLausanne.copyWith(
+            color: Colors.white,
+            leadingDistribution: TextLeadingDistribution.even,
+          ),
         ),
       ),
     );
@@ -115,14 +119,17 @@ class _Price extends StatelessWidget {
       children: [
         Text(
           context.l10n.subscription_card_price(plan.priceString, plan.periodString(context)),
-          style: AppTypography.sansTextDefaultLausanneBold
-              .copyWith(color: isSelected ? AppColors.light.textPrimary : AppColors.of(context).textPrimary),
+          style: AppTypography.sansTextDefaultLausanneBold.copyWith(
+            leadingDistribution: TextLeadingDistribution.even,
+            color: isSelected ? AppColors.light.textPrimary : AppColors.of(context).textPrimary,
+          ),
           textAlign: TextAlign.center,
         ),
         if (plan.monthlyPrice < highestMonthlyCostPlan.monthlyPrice) ...[
           Text(
             context.l10n.subscription_card_monthlyPrice(plan.monthlyPriceString, context.l10n.date_month),
             style: AppTypography.sansTextNanoLausanne.copyWith(
+              leadingDistribution: TextLeadingDistribution.even,
               color: isSelected ? AppColors.light.textSecondary : AppColors.of(context).textSecondary,
             ),
             textAlign: TextAlign.center,
@@ -144,11 +151,12 @@ class _TrialInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: plan.trialDays > 0 ? 1 : 0,
+    return Visibility.maintain(
+      visible: plan.trialDays > 0,
       child: Text(
         context.l10n.subscription_card_trialDays(plan.trialDays),
         style: AppTypography.sansTextNanoLausanne.copyWith(
+          leadingDistribution: TextLeadingDistribution.even,
           color: isSelected ? AppColors.light.textSecondary : AppColors.of(context).textSecondary,
         ),
       ),

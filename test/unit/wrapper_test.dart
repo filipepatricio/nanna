@@ -60,6 +60,7 @@ import 'tests/domain/synchronization/use_case/save_synchronizable_item_use_case_
 import 'tests/domain/synchronization/use_case/synchroniza_all_use_case_test.dart' as synchroniza_all_use_case_test;
 import 'tests/presentation/app_connectivity_checker_test.dart' as app_connectivity_checker_test;
 import 'tests/presentation/app_update_checker_test.dart' as app_update_checker_test;
+import 'tests/presentation/article_paywall_view_test.dart' as article_paywall_view_test;
 import 'tests/presentation/audio_page_test.dart' as audio_page_test;
 import 'tests/presentation/daily_brief_page_test.dart' as daily_brief_page_test;
 import 'tests/presentation/explore_page_test.dart' as explore_page_test;
@@ -82,7 +83,6 @@ import 'tests/presentation/widget/subscription/subscription_card_cubit_test.dart
 
 void main() {
   // Data
-  group('onboarding_store_impl_test', onboarding_store_impl_test.main);
   group('audio_item_mapper_test', audio_item_mapper_test.main);
   group('topic_dto_mapper_test', topic_dto_mapper_test.main);
   group('topic_preview_dto_mapper_test', topic_preview_dto_mapper_test.main);
@@ -102,6 +102,7 @@ void main() {
   group('purchase_repository_impl_test', purchase_repository_impl_test.main);
   group('push_notification_repository_impl_test', push_notification_repository_impl_test.main);
   group('firebase_exception_mapper_test', firebase_exception_mapper_test.main);
+  group('onboarding_store_impl_test', onboarding_store_impl_test.main);
 
   // Domain
   group('get_current_release_note_use_case_test', get_current_release_note_use_case_test.main);
@@ -115,7 +116,7 @@ void main() {
   );
   group('set_channel_email_setting_use_case_test', set_channel_email_setting_use_case_test.main);
   group('set_channel_push_setting_use_case_test', set_channel_push_setting_use_case_test.main);
-  group('use_paid_subscription_change_stream_use_case_test', use_paid_subscription_change_stream_use_case_test.main);
+  group('article_paywall_view_test', article_paywall_view_test.main);
   group('track_article_reading_progress_use_case_test', track_article_reading_progress_use_case_test.main);
   group('article_read_state_notifier_test', article_read_state_notifier_test.main);
   group('add_bookmark_use_case_test', add_bookmark_use_case_test.main);
@@ -132,6 +133,7 @@ void main() {
   group('save_synchronizable_item_use_case_test', save_synchronizable_item_use_case_test.main);
   group('informed_audio_handler_test', informed_audio_handler_test.main);
   group('mark_entry_as_seen_use_case_test', mark_entry_as_seen_use_case_test.main);
+  group('use_paid_subscription_change_stream_use_case_test', use_paid_subscription_change_stream_use_case_test.main);
 
   // Presentation
   group('app_connectivity_checker_test', app_connectivity_checker_test.main);

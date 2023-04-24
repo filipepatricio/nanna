@@ -48,8 +48,8 @@ class SubscriptionSuccessPage extends HookWidget {
                     ),
                   ),
                   const SizedBox(height: AppDimens.m),
-                  InformedMarkdownBody(markdown:
-                    trialDays > 0
+                  InformedMarkdownBody(
+                    markdown: trialDays > 0
                         ? context.l10n.subscription_success_title_trial(trialDays)
                         : context.l10n.subscription_success_title_standard,
                     textAlignment: TextAlign.start,

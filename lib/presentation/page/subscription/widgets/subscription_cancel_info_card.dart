@@ -1,7 +1,7 @@
 part of 'subscription_plans_view.dart';
 
 class _SubscriptionCancelInfoCard extends StatelessWidget {
-  const _SubscriptionCancelInfoCard({super.key});
+  const _SubscriptionCancelInfoCard();
 
   @override
   Widget build(BuildContext context) {

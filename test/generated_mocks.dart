@@ -42,7 +42,11 @@ import 'package:better_informed_mobile/domain/article/article_local_repository.d
 import 'package:better_informed_mobile/domain/article/article_progress_local_repository.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_audio_progress_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_free_articles_left_warning_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_other_brief_entries_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_other_topic_entries_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_related_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/load_local_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/save_article_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/save_article_read_progress_locally_use_case.di.dart';
@@ -59,6 +63,7 @@ import 'package:better_informed_mobile/domain/bookmark/profile_bookmark_change_n
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_paginated_bookmarks_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/save_bookmarked_media_item_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/brief_entry_new_state_notifier.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/decrease_brief_unseen_count_state_notifier_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
@@ -223,6 +228,11 @@ const _classes = [
   SetNeedsRefreshDailyBriefUseCase,
   ShouldUseTextSizeSelectorUseCase,
   GetPreferredArticleTextScaleFactorUseCase,
+  GetOtherTopicEntriesUseCase,
+  GetOtherBriefEntriesUseCase,
+  GetFeaturedCategoriesUseCase,
+  GetRelatedContentUseCase,
+  GetArticleUseCase
 ];
 
 @GenerateMocks(_classes)

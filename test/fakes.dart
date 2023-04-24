@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
@@ -70,13 +71,18 @@ class FakeIsTutorialStepSeenUseCase extends Fake implements IsTutorialStepSeenUs
 }
 
 class FakeGetSubscriptionPlansUseCase extends Fake implements GetSubscriptionPlansUseCase {
+  FakeGetSubscriptionPlansUseCase([this.plans]);
+
+  final List<SubscriptionPlan>? plans;
+
   @override
   Future<SubscriptionPlanGroup> call() async {
     return SubscriptionPlanGroup(
-      plans: [
-        TestData.subscriptionPlansWithoutTrial.first,
-        TestData.subscriptionPlansWithTrial.last,
-      ],
+      plans: plans ??
+          [
+            TestData.subscriptionPlansWithoutTrial.first,
+            TestData.subscriptionPlansWithTrial.last,
+          ],
     );
   }
 }

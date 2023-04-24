@@ -116,27 +116,21 @@ class InformedFilledButton extends StatelessWidget {
   factory InformedFilledButton.tertiary({
     required BuildContext context,
     required String text,
-    String? subtext,
     VoidCallback? onTap,
-    Widget? leading,
-    Widget? trailing,
     bool withOutline = false,
     EdgeInsets? padding,
   }) =>
       InformedFilledButton._(
         text: text,
-        subtext: subtext,
         isEnabled: true,
         onTap: onTap,
         fillColor: AppColors.of(context).buttonSecondaryBackground,
         disableColor: AppColors.of(context).buttonSecondaryBackground,
         textColor: AppColors.of(context).buttonSecondaryText,
         isLoading: false,
-        leading: leading,
-        trailing: trailing,
         withOutline: withOutline,
-        style: AppTypography.sansTextNanoLausanne,
-        padding: padding,
+        style: AppTypography.sansTextNanoLausanne.copyWith(leadingDistribution: TextLeadingDistribution.even),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: AppDimens.sl, horizontal: AppDimens.l),
       );
 
   factory InformedFilledButton.color({
@@ -183,8 +177,11 @@ class InformedFilledButton extends StatelessWidget {
     final leading = this.leading;
     final trailing = this.trailing;
 
-    final textStyle =
-        style ?? (subtext != null ? AppTypography.buttonBold : AppTypography.buttonMedium).copyWith(color: textColor);
+    final textStyle = style ??
+        (subtext != null ? AppTypography.buttonBold : AppTypography.buttonMedium).copyWith(
+          color: textColor,
+          leadingDistribution: TextLeadingDistribution.even,
+        );
 
     return GestureDetector(
       onTap: isEnabled ? onTap : () {},
@@ -238,7 +235,10 @@ class InformedFilledButton extends StatelessWidget {
                                   padding: const EdgeInsets.only(top: AppDimens.s),
                                   child: Text(
                                     subtext!,
-                                    style: AppTypography.buttonRegular.copyWith(color: textColor),
+                                    style: AppTypography.buttonRegular.copyWith(
+                                      color: textColor,
+                                      leadingDistribution: TextLeadingDistribution.even,
+                                    ),
                                   ),
                                 ),
                               ],

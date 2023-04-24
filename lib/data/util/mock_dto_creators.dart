@@ -606,6 +606,15 @@ class MockDTO {
     'This article originally appeared here',
   );
 
+  static final articleContentMarkdownLocked = ArticleContentDTO(
+    ArticleContentTextDTO(
+      '# Novak Djokovic is no doubt _spending his time detained in an immigration hotel_ in Melbourne doing yoga and tai chi, stretching, meditating and adhering to every facet of the strict training regimen that has helped him become the world\'s No. 1 tennis player.\r\n\r\n> On the streets below, Serbian supporters are staging a candlelight vigil and serenading him amid visa-limbo while lawyers fight a deportation order that would deny Djokovic the chance to compete for a 10th Australian Open title and, with it, a men\'s-record 21st Grand Slam title."',
+      ArticleContentTypeDTO.markdown,
+    ),
+    // credits
+    'This article originally appeared here',
+  );
+
   /// Bookmarks
 
   static final bookmarkList = BookmarkListDTO(

@@ -252,6 +252,11 @@ class TestData {
         content: _articleContentMapper(MockDTO.articleContentMarkdown),
       );
 
+  static Article get lockedArticle => Article(
+        metadata: article,
+        content: _articleContentMapper(MockDTO.articleContentMarkdownLocked),
+      );
+
   static AudioFile get audioFile => _audioFileMapper(MockDTO.audioFile);
 
   static MediaItemArticle get article => _mediaItemMapper(MockDTO.topic.entries.first.item) as MediaItemArticle;

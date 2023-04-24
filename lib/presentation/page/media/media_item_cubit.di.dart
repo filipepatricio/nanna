@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/exception/article_geoblocked_exception.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_header_use_case.di.dart';
@@ -186,7 +187,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
           emit(MediaItemState.idlePremium(fullArticle));
         } else {
           counter++;
-          await Future.delayed(const Duration(seconds: 2));
+          if (!kIsTest) await Future.delayed(const Duration(seconds: 2));
         }
       } on ArticleGeoblockedException {
         shouldRefresh = false;

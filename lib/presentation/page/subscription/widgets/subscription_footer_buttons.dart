@@ -16,21 +16,25 @@ class _SubscriptionFooterButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
           children: [
-            Expanded(
-              child: InformedFilledButton.tertiary(
-                context: context,
-                text: context.l10n.subscription_redeemCode,
-                withOutline: true,
-                onTap: onRedeemCode,
+            if (isIOS) ...[
+              Expanded(
+                child: InformedFilledButton.tertiary(
+                  context: context,
+                  text: context.l10n.subscription_redeemCode,
+                  withOutline: true,
+                  onTap: onRedeemCode,
+                ),
               ),
-            ),
-            const SizedBox(width: AppDimens.s),
+              const SizedBox(width: AppDimens.s),
+            ],
             Expanded(
               child: InformedFilledButton.tertiary(
                 context: context,
@@ -43,28 +47,37 @@ class _SubscriptionFooterButtons extends StatelessWidget {
         ),
         const SizedBox(height: AppDimens.s),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            InformedFilledButton.tertiary(
-              context: context,
-              text: context.l10n.settings_termsOfService,
-              onTap: () => context.pushRoute(
-                SettingsTermsOfServicePageRoute(
-                  fromRoute: context.l10n.subscription_button_standard,
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: InformedFilledButton.tertiary(
+                  context: context,
+                  text: context.l10n.settings_termsOfService,
+                  padding: const EdgeInsets.symmetric(vertical: AppDimens.sl),
+                  onTap: () => context.pushRoute(
+                    SettingsTermsOfServicePageRoute(
+                      fromRoute: context.l10n.subscription_button_standard,
+                    ),
+                  ),
                 ),
               ),
-              padding: const EdgeInsets.symmetric(vertical: AppDimens.sl),
             ),
-            const SizedBox(width: AppDimens.m),
-            InformedFilledButton.tertiary(
-              context: context,
-              text: context.l10n.settings_privacyPolicy,
-              onTap: () => context.pushRoute(
-                SettingsPrivacyPolicyPageRoute(
-                  fromRoute: context.l10n.subscription_button_standard,
+            const SizedBox(width: AppDimens.l),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: InformedFilledButton.tertiary(
+                  context: context,
+                  text: context.l10n.settings_privacyPolicy,
+                  padding: const EdgeInsets.symmetric(vertical: AppDimens.sl),
+                  onTap: () => context.pushRoute(
+                    SettingsPrivacyPolicyPageRoute(
+                      fromRoute: context.l10n.subscription_button_standard,
+                    ),
+                  ),
                 ),
               ),
-              padding: const EdgeInsets.symmetric(vertical: AppDimens.sl),
             ),
           ],
         ),

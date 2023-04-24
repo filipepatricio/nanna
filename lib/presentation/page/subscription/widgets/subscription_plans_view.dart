@@ -118,23 +118,27 @@ class SubscriptionPlansView extends HookWidget {
                     ],
                   ),
                 ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate.fixed(
-                      [
-                        const SizedBox(height: AppDimens.l),
-                        if (trialViewMode) ...[
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: AppDimens.l),
+                ),
+                if (trialViewMode && currentPlan == null) ...[
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate.fixed(
+                        [
                           TrialTimeline(plan: selectedPlan),
                           if (!isArticlePaywall) ...[
                             const SizedBox(height: AppDimens.l),
                             const _SubscriptionCancelInfoCard(),
                           ]
                         ],
-                        const SizedBox(height: AppDimens.xl),
-                      ],
+                      ),
                     ),
                   ),
+                ],
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: AppDimens.xl),
                 ),
               ],
             ),
@@ -146,9 +150,10 @@ class SubscriptionPlansView extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              SubscribeButton.dark(
+              SubscribeButton(
                 currentPlan: currentPlan,
                 selectedPlan: selectedPlan,
+                isEnabled: currentPlan != selectedPlan,
                 onPurchasePressed: (_) => cubit.purchase(),
                 isLoading: state.maybeMap(
                   processing: (_) => true,
