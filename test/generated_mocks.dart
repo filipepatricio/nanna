@@ -104,10 +104,8 @@ import 'package:better_informed_mobile/domain/subscription/use_case/get_preferre
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
-import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
-import 'package:better_informed_mobile/domain/subscription/use_case/set_onboarding_paywall_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/synchronizable_repository.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/run_initial_bookmark_sync_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/save_synchronizable_item_use_case.di.dart';
@@ -175,9 +173,7 @@ const _classes = [
   AudioPositionSeekUseCase,
   GetArticleAudioProgressUseCase,
   GetShouldUpdateBriefStreamUseCase,
-  IsOnboardingPaywallSeenUseCase,
   HasActiveSubscriptionUseCase,
-  SetOnboardingPaywallSeenUseCase,
   PurchasesRepository,
   GetPreferredSubscriptionPlanUseCase,
   PurchaseSubscriptionUseCase,

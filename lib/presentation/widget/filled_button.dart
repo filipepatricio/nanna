@@ -18,9 +18,7 @@ class InformedFilledButton extends StatelessWidget {
     this.withOutline = false,
     this.style,
     EdgeInsets? padding,
-    Key? key,
-  })  : padding = padding ?? const EdgeInsets.symmetric(vertical: AppDimens.m, horizontal: AppDimens.l),
-        super(key: key);
+  }) : padding = padding ?? const EdgeInsets.symmetric(vertical: AppDimens.m, horizontal: AppDimens.l);
 
   factory InformedFilledButton.accent({
     required BuildContext context,
@@ -97,17 +95,15 @@ class InformedFilledButton extends StatelessWidget {
     VoidCallback? onTap,
     Widget? leading,
     Widget? trailing,
-    bool withOutline = false,
+    bool withOutline = true,
   }) =>
       InformedFilledButton._(
         text: text,
         subtext: subtext,
-        isEnabled: true,
         onTap: onTap,
         fillColor: AppColors.of(context).buttonSecondaryBackground,
         disableColor: AppColors.of(context).buttonSecondaryBackground,
         textColor: AppColors.of(context).buttonSecondaryText,
-        isLoading: false,
         leading: leading,
         trailing: trailing,
         withOutline: withOutline,
@@ -117,19 +113,16 @@ class InformedFilledButton extends StatelessWidget {
     required BuildContext context,
     required String text,
     VoidCallback? onTap,
-    bool withOutline = false,
     EdgeInsets? padding,
   }) =>
       InformedFilledButton._(
         text: text,
-        isEnabled: true,
         onTap: onTap,
         fillColor: AppColors.of(context).buttonSecondaryBackground,
         disableColor: AppColors.of(context).buttonSecondaryBackground,
         textColor: AppColors.of(context).buttonSecondaryText,
-        isLoading: false,
-        withOutline: withOutline,
-        style: AppTypography.sansTextNanoLausanne.copyWith(leadingDistribution: TextLeadingDistribution.even),
+        withOutline: true,
+        style: AppTypography.sansTextNanoLausanne,
         padding: padding ?? const EdgeInsets.symmetric(vertical: AppDimens.sl, horizontal: AppDimens.l),
       );
 
@@ -177,11 +170,8 @@ class InformedFilledButton extends StatelessWidget {
     final leading = this.leading;
     final trailing = this.trailing;
 
-    final textStyle = style ??
-        (subtext != null ? AppTypography.buttonBold : AppTypography.buttonMedium).copyWith(
-          color: textColor,
-          leadingDistribution: TextLeadingDistribution.even,
-        );
+    final textStyle =
+        style ?? (subtext != null ? AppTypography.buttonBold : AppTypography.buttonMedium).copyWith(color: textColor);
 
     return GestureDetector(
       onTap: isEnabled ? onTap : () {},
@@ -228,7 +218,9 @@ class InformedFilledButton extends StatelessWidget {
                             children: [
                               Text(
                                 text,
-                                style: textStyle,
+                                style: textStyle.copyWith(
+                                  leadingDistribution: TextLeadingDistribution.even,
+                                ),
                               ),
                               if (subtext != null) ...[
                                 Padding(

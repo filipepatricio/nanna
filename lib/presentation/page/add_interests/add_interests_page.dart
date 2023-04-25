@@ -105,6 +105,7 @@ class AddInterestsPage extends HookWidget {
                         controller: scrollController,
                         padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                         child: InformedAnimatedSwitcher(
+                          duration: const Duration(milliseconds: 100),
                           child: state.maybeMap(
                             loading: (state) => const _InterestListLoading(),
                             idle: (state) => _InterestList(
@@ -116,8 +117,8 @@ class AddInterestsPage extends HookWidget {
                             processing: (state) => _InterestList(
                               categories: state.categories,
                               selectedCategories: state.selectedCategories,
-                              onSelected: (category) {},
-                              onUnselected: (category) {},
+                              onSelected: (_) {},
+                              onUnselected: (_) {},
                             ),
                             orElse: () => const SizedBox(),
                           ),

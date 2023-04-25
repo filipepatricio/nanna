@@ -23,7 +23,10 @@ class LinkLabel extends StatelessWidget {
       onTap: onTap,
       child: Text(
         label,
-        style: style.copyWith(decoration: decoration),
+        style: style.copyWith(
+          decoration: decoration,
+          leadingDistribution: TextLeadingDistribution.even,
+        ),
         textAlign: align,
       ),
     );

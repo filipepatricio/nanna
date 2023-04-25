@@ -45,11 +45,9 @@ class SubscriptionPage extends HookWidget {
         idle: (_, __, ___) => InformedDialog.removeRestorePurchase(context),
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
         redeemingCode: () => shouldRestorePurchase.value = true,
-        success: (trialDays, reminderDays) {
+        success: () {
           InformedDialog.removeRestorePurchase(context);
-          if (context.topRoute is MainPageRoute) {
-            context.popRoute();
-          }
+          context.popRoute();
         },
         generalError: (message) {
           snackbarController.showMessage(

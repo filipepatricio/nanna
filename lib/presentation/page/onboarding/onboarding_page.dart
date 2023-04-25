@@ -53,9 +53,8 @@ class OnboardingPage extends HookWidget {
 
     useCubitListener<OnboardingPageCubit, OnboardingPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        subscribed: () {
-          context.resetToSignIn();
-        },
+        signedIn: () => context.resetToMain(),
+        subscribed: () => context.resetToSignIn(),
       );
     });
 
@@ -157,7 +156,6 @@ class OnboardingPage extends HookWidget {
                       if (isLastPage) cubit.setOnboardingCompleted();
                       context.navigateToSignIn();
                     },
-                    withOutline: true,
                   ),
                   const SizedBox(height: AppDimens.ml),
                   Row(
@@ -171,7 +169,7 @@ class OnboardingPage extends HookWidget {
                           SettingsTermsOfServicePageRoute(fromRoute: context.l10n.onboarding),
                         ),
                       ),
-                      const SizedBox(width: AppDimens.m),
+                      const SizedBox(width: AppDimens.l),
                       LinkLabel(
                         label: context.l10n.settings_privacyPolicy,
                         style: AppTypography.sansTextNanoLausanne,

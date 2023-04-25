@@ -128,7 +128,6 @@ class TopicOwnerPage extends HookWidget {
                                   AppVectorGraphics.chevronNext,
                                   fit: BoxFit.scaleDown,
                                 ),
-                                withOutline: true,
                                 onTap: () => context.pushRoute(const HowDoWeCurateContentPageRoute()),
                               ),
                             ),

@@ -1,9 +1,12 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/categories/categories_local_repository.dart';
 import 'package:hive/hive.dart';
+import 'package:injectable/injectable.dart';
 
 const _categoriesBoxName = 'categoriesBox';
 const _addInterestsPageKey = 'addInterestsPageKey';
 
+@LazySingleton(as: CategoriesLocalRepository, env: liveEnvs)
 class CategoriesHiveLocalRepository extends CategoriesLocalRepository {
   @override
   Future<bool> isAddInterestsPageSeen(String userUuid) async {

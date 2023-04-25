@@ -25,6 +25,7 @@ import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/data/category_preference.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_category_preferences_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
@@ -181,7 +182,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     });
 
     final categoryPreferences = await _getCategoryPreferencesUseCase();
-    if (categoryPreferences.isNotEmpty) {
+    if (categoryPreferences.hasAnyPreference) {
       await _setAddInterestsPageSeenUseCase();
       await _requestTrackingPermissionUseCase();
     } else {
@@ -497,4 +498,8 @@ class _ItemVisibilityEvent {
   final BriefEntry entry;
   final bool visible;
   final AnalyticsEvent event;
+}
+
+extension on List<CategoryPreference> {
+  bool get hasAnyPreference => any((preference) => preference.isPreferred);
 }

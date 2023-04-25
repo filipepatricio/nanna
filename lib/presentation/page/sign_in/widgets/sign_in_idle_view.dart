@@ -2,6 +2,7 @@ part of '../sign_in_page.dart';
 
 class _SignInIdleView extends StatelessWidget {
   const _SignInIdleView({
+    required this.isModal,
     required this.isEmailValid,
     required this.keyboardVisible,
     required this.emailController,
@@ -9,6 +10,7 @@ class _SignInIdleView extends StatelessWidget {
   });
 
   final bool isEmailValid;
+  final bool isModal;
   final bool keyboardVisible;
   final TextEditingController emailController;
   final SignInPageCubit cubit;
@@ -19,10 +21,12 @@ class _SignInIdleView extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: FocusScope.of(context).unfocus,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          child: SingleChildScrollView(
+        child: _ConditionalScrollableWrapper(
+          wrap: isModal,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Column(
@@ -33,51 +37,7 @@ class _SignInIdleView extends StatelessWidget {
                       style: AppTypography.sansTitleLargeLausanne,
                     ),
                     const SizedBox(height: AppDimens.m),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            const InformedSvg(
-                              height: AppDimens.m,
-                              AppVectorGraphics.checkmark,
-                            ),
-                            const SizedBox(width: AppDimens.s),
-                            Text(
-                              context.l10n.signIn_description_featureOne,
-                              style: AppTypography.sansTextSmallLausanne.copyWith(height: 1),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppDimens.s),
-                        Row(
-                          children: [
-                            const InformedSvg(
-                              height: AppDimens.m,
-                              AppVectorGraphics.checkmark,
-                            ),
-                            const SizedBox(width: AppDimens.s),
-                            Text(
-                              context.l10n.signIn_description_featureTwo,
-                              style: AppTypography.sansTextSmallLausanne.copyWith(height: 1),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppDimens.s),
-                        Row(
-                          children: [
-                            const InformedSvg(
-                              height: AppDimens.m,
-                              AppVectorGraphics.checkmark,
-                            ),
-                            const SizedBox(width: AppDimens.s),
-                            Text(
-                              context.l10n.signIn_description_featureThree,
-                              style: AppTypography.sansTextSmallLausanne.copyWith(height: 1),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    const SubscriptionBenefits(),
                     if (!keyboardVisible) ...[
                       const SizedBox(height: AppDimens.xl),
                       if (kIsAppleDevice) ...[
@@ -125,18 +85,36 @@ class _SignInIdleView extends StatelessWidget {
                   child: _SignInTermsView(),
                 ),
                 const SizedBox(height: AppDimens.xl),
-                if (!keyboardVisible) ...[
-                  SubscriptionFooterButtons(
-                    onRestorePressed: cubit.restorePurchase,
-                    onRedeemCode: cubit.redeemOfferCode,
-                  ),
-                  const SizedBox(height: AppDimens.l),
-                ],
               ],
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+class _ConditionalScrollableWrapper extends StatelessWidget {
+  const _ConditionalScrollableWrapper({
+    required this.wrap,
+    required this.child,
+  });
+
+  final bool wrap;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return wrap
+        ? SingleChildScrollView(
+            physics: getPlatformScrollPhysics(),
+            child: child,
+          )
+        : Center(
+            child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: child,
+            ),
+          );
   }
 }

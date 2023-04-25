@@ -13,7 +13,13 @@ void main() {
     await tester.startApp(initialRoute: const EmptyPageRoute());
 
     final context = tester.element(find.byType(EmptyPage).first);
-    unawaited(InformedDialog.showAppUpdate(context, onWillPop: () async => true));
+    unawaited(
+      InformedDialog.showAppUpdate(
+        context,
+        availableVersion: '2.0.0',
+        onWillPop: () async => true,
+      ),
+    );
     await tester.pumpAndSettle();
 
     await tester.matchGoldenFile();

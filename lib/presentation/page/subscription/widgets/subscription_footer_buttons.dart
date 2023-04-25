@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionFooterButtons extends StatelessWidget {
@@ -28,7 +30,6 @@ class SubscriptionFooterButtons extends StatelessWidget {
                 child: InformedFilledButton.tertiary(
                   context: context,
                   text: context.l10n.subscription_redeemCode,
-                  withOutline: true,
                   onTap: onRedeemCode,
                 ),
               ),
@@ -38,22 +39,21 @@ class SubscriptionFooterButtons extends StatelessWidget {
               child: InformedFilledButton.tertiary(
                 context: context,
                 text: context.l10n.subscription_restorePurchase,
-                withOutline: true,
                 onTap: onRestorePressed,
               ),
             ),
           ],
         ),
-        const SizedBox(height: AppDimens.s),
+        const SizedBox(height: AppDimens.ml),
         Row(
           children: [
             Expanded(
               child: Align(
                 alignment: Alignment.centerRight,
-                child: InformedFilledButton.tertiary(
-                  context: context,
-                  text: context.l10n.settings_termsOfService,
-                  padding: const EdgeInsets.symmetric(vertical: AppDimens.sl),
+                child: LinkLabel(
+                  label: context.l10n.settings_termsOfService,
+                  style: AppTypography.sansTextNanoLausanne,
+                  decoration: TextDecoration.none,
                   onTap: () => context.pushRoute(
                     SettingsTermsOfServicePageRoute(
                       fromRoute: context.l10n.subscription_button_standard,
@@ -66,10 +66,10 @@ class SubscriptionFooterButtons extends StatelessWidget {
             Expanded(
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: InformedFilledButton.tertiary(
-                  context: context,
-                  text: context.l10n.settings_privacyPolicy,
-                  padding: const EdgeInsets.symmetric(vertical: AppDimens.sl),
+                child: LinkLabel(
+                  label: context.l10n.settings_privacyPolicy,
+                  style: AppTypography.sansTextNanoLausanne,
+                  decoration: TextDecoration.none,
                   onTap: () => context.pushRoute(
                     SettingsPrivacyPolicyPageRoute(
                       fromRoute: context.l10n.subscription_button_standard,

@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
+import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/no_connection_banner/no_connection_banner.dart';
 import 'package:flutter/material.dart';
@@ -141,8 +142,10 @@ class BriefDate extends StatelessWidget {
 
     return Padding(
       padding: shouldUseBottomPadding ? const EdgeInsets.only(bottom: AppDimens.s) : EdgeInsets.zero,
-      child: GestureDetector(
+      child: PaddingTapWidget(
         onTap: onTap,
+        alignment: AlignmentDirectional.centerStart,
+        tapPadding: const EdgeInsets.all(AppDimens.l),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,

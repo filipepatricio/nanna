@@ -45,7 +45,7 @@ class ArticlePaywallView extends HookWidget {
           InformedDialog.removeRestorePurchase(context);
         },
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
-        success: (trialDays, reminderDays) => InformedDialog.removeRestorePurchase(context),
+        success: () => InformedDialog.removeRestorePurchase(context),
         redeemingCode: () => shouldRestorePurchase.value = true,
         generalError: (message) {
           snackbarController.showMessage(

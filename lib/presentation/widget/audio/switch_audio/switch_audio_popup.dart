@@ -57,7 +57,6 @@ class SwitchAudioPopup extends StatelessWidget {
           InformedFilledButton.secondary(
             context: context,
             text: context.l10n.audio_switchAudio_approve,
-            withOutline: true,
             onTap: () => Navigator.pop(context, true),
           ),
           const SizedBox(height: AppDimens.c),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
@@ -14,10 +15,12 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   OnboardingPageCubit(
     this._trackActivityUseCase,
     this._getActiveSubscriptionUseCase,
+    this._isSignedInUseCase,
   ) : super(OnboardingPageState.idle());
 
   final TrackActivityUseCase _trackActivityUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   StreamSubscription? _activeSubscriptionSub;
 
@@ -44,19 +47,18 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   Future<void> _setupSubscriptionListener() async {
     if (_activeSubscriptionSub != null) return;
 
-    _activeSubscriptionSub = _getActiveSubscriptionUseCase.stream.distinct().listen((subscription) {
-      emit(subscription.mapToState());
+    _activeSubscriptionSub = _getActiveSubscriptionUseCase.stream.distinct().listen((subscription) async {
+      final signedIn = await _isSignedInUseCase();
+      emit(subscription.mapToState(signedIn));
     });
   }
 }
 
 extension on ActiveSubscription {
-  OnboardingPageState mapToState() {
-    return map(
+  OnboardingPageState mapToState(bool signedIn) {
+    return maybeMap(
       free: (_) => OnboardingPageState.idle(),
-      trial: (_) => OnboardingPageState.subscribed(),
-      premium: (_) => OnboardingPageState.subscribed(),
-      manualPremium: (_) => OnboardingPageState.subscribed(),
+      orElse: () => signedIn ? OnboardingPageState.signedIn() : OnboardingPageState.subscribed(),
     );
   }
 }

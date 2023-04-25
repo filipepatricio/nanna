@@ -25,11 +25,7 @@ class SubscriptionPageState with _$SubscriptionPageState {
     required ActiveSubscription subscription,
   }) = _SubscriptionPageStateProcessing;
 
-  @Implements<BuildState>()
-  const factory SubscriptionPageState.success({
-    required int trialDays,
-    required int reminderDays,
-  }) = _SubscriptionPageStateSuccess;
+  const factory SubscriptionPageState.success() = _SubscriptionPageStateSuccess;
 
   const factory SubscriptionPageState.redeemingCode() = _SubscriptionPageStateRedeemingCode;
 

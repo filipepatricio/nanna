@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/magic_link_view.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_footer_buttons.dart';
+import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_benefits.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -15,6 +15,7 @@ import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart'
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/modal_bottom_sheet.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_apple_button.dart';
 import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_google_button.dart';
 import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_linkedin_button.dart';
@@ -30,16 +31,13 @@ part 'widgets/sign_in_idle_view.dart';
 part 'widgets/sign_in_terms_view.dart';
 
 final _emailInputKey = GlobalKey();
-const _loadingLogo = Padding(
-  padding: EdgeInsets.only(bottom: kToolbarHeight),
-  child: LoaderLogo(),
-);
 
 class SignInPage extends HookWidget {
   const SignInPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    late bool isModal;
     final cubit = useCubit<SignInPageCubit>();
     final state = useCubitBuilder(cubit);
     final emailController = useTextEditingController();
@@ -83,8 +81,12 @@ class SignInPage extends HookWidget {
       [cubit],
     );
 
+    useEffect(() {
+      isModal = context.isModal;
+    });
+
     return _ConditionalModalWrapper(
-      wrap: context.router.canPop(),
+      wrap: isModal,
       child: Scaffold(
         appBar: context.router.canPop() ? null : AppBar(automaticallyImplyLeading: false),
         body: Container(
@@ -95,11 +97,18 @@ class SignInPage extends HookWidget {
               child: SnackbarParentView(
                 controller: snackbarController,
                 child: state.maybeMap(
-                  processing: (_) => _loadingLogo,
-                  processingLinkedIn: (_) => _loadingLogo,
+                  processing: (_) => const Padding(
+                    padding: EdgeInsets.only(bottom: kToolbarHeight * 2),
+                    child: LoaderLogo(),
+                  ),
+                  processingLinkedIn: (_) => const Padding(
+                    padding: EdgeInsets.only(bottom: kToolbarHeight * 2),
+                    child: LoaderLogo(),
+                  ),
                   magicLink: (state) => MagicLinkContent(email: state.email),
                   idle: (state) => _SignInIdleView(
                     cubit: cubit,
+                    isModal: isModal,
                     isEmailValid: state.emailCorrect,
                     keyboardVisible: visible,
                     emailController: emailController,
@@ -128,4 +137,8 @@ class _ConditionalModalWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return wrap ? ModalBottomSheet(child: child) : child;
   }
+}
+
+extension on BuildContext {
+  bool get isModal => router.topPage?.name == SignInPageModal.name;
 }

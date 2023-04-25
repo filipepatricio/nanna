@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/domain/subscription/subscription_local_re
 import 'package:hive/hive.dart';
 
 const _onboardingBoxName = 'subscriptionBox';
-const _onboardingPaywallKey = 'onboardingPaywall';
 
 const _subscriptionBoxName = 'active_sub';
 const _subscriptionKey = 'active';
@@ -31,23 +30,10 @@ class SubscriptionHiveLocalRepository extends SubscriptionLocalRepository {
   }
 
   @override
-  Future<bool> isOnboardingPaywallSeen(String userUuid) async {
-    final box = await _openOnboardingBox(userUuid);
-    final tutorialStepValue = box.get(_onboardingPaywallKey);
-    return tutorialStepValue ?? false;
-  }
-
-  @override
   Future<void> clear(String userUuid) async {
     final box = await _openOnboardingBox(userUuid);
     await box.clear();
     await _subscriptionBox.clear();
-  }
-
-  @override
-  Future<void> setOnboardingPaywallSeen(String userUuid) async {
-    final box = await _openOnboardingBox(userUuid);
-    await box.put(_onboardingPaywallKey, true);
   }
 
   @override

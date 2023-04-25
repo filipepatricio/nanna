@@ -90,12 +90,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
         _emitIdleState();
         return;
       }
-      emit(
-        SubscriptionPageState.success(
-          trialDays: _selectedPlan.trialDays,
-          reminderDays: _selectedPlan.reminderDays,
-        ),
-      );
+      emit(const SubscriptionPageState.success());
     } catch (e) {
       Fimber.e('Error while trying to purchase package ${_selectedPlan.packageId}', ex: e);
       emit(const SubscriptionPageState.generalError());
@@ -111,12 +106,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
         _emitIdleState();
         return;
       }
-      emit(
-        SubscriptionPageState.success(
-          trialDays: _selectedPlan.trialDays,
-          reminderDays: _selectedPlan.reminderDays,
-        ),
-      );
+      emit(const SubscriptionPageState.success());
     } catch (e) {
       Fimber.e('Error while trying to restore purchase', ex: e);
       emit(const SubscriptionPageState.restoringPurchaseError());

@@ -9,4 +9,6 @@ class OnboardingPageState with _$OnboardingPageState {
   factory OnboardingPageState.skip() = _OnboardingPageStateSkip;
 
   factory OnboardingPageState.subscribed() = _OnboardingPageStateSubscribed;
+
+  factory OnboardingPageState.signedIn() = _OnboardingPageStateSignedIn;
 }
