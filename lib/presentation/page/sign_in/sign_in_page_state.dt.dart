@@ -17,9 +17,9 @@ class SignInPageState with _$SignInPageState {
   @Implements<BuildState>()
   factory SignInPageState.processingLinkedIn() = _SignInPageStateProcessingLinkedIn;
 
-  // const factory SignInPageState.redeemingCode() = _SignInPageStateRedeemingCode;
+  const factory SignInPageState.redeemingCode() = _SignInPageStateRedeemingCode;
 
-  // const factory SignInPageState.restoringPurchase() = _SignInPageStateRestoringPurchase;
+  const factory SignInPageState.restoringPurchase() = _SignInPageStateRestoringPurchase;
 
   factory SignInPageState.success() = _SignInPageStateSuccess;
 

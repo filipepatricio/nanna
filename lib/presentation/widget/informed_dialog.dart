@@ -27,8 +27,6 @@ class InformedDialog extends HookWidget {
   final Widget? action;
   final OnWillPopFunction? onWillPop;
 
-  static String get noConnectionDialogRouteName => 'NoConnectionDialog';
-
   static String get appUpdateDialogRouteName => 'AppUpdateDialog';
 
   static String get deleteAccountDialogRouteName => 'DeleteAccountDialog';

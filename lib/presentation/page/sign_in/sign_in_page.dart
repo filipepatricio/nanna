@@ -4,12 +4,14 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/magic_link_view.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_footer_buttons.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/modal_bottom_sheet.dart';
@@ -42,7 +44,7 @@ class SignInPage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final emailController = useTextEditingController();
     final snackbarController = useMemoized(() => SnackbarController());
-    // final shouldRestorePurchase = useValueNotifier(false);
+    final shouldRestorePurchase = useValueNotifier(false);
 
     void showSnackbar(String message) => snackbarController.showMessage(
           SnackbarMessage.simple(
@@ -55,10 +57,10 @@ class SignInPage extends HookWidget {
       if (current == AppLifecycleState.resumed) {
         if (current != previous) cubit.cancelLinkedInSignIn();
 
-        // if (shouldRestorePurchase.value) {
-        //   cubit.restorePurchase();
-        //   shouldRestorePurchase.value = false;
-        // }
+        if (shouldRestorePurchase.value) {
+          cubit.restorePurchase();
+          shouldRestorePurchase.value = false;
+        }
       }
     });
 
@@ -67,8 +69,8 @@ class SignInPage extends HookWidget {
         success: () => context.router.replaceAll(
           [const MainPageRoute()],
         ),
-        // restoringPurchase: () => InformedDialog.showRestorePurchase(context),
-        // redeemingCode: () => shouldRestorePurchase.value = true,
+        restoringPurchase: () => InformedDialog.showRestorePurchase(context),
+        redeemingCode: () => shouldRestorePurchase.value = true,
         unauthorizedError: () => showSnackbar(context.l10n.signIn_unauthorized),
         generalError: () => showSnackbar(context.l10n.common_generalError),
       );

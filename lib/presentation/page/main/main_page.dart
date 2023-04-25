@@ -80,7 +80,7 @@ class MainPage extends HookWidget {
           }
         },
         showReleaseNote: (state) => ReleaseNotePopup.show(
-          context: context,
+          context,
           releaseNote: state.releaseNote,
         ),
         resetRouteStack: (_) => RestartAppWidget.restartApp(context),

@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/use_case/is_add_interests_page_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/use_case/set_add_interests_page_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dart';
@@ -17,14 +20,12 @@ import 'package:better_informed_mobile/domain/networking/use_case/is_internet_co
 import 'package:better_informed_mobile/domain/push_notification/use_case/background_incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_brief_entries_updated_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
-import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
-import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
-import 'package:better_informed_mobile/domain/subscription/use_case/set_onboarding_paywall_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/get_category_preferences_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -59,15 +60,16 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._incomingPushDataRefreshStreamUseCase,
     this._backgroundIncomingPushDataRefreshStreamUseCase,
     this._getShouldUpdateBriefStreamUseCase,
-    this._isOnboardingPaywallSeenUseCase,
-    this._hasActiveSubscriptionUseCase,
-    this._setOnboardingPaywallSeenUseCase,
     this._markEntryAsSeenUseCase,
     this._shouldRefreshDailyBriefUseCase,
     this._incomingPushBriefEntriesUpdatedStreamUseCase,
     this._isInternetConnectionAvailableUseCase,
     this._shouldUseObservableQueriesUseCase,
     this._setNeedsRefreshDailyBriefUseCase,
+    this._getCategoryPreferencesUseCase,
+    this._isAddInterestsPageSeenUseCase,
+    this._setAddInterestsPageSeenUseCase,
+    this._requestTrackingPermissionUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
@@ -78,15 +80,16 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final IncomingPushDataRefreshStreamUseCase _incomingPushDataRefreshStreamUseCase;
   final BackgroundIncomingPushDataRefreshStreamUseCase _backgroundIncomingPushDataRefreshStreamUseCase;
   final GetShouldUpdateBriefStreamUseCase _getShouldUpdateBriefStreamUseCase;
-  final IsOnboardingPaywallSeenUseCase _isOnboardingPaywallSeenUseCase;
-  final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
-  final SetOnboardingPaywallSeenUseCase _setOnboardingPaywallSeenUseCase;
   final MarkEntryAsSeenUseCase _markEntryAsSeenUseCase;
   final ShouldRefreshDailyBriefUseCase _shouldRefreshDailyBriefUseCase;
   final IncomingPushBriefEntriesUpdatedStreamUseCase _incomingPushBriefEntriesUpdatedStreamUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
   final ShouldUseObservableQueriesUseCase _shouldUseObservableQueriesUseCase;
   final SetNeedsRefreshDailyBriefUseCase _setNeedsRefreshDailyBriefUseCase;
+  final GetCategoryPreferencesUseCase _getCategoryPreferencesUseCase;
+  final IsAddInterestsPageSeenUseCase _isAddInterestsPageSeenUseCase;
+  final SetAddInterestsPageSeenUseCase _setAddInterestsPageSeenUseCase;
+  final RequestTrackingPermissionUseCase _requestTrackingPermissionUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -177,9 +180,15 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
       _trackActivityUseCase.trackEvent(item.event);
     });
 
-    if (!(await _hasActiveSubscriptionUseCase()) && !(await _isOnboardingPaywallSeenUseCase())) {
-      await _setOnboardingPaywallSeenUseCase();
-      _emitEvent(DailyBriefPageState.showPaywall());
+    final categoryPreferences = await _getCategoryPreferencesUseCase();
+    if (categoryPreferences.isNotEmpty) {
+      await _setAddInterestsPageSeenUseCase();
+      await _requestTrackingPermissionUseCase();
+    } else {
+      if (!(await _isAddInterestsPageSeenUseCase())) {
+        await _setAddInterestsPageSeenUseCase();
+        _emitEvent(DailyBriefPageState.showInterests());
+      }
     }
   }
 

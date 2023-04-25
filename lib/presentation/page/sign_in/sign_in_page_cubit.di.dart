@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/core/util/app_link.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_exception.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
@@ -9,10 +10,9 @@ import 'package:better_informed_mobile/domain/auth/use_case/subscribe_for_magic_
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
-// import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/run_initial_bookmark_sync_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dt.dart';
-// import 'package:better_informed_mobile/presentation/util/purchases_util.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -29,7 +29,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._initializeFeatureFlagsUseCase,
     this._initializeAttributionUseCase,
     this._initializePurchasesUseCase,
-    // this._restorePurchaseUseCase,
+    this._restorePurchaseUseCase,
     this._signInUseCase,
     this._runIntitialBookmarkSyncUseCase,
   ) : super(SignInPageState.idle(false));
@@ -40,7 +40,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   final InitializeFeatureFlagsUseCase _initializeFeatureFlagsUseCase;
   final InitializeAttributionUseCase _initializeAttributionUseCase;
   final InitializePurchasesUseCase _initializePurchasesUseCase;
-  // final RestorePurchaseUseCase _restorePurchaseUseCase;
+  final RestorePurchaseUseCase _restorePurchaseUseCase;
   final SignInUseCase _signInUseCase;
   final RunIntitialBookmarkSyncUseCase _runIntitialBookmarkSyncUseCase;
 
@@ -110,15 +110,18 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     );
   }
 
-  // Future<void> restorePurchase() async {
-  //   await _initializePurchasesUseCase();
-  //   await _restorePurchaseUseCase();
-  // }
+  Future<void> restorePurchase() async {
+    emit(const SignInPageState.restoringPurchase());
+    await _restorePurchaseUseCase();
+  }
 
-  // Future<void> redeemOfferCode() async {
-  //   await _initializePurchasesUseCase();
-  //   await redeemOfferCodeViaUrl();
-  // }
+  Future<void> redeemOfferCode() async {
+    emit(const SignInPageState.redeemingCode());
+    await openUrlWithAnyApp(
+      appleCodeRedemptionLink,
+      (error, stackTrace) => Fimber.e('Error launching code redemption sheet', ex: error, stacktrace: stackTrace),
+    );
+  }
 
   Future<void> _signInWithOAuthProvider(_SignInFunction signIn) async {
     try {

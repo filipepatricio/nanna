@@ -7,7 +7,11 @@ import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionBenefits extends StatelessWidget {
-  const SubscriptionBenefits({Key? key}) : super(key: key);
+  const SubscriptionBenefits({
+    this.dividerHeight = AppDimens.xs,
+  });
+
+  final double dividerHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class SubscriptionBenefits extends StatelessWidget {
           _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_two),
           _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_three),
         ].withDividers(
-          divider: const SizedBox(height: AppDimens.xs),
+          divider: SizedBox(height: dividerHeight),
         )
       ],
     );

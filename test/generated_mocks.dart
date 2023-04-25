@@ -35,6 +35,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/identify_analytics_user_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/appearance/use_case/get_preferred_text_scale_factor_use_case.di.dart';
@@ -68,6 +69,8 @@ import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_sta
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_paginated_bookmarks_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/save_bookmarked_media_item_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/use_case/is_add_interests_page_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/use_case/set_add_interests_page_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/brief_entry_new_state_notifier.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/decrease_brief_unseen_count_state_notifier_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
@@ -90,6 +93,7 @@ import 'package:better_informed_mobile/domain/push_notification/push_notificatio
 import 'package:better_informed_mobile/domain/push_notification/use_case/background_incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_brief_entries_updated_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/request_notification_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_local_repository.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_remote_repository.dart';
 import 'package:better_informed_mobile/domain/release_notes/use_case/save_release_note_if_first_run_use_case.di.dart';
@@ -102,6 +106,7 @@ import 'package:better_informed_mobile/domain/subscription/use_case/has_active_s
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/set_onboarding_paywall_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/synchronizable_repository.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/run_initial_bookmark_sync_use_case.di.dart';
@@ -111,6 +116,7 @@ import 'package:better_informed_mobile/domain/topic/topics_repository.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/save_topic_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/get_category_preferences_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
@@ -118,6 +124,7 @@ import 'package:better_informed_mobile/domain/util/network_cache_manager.dart';
 import 'package:better_informed_mobile/domain/util/use_case/open_subscription_management_screen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/should_update_app_use_case.di.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -252,7 +259,14 @@ const _classes = [
   RunIntitialBookmarkSyncUseCase,
   SubscribeForMagicLinkTokenUseCase,
   SendMagicLinkUseCase,
-  IsEmailValidUseCase
+  IsEmailValidUseCase,
+  ShouldUpdateAppUseCase,
+  RestorePurchaseUseCase,
+  IsAddInterestsPageSeenUseCase,
+  SetAddInterestsPageSeenUseCase,
+  GetCategoryPreferencesUseCase,
+  RequestTrackingPermissionUseCase,
+  RequestNotificationPermissionUseCase,
 ];
 
 @GenerateMocks(_classes)

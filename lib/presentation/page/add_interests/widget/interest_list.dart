@@ -19,7 +19,7 @@ class _InterestList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         for (final category in categories) ...[
-          _InterestListItem(
+          InterestListItem(
             category: category,
             isSelected: selectedCategories.contains(category),
             onTap: () {

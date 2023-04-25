@@ -125,30 +125,13 @@ class _SignInIdleView extends StatelessWidget {
                   child: _SignInTermsView(),
                 ),
                 const SizedBox(height: AppDimens.xl),
-                // if (!keyboardVisible) ...[
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: InformedFilledButton.tertiary(
-                //         context: context,
-                //         text: context.l10n.subscription_redeemCode,
-                //         withOutline: true,
-                //         onTap: cubit.redeemOfferCode,
-                //       ),
-                //     ),
-                //     const SizedBox(width: AppDimens.s),
-                //     Expanded(
-                //       child: InformedFilledButton.tertiary(
-                //         context: context,
-                //         text: context.l10n.subscription_restorePurchase,
-                //         withOutline: true,
-                //         onTap: cubit.restorePurchase,
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // const SizedBox(height: AppDimens.l),
-                // ],
+                if (!keyboardVisible) ...[
+                  SubscriptionFooterButtons(
+                    onRestorePressed: cubit.restorePurchase,
+                    onRedeemCode: cubit.redeemOfferCode,
+                  ),
+                  const SizedBox(height: AppDimens.l),
+                ],
               ],
             ),
           ),

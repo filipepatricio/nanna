@@ -32,8 +32,11 @@ class AddInterestsPage extends HookWidget {
 
     useCubitListener<AddInterestsPageCubit, AddInterestsPageState>(cubit, (cubit, event, context) {
       event.mapOrNull(
-        success: (_) {
-          AutoRouter.of(context).pop();
+        success: (_) => context.popRoute(),
+        successTrial: (data) {
+          context.router.replace(
+            SubscriptionSuccessPageRoute(trialDays: data.trialDays, reminderDays: data.reminderDays),
+          );
         },
         failure: (_) {
           snackbarController.showMessage(
@@ -69,9 +72,7 @@ class AddInterestsPage extends HookWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {
-                        AutoRouter.of(context).pop();
-                      },
+                      onPressed: () => context.popRoute(),
                       child: Text(
                         context.l10n.common_skip,
                         style: AppTypography.sansTextSmallLausanne.copyWith(

@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/data/article/api/mapper/audio_file_dto_ma
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_item_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/categories/mapper/category_preference_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_with_items_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/common/mapper/curation_info_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/common/mapper/curator_dto_mapper.di.dart';
@@ -38,6 +39,8 @@ import 'package:better_informed_mobile/data/push_notification/api/mapper/notific
 import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_action_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/push_notification_message_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/release_notes/mapper/release_note_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/release_notes/mapper/release_note_media_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/api/mapper/active_subscription_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_origin_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_plan_mapper.di.dart';
@@ -63,9 +66,11 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences.dart';
 import 'package:better_informed_mobile/domain/push_notification/incoming_push/data/incoming_push.dart';
+import 'package:better_informed_mobile/domain/release_notes/data/release_note.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/user/data/category_preference.dart';
 import 'package:better_informed_mobile/domain/user/data/user.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -234,6 +239,14 @@ class TestData {
     IncomingPushActionDTOMapper(),
   );
 
+  static final _releaseNoteDTOMapper = ReleaseNoteDTOMapper(
+    ReleaseNoteMediaDTOMapper(),
+  );
+
+  static final _categoryPreferenceDTOMapper = CategoryPreferenceDTOMapper(
+    CategoryDTOMapper(),
+  );
+
   static AudioItem get audioItem => AudioItem(
         id: TestData.premiumArticleWithAudio.id,
         slug: TestData.premiumArticleWithAudio.slug,
@@ -391,4 +404,13 @@ class TestData {
       );
 
   static User get user => UserDTOMapper().to(MockDTO.user);
+
+  static ReleaseNote get noMediaReleaseNote => _releaseNoteDTOMapper(MockDTO.noMediaReleaseNote);
+
+  static ReleaseNote get singleMediaReleaseNote => _releaseNoteDTOMapper(MockDTO.singleMediaReleaseNote);
+
+  static ReleaseNote get multipleMediaReleaseNote => _releaseNoteDTOMapper(MockDTO.multipleMediaReleaseNote);
+
+  static List<CategoryPreference> get categoryPreferences =>
+      MockDTO.categoryPreferences.map((preference) => _categoryPreferenceDTOMapper(preference)).toList();
 }

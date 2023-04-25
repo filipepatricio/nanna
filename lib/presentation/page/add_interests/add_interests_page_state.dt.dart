@@ -25,6 +25,8 @@ class AddInterestsPageState with _$AddInterestsPageState {
 
   factory AddInterestsPageState.success() = _Success;
 
+  factory AddInterestsPageState.successTrial({required int trialDays, required int reminderDays}) = _SuccessTrial;
+
   factory AddInterestsPageState.failure() = _Failure;
 }
 

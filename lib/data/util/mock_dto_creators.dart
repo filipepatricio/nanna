@@ -643,7 +643,7 @@ class MockDTO {
   // CategoryDTO
   static const category = CategoryDTO(
     name: 'Politics',
-    id: 'id',
+    id: 'id-politics',
     slug: 'politics',
     icon: _mockedPillIcon,
     color: '#E3BEE9',
@@ -653,6 +653,22 @@ class MockDTO {
     name: 'Tech',
     id: 'id-tech',
     slug: 'tech',
+    icon: _mockedPillIcon,
+    color: '#F2E8E7',
+  );
+
+  static const category3 = CategoryDTO(
+    name: 'Politics 2',
+    id: 'id-politics-2',
+    slug: 'politics-2',
+    icon: _mockedPillIcon,
+    color: '#E3BEE9',
+  );
+
+  static const category4 = CategoryDTO(
+    name: 'Tech 2',
+    id: 'id-tech-2',
+    slug: 'tech-2',
     icon: _mockedPillIcon,
     color: '#F2E8E7',
   );
@@ -698,13 +714,13 @@ class MockDTO {
   static const categories = CategoriesDTO(
     [
       MockDTO.category,
+      MockDTO.category2,
+      MockDTO.category3,
+      MockDTO.category4,
       MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
+      MockDTO.category2,
+      MockDTO.category3,
+      MockDTO.category4,
     ],
   );
 

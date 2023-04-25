@@ -98,7 +98,7 @@ class _DailyBriefPage extends HookWidget {
 
     useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, _) {
       state.whenOrNull(
-        showPaywall: () => context.pushRoute(const SubscriptionPageRoute()),
+        showInterests: () => context.pushRoute(const AddInterestsPageRoute()),
         preCacheImages: (briefEntryList) {
           final mediaQuery = MediaQuery.maybeOf(context);
           if (mediaQuery != null) {

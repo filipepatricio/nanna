@@ -1,17 +1,16 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_benefits.dart';
+import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_footer_buttons.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_list_fade_view.dart';
-import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscribe_button.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_cell.dart';
@@ -21,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'subscription_cancel_info_card.dart';
-part 'subscription_footer_buttons.dart';
 
 class SubscriptionPlansView extends HookWidget {
   const SubscriptionPlansView({
@@ -167,8 +165,7 @@ class SubscriptionPlansView extends HookWidget {
                 ),
                 const SizedBox(height: AppDimens.l),
               ],
-              _SubscriptionFooterButtons(
-                subscriptionPlan: selectedPlan,
+              SubscriptionFooterButtons(
                 onRestorePressed: cubit.restorePurchase,
                 onRedeemCode: cubit.redeemOfferCode,
               ),

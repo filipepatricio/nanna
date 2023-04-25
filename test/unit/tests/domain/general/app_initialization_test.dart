@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/analytics/use_case/identify_analytics_user_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_repository.dart';
 import 'package:better_informed_mobile/domain/auth/data/auth_result.dart';
 import 'package:better_informed_mobile/domain/auth/data/auth_token.dart';
@@ -29,6 +30,7 @@ void main() {
   late MockAuthRepository authRepository;
   late MockGetUserUseCase getUserUseCase;
   late SignInPageCubit signInPageCubit;
+  late RequestTrackingPermissionUseCase requestTrackingPermissionUseCase;
 
   setUp(() {
     isSignedInUseCase = MockIsSignedInUseCase();
@@ -40,6 +42,7 @@ void main() {
     getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
     authRepository = MockAuthRepository();
     getUserUseCase = MockGetUserUseCase();
+    requestTrackingPermissionUseCase = MockRequestTrackingPermissionUseCase();
 
     final signInUseCase = SignInUseCase(
       authRepository,
@@ -57,6 +60,7 @@ void main() {
       initializeFeatureFlagsUseCase,
       initializeAttributionUseCase,
       initializePurchasesUseCase,
+      MockRestorePurchaseUseCase(),
       signInUseCase,
       MockRunIntitialBookmarkSyncUseCase(),
     );
@@ -79,6 +83,7 @@ void main() {
             getIt.registerFactory<IdentifyAnalyticsUserUseCase>(() => identifyAnalyticsUserUseCase);
             getIt.registerFactory<InitializePurchasesUseCase>(() => initializePurchasesUseCase);
             getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+            getIt.registerFactory<RequestTrackingPermissionUseCase>(() => requestTrackingPermissionUseCase);
           },
         );
 
@@ -87,6 +92,7 @@ void main() {
         verify(initializeFeatureFlagsUseCase()).called(1);
         verify(identifyAnalyticsUserUseCase()).called(1);
         verify(initializeAttributionUseCase()).called(1);
+        verify(requestTrackingPermissionUseCase()).called(1);
       },
     );
     testWidgets(
@@ -105,6 +111,7 @@ void main() {
             getIt.registerFactory<IdentifyAnalyticsUserUseCase>(() => identifyAnalyticsUserUseCase);
             getIt.registerFactory<InitializePurchasesUseCase>(() => initializePurchasesUseCase);
             getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+            getIt.registerFactory<RequestTrackingPermissionUseCase>(() => requestTrackingPermissionUseCase);
           },
         );
 
@@ -113,44 +120,16 @@ void main() {
         verify(initializeFeatureFlagsUseCase()).called(1);
         verify(identifyAnalyticsUserUseCase()).called(1);
         verify(initializeAttributionUseCase()).called(1);
+        verify(requestTrackingPermissionUseCase()).called(1);
       },
     );
 
     testWidgets(
-      'user is not signed in, subcribed. signs in',
+      'user subcribed but not signed in. signs in',
       (tester) async {
         when(isSignedInUseCase()).thenAnswer((_) async => false);
         when(getActiveSubscriptionUseCase()).thenAnswer((_) async => TestData.activeSubscriptionTrial);
         when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(TestData.activeSubscriptionTrial));
-
-        await tester.startApp(
-          dependencyOverride: (getIt) async {
-            getIt.registerFactory<IsSignedInUseCase>(() => isSignedInUseCase);
-            getIt.registerFactory<InitializeFeatureFlagsUseCase>(() => initializeFeatureFlagsUseCase);
-            getIt.registerFactory<InitializeAttributionUseCase>(() => initializeAttributionUseCase);
-            getIt.registerFactory<SaveReleaseNoteIfFirstRunUseCase>(() => saveReleaseNoteIfFirstRunUseCase);
-            getIt.registerFactory<IdentifyAnalyticsUserUseCase>(() => identifyAnalyticsUserUseCase);
-            getIt.registerFactory<InitializePurchasesUseCase>(() => initializePurchasesUseCase);
-            getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
-            getIt.registerFactory<AuthRepository>(() => authRepository);
-          },
-        );
-
-        verify(saveReleaseNoteIfFirstRunUseCase()).called(1);
-        verify(initializePurchasesUseCase()).called(1);
-
-        verifyNever(initializeFeatureFlagsUseCase());
-        verifyNever(identifyAnalyticsUserUseCase());
-        verifyNever(initializeAttributionUseCase());
-      },
-    );
-
-    testWidgets(
-      'user is not signed in, not subscribed. signs in',
-      (tester) async {
-        when(isSignedInUseCase()).thenAnswer((_) async => false);
-        when(getActiveSubscriptionUseCase()).thenAnswer((_) async => ActiveSubscription.free());
-        when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(ActiveSubscription.free()));
         when(getUserUseCase()).thenAnswer((_) async => TestData.user);
 
         await tester.startApp(
@@ -162,7 +141,8 @@ void main() {
             getIt.registerFactory<IdentifyAnalyticsUserUseCase>(() => identifyAnalyticsUserUseCase);
             getIt.registerFactory<InitializePurchasesUseCase>(() => initializePurchasesUseCase);
             getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
-            getIt.registerFactory<SignInPageCubit>(() => signInPageCubit);
+            getIt.registerFactory<AuthRepository>(() => authRepository);
+            getIt.registerFactory<RequestTrackingPermissionUseCase>(() => requestTrackingPermissionUseCase);
           },
         );
 
@@ -187,6 +167,56 @@ void main() {
         verify(initializeAttributionUseCase()).called(1);
         verify(identifyAnalyticsUserUseCase(any)).called(1);
         verify(getUserUseCase()).called(1);
+
+        verifyNever(requestTrackingPermissionUseCase());
+      },
+    );
+
+    testWidgets(
+      'user is not signed in and not subscribed. signs in',
+      (tester) async {
+        when(isSignedInUseCase()).thenAnswer((_) async => false);
+        when(getActiveSubscriptionUseCase()).thenAnswer((_) async => ActiveSubscription.free());
+        when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(ActiveSubscription.free()));
+        when(getUserUseCase()).thenAnswer((_) async => TestData.user);
+
+        await tester.startApp(
+          dependencyOverride: (getIt) async {
+            getIt.registerFactory<IsSignedInUseCase>(() => isSignedInUseCase);
+            getIt.registerFactory<InitializeFeatureFlagsUseCase>(() => initializeFeatureFlagsUseCase);
+            getIt.registerFactory<InitializeAttributionUseCase>(() => initializeAttributionUseCase);
+            getIt.registerFactory<SaveReleaseNoteIfFirstRunUseCase>(() => saveReleaseNoteIfFirstRunUseCase);
+            getIt.registerFactory<IdentifyAnalyticsUserUseCase>(() => identifyAnalyticsUserUseCase);
+            getIt.registerFactory<InitializePurchasesUseCase>(() => initializePurchasesUseCase);
+            getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+            getIt.registerFactory<SignInPageCubit>(() => signInPageCubit);
+            getIt.registerFactory<RequestTrackingPermissionUseCase>(() => requestTrackingPermissionUseCase);
+          },
+        );
+
+        verify(saveReleaseNoteIfFirstRunUseCase()).called(1);
+        verify(initializePurchasesUseCase()).called(1);
+
+        verifyNever(initializeFeatureFlagsUseCase());
+        verifyNever(identifyAnalyticsUserUseCase());
+        verifyNever(initializeAttributionUseCase());
+
+        when(authRepository.signInWithMagicLinkToken(any)).thenAnswer(
+          (realInvocation) async => AuthResult(
+            AuthToken(accessToken: 'accessToken', refreshToken: 'refreshToken'),
+            'method',
+            'userUuid',
+          ),
+        );
+
+        await signInPageCubit.signInWithMagicLink('token');
+
+        verify(initializeFeatureFlagsUseCase()).called(1);
+        verify(initializeAttributionUseCase()).called(1);
+        verify(identifyAnalyticsUserUseCase(any)).called(1);
+        verify(getUserUseCase()).called(1);
+
+        verifyNever(requestTrackingPermissionUseCase());
       },
     );
   });

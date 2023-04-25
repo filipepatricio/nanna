@@ -48,9 +48,7 @@ class SubscriptionPage extends HookWidget {
         success: (trialDays, reminderDays) {
           InformedDialog.removeRestorePurchase(context);
           if (context.topRoute is MainPageRoute) {
-            context.router.replace(
-              SubscriptionSuccessPageRoute(trialDays: trialDays, reminderDays: reminderDays),
-            );
+            context.popRoute();
           }
         },
         generalError: (message) {

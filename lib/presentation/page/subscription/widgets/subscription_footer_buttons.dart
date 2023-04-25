@@ -1,14 +1,15 @@
-part of 'subscription_plans_view.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:flutter/material.dart';
 
-class _SubscriptionFooterButtons extends StatelessWidget {
-  const _SubscriptionFooterButtons({
-    required this.subscriptionPlan,
+class SubscriptionFooterButtons extends StatelessWidget {
+  const SubscriptionFooterButtons({
     required this.onRestorePressed,
     required this.onRedeemCode,
-    Key? key,
-  }) : super(key: key);
+  });
 
-  final SubscriptionPlan subscriptionPlan;
   final VoidCallback onRestorePressed;
   final VoidCallback onRedeemCode;
 

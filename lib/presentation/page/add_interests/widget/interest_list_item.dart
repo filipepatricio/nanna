@@ -1,7 +1,8 @@
 part of '../add_interests_page.dart';
 
-class _InterestListItem extends StatelessWidget {
-  const _InterestListItem({
+@visibleForTesting
+class InterestListItem extends StatelessWidget {
+  const InterestListItem({
     required this.category,
     required this.isSelected,
     required this.onTap,
