@@ -766,18 +766,6 @@
       }
     }
   },
-  "signIn_description_featureOne": "Curated articles from premium publishers",
-  "@signIn_description_featureOne": {
-    "type": "text"
-  },
-  "signIn_description_featureTwo": "Concise Daily Briefs with editorial commentary",
-  "@signIn_description_featureTwo": {
-    "type": "text"
-  },
-  "signIn_description_featureThree": "Read, listen, save for later, or enjoy offline",
-  "@signIn_description_featureThree": {
-    "type": "text"
-  },
   "signIn_orContinue": "Or continue with",
   "@signIn_orContinue": {
     "type": "text"
@@ -798,16 +786,20 @@
   "@signIn_withEmailButton": {
     "type": "text"
   },
-  "signIn_receiveNews": "I’d like to receive news and updates from informed",
-  "@signIn_receiveNews": {
-    "type": "text"
-  },
   "signIn_unauthorized": "This link has expired. Please type in your email again to get a new one",
   "@signIn_unauthorized": {
     "type": "text"
   },
   "signIn_welcome": "Sign in to informed",
   "@signIn_welcome": {
+    "type": "text"
+  },
+  "signIn_welcome_subscribed": "Subscription successful",
+  "@signIn_welcome_subscribed": {
+    "type": "text"
+  },
+  "signIn_subscribed_body": "Sign in so we can link your saved articles and preferences to your subscription",
+  "@signIn_subscribed_body": {
     "type": "text"
   },
   "social_facebook": "Facebook",

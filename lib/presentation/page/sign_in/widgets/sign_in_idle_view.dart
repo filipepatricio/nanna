@@ -17,6 +17,8 @@ class _SignInIdleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return SafeArea(
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -33,11 +35,19 @@ class _SignInIdleView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      context.l10n.signIn_welcome,
+                      isModal ? l10n.signIn_welcome : l10n.signIn_welcome_subscribed,
                       style: AppTypography.sansTitleLargeLausanne,
                     ),
                     const SizedBox(height: AppDimens.m),
-                    const SubscriptionBenefits(),
+                    if (isModal)
+                      const SubscriptionBenefits()
+                    else
+                      Text(
+                        l10n.signIn_subscribed_body,
+                        style: AppTypography.sansTextSmallLausanne.copyWith(
+                          leadingDistribution: TextLeadingDistribution.even,
+                        ),
+                      ),
                     if (!keyboardVisible) ...[
                       const SizedBox(height: AppDimens.xl),
                       if (kIsAppleDevice) ...[
@@ -53,7 +63,7 @@ class _SignInIdleView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            context.l10n.signIn_orContinue,
+                            l10n.signIn_orContinue,
                             style: AppTypography.b3Medium.copyWith(
                               color: AppColors.of(context).textTertiary,
                               height: 1,
@@ -75,7 +85,7 @@ class _SignInIdleView extends StatelessWidget {
                   InformedFilledButton.primary(
                     context: context,
                     isEnabled: isEmailValid,
-                    text: context.l10n.signIn_withEmailButton,
+                    text: l10n.signIn_withEmailButton,
                     onTap: cubit.sendMagicLink,
                   ),
                   const SizedBox(height: AppDimens.m),
@@ -106,9 +116,11 @@ class _ConditionalScrollableWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return wrap
-        ? SingleChildScrollView(
-            physics: getPlatformScrollPhysics(),
-            child: child,
+        ? Center(
+            child: SingleChildScrollView(
+              physics: getPlatformScrollPhysics(),
+              child: child,
+            ),
           )
         : Center(
             child: SingleChildScrollView(

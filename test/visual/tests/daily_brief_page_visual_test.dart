@@ -47,7 +47,6 @@ void main() {
     testConfig: TestConfig.withDevices([ultraHighDevice]),
   );
 
-  //TODO: Create separate visual test for tab bar with and without audio banner
   visualTest('${DailyBriefPage}_(audio_banner)', (tester) async {
     await tester.startApp(
       dependencyOverride: (getIt) async {
