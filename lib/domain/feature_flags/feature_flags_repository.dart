@@ -15,4 +15,6 @@ abstract class FeaturesFlagsRepository {
   Future<String> defaultPaywall();
 
   Future<bool> useObservableQueries();
+
+  Future<bool> useTextSizeSelector();
 }

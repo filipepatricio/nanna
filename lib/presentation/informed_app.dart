@@ -1,7 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/restart_app_widget.dart';
 import 'package:better_informed_mobile/presentation/routing/observers/main_navigation_observer.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/informed_theme.dart';
@@ -9,6 +8,7 @@ import 'package:better_informed_mobile/presentation/util/device_type.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker.dart';
 import 'package:better_informed_mobile/presentation/widget/image_precaching_view/image_precaching_view.dart';
+import 'package:better_informed_mobile/presentation/widget/restart_app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
@@ -32,8 +32,8 @@ class InformedApp extends HookWidget {
         child!,
         mediaQueryData: mediaQuery.copyWith(
           textScaleFactor: mediaQuery.textScaleFactor.clamp(
-            DeviceType.small.scaleFactor,
-            DeviceType.tablet.scaleFactor,
+            AppDimens.minScaleFactor,
+            AppDimens.maxScaleFactor,
           ),
         ),
         maxWidth: AppDimens.maxWidth,

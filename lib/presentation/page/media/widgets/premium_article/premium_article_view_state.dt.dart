@@ -19,7 +19,8 @@ class PremiumArticleViewState with _$PremiumArticleViewState {
     required List<MediaItem> otherTopicItems,
     required List<Category> featuredCategories,
     required List<CategoryItem> relatedContentItems,
-    required bool enablePageSwipe,
+    required double preferredArticleTextScaleFactor,
+    required bool showTextScaleFactorSelector,
   }) = _PremiumArticleViewStateIdle;
 
   const factory PremiumArticleViewState.freeArticlesWarning({

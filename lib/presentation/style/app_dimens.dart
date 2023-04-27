@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:better_informed_mobile/presentation/util/device_type.dart';
 import 'package:flutter/material.dart';
 
 class AppDimens {
@@ -253,4 +254,10 @@ class AppDimens {
 
   /// 96px
   static const backButtonWidth = AppDimens.xxxl * 2;
+
+  /// 0.8
+  static final minScaleFactor = DeviceType.small.scaleFactor;
+
+  /// 1.5
+  static const maxScaleFactor = 2.0;
 }

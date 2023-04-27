@@ -116,6 +116,10 @@
   "@audio_switchAudio_message": {
     "type": "text"
   },
+  "article_textSize": "Text size",
+  "@article_textSize": {
+    "type": "text"
+  },
   "bookmark_addArticle": "Article added to your Profile",
   "@bookmark_addArticle": {
     "type": "text"

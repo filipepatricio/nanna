@@ -1,12 +1,15 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+@Freezed(toJson: false)
 class SnackbarMessage {
   SnackbarMessage._({
-    required this.message,
     required this.type,
+    this.message,
     this.subMessage,
     this.action,
+    this.child,
   });
 
   factory SnackbarMessage.simple({
@@ -33,7 +36,16 @@ class SnackbarMessage {
         action: action,
       );
 
-  final String message;
+  factory SnackbarMessage.custom({
+    required Widget child,
+  }) =>
+      SnackbarMessage._(
+        type: SnackbarMessageType.info,
+        child: child,
+      );
+
+  final String? message;
+  final Widget? child;
   final SnackbarMessageType type;
   final String? subMessage;
   final SnackbarAction? action;

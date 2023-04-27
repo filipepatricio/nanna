@@ -22,12 +22,13 @@ class ArticleContentView extends HookWidget {
     required this.article,
     required this.articleContentKey,
     required this.articleHeaderKey,
-    Key? key,
-  }) : super(key: key);
+    required this.articleTextScaleFactor,
+  });
 
   final Article article;
   final Key articleHeaderKey;
   final Key articleContentKey;
+  final ValueNotifier<double> articleTextScaleFactor;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +54,7 @@ class ArticleContentView extends HookWidget {
               child: ArticleContentMarkdown(
                 markdown: article.content.content,
                 categoryColor: article.metadata.category.color ?? AppColors.brandAccent,
+                articleTextScaleFactor: articleTextScaleFactor,
                 shareTextCallback: (quote) {
                   showQuoteEditor(
                     context,

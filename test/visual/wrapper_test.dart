@@ -6,6 +6,8 @@ import 'tests/app_connectivity_dialog_visual_test.dart' as app_connectivity_dial
 import 'tests/app_update_dialog_visual_test.dart' as app_update_dialog_visual_test;
 import 'tests/article_cover_visual_test.dart' as article_cover_visual_test;
 import 'tests/article_paywall_view_visual_test.dart' as article_paywall_view_visual_test;
+import 'tests/article_text_scale_factor_selector_page_visual_test.dart'
+    as article_text_scale_factor_selector_page_visual_test;
 import 'tests/articles_see_all_page_visual_test.dart' as articles_see_all_page_visual_test;
 import 'tests/audio_page_visual_test.dart' as audio_page_visual_test;
 import 'tests/category_page_visual_test.dart' as category_page_visual_test;
@@ -48,6 +50,10 @@ void main() {
   });
   group('switch_audio_popup_visual_test', switch_audio_popup_visual_test.main);
   group('article_cover_visual_test', article_cover_visual_test.main);
+  group(
+    'article_text_scale_factor_selector_page_visual_test',
+    article_text_scale_factor_selector_page_visual_test.main,
+  );
   group('article_paywall_view_visual_test', article_paywall_view_visual_test.main);
   group('app_update_dialog_visual_test', app_update_dialog_visual_test.main);
   group('app_connectivity_dialog_visual_test', app_connectivity_dialog_visual_test.main);
