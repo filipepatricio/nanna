@@ -149,6 +149,16 @@ class BookmarkButton extends HookWidget {
                     SnackbarMessage.offline(context),
                   ),
                 ),
+                notSignedIn: (state) => _IdleButton(
+                  cubit: cubit,
+                  state: BookmarkState.notBookmarked(),
+                  color: iconColor,
+                  animationController: animationController,
+                  //TODO: Set up right action for this
+                  onTap: () => snackbarController.showMessage(
+                    SnackbarMessage.offline(context),
+                  ),
+                ),
                 switching: (state) => _Loader(color: iconColor),
                 orElse: () => const SizedBox.shrink(),
               ),

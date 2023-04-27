@@ -40,6 +40,8 @@ class CategoryPreferenceFollowButtonCubit extends Cubit<CategoryPreferenceFollow
   }
 
   Future<void> initialize({Category? category, CategoryPreference? categoryPreference}) async {
+    //TODO: Consider not signed in case here
+
     _shouldNotifyBriefUpdateSubscription = _updateBriefStreamController.stream
         .debounceTime(_briefNotifierDebounceDuration)
         .listen((_) => _updateBriefNotifierUseCase());

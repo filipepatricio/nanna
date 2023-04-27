@@ -32,6 +32,9 @@ class AudioControlButtonState with _$AudioControlButtonState {
   @Implements<BuildState>()
   factory AudioControlButtonState.offline() = _AudioControlButtonStateOffline;
 
+  @Implements<BuildState>()
+  factory AudioControlButtonState.notSignedIn() = _AudioControlButtonStateNotSignedIn;
+
   factory AudioControlButtonState.showSwitchAudioPopup() = _$AudioControlButtonStateShowSwitchAudioPopup;
 
   factory AudioControlButtonState.needsSubscription() = _$AudioControlButtonStateNeedsSubscription;

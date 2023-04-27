@@ -46,6 +46,8 @@ void main() {
   late MockGetCategoryPreferencesUseCase getCategoryPreferencesUseCase;
   late MockGetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
   late MockRequestPermissionsUseCase requestPermissionsUseCase;
+  late MockIsSignedInUseCase isSignedInUseCase;
+  late MockGetCurrentBriefUnauthorizedUseCase getCurrentBriefUnauthorizedUseCase;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(
@@ -56,6 +58,7 @@ void main() {
   );
 
   setUp(() {
+    isSignedInUseCase = MockIsSignedInUseCase();
     trackActivityUseCase = MockTrackActivityUseCase();
     getCurrentBriefUseCase = MockGetCurrentBriefUseCase();
     getPastBriefUseCase = MockGetPastBriefUseCase();
@@ -75,8 +78,10 @@ void main() {
     getCategoryPreferencesUseCase = MockGetCategoryPreferencesUseCase();
     getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
     requestPermissionsUseCase = MockRequestPermissionsUseCase();
+    getCurrentBriefUnauthorizedUseCase = MockGetCurrentBriefUnauthorizedUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
+      isSignedInUseCase,
       getCurrentBriefUseCase,
       getPastBriefUseCase,
       isTutorialStepSeenUseCase,
@@ -95,6 +100,7 @@ void main() {
       isAddInterestsPageSeenUseCase,
       setAddInterestsPageSeenUseCase,
       requestPermissionsUseCase,
+      getCurrentBriefUnauthorizedUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});

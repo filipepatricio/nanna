@@ -167,7 +167,7 @@ class FakeDailyBriefPageCubit extends Fake implements DailyBriefPageCubit {
 class FakeDailyBriefPageCubitVisited extends Fake implements DailyBriefPageCubit {
   final _state = DailyBriefPageState.idle(
     selectedBrief: TestData.currentBriefVisited,
-    pastDays: BriefPastDays([]),
+    pastDays: BriefPastDays.empty(),
     showCalendar: false,
     showAppBarTitle: false,
   );

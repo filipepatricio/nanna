@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_event.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
@@ -28,6 +29,7 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
     this._getBookmarkChangeStreamUseCase,
     this._isInternetConnectionAvailableUseCase,
     this._hasActiveSubscriptionUseCase,
+    this._isSignedInUseCase,
   ) : super(BookmarkButtonState.initializing());
 
   final GetBookmarkStateUseCase _getBookmarkStateUseCase;
@@ -36,6 +38,7 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
   final GetBookmarkChangeStreamUseCase _getBookmarkChangeStreamUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
   final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   StreamSubscription? _notifierSubscription;
 
@@ -75,6 +78,11 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
   }
 
   Future<void> initialize(BookmarkTypeData data) async {
+    if (!await _isSignedInUseCase()) {
+      emit(BookmarkButtonState.notSignedIn());
+      return;
+    }
+
     await initializeConnection(data);
   }
 

@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/domain/audio/use_case/audio_position_stre
 import 'package:better_informed_mobile/domain/audio/use_case/pause_audio_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/play_audio_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/prepare_audio_track_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/util/connection_state_aware_cubit_mixin.dart';
@@ -32,6 +33,7 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
     this._audioPositionStreamUseCase,
     this._getArticleAudioProgressUseCase,
     this._isInternetConnectionAvailableUseCase,
+    this._isSignedInUseCase,
   );
 
   final PrepareArticleAudioTrackUseCase _prepareAudioTrackUseCase;
@@ -43,6 +45,7 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
   final AudioPositionStreamUseCase _audioPositionStreamUseCase;
   final GetArticleAudioProgressUseCase _getArticleAudioProgressUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   MediaItemArticle? _article;
   String? _imageUrl;
@@ -65,6 +68,7 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
         _audioPositionStreamUseCase,
         _getArticleAudioProgressUseCase,
         _isInternetConnectionAvailableUseCase,
+        _isSignedInUseCase,
       );
     }
 
@@ -78,6 +82,7 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
       _audioPositionStreamUseCase,
       _getArticleAudioProgressUseCase,
       _isInternetConnectionAvailableUseCase,
+      _isSignedInUseCase,
       _article!,
       _imageUrl,
     );
@@ -95,6 +100,7 @@ abstract class AudioControlButtonCubit extends Cubit<AudioControlButtonState> wi
     this._audioPositionStreamUseCase,
     this._getArticleAudioProgressUseCase,
     this._isInternetConnectionAvailableUseCase,
+    this._isSignedInUseCase,
   ) : super(AudioControlButtonState.loading());
 
   final PrepareArticleAudioTrackUseCase _prepareAudioTrackUseCase;
@@ -106,6 +112,7 @@ abstract class AudioControlButtonCubit extends Cubit<AudioControlButtonState> wi
   final AudioPositionStreamUseCase _audioPositionStreamUseCase;
   final GetArticleAudioProgressUseCase _getArticleAudioProgressUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   @override
   IsInternetConnectionAvailableUseCase get isInternetConnectionAvailableUseCase =>
@@ -126,6 +133,11 @@ abstract class AudioControlButtonCubit extends Cubit<AudioControlButtonState> wi
   }
 
   Future<void> initialize() async {
+    if (!await _isSignedInUseCase()) {
+      emit(AudioControlButtonState.notSignedIn());
+      return;
+    }
+
     await initializeConnection(null);
 
     await _audioPositionSubscription?.cancel();
@@ -157,6 +169,7 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
     AudioPositionStreamUseCase audioPositionStreamUseCase,
     GetArticleAudioProgressUseCase getArticleAudioProgressUseCase,
     IsInternetConnectionAvailableUseCase isInternetConnectionAvailableUseCase,
+    IsSignedInUseCase isSignedInUseCase,
   ) : super(
           prepareAudioTrackUseCase,
           playAudioUseCase,
@@ -167,6 +180,7 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
           audioPositionStreamUseCase,
           getArticleAudioProgressUseCase,
           isInternetConnectionAvailableUseCase,
+          isSignedInUseCase,
         );
 
   @override
@@ -241,6 +255,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
     AudioPositionStreamUseCase audioPositionStreamUseCase,
     GetArticleAudioProgressUseCase getArticleAudioProgressUseCase,
     IsInternetConnectionAvailableUseCase isInternetConnectionAvailableUseCase,
+    IsSignedInUseCase isSignedInUseCase,
     this._article,
     this._imageUrl,
   ) : super(
@@ -253,6 +268,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
           audioPositionStreamUseCase,
           getArticleAudioProgressUseCase,
           isInternetConnectionAvailableUseCase,
+          isSignedInUseCase,
         );
 
   final MediaItemArticle _article;

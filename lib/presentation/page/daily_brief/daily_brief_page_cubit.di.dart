@@ -3,11 +3,13 @@ import 'dart:collection';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/is_add_interests_page_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/set_add_interests_page_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_unauthorized__use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
@@ -53,6 +55,7 @@ final firstTopicKey = GlobalKey();
 class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     with ConnectionStateAwareCubitMixin<DailyBriefPageState, void> {
   DailyBriefPageCubit(
+    this._isSignedInUseCase,
     this._getCurrentBriefUseCase,
     this._getPastDaysBriefUseCase,
     this._isTutorialStepSeenUseCase,
@@ -71,8 +74,10 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._isAddInterestsPageSeenUseCase,
     this._setAddInterestsPageSeenUseCase,
     this._requestPermissionsUseCase,
+    this._getCurrentBriefUnauthorizedUseCase,
   ) : super(DailyBriefPageState.loading());
 
+  final IsSignedInUseCase _isSignedInUseCase;
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
   final GetPastBriefUseCase _getPastDaysBriefUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
@@ -91,6 +96,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final IsAddInterestsPageSeenUseCase _isAddInterestsPageSeenUseCase;
   final SetAddInterestsPageSeenUseCase _setAddInterestsPageSeenUseCase;
   final RequestPermissionsUseCase _requestPermissionsUseCase;
+  final GetCurrentBriefUnauthorizedUseCase _getCurrentBriefUnauthorizedUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -148,7 +154,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   Future<void> initialize() async {
     await initializeConnection(null);
 
-    if (await _shouldUseObservableQueriesUseCase()) {
+    if (await _shouldUseObservableQueriesUseCase() && await _isSignedInUseCase()) {
       _currentBriefSubscription ??= _getCurrentBriefUseCase.stream.listen((updatedBriefWrapper) {
         _briefsWrapper = updatedBriefWrapper;
         if (_selectedBrief?.id == updatedBriefWrapper.currentBrief.id) {
@@ -212,7 +218,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
 
   Future<void> refetchBriefs() async {
     try {
-      _briefsWrapper = await _getCurrentBriefUseCase();
+      _briefsWrapper = await _getCurrentBrief();
       _selectedBrief ??= _briefsWrapper.currentBrief;
 
       final todaysBriefSelected = _selectedBrief == _briefsWrapper.currentBrief;
@@ -235,7 +241,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     emit(DailyBriefPageState.loading());
 
     try {
-      _briefsWrapper = await _getCurrentBriefUseCase();
+      _briefsWrapper = await _getCurrentBrief();
       _selectedBrief = _briefsWrapper.currentBrief;
       _updateIdleState(preCacheImages: true);
     } on NoInternetConnectionException {
@@ -322,6 +328,11 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     }
 
     throw BriefNotInitializedException();
+  }
+
+  Future<BriefsWrapper> _getCurrentBrief() async {
+    final isSignedIn = await _isSignedInUseCase();
+    return isSignedIn ? await _getCurrentBriefUseCase() : await _getCurrentBriefUnauthorizedUseCase();
   }
 
   void _refreshCurrentState() {

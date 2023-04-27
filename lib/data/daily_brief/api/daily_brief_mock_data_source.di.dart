@@ -16,6 +16,11 @@ class DailyBriefMockDataSource implements DailyBriefApiDataSource {
   }
 
   @override
+  Future<BriefsWrapperDTO> currentBriefUnauthorized() async {
+    return BriefsWrapperDTO(MockDTO.currentBrief(), []);
+  }
+
+  @override
   Stream<BriefsWrapperDTO?> currentBriefStream() async* {
     yield BriefsWrapperDTO(
       MockDTO.currentBrief(),

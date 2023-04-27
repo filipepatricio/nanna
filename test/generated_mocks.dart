@@ -73,6 +73,7 @@ import 'package:better_informed_mobile/domain/categories/use_case/is_add_interes
 import 'package:better_informed_mobile/domain/categories/use_case/set_add_interests_page_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/brief_entry_new_state_notifier.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/decrease_brief_unseen_count_state_notifier_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_unauthorized__use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
@@ -271,6 +272,7 @@ const _classes = [
   HasNotificationPermissionUseCase,
   PurchaseApiDataSource,
   ForceSubscriptionStatusSyncUseCase,
+  GetCurrentBriefUnauthorizedUseCase,
 ];
 
 @GenerateMocks(_classes)

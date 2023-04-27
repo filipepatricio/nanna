@@ -64,6 +64,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState>
   }
 
   Future<void> initialize(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) async {
+    //TODO: Consider not signed in case here
     final options = BookmarkListOptions(filter, sort, order);
     await initializeConnection(options);
 

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/get_token_expiration_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/deep_link/use_case/subscribe_for_deep_link_use_case.di.dart';
 import 'package:better_informed_mobile/domain/language/language_code.dart';
@@ -35,6 +36,7 @@ class MainCubit extends Cubit<MainState> {
     this._synchronizeOnConnectionChangeUseCase,
     this._updateBriefNotifierUseCase,
     this._shouldRefreshDailyBriefUseCase,
+    this._isSignedInUseCase,
   ) : super(const MainState.init());
 
   final GetTokenExpirationStreamUseCase _getTokenExpirationStreamUseCase;
@@ -46,6 +48,7 @@ class MainCubit extends Cubit<MainState> {
   final SynchronizeOnConnectionChangeUseCase _synchronizeOnConnectionChangeUseCase;
   final UpdateBriefNotifierUseCase _updateBriefNotifierUseCase;
   final ShouldRefreshDailyBriefUseCase _shouldRefreshDailyBriefUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   StreamSubscription? _incomingPushNavigationSubscription;
   StreamSubscription? _tokenExpirationSubscription;
@@ -67,16 +70,20 @@ class MainCubit extends Cubit<MainState> {
 
   Future<void> initialize() async {
     await DateFormatUtil.setJiffyLocale(availableLocales.values.first);
-    _tokenExpirationSubscription = _getTokenExpirationStreamUseCase().listen((event) {
-      emit(const MainState.tokenExpired());
-    });
 
-    _subscribeToPushNavigationStream();
-    _subscribeToDeepLinkStream();
+    if (await _isSignedInUseCase()) {
+      _tokenExpirationSubscription = _getTokenExpirationStreamUseCase().listen((event) {
+        emit(const MainState.tokenExpired());
+      });
 
-    unawaited(_maybeRegisterPushNotificationTokenUseCase());
+      _subscribeToPushNavigationStream();
+      _subscribeToDeepLinkStream();
+
+      unawaited(_maybeRegisterPushNotificationTokenUseCase());
+      unawaited(_initializeSynchronizationEngine());
+    }
+
     unawaited(_getReleaseNote());
-    unawaited(_initializeSynchronizationEngine());
   }
 
   void appMovedToBackground() {

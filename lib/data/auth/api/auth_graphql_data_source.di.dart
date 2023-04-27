@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/core/di/network_module.di.dart';
 import 'package:better_informed_mobile/data/auth/api/auth_api_data_source.dart';
 import 'package:better_informed_mobile/data/auth/api/documents/__generated__/send_link.ast.gql.dart' as send_link;
 import 'package:better_informed_mobile/data/auth/api/documents/__generated__/sign_in.ast.gql.dart' as sign_in;
@@ -12,7 +13,11 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: AuthApiDataSource, env: defaultEnvs)
 class AuthGraphqlDataSource implements AuthApiDataSource {
-  AuthGraphqlDataSource(@Named('unauthorized') this._client, this._responseResolver);
+  AuthGraphqlDataSource(
+    @Named(unauthorizedGQLClientName) this._client,
+    this._responseResolver,
+  );
+
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
 
