@@ -4,7 +4,6 @@ import 'dart:collection';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/is_add_interests_page_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/set_add_interests_page_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
@@ -31,6 +30,7 @@ import 'package:better_informed_mobile/domain/user/data/category_preference.dart
 import 'package:better_informed_mobile/domain/user/use_case/get_category_preferences_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/should_wait_for_ui_active_state_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -74,6 +74,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._setAddInterestsPageSeenUseCase,
     this._requestTrackingPermissionUseCase,
     this._requestNotificationPermissionUseCase,
+    this._shouldWaitForUiActiveStateUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
@@ -95,6 +96,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final SetAddInterestsPageSeenUseCase _setAddInterestsPageSeenUseCase;
   final RequestTrackingPermissionUseCase _requestTrackingPermissionUseCase;
   final RequestNotificationPermissionUseCase _requestNotificationPermissionUseCase;
+  final ShouldWaitForUiActiveStateUseCase _shouldWaitForUiActiveStateUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -114,8 +116,6 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
 
   bool _shouldShowAppBarTitle = false;
   bool _shouldShowCalendar = false;
-
-  final BehaviorSubject<bool> _uiActiveStateSubject = BehaviorSubject.seeded(true);
 
   @override
   IsInternetConnectionAvailableUseCase get isInternetConnectionAvailableUseCase =>
@@ -148,7 +148,6 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     await _trackItemController.close();
     await _itemPreviewTrackerSubscription?.cancel();
     await _badgeCountRefreshSubscription?.cancel();
-    await _uiActiveStateSubject.close();
     await super.close();
   }
 
@@ -193,19 +192,14 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
       await _setAddInterestsPageSeenUseCase();
       await _requestNotificationPermissionUseCase();
       // Tracking can be requested only after the UI becomes active again
-      if (!kIsTest) await _uiActiveStateSubject.firstWhere((isActive) => isActive);
+      await _shouldWaitForUiActiveStateUseCase();
       await _requestTrackingPermissionUseCase();
     } else {
       if (!(await _isAddInterestsPageSeenUseCase())) {
         await _setAddInterestsPageSeenUseCase();
         _emitEvent(DailyBriefPageState.showInterests());
-        await _requestNotificationPermissionUseCase();
       }
     }
-  }
-
-  void setUiActiveState(bool isActive) {
-    _uiActiveStateSubject.add(isActive);
   }
 
   Future<void> shouldRefreshBrief() async {

@@ -103,6 +103,7 @@ void main() {
       setAddInterestsPageSeenUseCase,
       requestTrackingPermissionUseCase,
       requestNotificationPermissionUseCase,
+      shouldWaitForUiActiveStateUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
@@ -459,7 +460,7 @@ void main() {
         },
       );
 
-      verify(requestNotificationPermissionUseCase.call()).called(1);
+      verifyNever(requestNotificationPermissionUseCase.call());
       verifyNever(requestTrackingPermissionUseCase.call());
       verify(getCategoryPreferencesUseCase.call()).called(1);
       verify(isAddInterestsPageSeenUseCase.call()).called(1);
@@ -483,6 +484,7 @@ void main() {
 
       expect(find.byType(DailyBriefPage), findsOneWidget);
 
+      verify(requestNotificationPermissionUseCase.call()).called(1);
       verify(requestTrackingPermissionUseCase.call()).called(1);
     },
   );
