@@ -88,7 +88,23 @@ class SignInPage extends HookWidget {
     return _ConditionalModalWrapper(
       wrap: isModal,
       child: Scaffold(
-        appBar: context.router.canPop() ? null : AppBar(automaticallyImplyLeading: false),
+        appBar: context.router.canPop()
+            ? null
+            : AppBar(
+                automaticallyImplyLeading: false,
+                leadingWidth: AppDimens.xc,
+                leading: state.mapOrNull(
+                  magicLink: (_) => isModal
+                      ? null
+                      : IconButton(
+                          icon: const InformedSvg(AppVectorGraphics.close),
+                          color: Theme.of(context).iconTheme.color,
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.zero,
+                          onPressed: cubit.closeMagicLinkView,
+                        ),
+                ),
+              ),
         body: Container(
           color: AppColors.of(context).backgroundPrimary,
           child: KeyboardVisibilityBuilder(

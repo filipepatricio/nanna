@@ -36,6 +36,10 @@ class MainNavigationObserver extends AutoRouterObserver {
         _updateBriefNotifierUseCase();
         _requestTrackingPermissionUseCase();
         break;
+      case AddInterestsPageRoute.name:
+        _updateBriefNotifierUseCase();
+        _requestTrackingPermissionUseCase();
+        break;
     }
   }
 

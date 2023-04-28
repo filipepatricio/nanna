@@ -133,6 +133,7 @@ class _DailyBriefPage extends HookWidget {
     });
 
     useOnAppLifecycleStateChange((previous, current) {
+      cubit.setUiActiveState(current == AppLifecycleState.resumed);
       if (current == AppLifecycleState.resumed) {
         cubit.shouldRefreshBrief();
       }

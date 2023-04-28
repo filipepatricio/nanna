@@ -81,7 +81,7 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
 
   @override
   Future<bool> requestPermission() async {
-    final result = await _firebaseMessaging.requestPermission();
+    final result = await _firebaseMessaging.requestPermission(provisional: true);
     return _isAuthorized(result);
   }
 

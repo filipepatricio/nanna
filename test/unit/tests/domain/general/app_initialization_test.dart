@@ -7,10 +7,12 @@ import 'package:better_informed_mobile/domain/auth/data/auth_token.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/request_notification_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/use_case/save_release_note_if_first_run_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/should_wait_for_ui_active_state_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_cubit.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -30,7 +32,9 @@ void main() {
   late MockAuthRepository authRepository;
   late MockGetUserUseCase getUserUseCase;
   late SignInPageCubit signInPageCubit;
+  late RequestNotificationPermissionUseCase requestNotificationPermissionUseCase;
   late RequestTrackingPermissionUseCase requestTrackingPermissionUseCase;
+  late ShouldWaitForUiActiveStateUseCase shouldWaitForUiActiveStateUseCase;
 
   setUp(() {
     isSignedInUseCase = MockIsSignedInUseCase();
@@ -42,7 +46,9 @@ void main() {
     getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
     authRepository = MockAuthRepository();
     getUserUseCase = MockGetUserUseCase();
+    requestNotificationPermissionUseCase = MockRequestNotificationPermissionUseCase();
     requestTrackingPermissionUseCase = MockRequestTrackingPermissionUseCase();
+    shouldWaitForUiActiveStateUseCase = MockShouldWaitForUiActiveStateUseCase();
 
     final signInUseCase = SignInUseCase(
       authRepository,
@@ -73,6 +79,8 @@ void main() {
         when(isSignedInUseCase()).thenAnswer((_) async => true);
         when(getActiveSubscriptionUseCase()).thenAnswer((_) async => TestData.activeSubscriptionTrial);
         when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(TestData.activeSubscriptionTrial));
+        when(requestNotificationPermissionUseCase.call()).thenAnswer((_) => Future.value(false));
+        when(shouldWaitForUiActiveStateUseCase.call()).thenAnswer((_) => Future.value(true));
 
         await tester.startApp(
           dependencyOverride: (getIt) async {
@@ -83,7 +91,9 @@ void main() {
             getIt.registerFactory<IdentifyAnalyticsUserUseCase>(() => identifyAnalyticsUserUseCase);
             getIt.registerFactory<InitializePurchasesUseCase>(() => initializePurchasesUseCase);
             getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+            getIt.registerFactory<RequestNotificationPermissionUseCase>(() => requestNotificationPermissionUseCase);
             getIt.registerFactory<RequestTrackingPermissionUseCase>(() => requestTrackingPermissionUseCase);
+            getIt.registerFactory<ShouldWaitForUiActiveStateUseCase>(() => shouldWaitForUiActiveStateUseCase);
           },
         );
 
@@ -101,6 +111,8 @@ void main() {
         when(isSignedInUseCase()).thenAnswer((_) async => true);
         when(getActiveSubscriptionUseCase()).thenAnswer((_) async => ActiveSubscription.free());
         when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(ActiveSubscription.free()));
+        when(requestNotificationPermissionUseCase.call()).thenAnswer((_) => Future.value(false));
+        when(shouldWaitForUiActiveStateUseCase.call()).thenAnswer((_) => Future.value(true));
 
         await tester.startApp(
           dependencyOverride: (getIt) async {
@@ -111,7 +123,9 @@ void main() {
             getIt.registerFactory<IdentifyAnalyticsUserUseCase>(() => identifyAnalyticsUserUseCase);
             getIt.registerFactory<InitializePurchasesUseCase>(() => initializePurchasesUseCase);
             getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+            getIt.registerFactory<RequestNotificationPermissionUseCase>(() => requestNotificationPermissionUseCase);
             getIt.registerFactory<RequestTrackingPermissionUseCase>(() => requestTrackingPermissionUseCase);
+            getIt.registerFactory<ShouldWaitForUiActiveStateUseCase>(() => shouldWaitForUiActiveStateUseCase);
           },
         );
 

@@ -77,6 +77,7 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_b
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/mark_entry_as_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/save_seen_entry_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief_badge/badge_info_repository.dart';
 import 'package:better_informed_mobile/domain/daily_brief_badge/use_case/should_show_daily_brief_badge_use_case.di.dart';
@@ -123,6 +124,7 @@ import 'package:better_informed_mobile/domain/util/use_case/open_subscription_ma
 import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_update_app_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/should_wait_for_ui_active_state_use_case.di.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -263,6 +265,8 @@ const _classes = [
   GetCategoryPreferencesUseCase,
   RequestTrackingPermissionUseCase,
   RequestNotificationPermissionUseCase,
+  ShouldWaitForUiActiveStateUseCase,
+  UpdateBriefNotifierUseCase,
 ];
 
 @GenerateMocks(_classes)

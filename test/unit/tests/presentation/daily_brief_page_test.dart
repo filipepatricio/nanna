@@ -1,6 +1,10 @@
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/request_notification_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/should_wait_for_ui_active_state_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/add_interests/add_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
@@ -44,6 +48,8 @@ void main() {
   late MockGetCategoryPreferencesUseCase getCategoryPreferencesUseCase;
   late MockRequestTrackingPermissionUseCase requestTrackingPermissionUseCase;
   late MockGetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
+  late MockRequestNotificationPermissionUseCase requestNotificationPermissionUseCase;
+  late MockShouldWaitForUiActiveStateUseCase shouldWaitForUiActiveStateUseCase;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(
@@ -73,6 +79,9 @@ void main() {
     getCategoryPreferencesUseCase = MockGetCategoryPreferencesUseCase();
     requestTrackingPermissionUseCase = MockRequestTrackingPermissionUseCase();
     getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
+    requestTrackingPermissionUseCase = MockRequestTrackingPermissionUseCase();
+    requestNotificationPermissionUseCase = MockRequestNotificationPermissionUseCase();
+    shouldWaitForUiActiveStateUseCase = MockShouldWaitForUiActiveStateUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -93,6 +102,7 @@ void main() {
       isAddInterestsPageSeenUseCase,
       setAddInterestsPageSeenUseCase,
       requestTrackingPermissionUseCase,
+      requestNotificationPermissionUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
@@ -112,6 +122,8 @@ void main() {
     when(isInternetConnectionAvailableUseCase.stream).thenAnswer((_) async* {});
     when(shouldUseObservableQueriesUseCase.call()).thenAnswer((_) async => true);
     when(setNeedsRefreshDailyBriefUseCase.call(any)).thenAnswer((_) async => false);
+    when(requestNotificationPermissionUseCase.call()).thenAnswer((_) => Future.value(true));
+    when(shouldWaitForUiActiveStateUseCase.call()).thenAnswer((_) => Future.value(true));
   });
 
   test('brief entry preview is being tracked correctly', () async {
@@ -405,6 +417,74 @@ void main() {
       );
 
       verifyNever(getCurrentBriefUseCase.stream);
+    },
+  );
+
+  testWidgets(
+    'is requesting notification and tracking permission if has any category preferences',
+    (tester) async {
+      when(requestNotificationPermissionUseCase.call()).thenAnswer((_) => Future.value(true));
+      when(getCategoryPreferencesUseCase.call()).thenAnswer((_) async => TestData.categoryPreferences);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+        },
+      );
+
+      verify(requestNotificationPermissionUseCase.call()).called(1);
+      verify(requestTrackingPermissionUseCase.call()).called(1);
+    },
+  );
+
+  testWidgets(
+    'is only requesting notification and tracking permission after user sets category preferences',
+    (tester) async {
+      final updateBriefNotifierUseCase = MockUpdateBriefNotifierUseCase();
+
+      when(requestNotificationPermissionUseCase.call()).thenAnswer((_) => Future.value(true));
+      when(isAddInterestsPageSeenUseCase.call()).thenAnswer((_) async => false);
+      when(getCategoryPreferencesUseCase.call()).thenAnswer((_) async => []);
+      when(getActiveSubscriptionUseCase.call()).thenAnswer((_) async => TestData.activeSubscriptionTrial);
+      when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(TestData.activeSubscriptionTrial));
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+          getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+          getIt.registerFactory<UpdateBriefNotifierUseCase>(() => updateBriefNotifierUseCase);
+          getIt.registerFactory<RequestNotificationPermissionUseCase>(() => requestNotificationPermissionUseCase);
+          getIt.registerFactory<RequestTrackingPermissionUseCase>(() => requestTrackingPermissionUseCase);
+          getIt.registerFactory<ShouldWaitForUiActiveStateUseCase>(() => shouldWaitForUiActiveStateUseCase);
+        },
+      );
+
+      verifyNever(requestNotificationPermissionUseCase.call());
+      verifyNever(requestTrackingPermissionUseCase.call());
+      verify(getCategoryPreferencesUseCase.call()).called(1);
+      verify(isAddInterestsPageSeenUseCase.call()).called(1);
+      verify(setAddInterestsPageSeenUseCase.call()).called(1);
+      expect(find.byType(AddInterestsPage), findsOneWidget);
+
+      for (var i = 0; i < 4; i++) {
+        await tester.ensureVisible(find.byType(InterestListItem).at(i));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(InterestListItem).at(i));
+        await tester.pumpAndSettle();
+      }
+
+      await tester.tap(find.byText(l10n.common_continue));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SubscriptionSuccessPage), findsOneWidget);
+
+      await tester.tap(find.byText(l10n.subscription_startReading));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DailyBriefPage), findsOneWidget);
+
+      verify(requestNotificationPermissionUseCase.call()).called(1);
+      verify(requestTrackingPermissionUseCase.call()).called(1);
     },
   );
 }

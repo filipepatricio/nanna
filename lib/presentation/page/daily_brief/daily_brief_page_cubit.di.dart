@@ -20,6 +20,7 @@ import 'package:better_informed_mobile/domain/networking/use_case/is_internet_co
 import 'package:better_informed_mobile/domain/push_notification/use_case/background_incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_brief_entries_updated_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/request_notification_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
@@ -71,6 +72,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._isAddInterestsPageSeenUseCase,
     this._setAddInterestsPageSeenUseCase,
     this._requestTrackingPermissionUseCase,
+    this._requestNotificationPermissionUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
@@ -91,6 +93,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final IsAddInterestsPageSeenUseCase _isAddInterestsPageSeenUseCase;
   final SetAddInterestsPageSeenUseCase _setAddInterestsPageSeenUseCase;
   final RequestTrackingPermissionUseCase _requestTrackingPermissionUseCase;
+  final RequestNotificationPermissionUseCase _requestNotificationPermissionUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -110,6 +113,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
 
   bool _shouldShowAppBarTitle = false;
   bool _shouldShowCalendar = false;
+
+  final BehaviorSubject<bool> _uiActiveStateSubject = BehaviorSubject.seeded(true);
 
   @override
   IsInternetConnectionAvailableUseCase get isInternetConnectionAvailableUseCase =>
@@ -142,6 +147,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     await _trackItemController.close();
     await _itemPreviewTrackerSubscription?.cancel();
     await _badgeCountRefreshSubscription?.cancel();
+    await _uiActiveStateSubject.close();
     await super.close();
   }
 
@@ -184,13 +190,21 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     final categoryPreferences = await _getCategoryPreferencesUseCase();
     if (categoryPreferences.hasAnyPreference) {
       await _setAddInterestsPageSeenUseCase();
+      await _requestNotificationPermissionUseCase();
+      // Tracking can be requested only after the UI becomes active again
+      await _uiActiveStateSubject.firstWhere((isActive) => isActive);
       await _requestTrackingPermissionUseCase();
     } else {
       if (!(await _isAddInterestsPageSeenUseCase())) {
         await _setAddInterestsPageSeenUseCase();
         _emitEvent(DailyBriefPageState.showInterests());
+        await _requestNotificationPermissionUseCase();
       }
     }
+  }
+
+  void setUiActiveState(bool isActive) {
+    _uiActiveStateSubject.add(isActive);
   }
 
   Future<void> shouldRefreshBrief() async {

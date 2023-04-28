@@ -39,6 +39,7 @@ void main() {
     );
     when(pushNotificationRepository.pushNotificationMessageStream())
         .thenAnswer((realInvocation) => const Stream.empty());
+    when(pushNotificationRepository.requestPermission()).thenAnswer((realInvocation) => Future.value(false));
   });
 
   group('handles applinks', () {
