@@ -12,35 +12,45 @@ class ArticleContentMarkdown extends HookWidget {
     required this.markdown,
     required this.categoryColor,
     required this.shareTextCallback,
-    Key? key,
-  }) : super(key: key);
+    required this.articleTextScaleFactor,
+  });
 
   final String markdown;
   final Color categoryColor;
   final ShareTextCallback shareTextCallback;
+  final ValueNotifier<double> articleTextScaleFactor;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
-      child: InformedMarkdownBody.selectable(
-        markdown: markdown,
-        selectionControllers: SelectionControllerBundle(),
-        baseTextStyle: AppTypography.articleText,
-        strongTextStyle: AppTypography.articleTextBold,
-        headingTextStyle: AppTypography.serifTitleSmallIvar,
-        shareTextCallback: shareTextCallback,
-        useTextHighlight: false,
-        paddingBuilders: <String, MarkdownPaddingBuilder>{
-          'p': PPaddingBuilder(),
-          'h1': HeadingsPaddingBuilder(),
-          'h2': HeadingsPaddingBuilder(),
-          'h3': HeadingsPaddingBuilder(),
-          'h4': HeadingsPaddingBuilder(),
-          'h5': HeadingsPaddingBuilder(),
-          'h6': HeadingsPaddingBuilder(),
-        },
-        quoteDecorationColor: categoryColor,
+    return ValueListenableBuilder<double>(
+      valueListenable: articleTextScaleFactor,
+      builder: (context, scaleFactor, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          textScaleFactor: scaleFactor,
+        ),
+        child: child!,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+        child: InformedMarkdownBody.selectable(
+          markdown: markdown,
+          selectionControllers: SelectionControllerBundle(),
+          baseTextStyle: AppTypography.articleText,
+          strongTextStyle: AppTypography.articleTextBold,
+          headingTextStyle: AppTypography.serifTitleSmallIvar,
+          shareTextCallback: shareTextCallback,
+          useTextHighlight: false,
+          paddingBuilders: <String, MarkdownPaddingBuilder>{
+            'p': PPaddingBuilder(),
+            'h1': HeadingsPaddingBuilder(),
+            'h2': HeadingsPaddingBuilder(),
+            'h3': HeadingsPaddingBuilder(),
+            'h4': HeadingsPaddingBuilder(),
+            'h5': HeadingsPaddingBuilder(),
+            'h6': HeadingsPaddingBuilder(),
+          },
+          quoteDecorationColor: categoryColor,
+        ),
       ),
     );
   }

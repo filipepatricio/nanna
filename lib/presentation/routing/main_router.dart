@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/page/explore/explore_page.da
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
+import 'package:better_informed_mobile/presentation/page/media/article_text_scale_factor_selector_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
 import 'package:better_informed_mobile/presentation/page/photo_caption/photo_caption_page.dart';
@@ -92,6 +93,10 @@ const mainPageRoute = CustomRoute(
     CustomRoute(page: SubscriptionSuccessPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: PhotoCaptionPage, customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder),
+    CustomRoute(
+      page: ArticleTextScaleFactorSelectorPage,
+      customRouteBuilder: modalBottomSheetPageTransparentRouteBuilder,
+    ),
     AutoRoute(path: '$articlePath/:articleSlug', page: MediaItemPage),
     AutoRoute(page: CategoryPage),
     CustomRoute(

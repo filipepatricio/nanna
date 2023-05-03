@@ -26,7 +26,10 @@ class SettingsMainItem extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: 12),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimens.l,
+          vertical: AppDimens.sl,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

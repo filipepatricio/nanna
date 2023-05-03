@@ -186,7 +186,8 @@ class FakePremiumArticleViewCubitFromBrief extends Fake implements PremiumArticl
     otherTopicItems: [],
     featuredCategories: List.generate(4, (index) => TestData.category),
     relatedContentItems: TestData.categoryItemList,
-    enablePageSwipe: true,
+    preferredArticleTextScaleFactor: 1.0,
+    showTextScaleFactorSelector: true,
   );
 
   PremiumArticleViewState get idleState => _idleState;
@@ -210,9 +211,6 @@ class FakePremiumArticleViewCubitFromBrief extends Fake implements PremiumArticl
   Future<void> initialize(_, __, ___, ____) async {}
 
   @override
-  Future<void> trackReadingProgress() async {}
-
-  @override
   void updateScrollData(_, __) {}
 
   @override
@@ -226,7 +224,8 @@ class FakePremiumArticleViewCubitFromTopic extends FakePremiumArticleViewCubitFr
     otherTopicItems: TestData.topic.entries.map<MediaItem>((entry) => entry.item).toList(),
     featuredCategories: List.generate(4, (index) => TestData.category),
     relatedContentItems: TestData.categoryItemList,
-    enablePageSwipe: true,
+    preferredArticleTextScaleFactor: 1.0,
+    showTextScaleFactorSelector: true,
   );
 
   @override
