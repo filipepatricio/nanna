@@ -21,12 +21,10 @@ class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
     required this.cubit,
     required this.mainController,
-    required this.articleTextScaleFactorNotifier,
   });
 
   final PremiumArticleViewCubit cubit;
   final ScrollController mainController;
-  final ValueNotifier<double> articleTextScaleFactorNotifier;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articleHeaderKey = GlobalKey();
@@ -73,8 +71,6 @@ class PremiumArticleReadView extends HookWidget {
 
     return state.maybeMap(
       idle: (data) {
-        articleTextScaleFactorNotifier.value = data.preferredArticleTextScaleFactor;
-
         return Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -98,7 +94,6 @@ class PremiumArticleReadView extends HookWidget {
                           article: data.article,
                           articleHeaderKey: _articleHeaderKey,
                           articleContentKey: _articleContentKey,
-                          articleTextScaleFactor: articleTextScaleFactorNotifier,
                         ),
                       ),
                       if (data.otherTopicItems.isNotEmpty)

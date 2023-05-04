@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/media/article_text_scale_factor_notifier.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/selection_controller_bundle.dart';
@@ -12,23 +14,17 @@ class ArticleContentMarkdown extends HookWidget {
     required this.markdown,
     required this.categoryColor,
     required this.shareTextCallback,
-    required this.articleTextScaleFactor,
   });
 
   final String markdown;
   final Color categoryColor;
   final ShareTextCallback shareTextCallback;
-  final ValueNotifier<double> articleTextScaleFactor;
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<double>(
-      valueListenable: articleTextScaleFactor,
-      builder: (context, scaleFactor, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          textScaleFactor: scaleFactor,
-        ),
-        child: child!,
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+        textScaleFactor: context.watch<ArticleTextScaleFactorNotifier>().textScaleFactor,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),

@@ -97,7 +97,6 @@ class SettingsAppearancePage extends HookWidget {
                       ? Padding(
                           padding: const EdgeInsets.only(top: AppDimens.xc),
                           child: ArticleTextScaleFactorSelector(
-                            articleTextScaleFactorNotifier: articleTextScaleFactorNotifier,
                             onChangeEnd: cubit.setPreferredArticleTextScaleFactor,
                           ),
                         )

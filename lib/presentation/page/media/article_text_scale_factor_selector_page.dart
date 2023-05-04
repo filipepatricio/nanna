@@ -5,19 +5,18 @@ import 'package:flutter/material.dart';
 
 class ArticleTextScaleFactorSelectorPage extends StatelessWidget {
   const ArticleTextScaleFactorSelectorPage({
-    required this.articleTextScaleFactorNotifier,
     required this.onChangeEnd,
   });
 
-  final ValueNotifier<double> articleTextScaleFactorNotifier;
   final Function(double) onChangeEnd;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ClipRRect(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(AppDimens.bottomSheetRadius),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(AppDimens.bottomSheetRadius),
+          topRight: Radius.circular(AppDimens.bottomSheetRadius),
         ),
         child: Material(
           child: Padding(
@@ -27,7 +26,6 @@ class ArticleTextScaleFactorSelectorPage extends StatelessWidget {
             ),
             child: ArticleTextScaleFactorSelector(
               labelStyle: AppTypography.b2Medium,
-              articleTextScaleFactorNotifier: articleTextScaleFactorNotifier,
               onChangeEnd: onChangeEnd,
             ),
           ),
