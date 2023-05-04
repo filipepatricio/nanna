@@ -10,6 +10,7 @@ final cacheRoot = Directory('${Directory.systemTemp.path}/cached_goldens');
 
 Future<void> main(List<String> args) async {
   try {
+    await printAndExec('git', ['config', 'user.name', '"Scripts"']);
     await getBaselineGoldens();
     print('> Running golden image tests ...');
     final flutterTestResult = await Process.run(

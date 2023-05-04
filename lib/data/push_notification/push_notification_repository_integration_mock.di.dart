@@ -15,14 +15,4 @@ class PushNotificationRepositoryIntegrationMock extends PushNotificationReposito
     super.notificationChannelDTOMapper,
     super.firebaseExceptionMapper,
   );
-
-  @override
-  Future<bool> hasPermission() async {
-    return true;
-  }
-
-  @override
-  Future<bool> requestPermission() async {
-    return true;
-  }
 }

@@ -1,11 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
-import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
-import 'package:better_informed_mobile/domain/push_notification/use_case/request_notification_permission_use_case.di.dart';
-import 'package:better_informed_mobile/domain/util/use_case/should_wait_for_ui_active_state_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/request_permissions_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -15,16 +13,12 @@ class MainNavigationObserver extends AutoRouterObserver {
   MainNavigationObserver(
     this._trackActivityUseCase,
     this._updateBriefNotifierUseCase,
-    this._requestTrackingPermissionUseCase,
-    this._requestNotificationPermissionUseCase,
-    this._shouldWaitForUiActiveStateUseCase,
+    this._requestPermissionsUseCase,
   );
 
   final TrackActivityUseCase _trackActivityUseCase;
   final UpdateBriefNotifierUseCase _updateBriefNotifierUseCase;
-  final RequestTrackingPermissionUseCase _requestTrackingPermissionUseCase;
-  final RequestNotificationPermissionUseCase _requestNotificationPermissionUseCase;
-  final ShouldWaitForUiActiveStateUseCase _shouldWaitForUiActiveStateUseCase;
+  final RequestPermissionsUseCase _requestPermissionsUseCase;
 
   @override
   Future<void> didPop(Route route, Route? previousRoute) async {
@@ -40,24 +34,13 @@ class MainNavigationObserver extends AutoRouterObserver {
         break;
       case SubscriptionSuccessPageRoute.name:
         _updateBriefNotifierUseCase();
-        await requestUserPermissions();
+        await _requestPermissionsUseCase();
         break;
       case AddInterestsPageRoute.name:
         _updateBriefNotifierUseCase();
-        await requestUserPermissions();
-        break;
-      case AddInterestsPageRoute.name:
-        _updateBriefNotifierUseCase();
-        _requestTrackingPermissionUseCase();
+        await _requestPermissionsUseCase();
         break;
     }
-  }
-
-  Future<void> requestUserPermissions() async {
-    await _requestNotificationPermissionUseCase();
-    // Tracking can be requested only after the UI becomes active again
-    await _shouldWaitForUiActiveStateUseCase();
-    await _requestTrackingPermissionUseCase();
   }
 
   @override

@@ -5,8 +5,8 @@ import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 @injectable
-class RequestNotificationPermissionUseCase {
-  RequestNotificationPermissionUseCase(
+class RequestPermissionsUseCase {
+  RequestPermissionsUseCase(
     this._permissionsRepository,
     this._analyticsRepository,
   );
@@ -14,13 +14,20 @@ class RequestNotificationPermissionUseCase {
   final PermissionsRepository _permissionsRepository;
   final AnalyticsRepository _analyticsRepository;
 
-  Future<bool> call() async {
-    final hasGivenPermission = await _permissionsRepository.requestPermission(Permission.notification);
+  Future<void> call() async {
+    final notificationStatus = await _permissionsRepository.getPermissionStatus(Permission.notification);
 
-    if (hasGivenPermission.isGranted) {
+    final statuses = await _permissionsRepository.requestPermissions([
+      Permission.notification,
+      Permission.appTrackingTransparency,
+    ]);
+
+    final newNotificationStatus = statuses[Permission.notification];
+    final hasGivenNotificationPermission =
+        notificationStatus != newNotificationStatus && newNotificationStatus == PermissionStatus.granted;
+
+    if (hasGivenNotificationPermission) {
       _analyticsRepository.event(AnalyticsEvent.pushNotificationConsentGiven());
     }
-
-    return hasGivenPermission.isGranted;
   }
 }

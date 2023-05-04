@@ -35,7 +35,6 @@ import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/identify_analytics_user_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
-import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/appearance/use_case/get_preferred_text_scale_factor_use_case.di.dart';
@@ -89,12 +88,12 @@ import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/connectivity_repository.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
+import 'package:better_informed_mobile/domain/permissions/permissions_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/background_incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_brief_entries_updated_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
-import 'package:better_informed_mobile/domain/push_notification/use_case/request_notification_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_local_repository.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_remote_repository.dart';
 import 'package:better_informed_mobile/domain/release_notes/use_case/save_release_note_if_first_run_use_case.di.dart';
@@ -121,10 +120,10 @@ import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
 import 'package:better_informed_mobile/domain/util/network_cache_manager.dart';
 import 'package:better_informed_mobile/domain/util/use_case/open_subscription_management_screen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/request_permissions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_update_app_use_case.di.dart';
-import 'package:better_informed_mobile/domain/util/use_case/should_wait_for_ui_active_state_use_case.di.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -263,10 +262,9 @@ const _classes = [
   IsAddInterestsPageSeenUseCase,
   SetAddInterestsPageSeenUseCase,
   GetCategoryPreferencesUseCase,
-  RequestTrackingPermissionUseCase,
-  RequestNotificationPermissionUseCase,
-  ShouldWaitForUiActiveStateUseCase,
   UpdateBriefNotifierUseCase,
+  PermissionsRepository,
+  RequestPermissionsUseCase
 ];
 
 @GenerateMocks(_classes)

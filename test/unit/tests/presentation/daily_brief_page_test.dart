@@ -1,10 +1,8 @@
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
-import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
-import 'package:better_informed_mobile/domain/push_notification/use_case/request_notification_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
-import 'package:better_informed_mobile/domain/util/use_case/should_wait_for_ui_active_state_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/request_permissions_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/add_interests/add_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
@@ -46,10 +44,8 @@ void main() {
   late MockIsAddInterestsPageSeenUseCase isAddInterestsPageSeenUseCase;
   late MockSetAddInterestsPageSeenUseCase setAddInterestsPageSeenUseCase;
   late MockGetCategoryPreferencesUseCase getCategoryPreferencesUseCase;
-  late MockRequestTrackingPermissionUseCase requestTrackingPermissionUseCase;
   late MockGetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
-  late MockRequestNotificationPermissionUseCase requestNotificationPermissionUseCase;
-  late MockShouldWaitForUiActiveStateUseCase shouldWaitForUiActiveStateUseCase;
+  late MockRequestPermissionsUseCase requestPermissionsUseCase;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(
@@ -77,11 +73,8 @@ void main() {
     isAddInterestsPageSeenUseCase = MockIsAddInterestsPageSeenUseCase();
     setAddInterestsPageSeenUseCase = MockSetAddInterestsPageSeenUseCase();
     getCategoryPreferencesUseCase = MockGetCategoryPreferencesUseCase();
-    requestTrackingPermissionUseCase = MockRequestTrackingPermissionUseCase();
     getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
-    requestTrackingPermissionUseCase = MockRequestTrackingPermissionUseCase();
-    requestNotificationPermissionUseCase = MockRequestNotificationPermissionUseCase();
-    shouldWaitForUiActiveStateUseCase = MockShouldWaitForUiActiveStateUseCase();
+    requestPermissionsUseCase = MockRequestPermissionsUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -101,9 +94,7 @@ void main() {
       getCategoryPreferencesUseCase,
       isAddInterestsPageSeenUseCase,
       setAddInterestsPageSeenUseCase,
-      requestTrackingPermissionUseCase,
-      requestNotificationPermissionUseCase,
-      shouldWaitForUiActiveStateUseCase,
+      requestPermissionsUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
@@ -123,8 +114,6 @@ void main() {
     when(isInternetConnectionAvailableUseCase.stream).thenAnswer((_) async* {});
     when(shouldUseObservableQueriesUseCase.call()).thenAnswer((_) async => true);
     when(setNeedsRefreshDailyBriefUseCase.call(any)).thenAnswer((_) async => false);
-    when(requestNotificationPermissionUseCase.call()).thenAnswer((_) => Future.value(true));
-    when(shouldWaitForUiActiveStateUseCase.call()).thenAnswer((_) => Future.value(true));
   });
 
   test('brief entry preview is being tracked correctly', () async {
@@ -424,17 +413,16 @@ void main() {
   testWidgets(
     'is requesting notification and tracking permission if has any category preferences',
     (tester) async {
-      when(requestNotificationPermissionUseCase.call()).thenAnswer((_) => Future.value(true));
       when(getCategoryPreferencesUseCase.call()).thenAnswer((_) async => TestData.categoryPreferences);
 
       await tester.startApp(
         dependencyOverride: (getIt) async {
           getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+          getIt.registerFactory<RequestPermissionsUseCase>(() => requestPermissionsUseCase);
         },
       );
 
-      verify(requestNotificationPermissionUseCase.call()).called(1);
-      verify(requestTrackingPermissionUseCase.call()).called(1);
+      verify(requestPermissionsUseCase.call()).called(1);
     },
   );
 
@@ -443,7 +431,6 @@ void main() {
     (tester) async {
       final updateBriefNotifierUseCase = MockUpdateBriefNotifierUseCase();
 
-      when(requestNotificationPermissionUseCase.call()).thenAnswer((_) => Future.value(true));
       when(isAddInterestsPageSeenUseCase.call()).thenAnswer((_) async => false);
       when(getCategoryPreferencesUseCase.call()).thenAnswer((_) async => []);
       when(getActiveSubscriptionUseCase.call()).thenAnswer((_) async => TestData.activeSubscriptionTrial);
@@ -454,14 +441,11 @@ void main() {
           getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
           getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
           getIt.registerFactory<UpdateBriefNotifierUseCase>(() => updateBriefNotifierUseCase);
-          getIt.registerFactory<RequestNotificationPermissionUseCase>(() => requestNotificationPermissionUseCase);
-          getIt.registerFactory<RequestTrackingPermissionUseCase>(() => requestTrackingPermissionUseCase);
-          getIt.registerFactory<ShouldWaitForUiActiveStateUseCase>(() => shouldWaitForUiActiveStateUseCase);
+          getIt.registerFactory<RequestPermissionsUseCase>(() => requestPermissionsUseCase);
         },
       );
 
-      verifyNever(requestNotificationPermissionUseCase.call());
-      verifyNever(requestTrackingPermissionUseCase.call());
+      verifyNever(requestPermissionsUseCase.call());
       verify(getCategoryPreferencesUseCase.call()).called(1);
       verify(isAddInterestsPageSeenUseCase.call()).called(1);
       verify(setAddInterestsPageSeenUseCase.call()).called(1);
@@ -484,8 +468,7 @@ void main() {
 
       expect(find.byType(DailyBriefPage), findsOneWidget);
 
-      verify(requestNotificationPermissionUseCase.call()).called(1);
-      verify(requestTrackingPermissionUseCase.call()).called(1);
+      verify(requestPermissionsUseCase.call()).called(1);
     },
   );
 }

@@ -95,12 +95,6 @@ class FakePushNotificationRepository extends Fake implements PushNotificationRep
   Future<String> getCurrentToken() async => pushToken;
 
   @override
-  Future<bool> hasPermission() async => false;
-
-  @override
-  Future<bool> requestPermission() async => false;
-
-  @override
   Future<bool> shouldOpenNotificationsSettings() async => false;
 
   @override
