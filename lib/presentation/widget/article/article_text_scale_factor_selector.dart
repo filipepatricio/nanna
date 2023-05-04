@@ -43,7 +43,7 @@ class ArticleTextScaleFactorSelector extends StatelessWidget {
             min: AppDimens.minScaleFactor,
             max: AppDimens.maxScaleFactor,
             value: scale,
-            thumbColor: AppColors.of(context).buttonPrimaryText,
+            thumbColor: AppColors.stateTextSecondary,
             activeColor: AppColors.of(context).textPrimary,
             inactiveColor: AppColors.of(context).backgroundSecondary,
             onChanged: (value) => articleTextScaleFactorNotifier.value = value,
