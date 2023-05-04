@@ -42,7 +42,6 @@ void main() {
                   child: ArticleContentMarkdown(
                     markdown: article.shortText,
                     categoryColor: article.metadata.category.color ?? AppColors.brandAccent,
-                    articleTextScaleFactor: ValueNotifier(1.0),
                     shareTextCallback: (_) {},
                   ),
                 ),
@@ -90,7 +89,6 @@ void main() {
                   child: ArticleContentMarkdown(
                     markdown: article.shortText,
                     categoryColor: article.metadata.category.color ?? AppColors.brandAccent,
-                    articleTextScaleFactor: ValueNotifier(1.0),
                     shareTextCallback: (_) {},
                   ),
                 ),

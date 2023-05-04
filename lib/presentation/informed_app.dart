@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/media/article_text_scale_factor_notifier.di.dart';
 import 'package:better_informed_mobile/presentation/routing/observers/main_navigation_observer.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/informed_theme.dart';
@@ -92,11 +93,14 @@ class InformedApp extends HookWidget {
                     ),
                     builder: (context, child) {
                       final mediaQuery = MediaQuery.of(context);
-                      return NoScrollGlow(
-                        child: responsiveBuilder(
-                          mediaQuery,
-                          ImagePrecachingView(
-                            child: child!,
+                      return ChangeNotifierProvider.value(
+                        value: getIt<ArticleTextScaleFactorNotifier>(),
+                        child: NoScrollGlow(
+                          child: responsiveBuilder(
+                            mediaQuery,
+                            ImagePrecachingView(
+                              child: child!,
+                            ),
                           ),
                         ),
                       );

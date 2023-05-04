@@ -37,6 +37,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/appearance/use_case/get_preferred_text_scale_factor_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/article_local_repository.dart';
 import 'package:better_informed_mobile/domain/article/article_progress_local_repository.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
@@ -220,7 +221,8 @@ const _classes = [
   ShouldUseObservableQueriesUseCase,
   IncomingPushDataRefreshStreamUseCase,
   SetNeedsRefreshDailyBriefUseCase,
-  ShouldUseTextSizeSelectorUseCase
+  ShouldUseTextSizeSelectorUseCase,
+  GetPreferredArticleTextScaleFactorUseCase,
 ];
 
 @GenerateMocks(_classes)

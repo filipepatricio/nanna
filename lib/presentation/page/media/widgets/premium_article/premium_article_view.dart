@@ -47,10 +47,6 @@ class PremiumArticleView extends HookWidget {
       ),
     );
     final snackbarController = useSnackbarController();
-    final articleTextScaleFactorNotifier = useValueNotifier(
-      MediaQuery.of(context).textScaleFactor,
-      [MediaQuery.of(context).textScaleFactor],
-    );
 
     useEffect(
       () {
@@ -110,7 +106,6 @@ class PremiumArticleView extends HookWidget {
               idle: (data) => data.showTextScaleFactorSelector
                   ? () => context.pushRoute(
                         ArticleTextScaleFactorSelectorPageRoute(
-                          articleTextScaleFactorNotifier: articleTextScaleFactorNotifier,
                           onChangeEnd: cubit.setPreferredArticleTextScaleFactor,
                         ),
                       )
@@ -124,7 +119,6 @@ class PremiumArticleView extends HookWidget {
           child: PremiumArticleReadView(
             cubit: cubit,
             mainController: mainController,
-            articleTextScaleFactorNotifier: articleTextScaleFactorNotifier,
           ),
         ),
       ),
