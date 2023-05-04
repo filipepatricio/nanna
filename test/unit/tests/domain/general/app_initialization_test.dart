@@ -102,6 +102,7 @@ void main() {
         verify(initializeFeatureFlagsUseCase()).called(1);
         verify(identifyAnalyticsUserUseCase()).called(1);
         verify(initializeAttributionUseCase()).called(1);
+        verify(requestNotificationPermissionUseCase()).called(1);
         verify(requestTrackingPermissionUseCase()).called(1);
       },
     );
@@ -134,6 +135,7 @@ void main() {
         verify(initializeFeatureFlagsUseCase()).called(1);
         verify(identifyAnalyticsUserUseCase()).called(1);
         verify(initializeAttributionUseCase()).called(1);
+        verify(requestNotificationPermissionUseCase()).called(1);
         verify(requestTrackingPermissionUseCase()).called(1);
       },
     );

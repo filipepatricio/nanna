@@ -459,7 +459,7 @@ void main() {
         },
       );
 
-      verifyNever(requestNotificationPermissionUseCase.call());
+      verify(requestNotificationPermissionUseCase.call()).called(1);
       verifyNever(requestTrackingPermissionUseCase.call());
       verify(getCategoryPreferencesUseCase.call()).called(1);
       verify(isAddInterestsPageSeenUseCase.call()).called(1);
@@ -483,7 +483,6 @@ void main() {
 
       expect(find.byType(DailyBriefPage), findsOneWidget);
 
-      verify(requestNotificationPermissionUseCase.call()).called(1);
       verify(requestTrackingPermissionUseCase.call()).called(1);
     },
   );

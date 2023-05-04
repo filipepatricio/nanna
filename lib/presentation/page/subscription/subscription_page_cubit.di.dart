@@ -66,13 +66,15 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
   }
 
   void _emitIdleState() {
-    emit(
-      SubscriptionPageState.idle(
-        group: _planGroup,
-        selectedPlan: _selectedPlan,
-        subscription: _subscription,
-      ),
-    );
+    if (!isClosed) {
+      emit(
+        SubscriptionPageState.idle(
+          group: _planGroup,
+          selectedPlan: _selectedPlan,
+          subscription: _subscription,
+        ),
+      );
+    }
   }
 
   Future<void> purchase() async {

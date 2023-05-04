@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/is_add_interests_page_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/set_add_interests_page_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
@@ -192,7 +193,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
       await _setAddInterestsPageSeenUseCase();
       await _requestNotificationPermissionUseCase();
       // Tracking can be requested only after the UI becomes active again
-      await _uiActiveStateSubject.firstWhere((isActive) => isActive);
+      if (!kIsTest) await _uiActiveStateSubject.firstWhere((isActive) => isActive);
       await _requestTrackingPermissionUseCase();
     } else {
       if (!(await _isAddInterestsPageSeenUseCase())) {

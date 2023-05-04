@@ -199,15 +199,23 @@ void main() {
       'sign in is required after successful subscription',
       (tester) async {
         final getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
+        final isSignedInUseCase = MockIsSignedInUseCase();
+        when(isSignedInUseCase.call()).thenAnswer((_) async => true);
         when(getActiveSubscriptionUseCase.call()).thenAnswer((_) async => TestData.activeSubscriptionTrial);
         when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(TestData.activeSubscriptionTrial));
 
         final router = await tester.startApp(
-          initialRoute: const OnboardingPageRoute(),
+          // initialRoute: const OnboardingPageRoute(),
           dependencyOverride: (getIt) async {
             getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+            getIt.registerFactory<IsSignedInUseCase>(() => isSignedInUseCase);
           },
         );
+
+        when(isSignedInUseCase.call()).thenAnswer((_) async => false);
+
+        await router.replaceAll([const OnboardingPageRoute()]);
+        await tester.pumpAndSettle();
 
         expect(find.byType(SignInPage), findsOneWidget);
         expect(router.stack.length, 1);
