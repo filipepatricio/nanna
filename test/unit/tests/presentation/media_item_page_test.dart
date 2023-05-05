@@ -2,12 +2,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_text_size_selector_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
+import 'package:better_informed_mobile/presentation/page/media/article_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
+import 'package:better_informed_mobile/presentation/page/media/article_text_scale_factor_selector_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
@@ -22,9 +25,11 @@ import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 import '../../../finders.dart';
 import '../../../flutter_test_config.dart';
+import '../../../generated_mocks.mocks.dart';
 import '../../../test_data.dart';
 import '../../unit_test_utils.dart';
 
@@ -213,6 +218,51 @@ void main() {
 
     expect(find.byType(MediaItemPage), findsNothing);
   });
+
+  testWidgets(
+    'text size selector is shown if flag is true',
+    (tester) async {
+      final useCase = MockShouldUseTextSizeSelectorUseCase();
+      when(useCase()).thenAnswer((_) async => true);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<ShouldUseTextSizeSelectorUseCase>(() => useCase);
+        },
+        initialRoute: MainPageRoute(
+          children: [
+            MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
+          ],
+        ),
+      );
+
+      expect(find.byKey(articleTextScaleFactorSelectorButtonKey), findsOneWidget);
+      await tester.tap(find.byKey(articleTextScaleFactorSelectorButtonKey));
+      await tester.pumpAndSettle();
+      expect(find.byType(ArticleTextScaleFactorSelectorPage), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'text size selector is not shown if flag is false',
+    (tester) async {
+      final useCase = MockShouldUseTextSizeSelectorUseCase();
+      when(useCase()).thenAnswer((_) async => false);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<ShouldUseTextSizeSelectorUseCase>(() => useCase);
+        },
+        initialRoute: MainPageRoute(
+          children: [
+            MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
+          ],
+        ),
+      );
+
+      expect(find.byKey(articleTextScaleFactorSelectorButtonKey), findsNothing);
+    },
+  );
 }
 
 class FakeBookmarkButtonCubit extends Fake implements BookmarkButtonCubit {
@@ -244,7 +294,8 @@ class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubi
     otherTopicItems: [],
     featuredCategories: List.generate(4, (index) => TestData.category),
     relatedContentItems: TestData.categoryItemList,
-    enablePageSwipe: true,
+    preferredArticleTextScaleFactor: 1.0,
+    showTextScaleFactorSelector: true,
   );
 
   @override
@@ -264,9 +315,6 @@ class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubi
 
   @override
   Future<void> initialize(_, __, ___, ____) async {}
-
-  @override
-  Future<void> trackReadingProgress() async {}
 
   @override
   void updateScrollData(_, __) {}

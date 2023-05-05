@@ -37,11 +37,13 @@ class SnackbarView extends HookWidget {
     final textColor = messageState.value?.textColor(context) ?? AppColors.stateTextPrimary;
     final subTextColor = messageState.value?.subTextColor(context) ?? AppColors.categoriesTextSecondary;
 
-    final text = messageState.value?.buildText(textColor);
+    final child = messageState.value?.child;
+
+    final body = child ?? messageState.value?.buildText(textColor);
     final subText = messageState.value?.buildSubText(context, subTextColor);
     final action = messageState.value?.buildAction(textColor, dismissAction);
 
-    if (text == null) return const SizedBox.shrink();
+    if (body == null) return const SizedBox.shrink();
 
     return Container(
       padding: const EdgeInsets.fromLTRB(
@@ -61,7 +63,7 @@ class SnackbarView extends HookWidget {
             crossAxisAlignment: action == null ? CrossAxisAlignment.center : CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              text,
+              body,
               if (subText != null) ...[
                 const SizedBox(height: AppDimens.s),
                 subText,
@@ -137,7 +139,7 @@ extension on SnackbarMessage {
 
   Widget buildText(Color color) {
     return AutoSizeText(
-      message,
+      message!,
       maxLines: 2,
       textAlign: action != null ? TextAlign.start : TextAlign.center,
       style: AppTypography.b2Medium.w550.copyWith(

@@ -21,8 +21,7 @@ class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
     required this.cubit,
     required this.mainController,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final PremiumArticleViewCubit cubit;
   final ScrollController mainController;
@@ -71,85 +70,87 @@ class PremiumArticleReadView extends HookWidget {
     );
 
     return state.maybeMap(
-      idle: (data) => Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          NotificationListener<ScrollNotification>(
-            onNotification: (scrollInfo) => _updateScrollPosition(
-              scrollInfo,
-              readProgress,
-              maxHeight,
-              context,
-            ),
-            child: AudioPlayerBannerWrapper(
-              layout: AudioPlayerBannerLayout.stack,
-              child: Scrollbar(
-                controller: mainController,
-                child: CustomScrollView(
+      idle: (data) {
+        return Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            NotificationListener<ScrollNotification>(
+              onNotification: (scrollInfo) => _updateScrollPosition(
+                scrollInfo,
+                readProgress,
+                maxHeight,
+                context,
+              ),
+              child: AudioPlayerBannerWrapper(
+                layout: AudioPlayerBannerLayout.stack,
+                child: Scrollbar(
                   controller: mainController,
-                  physics: const BottomBouncingScrollPhysics(),
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: ArticleContentView(
-                        article: data.article,
-                        articleHeaderKey: _articleHeaderKey,
-                        articleContentKey: _articleContentKey,
-                      ),
-                    ),
-                    if (data.otherTopicItems.isNotEmpty)
+                  child: CustomScrollView(
+                    controller: mainController,
+                    physics: const BottomBouncingScrollPhysics(),
+                    slivers: [
                       SliverToBoxAdapter(
-                        child: ArticleMoreFromSection(
-                          title: context.l10n.article_moreFromTopic(cubit.topicTitle),
-                          items: data.otherTopicItems.buildWidgets(context, cubit),
+                        child: ArticleContentView(
+                          article: data.article,
+                          articleHeaderKey: _articleHeaderKey,
+                          articleContentKey: _articleContentKey,
                         ),
                       ),
-                    if (data.moreFromBriefItems.isNotEmpty)
+                      if (data.otherTopicItems.isNotEmpty)
+                        SliverToBoxAdapter(
+                          child: ArticleMoreFromSection(
+                            title: context.l10n.article_moreFromTopic(cubit.topicTitle),
+                            items: data.otherTopicItems.buildWidgets(context, cubit),
+                          ),
+                        ),
+                      if (data.moreFromBriefItems.isNotEmpty)
+                        SliverToBoxAdapter(
+                          child: ArticleMoreFromSection(
+                            title: context.l10n.article_otherBriefs,
+                            items: data.moreFromBriefItems.buildWidgets(context, cubit),
+                          ),
+                        ),
+                      if (data.relatedContentItems.isNotEmpty || data.featuredCategories.isNotEmpty)
+                        SliverToBoxAdapter(
+                          child: RelatedContentSection(
+                            articleId: data.article.metadata.id,
+                            featuredCategories: data.featuredCategories,
+                            briefId: cubit.briefId,
+                            topicId: cubit.topicId,
+                            relatedContentItems: data.relatedContentItems,
+                            onRelatedContentItemTap: cubit.onRelatedContentItemTap,
+                            onRelatedCategoryTap: cubit.onRelatedCategoryTap,
+                          ),
+                        ),
                       SliverToBoxAdapter(
-                        child: ArticleMoreFromSection(
-                          title: context.l10n.article_otherBriefs,
-                          items: data.moreFromBriefItems.buildWidgets(context, cubit),
+                        child: Padding(
+                          padding: const EdgeInsets.all(AppDimens.pageHorizontalMargin),
+                          child: RelaxView.article(),
                         ),
                       ),
-                    if (data.relatedContentItems.isNotEmpty || data.featuredCategories.isNotEmpty)
-                      SliverToBoxAdapter(
-                        child: RelatedContentSection(
-                          articleId: data.article.metadata.id,
-                          featuredCategories: data.featuredCategories,
-                          briefId: cubit.briefId,
-                          topicId: cubit.topicId,
-                          relatedContentItems: data.relatedContentItems,
-                          onRelatedContentItemTap: cubit.onRelatedContentItemTap,
-                          onRelatedCategoryTap: cubit.onRelatedCategoryTap,
-                        ),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: AppDimens.l),
                       ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppDimens.pageHorizontalMargin),
-                        child: RelaxView.article(),
+                      const SliverToBoxAdapter(
+                        child: AudioPlayerBannerPlaceholder(),
                       ),
-                    ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: AppDimens.l),
-                    ),
-                    const SliverToBoxAdapter(
-                      child: AudioPlayerBannerPlaceholder(),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Positioned(
-            top: AppDimens.articlePageContentTopPadding(context),
-            left: 0,
-            right: 0,
-            child: _ArticleProgressBar(
-              readProgress: readProgress,
-              color: data.article.metadata.category.color,
+            Positioned(
+              top: AppDimens.articlePageContentTopPadding(context),
+              left: 0,
+              right: 0,
+              child: _ArticleProgressBar(
+                readProgress: readProgress,
+                color: data.article.metadata.category.color,
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
       orElse: Container.new,
     );
   }

@@ -22,8 +22,7 @@ class ArticleContentView extends HookWidget {
     required this.article,
     required this.articleContentKey,
     required this.articleHeaderKey,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Article article;
   final Key articleHeaderKey;

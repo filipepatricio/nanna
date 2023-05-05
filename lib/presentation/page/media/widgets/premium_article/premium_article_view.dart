@@ -36,6 +36,7 @@ class PremiumArticleView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<PremiumArticleViewCubit>();
+    final state = useCubitBuilder(cubit);
     final mainController = useScrollController(keepScrollOffset: true);
     final isScrolled = useValueNotifier(false);
     final actionsBarColorModeNotifier = useMemoized(
@@ -71,22 +72,28 @@ class PremiumArticleView extends HookWidget {
 
     useCubitListener<PremiumArticleViewCubit, PremiumArticleViewState>(
       cubit,
-      (cubit, state, context) {
-        state.mapOrNull(
-          freeArticlesWarning: (data) => showFreeArticlesWarning(
-            context,
-            snackbarController,
-            data.message,
-          ),
-        );
-      },
+      (cubit, state, context) => state.mapOrNull(
+        freeArticlesWarning: (data) {
+          snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: data.message,
+              subMessage: context.l10n.subscription_snackbar_link,
+              action: SnackbarAction(
+                label: context.l10n.subscription_snackbar_action,
+                callback: () => context.pushRoute(const SubscriptionPageRoute()),
+              ),
+              type: SnackbarMessageType.subscription,
+            ),
+          );
+        },
+      ),
     );
 
     return ScrollsToTop(
       onScrollsToTop: (_) => mainController.animateToStart(),
       child: ValueListenableBuilder<bool>(
         valueListenable: isScrolled,
-        builder: (context, isScrolled, _) => Scaffold(
+        builder: (context, isScrolled, child) => Scaffold(
           extendBodyBehindAppBar: true,
           appBar: ArticleAppBar(
             article: article.metadata,
@@ -95,13 +102,23 @@ class PremiumArticleView extends HookWidget {
             shouldShowTitle: isScrolled,
             actionsBarColorModeNotifier: actionsBarColorModeNotifier,
             isConnected: context.watch<IsConnected>(),
-          ),
-          body: ScrollsToTop(
-            onScrollsToTop: (_) => mainController.animateToStart(),
-            child: PremiumArticleReadView(
-              cubit: cubit,
-              mainController: mainController,
+            showTextScaleFactorSelector: state.mapOrNull(
+              idle: (data) => data.showTextScaleFactorSelector
+                  ? () => context.pushRoute(
+                        ArticleTextScaleFactorSelectorPageRoute(
+                          onChangeEnd: cubit.setPreferredArticleTextScaleFactor,
+                        ),
+                      )
+                  : null,
             ),
+          ),
+          body: child,
+        ),
+        child: ScrollsToTop(
+          onScrollsToTop: (_) => mainController.animateToStart(),
+          child: PremiumArticleReadView(
+            cubit: cubit,
+            mainController: mainController,
           ),
         ),
       ),
@@ -109,16 +126,4 @@ class PremiumArticleView extends HookWidget {
   }
 }
 
-void showFreeArticlesWarning(BuildContext context, SnackbarController snackbarController, String message) {
-  snackbarController.showMessage(
-    SnackbarMessage.simple(
-      message: message,
-      subMessage: context.l10n.subscription_snackbar_link,
-      action: SnackbarAction(
-        label: context.l10n.subscription_snackbar_action,
-        callback: () => context.pushRoute(const SubscriptionPageRoute()),
-      ),
-      type: SnackbarMessageType.subscription,
-    ),
-  );
-}
+void showFreeArticlesWarning(BuildContext context, SnackbarController snackbarController, String message) {}

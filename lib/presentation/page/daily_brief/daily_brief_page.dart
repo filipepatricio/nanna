@@ -650,7 +650,7 @@ class _Greeting extends StatelessWidget {
             curationInfo: dummyEditorialTeamCurationInfo,
             imageDimension: AppDimens.smallAvatarSize,
             style: AppTypography.sansTextNanoLausanne.copyWith(
-              color: AppColors.of(context).textTertiary,
+              color: AppColors.of(context).textSecondary,
               height: 1,
             ),
           ),

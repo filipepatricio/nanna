@@ -2,13 +2,17 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/no_connection_banner/no_connection_banner.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
+const articleTextScaleFactorSelectorButtonKey = Key('article_text_scale_factor_selector_button');
 
 class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   const ArticleAppBar({
@@ -18,8 +22,8 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
     this.topicId,
     this.isConnected = true,
     this.shouldShowTitle = false,
-    Key? key,
-  }) : super(key: key);
+    this.showTextScaleFactorSelector,
+  });
 
   final MediaItemArticle article;
   final ValueNotifier<ArticleActionsBarColorMode>? actionsBarColorModeNotifier;
@@ -27,6 +31,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   final String? topicId;
   final bool isConnected;
   final bool shouldShowTitle;
+  final VoidCallback? showTextScaleFactorSelector;
 
   bool get fromTopic => topicId != null;
 
@@ -82,6 +87,18 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
           title: shouldShowTitle ? article.publisher.name : null,
           titleColor: foregroundColorAnimation.value,
           actions: [
+            if (showTextScaleFactorSelector != null)
+              Align(
+                alignment: Alignment.center,
+                child: IconButton(
+                  key: articleTextScaleFactorSelectorButtonKey,
+                  onPressed: showTextScaleFactorSelector,
+                  icon: InformedSvg(
+                    AppVectorGraphics.text,
+                    color: foregroundColorAnimation.value,
+                  ),
+                ),
+              ),
             BookmarkButton.article(
               article: article,
               topicId: topicId,

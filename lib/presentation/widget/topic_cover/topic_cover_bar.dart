@@ -61,7 +61,7 @@ class _TopicCoverBarLarge extends _TopicCoverBar {
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
             style: AppTypography.sansTextNanoLausanne.copyWith(
-              color: AppColors.of(context).textTertiary,
+              color: AppColors.of(context).textSecondary,
               height: 1,
             ),
             imageDimension: AppDimens.smallAvatarSize,
@@ -102,7 +102,7 @@ class _TopicCoverBarMedium extends _TopicCoverBar {
             curationInfo: topic.curationInfo,
             shortLabel: false,
             style: AppTypography.sansTextNanoLausanne.copyWith(
-              color: AppColors.of(context).textTertiary,
+              color: AppColors.of(context).textSecondary,
               height: 1,
             ),
             imageDimension: AppDimens.smallAvatarSize,

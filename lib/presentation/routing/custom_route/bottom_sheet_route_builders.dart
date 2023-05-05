@@ -26,3 +26,15 @@ Route<T> modalBottomSheetPageRouteBuilder<T>(BuildContext context, Widget child,
     settings: page,
   );
 }
+
+Route<T> modalBottomSheetPageTransparentRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) {
+  return ModalBottomSheetRoute<T>(
+    builder: (context) => child,
+    expanded: false,
+    barrierLabel: '',
+    modalBarrierColor: AppColors.transparent,
+    animationCurve: Curves.easeInOut,
+    duration: const Duration(milliseconds: 350),
+    settings: page,
+  );
+}

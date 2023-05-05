@@ -18,6 +18,7 @@ const attributionAdSet = 'afAdset';
 
 const _usePaidSubscriptionFlag = 'use-paid-subscriptions';
 const _useObservableQueriesFlag = 'use-observable-queries';
+const _useTextSizeSelectorFlag = 'use-text-size-selector';
 
 const _rootRouteFlag = 'root-route';
 const _rootRouteFlagDefaultValue = '';
@@ -71,6 +72,11 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   @override
   Future<bool> useObservableQueries() async {
     return LDClient.boolVariation(_useObservableQueriesFlag, true);
+  }
+
+  @override
+  Future<bool> useTextSizeSelector() async {
+    return LDClient.boolVariation(_useTextSizeSelectorFlag, true);
   }
 
   @override

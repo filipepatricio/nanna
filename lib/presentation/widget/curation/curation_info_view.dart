@@ -61,9 +61,13 @@ class CurationInfoView extends StatelessWidget {
                   if (!shortLabel) TextSpan(text: '${curationInfo.byline} '),
                   TextSpan(
                     text: curationInfo.curator.name,
-                    style: style ??
+                    style: style?.copyWith(
+                          color: AppColors.of(context).textPrimary,
+                          decoration: TextDecoration.underline,
+                        ) ??
                         AppTypography.sansTextNanoLausanne.copyWith(
-                          color: AppColors.of(context).textSecondary,
+                          color: AppColors.of(context).textPrimary,
+                          decoration: TextDecoration.underline,
                           height: 1,
                         ),
                   ),
