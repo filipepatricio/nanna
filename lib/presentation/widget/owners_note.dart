@@ -58,7 +58,7 @@ class OwnersNote extends StatelessWidget {
               curationInfo: curationInfo,
               imageDimension: AppDimens.smallAvatarSize,
               style: AppTypography.sansTextNanoLausanne.copyWith(
-                color: AppColors.of(context).textTertiary,
+                color: AppColors.of(context).textSecondary,
                 height: 1,
               ),
             ),
