@@ -49,7 +49,7 @@ class TopicView extends HookWidget {
                 CurationInfoView(
                   curationInfo: topic.curationInfo,
                   style: AppTypography.sansTextSmallLausanne.copyWith(
-                    color: AppColors.of(context).textSecondary,
+                    color: AppColors.of(context).textPrimary,
                     height: 1,
                   ),
                   onTap: () => context.pushRoute(
