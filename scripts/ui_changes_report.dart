@@ -37,8 +37,10 @@ Future<void> main(List<String> args) async {
       for (final failedTest in parseFlutterTestOutput((flutterTestResult.stdout as String).trim())) {
         if (RegExp(r'Pixel\stest\sfailed,\s[0-9.]+%\sdiff\sdetected').hasMatch(failedTest.testOutput)) {
           ++numVisualChanges;
-        } else if (failedTest.testOutput.contains('Could not be compared against non-existent file') ||
-            failedTest.testOutput.contains('Pixel test failed, image sizes')) {
+        } else if (
+            // failedTest.testOutput.contains('Could not be compared against non-existent file')
+            RegExp(r'Could\snot\sbe\scompared\sagainst\snon-existent').hasMatch(failedTest.testOutput) ||
+                RegExp(r'Pixel\stest\sfailed,\simage\ssizes\sdo\snot\smatch\.').hasMatch(failedTest.testOutput)) {
           testFilesWhichProduceNewGoldens.add('test/visual/${failedTest.testFileName}');
         } else {
           unexpectedTestErrors.add('${failedTest.testFileName}:\n${failedTest.testOutput}');
@@ -53,9 +55,9 @@ Future<void> main(List<String> args) async {
         exit(2);
       }
       if (testFilesWhichProduceNewGoldens.isNotEmpty) {
+        print('> Creating new goldens ...');
         final knownGoldens = [...goldensDir.listSync().where((x) => x is File && x.path.endsWith('.png')).cast<File>()];
         final knownGoldensNames = knownGoldens.map((it) => it.name);
-        print('> Creating new goldens ...');
         await runGuarded(
           before: () async {
             await printAndExec('rm', ['-rf', 'test/visual/goldens.backup']);
@@ -76,11 +78,13 @@ Future<void> main(List<String> args) async {
             for (final goldenFile in goldensDir.listSync().where((x) => x is File && x.path.endsWith('.png'))) {
               final fileName = (goldenFile as File).name;
               if (!knownGoldensNames.contains(fileName)) {
+                print('>> Found new golden $fileName...');
                 ++numNewGoldens;
                 await exec('mv', ['test/visual/goldens/$fileName', 'test/visual/ui_changes/__NEW__$fileName']);
               } else {
                 final existingGolden = knownGoldens.firstWhere((file) => file.name == fileName);
                 if (existingGolden.lengthSync() != goldenFile.lengthSync()) {
+                  print('>>> $fileName has changed size...');
                   ++numNewGoldens;
                   await exec('mv', ['test/visual/goldens/$fileName', 'test/visual/ui_changes/__NEW_SIZE__$fileName']);
                 }

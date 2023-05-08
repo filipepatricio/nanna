@@ -42,7 +42,10 @@ class PurchaseRemoteDataSource {
   }
 
   Future<void> logOut() async {
-    return _purchaseExceptionResolver.callWithResolver(() => Purchases.logOut());
+    return _purchaseExceptionResolver.callWithResolver(() async {
+      final isAnonymous = await Purchases.isAnonymous;
+      if (!isAnonymous) await Purchases.logOut();
+    });
   }
 
   Future<CustomerInfo> purchasePackage(Package package, {UpgradeInfo? upgradeInfo}) async {

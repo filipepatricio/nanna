@@ -92,6 +92,7 @@ import 'package:better_informed_mobile/domain/permissions/permissions_repository
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/background_incoming_push_data_refresh_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/has_notification_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_brief_entries_updated_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_local_repository.dart';
@@ -264,7 +265,8 @@ const _classes = [
   GetCategoryPreferencesUseCase,
   UpdateBriefNotifierUseCase,
   PermissionsRepository,
-  RequestPermissionsUseCase
+  RequestPermissionsUseCase,
+  HasNotificationPermissionUseCase,
 ];
 
 @GenerateMocks(_classes)
