@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_out_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -10,11 +11,18 @@ import 'package:url_launcher/url_launcher.dart';
 class SettingsMainCubit extends Cubit<SettingsMainState> {
   SettingsMainCubit(
     this._signOutUseCase,
+    this._isSignedInUseCase,
   ) : super(const SettingsMainState.init());
 
   final SignOutUseCase _signOutUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   Future<void> initialize() async {
+    if (!await _isSignedInUseCase()) {
+      emit(const SettingsMainState.guest());
+      return;
+    }
+
     emit(const SettingsMainState.idle());
   }
 

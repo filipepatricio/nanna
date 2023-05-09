@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_body.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_cubit.di.dart';
@@ -52,7 +53,12 @@ class SettingsManageMyInterestsPage extends HookWidget {
               retryCallback: cubit.initialize,
             ),
           ),
-          orElse: () => const SizedBox.shrink(),
+          guest: () => Center(
+            child: ErrorView.guest(
+              retryCallback: () => context.pushRoute(const SignInPageModal()),
+            ),
+          ),
+          orElse: SizedBox.shrink,
         ),
       ),
     );

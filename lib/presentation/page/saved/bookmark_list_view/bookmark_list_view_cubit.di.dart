@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_event.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
@@ -30,6 +31,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState>
     this._addBookmarkUseCase,
     this._trackActivityUseCase,
     this._isInternetConnectionAvailableUseCase,
+    this._isSignedInUseCase,
   ) : super(BookmarkListViewState.initial());
 
   final BookmarkPaginationEngineProvider _bookmarkPaginationEngineProvider;
@@ -38,6 +40,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState>
   final AddBookmarkUseCase _addBookmarkUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   late PaginationEngine<Bookmark> _paginationEngine;
 
@@ -64,7 +67,6 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState>
   }
 
   Future<void> initialize(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) async {
-    //TODO: Consider not signed in case here
     final options = BookmarkListOptions(filter, sort, order);
     await initializeConnection(options);
 
@@ -156,6 +158,11 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState>
   }
 
   Future<void> _freshInitialization(BookmarkListOptions initialData, bool remote) async {
+    if (!await _isSignedInUseCase()) {
+      emit(BookmarkListViewState.guest(initialData.filter));
+      return;
+    }
+
     emit(BookmarkListViewState.loading(initialData.filter));
 
     try {

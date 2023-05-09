@@ -113,6 +113,11 @@ class BookmarkListView extends HookWidget {
                   ),
                   loading: (_) => const BookmarkLoadingView(),
                   empty: (state) => _BookmarkEmptyView(filter: filter),
+                  guest: (_) => Center(
+                    child: ErrorView.guest(
+                      retryCallback: () => context.pushRoute(const SignInPageModal()),
+                    ),
+                  ),
                   idle: (state) => _Idle(
                     cubit: cubit,
                     bookmarks: state.bookmarks,

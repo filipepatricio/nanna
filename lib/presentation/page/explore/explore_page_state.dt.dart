@@ -37,4 +37,6 @@ class ExplorePageState with _$ExplorePageState {
   const factory ExplorePageState.startExploring() = _ExplorePageStateStartExploring;
 
   const factory ExplorePageState.showTutorialToast() = _ExplorePageStateShowTutorialToast;
+
+  const factory ExplorePageState.guestError() = _ExplorePageStateGuestError;
 }

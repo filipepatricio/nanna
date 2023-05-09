@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/data/category_preference.dart';
@@ -21,12 +22,14 @@ class CategoryPreferenceFollowButtonCubit extends Cubit<CategoryPreferenceFollow
     this._followCategoryUseCase,
     this._unfollowCategoryUseCase,
     this._updateBriefNotifierUseCase,
+    this._isSignedInUseCase,
   ) : super(const CategoryPreferenceFollowButtonState.loading());
 
   final UpdateBriefNotifierUseCase _updateBriefNotifierUseCase;
   final GetCategoryPreferenceUseCase _getCategoryPreferenceUseCase;
   final FollowCategoryUseCase _followCategoryUseCase;
   final UnfollowCategoryUseCase _unfollowCategoryUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   final StreamController<bool> _updateBriefStreamController = StreamController();
   StreamSubscription? _shouldNotifyBriefUpdateSubscription;
@@ -40,7 +43,11 @@ class CategoryPreferenceFollowButtonCubit extends Cubit<CategoryPreferenceFollow
   }
 
   Future<void> initialize({Category? category, CategoryPreference? categoryPreference}) async {
-    //TODO: Consider not signed in case here
+    final isSignedInUseCase = await _isSignedInUseCase();
+    if (!isSignedInUseCase) {
+      emit(const CategoryPreferenceFollowButtonState.disabled());
+      return;
+    }
 
     _shouldNotifyBriefUpdateSubscription = _updateBriefStreamController.stream
         .debounceTime(_briefNotifierDebounceDuration)

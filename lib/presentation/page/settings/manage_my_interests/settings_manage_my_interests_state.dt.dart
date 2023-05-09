@@ -20,5 +20,8 @@ class SettingsManageMyInterestsState with _$SettingsManageMyInterestsState {
   @Implements<BuildState>()
   const factory SettingsManageMyInterestsState.offline() = SettingsManageMyInterestsStateOffline;
 
+  @Implements<BuildState>()
+  const factory SettingsManageMyInterestsState.guest() = SettingsManageMyInterestsStateGuest;
+
   const factory SettingsManageMyInterestsState.showMessage(String message) = SettingsManageMyInterestsStateShowMessage;
 }

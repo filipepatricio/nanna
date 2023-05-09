@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_out_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/reset_user_categories_store_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
@@ -14,7 +15,7 @@ import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable()
+@injectable
 class SettingsAccountCubit extends Cubit<SettingsAccountState> {
   SettingsAccountCubit(
     this._getUserUseCase,
@@ -24,8 +25,10 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     this._deleteAccountUseCase,
     this._resetUserCategoriesStoreUseCase,
     this._resetUserSubscriptionStoreUseCase,
+    this._isSignedInUseCase,
   ) : super(const SettingsAccountState.loading());
 
+  final IsSignedInUseCase _isSignedInUseCase;
   final IsEmailValidUseCase _isEmailValidUseCase;
   final GetUserUseCase _getUserUseCase;
   final UpdateUserUseCase _updateUserUseCase;
@@ -41,6 +44,11 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
 
   Future<void> initialize(AppLocalizations l10n) async {
     try {
+      if (!await _isSignedInUseCase()) {
+        emit(const SettingsAccountState.guest());
+        return;
+      }
+
       _l10n = l10n;
       final user = await _getUserUseCase();
       await _setAccountData(user);

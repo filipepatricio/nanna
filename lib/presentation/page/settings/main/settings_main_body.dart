@@ -31,11 +31,12 @@ class SettingsMainBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = useCubitBuilder(cubit);
     final snackbarController = useSnackbarController();
 
     useCubitListener<SettingsMainCubit, SettingsMainState>(cubit, (cubit, state, context) {
-      state.mapOrNull(
-        sendingEmailError: (error) {
+      state.whenOrNull(
+        sendingEmailError: () {
           showEmailErrorMessage(context, snackbarController);
         },
       );
@@ -116,10 +117,13 @@ class SettingsMainBody extends HookWidget {
             );
           },
         ),
-        SettingsMainItem(
-          label: context.l10n.common_signOut,
-          onTap: cubit.signOut,
-          fontColor: AppColors.of(context).textTertiary,
+        state.maybeMap(
+          idle: (value) => SettingsMainItem(
+            label: context.l10n.common_signOut,
+            onTap: cubit.signOut,
+            fontColor: AppColors.of(context).textTertiary,
+          ),
+          orElse: SizedBox.shrink,
         ),
         const SizedBox(height: AppDimens.xl),
         const Padding(

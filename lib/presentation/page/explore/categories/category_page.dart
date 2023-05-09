@@ -103,7 +103,7 @@ class CategoryPage extends HookWidget {
                   ),
                   error: (value) => SliverPadding(
                     padding: const EdgeInsets.symmetric(vertical: AppDimens.xl),
-                    sliver: SliverToBoxAdapter(
+                    sliver: SliverFillRemaining(
                       child: Center(
                         child: ErrorView(
                           retryCallback: () {
@@ -115,7 +115,7 @@ class CategoryPage extends HookWidget {
                   ),
                   offline: (value) => SliverPadding(
                     padding: const EdgeInsets.symmetric(vertical: AppDimens.xl),
-                    sliver: SliverToBoxAdapter(
+                    sliver: SliverFillRemaining(
                       child: Center(
                         child: ErrorView.offline(
                           retryCallback: () {
@@ -125,7 +125,19 @@ class CategoryPage extends HookWidget {
                       ),
                     ),
                   ),
-                  orElse: () => const SliverToBoxAdapter(),
+                  guest: (value) => SliverPadding(
+                    padding: const EdgeInsets.symmetric(vertical: AppDimens.xl),
+                    sliver: SliverFillRemaining(
+                      child: Center(
+                        child: ErrorView.guest(
+                          retryCallback: () => context.pushRoute(
+                            const SignInPageModal(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  orElse: SliverToBoxAdapter.new,
                 ),
               ),
               const SliverToBoxAdapter(

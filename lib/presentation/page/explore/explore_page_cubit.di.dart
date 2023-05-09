@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
@@ -28,6 +29,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     this._removeSearchHistoryQueryUseCase,
     this._getShouldUpdateExploreStreamUseCase,
     this._shouldUseObservableQueriesUseCase,
+    this._isSignedInUseCase,
   ) : super(const ExplorePageState.initialLoading());
 
   final GetExploreContentUseCase _getExploreContentUseCase;
@@ -38,7 +40,9 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   final ShouldUseObservableQueriesUseCase _shouldUseObservableQueriesUseCase;
   final GetSearchHistoryUseCase _getSearchHistoryUseCase;
   final RemoveSearchHistoryQueryUseCase _removeSearchHistoryQueryUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
+  late bool _isSignedIn;
   late bool _isExploreTutorialStepSeen;
   late ExplorePageState _latestIdleState;
 
@@ -55,11 +59,13 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   Future<void> initialize() async {
     emit(const ExplorePageState.initialLoading());
 
+    _isSignedIn = await _isSignedInUseCase();
+
     await _exploreContentSubscription?.cancel();
     await _shouldUpdateExploreSubscription?.cancel();
 
-    if (await _shouldUseObservableQueriesUseCase()) {
-      _exploreContentSubscription = _getExploreContentUseCase.highlightedContentStream.listen((content) async {
+    if (await _shouldUseObservableQueriesUseCase() && _isSignedIn) {
+      _exploreContentSubscription = _getExploreContentUseCase.exploreContentStream.listen((content) async {
         final idleState = await _processAndEmitExploreContent(content);
         state.maybeMap(
           search: (_) => {},
@@ -92,7 +98,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   }
 
   Future<void> _fetchExploreContent() async {
-    final exploreContent = await _getExploreContentUseCase();
+    final exploreContent = _isSignedIn ? await _getExploreContentUseCase() : await _getExploreContentUseCase.guest();
     final idleState = await _processAndEmitExploreContent(exploreContent);
     emit(idleState);
   }
@@ -119,6 +125,11 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   }
 
   Future<void> startTyping() async {
+    if (!_isSignedIn) {
+      emit(const ExplorePageState.guestError());
+      return;
+    }
+
     emit(const ExplorePageState.startTyping());
     final searchHistory = await _getSearchHistoryUseCase.call();
     if (searchHistory.isNotEmpty) {
@@ -127,6 +138,11 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   }
 
   Future<void> search() async {
+    if (!_isSignedIn) {
+      emit(const ExplorePageState.guestError());
+      return;
+    }
+
     emit(const ExplorePageState.startSearching());
     emit(const ExplorePageState.search());
   }

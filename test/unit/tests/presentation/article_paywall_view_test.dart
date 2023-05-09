@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/subscription/data/active_subscript
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_cell.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/trial_timeline.dart';
 import 'package:flutter/foundation.dart';
@@ -52,7 +53,12 @@ void main() {
     expect(find.byType(TrialTimeline), findsOneWidget);
     expect(find.byText(l10n.subscription_restorePurchase), findsOneWidget);
     expect(find.byText(l10n.subscription_redeemCode), findsOneWidget);
-    expect(find.byText(l10n.subscription_button_trialText), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (widget) => widget is InformedFilledButton && widget.text == l10n.subscription_button_trialText,
+      ),
+      findsOneWidget,
+    );
 
     debugDefaultTargetPlatformOverride = null;
   });

@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/get_notification_preferences_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/has_notification_permission_use_case.di.dart';
@@ -17,6 +18,7 @@ class SettingsNotificationCubit extends Cubit<SettingsNotificationsState> {
     this._requestNotificationPermissionUseCase,
     this._shouldOpenNotificationsSettingsUseCase,
     this._openNotificationsSettingsUseCase,
+    this._isSignedInUseCase,
   ) : super(SettingsNotificationsState.loading());
 
   final GetNotificationPreferencesUseCase _getNotificationPreferencesUseCase;
@@ -24,9 +26,15 @@ class SettingsNotificationCubit extends Cubit<SettingsNotificationsState> {
   final RequestNotificationPermissionUseCase _requestNotificationPermissionUseCase;
   final ShouldOpenNotificationsSettingsUseCase _shouldOpenNotificationsSettingsUseCase;
   final OpenNotificationsSettingsUseCase _openNotificationsSettingsUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   Future<void> initialize() async {
     emit(SettingsNotificationsState.loading());
+
+    if (!await _isSignedInUseCase()) {
+      emit(SettingsNotificationsState.guest());
+      return;
+    }
 
     try {
       final hasPermission = await _hasNotificationPermissionUseCase();

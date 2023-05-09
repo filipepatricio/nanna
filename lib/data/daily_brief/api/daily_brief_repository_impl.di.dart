@@ -33,8 +33,8 @@ class DailyBriefRepositoryImpl implements DailyBriefRepository {
   }
 
   @override
-  Future<BriefsWrapper> getCurrentBriefUnauthorized() async {
-    final dto = await _dailyBriefApiDataSource.currentBriefUnauthorized();
+  Future<BriefsWrapper> getCurrentBriefGuest() async {
+    final dto = await _dailyBriefApiDataSource.currentBriefGuest();
     final currentBrief = _briefsWrapperDTOMapper(dto);
     return currentBrief;
   }

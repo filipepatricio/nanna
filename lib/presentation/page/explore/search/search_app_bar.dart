@@ -7,8 +7,10 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/intl_util.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/no_connection_banner/no_connection_banner.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -69,7 +71,9 @@ class _SearchBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final query = useState('');
+    final state = useCubitBuilder(searchViewCubit);
     final searchTextFieldFocusNode = useFocusNode();
+    final snackbarController = useSnackbarController();
 
     useEffect(
       () {
@@ -153,7 +157,17 @@ class _SearchBar extends HookWidget {
             explorePageCubit.search();
           }
         },
-        onTap: explorePageCubit.startTyping,
+        onTap: () {
+          state.maybeMap(
+            guest: (_) {
+              snackbarController.showMessage(
+                SnackbarMessage.guest(context),
+              );
+              searchTextFieldFocusNode.unfocus();
+            },
+            orElse: explorePageCubit.startTyping,
+          );
+        },
       ),
     );
   }

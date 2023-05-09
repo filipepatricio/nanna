@@ -20,8 +20,7 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
       playing: (_) => () => cubit.pause(),
       paused: (_) => () => cubit.play(),
       offline: (_) => () => snackbarController.showMessage(SnackbarMessage.offline(context)),
-      // TODO: Set up right action for this
-      notSignedIn: (_) => () => snackbarController.showMessage(SnackbarMessage.offline(context)),
+      notSignedIn: (_) => () => snackbarController.showMessage(SnackbarMessage.guest(context)),
       orElse: () => throw Exception('Unhandled type'),
     );
   }

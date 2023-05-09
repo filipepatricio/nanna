@@ -13,6 +13,9 @@ class SearchViewState with _$SearchViewState {
   factory SearchViewState.loading() = _SearchViewStateLoading;
 
   @Implements<BuildState>()
+  factory SearchViewState.guest() = _SearchViewStateGuest;
+
+  @Implements<BuildState>()
   factory SearchViewState.empty(String query) = _SearchViewStateEmpty;
 
   @Implements<BuildState>()

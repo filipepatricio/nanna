@@ -9,7 +9,6 @@ import 'package:better_informed_mobile/domain/categories/use_case/set_add_intere
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dart';
-import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_unauthorized__use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
@@ -74,7 +73,6 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._isAddInterestsPageSeenUseCase,
     this._setAddInterestsPageSeenUseCase,
     this._requestPermissionsUseCase,
-    this._getCurrentBriefUnauthorizedUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final IsSignedInUseCase _isSignedInUseCase;
@@ -96,7 +94,6 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final IsAddInterestsPageSeenUseCase _isAddInterestsPageSeenUseCase;
   final SetAddInterestsPageSeenUseCase _setAddInterestsPageSeenUseCase;
   final RequestPermissionsUseCase _requestPermissionsUseCase;
-  final GetCurrentBriefUnauthorizedUseCase _getCurrentBriefUnauthorizedUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -332,7 +329,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
 
   Future<BriefsWrapper> _getCurrentBrief() async {
     final isSignedIn = await _isSignedInUseCase();
-    return isSignedIn ? await _getCurrentBriefUseCase() : await _getCurrentBriefUnauthorizedUseCase();
+    return isSignedIn ? await _getCurrentBriefUseCase() : await _getCurrentBriefUseCase.guest();
   }
 
   void _refreshCurrentState() {

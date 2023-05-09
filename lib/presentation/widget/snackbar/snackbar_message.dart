@@ -36,6 +36,17 @@ class SnackbarMessage {
         action: action,
       );
 
+  factory SnackbarMessage.guest(
+    BuildContext context, {
+    SnackbarAction? action,
+  }) =>
+      SnackbarMessage._(
+        message: context.l10n.guest_signIn_error_message,
+        subMessage: context.l10n.guest_signIn_error_subMessage,
+        type: SnackbarMessageType.info,
+        action: action,
+      );
+
   factory SnackbarMessage.custom({
     required Widget child,
   }) =>

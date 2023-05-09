@@ -24,6 +24,11 @@ class BookmarkListViewState with _$BookmarkListViewState {
   ) = _BookmarkListViewStateEmpty;
 
   @Implements<BuildState>()
+  factory BookmarkListViewState.guest(
+    BookmarkFilter filter,
+  ) = _BookmarkListViewStateGuest;
+
+  @Implements<BuildState>()
   factory BookmarkListViewState.idle(
     BookmarkFilter filter,
     List<Bookmark> bookmarks,

@@ -154,9 +154,8 @@ class BookmarkButton extends HookWidget {
                   state: BookmarkState.notBookmarked(),
                   color: iconColor,
                   animationController: animationController,
-                  //TODO: Set up right action for this
                   onTap: () => snackbarController.showMessage(
-                    SnackbarMessage.offline(context),
+                    SnackbarMessage.guest(context),
                   ),
                 ),
                 switching: (state) => _Loader(color: iconColor),

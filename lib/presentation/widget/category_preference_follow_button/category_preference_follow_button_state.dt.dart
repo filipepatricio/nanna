@@ -7,12 +7,15 @@ part 'category_preference_follow_button_state.dt.freezed.dart';
 @Freezed(toJson: false)
 class CategoryPreferenceFollowButtonState with _$CategoryPreferenceFollowButtonState {
   @Implements<BuildState>()
-  const factory CategoryPreferenceFollowButtonState.loading() = CategoryPreferenceFollowButtonStateLoading;
+  const factory CategoryPreferenceFollowButtonState.loading() = _CategoryPreferenceFollowButtonStateLoading;
+
+  @Implements<BuildState>()
+  const factory CategoryPreferenceFollowButtonState.disabled() = _CategoryPreferenceFollowButtonStateDisabled;
 
   @Implements<BuildState>()
   factory CategoryPreferenceFollowButtonState.categoryPreferenceLoaded(
     CategoryPreference categoryPreference,
-  ) = CategoryPreferenceFollowButtonStateLoaded;
+  ) = _CategoryPreferenceFollowButtonStateLoaded;
 
-  const factory CategoryPreferenceFollowButtonState.error() = CategoryPreferenceFollowButtonStateError;
+  const factory CategoryPreferenceFollowButtonState.error() = _CategoryPreferenceFollowButtonStateError;
 }

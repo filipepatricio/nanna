@@ -333,8 +333,32 @@
   "@explore_viewAll": {
     "type": "text"
   },
+  "guest_signIn_error_message": "You're not signed in",
+  "@guest_signIn_error_message": {
+    "type": "text"
+  },
+  "guest_signIn_error_subMessage": "You’ll need to sign in to do that",
+  "@guest_signIn_error_subMessage": {
+    "type": "text"
+  },
+  "guest_signIn_error_action": "Sign In",
+  "@guest_signIn_error_action": {
+    "type": "text"
+  },
+  "guest_subscribe_error_message": "You're not subscribed",
+  "@guest_subscribe_error_message": {
+    "type": "text"
+  },
+  "guest_subscribe_error_subMessage": "You’ll need to subscribe to do that",
+  "@guest_subscribe_error_subMessage": {
+    "type": "text"
+  },
   "main_exploreTab": "Explore",
   "@main_exploreTab": {
+    "type": "text"
+  },
+  "main_profileTab": "Profile",
+  "@main_profileTab": {
     "type": "text"
   },
   "main_savedTab": "Saved",
@@ -385,7 +409,7 @@
   "@onboarding_descriptionSlideCategories": {
     "type": "text"
   },
-  "onboarding_descriptionSlideOne": "Explore articles from diverse international publishers and read ad-free. You'll see names you already love and find new favorites.",
+  "onboarding_descriptionSlideOne": "Get a daily curation of must-read articles – all in one app.",
   "@onboarding_descriptionSlideOne": {
     "type": "text"
   },
@@ -733,6 +757,10 @@
       "address": {
       }
     }
+  },
+  "signIn_header_signIn": "Sign up or log in below to access world-class journalism from premium publishers, curated by editors & experts.",
+  "@signIn_header_signIn": {
+    "type": "text"
   },
   "signIn_orContinue": "Or continue with",
   "@signIn_orContinue": {

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_category_preferences_use_case.di.dart';
@@ -16,10 +17,12 @@ class SettingsManageMyInterestsCubit extends Cubit<SettingsManageMyInterestsStat
   SettingsManageMyInterestsCubit(
     this._getCategoryPreferencesUseCase,
     this._updateBriefNotifierUseCase,
+    this._isSignedInUseCase,
   ) : super(const SettingsManageMyInterestsState.loading());
 
   final GetCategoryPreferencesUseCase _getCategoryPreferencesUseCase;
   final UpdateBriefNotifierUseCase _updateBriefNotifierUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   final StreamController<bool> _updateBriefStreamController = StreamController();
   StreamSubscription? _shouldNotifyBriefUpdateSubscription;
@@ -34,6 +37,11 @@ class SettingsManageMyInterestsCubit extends Cubit<SettingsManageMyInterestsStat
 
   Future<void> initialize() async {
     emit(const SettingsManageMyInterestsState.loading());
+
+    if (!await _isSignedInUseCase()) {
+      emit(const SettingsManageMyInterestsState.guest());
+      return;
+    }
 
     await _shouldNotifyBriefUpdateSubscription?.cancel();
     _shouldNotifyBriefUpdateSubscription = _updateBriefStreamController.stream

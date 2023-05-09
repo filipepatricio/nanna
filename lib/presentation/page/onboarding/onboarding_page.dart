@@ -79,13 +79,9 @@ class OnboardingPage extends HookWidget {
                   Positioned(
                     top: AppDimens.s,
                     right: AppDimens.xl,
-                    child: Visibility.maintain(
-                      // TODO: Remove for Guest mode access
-                      visible: true,
-                      child: SkipButton(
-                        cubit: cubit,
-                        controller: controller,
-                      ),
+                    child: SkipButton(
+                      cubit: cubit,
+                      controller: controller,
                     ),
                   ),
                   Positioned(

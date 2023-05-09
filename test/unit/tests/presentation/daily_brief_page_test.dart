@@ -47,7 +47,6 @@ void main() {
   late MockGetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
   late MockRequestPermissionsUseCase requestPermissionsUseCase;
   late MockIsSignedInUseCase isSignedInUseCase;
-  late MockGetCurrentBriefUnauthorizedUseCase getCurrentBriefUnauthorizedUseCase;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(
@@ -78,7 +77,6 @@ void main() {
     getCategoryPreferencesUseCase = MockGetCategoryPreferencesUseCase();
     getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
     requestPermissionsUseCase = MockRequestPermissionsUseCase();
-    getCurrentBriefUnauthorizedUseCase = MockGetCurrentBriefUnauthorizedUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       isSignedInUseCase,
@@ -100,7 +98,6 @@ void main() {
       isAddInterestsPageSeenUseCase,
       setAddInterestsPageSeenUseCase,
       requestPermissionsUseCase,
-      getCurrentBriefUnauthorizedUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
@@ -120,6 +117,7 @@ void main() {
     when(isInternetConnectionAvailableUseCase.stream).thenAnswer((_) async* {});
     when(shouldUseObservableQueriesUseCase.call()).thenAnswer((_) async => true);
     when(setNeedsRefreshDailyBriefUseCase.call(any)).thenAnswer((_) async => false);
+    when(isSignedInUseCase.call()).thenAnswer((_) async => true);
   });
 
   test('brief entry preview is being tracked correctly', () async {

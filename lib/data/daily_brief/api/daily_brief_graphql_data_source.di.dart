@@ -53,7 +53,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
   }
 
   @override
-  Future<BriefsWrapperDTO> currentBriefUnauthorized() async {
+  Future<BriefsWrapperDTO> currentBriefGuest() async {
     final result = await _guestClient.query(
       QueryOptions(
         document: current_brief.document,
