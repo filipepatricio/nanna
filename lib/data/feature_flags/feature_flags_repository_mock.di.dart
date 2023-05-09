@@ -19,20 +19,12 @@ class FeatureFlagsRepositoryMock implements FeaturesFlagsRepository {
   }
 
   @override
-  Future<bool> usePaidSubscriptions() async {
-    return true;
-  }
-
-  @override
   Future<String> defaultPaywall() async {
     return 'current';
   }
 
   @override
   Future<void> setupAttribution(InstallAttributionPayload installAttributionPayload) async {}
-
-  @override
-  Stream<bool> usePaidSubscriptionStream() async* {}
 
   @override
   Future<bool> useObservableQueries() async => true;

@@ -8,81 +8,34 @@ typedef OnPurchasePressed = void Function(SubscriptionPlan plan);
 enum SubscriptionButtonContentType { lite, full }
 
 class SubscribeButton extends StatelessWidget {
-  const SubscribeButton._({
-    required this.plan,
-    required this.mode,
+  const SubscribeButton({
+    required this.selectedPlan,
     required this.isLoading,
     required this.onPurchasePressed,
-    this.contentType = SubscriptionButtonContentType.full,
-    Key? key,
-  }) : super(key: key);
+    this.isEnabled = true,
+    this.currentPlan,
+  });
 
-  factory SubscribeButton.light({
-    required SubscriptionPlan plan,
-    required bool isLoading,
-    required OnPurchasePressed onPurchasePressed,
-    SubscriptionButtonContentType contentType = SubscriptionButtonContentType.full,
-  }) =>
-      SubscribeButton._(
-        plan: plan,
-        isLoading: isLoading,
-        onPurchasePressed: onPurchasePressed,
-        contentType: contentType,
-        mode: Brightness.light,
-      );
-
-  factory SubscribeButton.dark({
-    required SubscriptionPlan plan,
-    required bool isLoading,
-    required OnPurchasePressed onPurchasePressed,
-    SubscriptionButtonContentType contentType = SubscriptionButtonContentType.full,
-  }) =>
-      SubscribeButton._(
-        plan: plan,
-        isLoading: isLoading,
-        onPurchasePressed: onPurchasePressed,
-        contentType: contentType,
-        mode: Brightness.dark,
-      );
-
-  final SubscriptionPlan plan;
-  final Brightness mode;
+  final SubscriptionPlan? currentPlan;
+  final SubscriptionPlan selectedPlan;
   final bool isLoading;
+  final bool isEnabled;
   final OnPurchasePressed onPurchasePressed;
-  final SubscriptionButtonContentType contentType;
 
   @override
   Widget build(BuildContext context) {
-    final text = plan.hasTrial && contentType == SubscriptionButtonContentType.full
-        ? context.l10n.subscription_button_trialText(
-            context.l10n.date_daySuffix('${plan.trialDays}'),
-          )
-        : context.l10n.subscription_button_standard;
+    final text = currentPlan != null
+        ? context.l10n.subscription_change_confirm
+        : selectedPlan.hasTrial
+            ? context.l10n.subscription_button_trialText
+            : context.l10n.subscription_button_standard;
 
-    if (mode == Brightness.dark) {
-      return InformedFilledButton.primary(
-        context: context,
-        text: text,
-        subtext: contentType == SubscriptionButtonContentType.full && plan.hasTrial
-            ? context.l10n.subscription_button_trialSubtext(plan.priceString, plan.periodString(context))
-            : null,
-        onTap: () => onPurchasePressed(plan),
-        isLoading: isLoading,
-      );
-    }
-
-    return InformedFilledButton.accent(
+    return InformedFilledButton.primary(
       context: context,
       text: text,
-      subtext: contentType == SubscriptionButtonContentType.full && plan.hasTrial
-          ? context.l10n.subscription_button_trialSubtext(plan.priceString, plan.periodString(context))
-          : null,
-      onTap: () => onPurchasePressed(plan),
       isLoading: isLoading,
+      isEnabled: isEnabled,
+      onTap: () => onPurchasePressed(selectedPlan),
     );
   }
-}
-
-extension on SubscriptionPlan {
-  String periodString(BuildContext context) => isAnnual ? context.l10n.date_year : context.l10n.date_month;
 }

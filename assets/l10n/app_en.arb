@@ -397,6 +397,14 @@
   "@noConnection_snackbar_subMessage": {
     "type": "text"
   },
+  "onboarding_button_getStartedWithPremium": "Get started with Premium",
+  "@onboarding_button_getStartedWithPremium": {
+    "type": "text"
+  },
+  "onboarding_button_alreadyHaveAnAccount": "I already have an account",
+  "@onboarding_button_alreadyHaveAnAccount": {
+    "type": "text"
+  },
   "onboarding_categories_everything": "Show me everything",
   "@onboarding_categories_everything": {
     "type": "text"
@@ -405,20 +413,36 @@
   "@onboarding_descriptionSlideCategories": {
     "type": "text"
   },
-  "onboarding_descriptionSlideOne": "Get a daily curation of must-read articles – all in one app.",
+  "onboarding_descriptionSlideOne": "Explore articles from diverse international publishers and read ad-free. You'll see names you already love and find new favorites.",
   "@onboarding_descriptionSlideOne": {
+    "type": "text"
+  },
+  "onboarding_descriptionSlideTwo": "Read less and know more with your Daily Brief, curated by our editors and updated throughout the day. Every Brief comes with a key summary and editorial commentary.",
+  "@onboarding_descriptionSlideTwo": {
+    "type": "text"
+  },
+  "onboarding_descriptionSlideThree": "Choose to read now or bookmark articles for later. Premium subscribers can read or listen to all our publishers and enjoy stories offline.",
+  "@onboarding_descriptionSlideThree": {
     "type": "text"
   },
   "onboarding_headerSlideCategories": "Add your interests",
   "@onboarding_headerSlideCategories": {
     "type": "text"
   },
-  "onboarding_headerSlideOne": "Access trusted, premium news sources",
+  "onboarding_headerSlideOne": "Access premium publishers, all in one app",
   "@onboarding_headerSlideOne": {
     "type": "text"
   },
-  "onboarding_headerSlideThree": "Notifications",
+  "onboarding_headerSlideTwo": "Enjoy a concise, curated Daily Brief",
+  "@onboarding_headerSlideTwo": {
+    "type": "text"
+  },
+  "onboarding_headerSlideThree": "News to fit your schedule  ",
   "@onboarding_headerSlideThree": {
+    "type": "text"
+  },
+  "onboarding_headerSlideNotifications": "Notifications",
+  "@onboarding_headerSlideNotifications": {
     "type": "text"
   },
   "onboarding_notifications_email": "Email",
@@ -714,7 +738,7 @@
   "@signIn_consentParts_and": {
     "type": "text"
   },
-  "signIn_consentParts_info": "By signing up, you agree to our ",
+  "signIn_consentParts_info": "By signing in, you agree to our ",
   "@signIn_consentParts_info": {
     "type": "text"
   },
@@ -742,10 +766,6 @@
       }
     }
   },
-  "signIn_header_signIn": "Sign up or log in below to access world-class journalism from premium publishers, curated by editors & experts.",
-  "@signIn_header_signIn": {
-    "type": "text"
-  },
   "signIn_orContinue": "Or continue with",
   "@signIn_orContinue": {
     "type": "text"
@@ -762,16 +782,24 @@
   "@signIn_providerButton_linkedin": {
     "type": "text"
   },
-  "signIn_receiveNews": "I’d like to receive news and updates from informed",
-  "@signIn_receiveNews": {
+  "signIn_withEmailButton": "Get magic link",
+  "@signIn_withEmailButton": {
     "type": "text"
   },
   "signIn_unauthorized": "This link has expired. Please type in your email again to get a new one",
   "@signIn_unauthorized": {
     "type": "text"
   },
-  "signIn_welcome": "Welcome to informed ",
+  "signIn_welcome": "Sign in to informed",
   "@signIn_welcome": {
+    "type": "text"
+  },
+  "signIn_welcome_subscribed": "Subscription successful",
+  "@signIn_welcome_subscribed": {
+    "type": "text"
+  },
+  "signIn_subscribed_body": "Sign in so we can link your saved articles and preferences to your subscription",
+  "@signIn_subscribed_body": {
     "type": "text"
   },
   "social_facebook": "Facebook",
@@ -786,39 +814,25 @@
   "@social_whatsapp": {
     "type": "text"
   },
-  "subscription_benefit_access": "Unlimited news access",
+  "subscription_benefit_one": "Curated articles from premium publishers",
   "@subscription_benefit_access": {
     "type": "text"
   },
-  "subscription_benefit_fresh": "Fresh curations every day",
+  "subscription_benefit_two": "Concise Daily Briefs with editorial commentary",
   "@subscription_benefit_fresh": {
     "type": "text"
   },
-  "subscription_benefit_read": "Read or listen to articles",
+  "subscription_benefit_three": "Read, listen, save for later, or enjoy offline",
   "@subscription_benefit_read": {
     "type": "text"
   },
-  "subscription_button_standard": "Subscribe",
+  "subscription_button_standard": "Get started with Premium",
   "@subscription_button_standard": {
     "type": "text"
   },
-  "subscription_button_trialSubtext": "then {price} / {period}",
-  "@subscription_button_trialSubtext": {
-    "type": "text",
-    "placeholders": {
-      "price": {
-      },
-      "period": {
-      }
-    }
-  },
-  "subscription_button_trialText": "Start your free {period} trial",
+  "subscription_button_trialText": "Start your free trial now",
   "@subscription_button_trialText": {
-    "type": "text",
-    "placeholders": {
-      "period": {
-      }
-    }
+    "type": "text"
   },
   "subscription_button_tryForFree": "Try for free",
   "@subscription_button_tryForFree": {
@@ -832,8 +846,44 @@
   "@subscription_manageSubscription": {
     "type": "text"
   },
+  "subscription_card_price": "{price} / {time}",
+  "@subscription_card_price": {
+    "type": "text",
+    "placeholders": {
+      "price": {
+      },
+      "time": {
+      }
+    }
+  },
+  "subscription_card_monthlyPrice": "(that's {price} / {time})",
+  "@subscription_card_monthlyPrice": {
+    "type": "text",
+    "placeholders": {
+      "price": {
+      },
+      "time": {
+      }
+    }
+  },
+  "subscription_card_trialDays": "with {days}-day free trial",
+  "@subscription_card_trialDays": {
+    "type": "text",
+    "placeholders": {
+      "days": {
+      }
+    }
+  },
   "subscription_cancelSubscription": "Cancel subscription",
   "@subscription_cancelSubscription": {
+    "type": "text"
+  },
+  "subscription_info_cancelTitle": "How to cancel?",
+  "@subscription_info_cancelTitle": {
+    "type": "text"
+  },
+  "subscription_info_cancelDescription": "It’s easy: Open the informed app, tap Settings, and head to Manage your subscription. Now you are in your iTunes subscription. Select informed, “Cancel Trial” and confirm.",
+  "@subscription_info_cancelDescription": {
     "type": "text"
   },
   "subscription_change_confirm": "Confirm change",
@@ -852,28 +902,26 @@
       }
     }
   },
-  "subscription_change_title": "Change _your plan_",
+  "subscription_change_title": "Change your plan",
   "@subscription_change_title": {
     "type": "text"
   },
-  "subscription_change_upcomingPlan": "Upcoming plan",
-  "@subscription_change_upcomingPlan": {
-    "type": "text"
-  },
-  "subscription_chargeInfo_standard": "Recurring billing · Cancel anytime",
-  "@subscription_chargeInfo_standard": {
-    "type": "text"
-  },
-  "subscription_chargeInfo_trial": "Cancel anytime during your {period} trial and you won't be charged.",
-  "@subscription_chargeInfo_trial": {
+  "subscription_change_subtitle": "You currently have {currentPlan} payment plan, you can change it to {nextPlan} plan at any time.",
+  "@subscription_change_subtitle": {
     "type": "text",
     "placeholders": {
-      "period": {
+      "currentPlan": {
+      },
+      "nextPlan": {
       }
     }
   },
-  "subscription_description": "Read or listen to all of our curated articles.\nCancel anytime during your trial.",
-  "@subscription_description": {
+  "subscription_change_annual": "an annual",
+  "@subscription_change_annual": {
+    "type": "text"
+  },
+  "subscription_change_monthly": "a monthly",
+  "@subscription_change_monthly": {
     "type": "text"
   },
   "subscription_endDate": "End date",
@@ -952,7 +1000,15 @@
       }
     }
   },
-  "subscription_redeemCode": "Redeem Code",
+  "subscription_subscribeWithTrial": "Start your free trial now",
+  "@subscription_subscribeWithTrial": {
+    "type": "text"
+  },
+  "subscription_subscribeWithoutTrial": "Get started with Premium",
+  "@subscription_subscribeWithoutTrial": {
+    "type": "text"
+  },
+  "subscription_redeemCode": "Redeem code",
   "@subscription_redeemCode": {
     "type": "text"
   },
@@ -998,6 +1054,53 @@
   "@subscription_snackbar_action": {
     "type": "text"
   },
+  "subscription_trialTimeline_title": "How your {trialDays}-day free trial works",
+  "@subscription_trialTimeline_title": {
+    "type": "text",
+    "placeholders": {
+      "trialDays": {
+      }
+    }
+  },
+  "subscription_trialTimeline_step1_title": "Now",
+  "@subscription_trialTimeline_step1_title": {
+    "type": "text"
+  },
+  "subscription_trialTimeline_step1_description": "Start your free trial of Premium. 0€ charged today.",
+  "@subscription_trialTimeline_step1_description": {
+    "type": "text"
+  },
+  "subscription_trialTimeline_step2_title": "Day {day}",
+  "@subscription_trialTimeline_step2_title": {
+    "type": "text",
+    "placeholders": {
+      "day": {
+      }
+    }
+  },
+  "subscription_trialTimeline_step2_description": "Get an email reminder that your trial ends soon.",
+  "@subscription_trialTimeline_step2_description": {
+    "type": "text"
+  },
+  "subscription_trialTimeline_step3_title": "Day {day}",
+  "@subscription_trialTimeline_step3_title": {
+    "type": "text",
+    "placeholders": {
+      "day": {
+      }
+    }
+  },
+  "subscription_trialTimeline_step3_description": "You'll be charged {price} on {date}. Cancel before and you won't be charged.",
+  "@subscription_trialTimeline_step3_description": {
+    "type": "text",
+    "placeholders": {
+      "price": {
+      },
+      "date": {
+
+      }
+    }
+  },
   "subscription_startReading": "Start reading",
   "@subscription_startReading": {
     "type": "text"
@@ -1018,17 +1121,25 @@
   "@subscription_success_body_standard": {
     "type": "text"
   },
-  "subscription_success_body_trial": "Thanks for subscribing and enjoy unlimited access to informed.",
+  "subscription_success_body_trial": "Welcome to informed! You'll be notified by email {days} days before your trial ends.",
   "@subscription_success_body_trial": {
-    "type": "text"
+    "type": "text",
+    "placeholders": {
+      "days": {
+      }
+    }
   },
   "subscription_success_title_standard": "_Thank you_ for subscribing",
   "@subscription_success_title_standard": {
     "type": "text"
   },
-  "subscription_success_title_trial": "You _free trial_ starts now",
+  "subscription_success_title_trial": "Your {days}-day free trial starts now",
   "@subscription_success_title_trial": {
-    "type": "text"
+    "type": "text",
+    "placeholders": {
+      "days": {
+      }
+    }
   },
   "subscription_title_article": "Subscribe for _unlimited_ access",
   "@subscription_title_article": {
@@ -1036,6 +1147,10 @@
   },
   "subscription_title_standard": "Subscribe to Premium",
   "@subscription_title_standard": {
+    "type": "text"
+  },
+  "subscription_subtitle_noTrial": "Your trial has expired. Subscribe to Premium now to enjoy everything informed has to offer, including:",
+  "@subscription_subtitle_noTrial": {
     "type": "text"
   },
   "subscription_title_trial": "Subscribe now",
@@ -1165,5 +1280,17 @@
       "version": {
       }
     }
+  },
+  "addInterests_title": "Add your interests",
+  "@addInterests_title": {
+    "type": "text"
+  },
+  "addInterests_description": "Get personalized suggestions alongside wider curations. Please choose at least 4 topics.",
+  "@addInterests_description": {
+    "type": "text"
+  },
+  "onboarding": "Onboarding",
+  "@onboarding": {
+    "type": "text"
   }
 }

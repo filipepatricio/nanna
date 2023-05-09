@@ -105,8 +105,8 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
     Segment.screen(screenName: page.name, properties: page.properties);
 
     final pageEventName = '${page.name} Screen View';
-    LDClient.track(pageEventName, data: _tryGenerateTrackData(page.properties));
     _appsflyerSdk.logEvent(pageEventName, page.properties);
+    if (LDClient.isInitialized()) LDClient.track(pageEventName, data: _tryGenerateTrackData(page.properties));
   }
 
   @override
@@ -114,7 +114,7 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
     await _appsflyerSdk.logEvent(event.name, event.properties);
     await Sentry.addBreadcrumb(Breadcrumb(message: event.name, category: 'event', data: event.properties));
     await Segment.track(eventName: event.name, properties: event.properties);
-    await LDClient.track(event.name, data: _tryGenerateTrackData(event.properties));
+    if (LDClient.isInitialized()) await LDClient.track(event.name, data: _tryGenerateTrackData(event.properties));
   }
 
   @override

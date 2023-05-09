@@ -20,8 +20,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="NewLaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
-                                <rect key="frame" x="72" y="416.5" width="270" height="63"/>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
+                                <rect key="frame" x="88.5" y="345" width="237" height="206"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" name="MyBackgroundColor"/>
@@ -37,7 +37,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchImage" width="270" height="63"/>
+        <image name="LaunchImage" width="237" height="206"/>
         <namedColor name="MyBackgroundColor">
             <color red="0.97254901960784312" green="0.97254901960784312" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

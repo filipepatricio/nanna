@@ -2,110 +2,63 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
-import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
-import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dart';
-import 'package:better_informed_mobile/domain/categories/use_case/get_preferable_categories_use_case.di.dart';
-import 'package:better_informed_mobile/domain/onboarding/data/onboarding_version.dart';
-import 'package:better_informed_mobile/domain/onboarding/use_case/get_seen_onboarding_version_use_case.di.dart';
-import 'package:better_informed_mobile/domain/onboarding/use_case/set_onboarding_seen_use_case.di.dart';
-import 'package:better_informed_mobile/domain/push_notification/use_case/request_notification_permission_use_case.di.dart';
-import 'package:better_informed_mobile/domain/user/use_case/update_preferred_categories_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
-import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
-import 'package:rxdart/rxdart.dart';
 
 @injectable
 class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   OnboardingPageCubit(
-    this._requestNotificationPermissionUseCase,
     this._trackActivityUseCase,
-    this._setOnboardingSeenUseCase,
-    this._initializeAttributionUseCase,
-    this._requestTrackingPermissionUseCase,
-    this._getSeenOnboardingVersionUseCase,
-    this._getCurrentOnboardingCategoriesUseCase,
-    this._updatePreferredCategoriesUseCase,
+    this._getActiveSubscriptionUseCase,
+    this._isSignedInUseCase,
   ) : super(OnboardingPageState.idle());
 
-  final RequestNotificationPermissionUseCase _requestNotificationPermissionUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
-  final SetOnboardingSeenUseCase _setOnboardingSeenUseCase;
-  final InitializeAttributionUseCase _initializeAttributionUseCase;
-  final RequestTrackingPermissionUseCase _requestTrackingPermissionUseCase;
-  final GetSeenOnboardingVersionUseCase _getSeenOnboardingVersionUseCase;
-  final GetPreferableCategoriesUseCase _getCurrentOnboardingCategoriesUseCase;
-  final UpdatePreferredCategoriesUseCase _updatePreferredCategoriesUseCase;
+  final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
-  StreamSubscription? _onboardingCategoriesStreamSubscription;
+  StreamSubscription? _activeSubscriptionSub;
 
-  List<Category> _categories = [];
-
-  final BehaviorSubject<bool> _uiActiveStateSubject = BehaviorSubject.seeded(true);
+  @override
+  Future<void> close() async {
+    await _activeSubscriptionSub?.cancel();
+    await super.close();
+  }
 
   Future<void> initialize() async {
-    _onboardingCategoriesStreamSubscription =
-        _getCurrentOnboardingCategoriesUseCase.stream.listen(_onboardingCategoriesListener);
     _trackActivityUseCase.trackEvent(AnalyticsEvent.onboardingStarted());
 
-    final lastSeenOnboardingVersion = await _getSeenOnboardingVersionUseCase();
-    if (lastSeenOnboardingVersion == null) {
-      trackOnboardingPage(0);
-    } else if (lastSeenOnboardingVersion == OnboardingVersion.v1) {
-      emit(OnboardingPageState.jumpToTrackingPage());
-    }
+    await _setupSubscriptionListener();
   }
 
-  void _onboardingCategoriesListener(List<Category> categories) {
-    _categories = categories;
-  }
+  void skip() => _trackActivityUseCase.trackEvent(AnalyticsEvent.onboardingSkipped());
 
-  Future<void> setOnboardingCompleted() async {
-    await _requestNotificationPermissionUseCase();
-
-    // Tracking can be requested only after the UI becomes active again
-    await _uiActiveStateSubject.firstWhere((isActive) => isActive);
-    await _requestTrackingPermissionUseCase();
-    _initializeAttributionUseCase().ignore();
-
-    _trackOnboardingCompleted();
-    await _setOnboardingSeenUseCase();
-    await _setPreferredCategories();
-  }
-
-  Future<void> _setPreferredCategories() async {
-    if (_categories.isNotEmpty) {
-      try {
-        await _updatePreferredCategoriesUseCase(_categories);
-      } catch (e, s) {
-        Fimber.e('Updating preferred categories failed', ex: e, stacktrace: s);
-      }
-    }
-  }
-
-  void setUiActiveState(bool isActive) {
-    _uiActiveStateSubject.add(isActive);
-  }
+  void setOnboardingCompleted() => _trackActivityUseCase.trackEvent(AnalyticsEvent.onboardingCompleted());
 
   void trackOnboardingPage(int index) {
     _trackActivityUseCase.trackPage(AnalyticsPage.onboarding(index));
   }
 
-  void trackOnboardingSkipped() {
-    _trackActivityUseCase.trackEvent(AnalyticsEvent.onboardingSkipped());
-  }
+  Future<void> _setupSubscriptionListener() async {
+    if (_activeSubscriptionSub != null) return;
 
-  void _trackOnboardingCompleted() {
-    _trackActivityUseCase.trackEvent(AnalyticsEvent.onboardingCompleted());
+    _activeSubscriptionSub = _getActiveSubscriptionUseCase.stream.distinct().listen((subscription) async {
+      final signedIn = await _isSignedInUseCase();
+      emit(subscription.mapToState(signedIn));
+    });
   }
+}
 
-  @override
-  Future<void> close() async {
-    await super.close();
-    await _onboardingCategoriesStreamSubscription?.cancel();
-    await _uiActiveStateSubject.close();
+extension on ActiveSubscription {
+  OnboardingPageState mapToState(bool signedIn) {
+    return maybeMap(
+      free: (_) => OnboardingPageState.idle(),
+      orElse: () => signedIn ? OnboardingPageState.signedIn() : OnboardingPageState.subscribed(),
+    );
   }
 }

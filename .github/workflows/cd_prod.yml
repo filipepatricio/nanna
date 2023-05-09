@@ -120,7 +120,7 @@ jobs:
           fields: repo,author,job,took,workflow,pullRequest
           mention: 'here'
           if_mention: failure
-          channel: 'C03HLNW54EN'
+          channel: 'C05606S3GJK'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
@@ -206,7 +206,7 @@ jobs:
           fields: repo,author,job,took,workflow,pullRequest
           mention: 'here'
           if_mention: failure
-          channel: 'C03HLNW54EN'
+          channel: 'C05606S3GJK'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}

@@ -152,7 +152,7 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                   padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
                   child: Center(
                     child: InformedSvg(
-                      AppVectorGraphics.launcherLogoInformed,
+                      AppVectorGraphics.informedLogo,
                       width: 140,
                       height: 32,
                       color: AppColors.categoriesTextPrimary,

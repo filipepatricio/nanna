@@ -31,7 +31,9 @@ class _SettingsSubscriptionManualPremiumView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppDimens.ml),
-            const SubscriptionBenefits(),
+            const SubscriptionBenefits(
+              dividerHeight: AppDimens.m,
+            ),
             const SizedBox(height: AppDimens.xl),
             if (subscription.expirationDate != null) ...[
               Text(

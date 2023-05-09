@@ -123,7 +123,7 @@ class _CollapsibleNoteWrapper extends HookWidget {
                                 onTap: onTap,
                                 child: Text(
                                   context.l10n.article_note_readFullArticle,
-                                  style: AppTypography.sansTextSmallLausanne.w550,
+                                  style: AppTypography.sansTextSmallLausanneBold,
                                 ),
                               ),
                             ],
@@ -151,7 +151,7 @@ class _CollapsibleNoteWrapper extends HookWidget {
                         child: Text(
                           isCollapsed ? context.l10n.article_note_showMore : context.l10n.article_note_showLess,
                           style: isCollapsed
-                              ? AppTypography.sansTextSmallLausanne.w550
+                              ? AppTypography.sansTextSmallLausanneBold
                               : AppTypography.sansTextSmallLausanne,
                         ),
                       ),

@@ -10,8 +10,8 @@ class ReleaseNotePopup extends StatelessWidget {
 
   final ReleaseNote releaseNote;
 
-  static Future<void> show({
-    required BuildContext context,
+  static Future<void> show(
+    BuildContext context, {
     required ReleaseNote releaseNote,
   }) async {
     await showDialog(

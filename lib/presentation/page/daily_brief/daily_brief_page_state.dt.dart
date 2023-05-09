@@ -50,7 +50,7 @@ class DailyBriefPageState with _$DailyBriefPageState {
   factory DailyBriefPageState.preCacheImages({required List<BriefEntry> briefEntryList}) =
       _DailyBriefPageStatePreCacheImages;
 
-  factory DailyBriefPageState.showPaywall() = _DailyBriefPageStateShowPaywall;
+  factory DailyBriefPageState.showInterests() = _DailyBriefPageStateShowInterests;
 
   factory DailyBriefPageState.hasBeenUpdated() = _DailyBriefPageStateHasBeenUpdated;
 }

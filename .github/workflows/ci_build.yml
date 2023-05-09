@@ -42,18 +42,10 @@ jobs:
     outputs:
       slack_id: ${{env.slack_id}}
     steps:
-      - name: Set slack Lukasz id
-        if: github.event.pull_request.user.login == 'LukaszWojcikIteo'
-        run: |
-          echo "slack_id=U02B9DG36RZ" >> $GITHUB_ENV
       - name: Set slack Estaban id
         if: github.event.pull_request.user.login == 'minoesteban'
         run: |
           echo "slack_id=U02KFBZ3N7P" >> $GITHUB_ENV
-      - name: Set slack Jan id
-        if: github.event.pull_request.user.login == 'jlukas99'
-        run: |
-          echo "slack_id=U03F4JSQCGP" >> $GITHUB_ENV
       - name: Set Filipe slack id
         if: github.event.pull_request.user.login == 'filipepatricio'
         run: |
@@ -87,7 +79,7 @@ jobs:
           fields: repo,author,job,took,workflow,pullRequest
           mention: ${{needs.set_slack_id.outputs.slack_id}}
           if_mention: 'failure'
-          channel: 'C03HLNW54EN'
+          channel: 'C05606S3GJK'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
@@ -168,7 +160,7 @@ jobs:
           fields: repo,author,job,took,workflow,pullRequest
           mention: ${{needs.set_slack_id.outputs.slack_id}}
           if_mention: 'failure'
-          channel: 'C03HLNW54EN'
+          channel: 'C05606S3GJK'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
@@ -225,7 +217,7 @@ jobs:
           fields: repo,author,job,took,workflow,pullRequest
           mention: ${{needs.set_slack_id.outputs.slack_id}}
           if_mention: 'failure'
-          channel: 'C03HLNW54EN'
+          channel: 'C05606S3GJK'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
@@ -286,7 +278,7 @@ jobs:
           fields: repo,author,job,took,workflow,pullRequest
           mention: ${{needs.set_slack_id.outputs.slack_id}}
           if_mention: 'failure'
-          channel: 'C03HLNW54EN'
+          channel: 'C05606S3GJK'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}

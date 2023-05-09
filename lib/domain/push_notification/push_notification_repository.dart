@@ -8,10 +8,6 @@ abstract class PushNotificationRepository {
 
   Future<String> getCurrentToken();
 
-  Future<bool> hasPermission();
-
-  Future<bool> requestPermission();
-
   Future<bool> shouldOpenNotificationsSettings();
 
   Future<void> openNotificationsSettings();

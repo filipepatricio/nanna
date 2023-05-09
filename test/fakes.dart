@@ -1,37 +1,16 @@
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
-import 'package:better_informed_mobile/domain/subscription/data/article_paywall_subscription_plan_pack.dt.dart';
-import 'package:better_informed_mobile/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker_state.dt.dart';
 import 'package:mockito/mockito.dart';
 
-class FakeAppUpdateCheckerCubit extends Fake implements AppUpdateCheckerCubit {
-  @override
-  Future<void> initialize() async {}
-
-  @override
-  Future<bool> shouldUpdate() async => true;
-
-  @override
-  AppUpdateCheckerState get state => const AppUpdateCheckerState.needsUpdate('2.0.0');
-
-  @override
-  Stream<AppUpdateCheckerState> get stream => Stream.value(
-        const AppUpdateCheckerState.needsUpdate(
-          '2.0.0',
-        ),
-      );
-
-  @override
-  Future<void> trackAppUpdateDialogShown() async {}
-
-  @override
-  Future<void> close() async {}
-}
+import 'test_data.dart';
 
 class FakeAudioPlayerBannerCubit extends Fake implements AudioPlayerBannerCubit {
   @override
@@ -65,11 +44,31 @@ class FakeIsTutorialStepSeenUseCase extends Fake implements IsTutorialStepSeenUs
   Future<bool> call(TutorialStep tutorialStep) async => isStepSeen;
 }
 
-class FakeGetArticlePaywallPreferredPlanUseCase implements GetArticlePaywallPreferredPlanUseCase {
-  FakeGetArticlePaywallPreferredPlanUseCase(this.pack);
+class FakeGetSubscriptionPlansUseCase extends Fake implements GetSubscriptionPlansUseCase {
+  FakeGetSubscriptionPlansUseCase([this.plans]);
 
-  final ArticlePaywallSubscriptionPlanPack pack;
+  final List<SubscriptionPlan>? plans;
 
   @override
-  Future<ArticlePaywallSubscriptionPlanPack> call() async => pack;
+  Future<SubscriptionPlanGroup> call() async {
+    return SubscriptionPlanGroup(
+      plans: plans ??
+          [
+            TestData.subscriptionPlansWithoutTrial.first,
+            TestData.subscriptionPlansWithTrial.last,
+          ],
+    );
+  }
+}
+
+class FakeGetActiveSubscriptionUseCase extends Fake implements GetActiveSubscriptionUseCase {
+  FakeGetActiveSubscriptionUseCase({required this.activeSubscription});
+  final ActiveSubscription activeSubscription;
+  @override
+  Future<ActiveSubscription> call() async {
+    return activeSubscription;
+  }
+
+  @override
+  Stream<ActiveSubscription> get stream => Stream.value(activeSubscription);
 }

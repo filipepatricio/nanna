@@ -8,18 +8,18 @@ class _SignInTermsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text.rich(
+      textAlign: TextAlign.center,
       TextSpan(
-        style: AppTypography.metadata1Regular.copyWith(
+        style: AppTypography.sansTextNanoLausanne.copyWith(
           color: AppColors.of(context).textTertiary,
         ),
         children: [
           TextSpan(text: context.l10n.signIn_consentParts_info),
           TextSpan(
             text: context.l10n.signIn_consentParts_terms,
-            style: AppTypography.metadata1Regular.copyWith(
+            style: AppTypography.sansTextNanoLausanne.copyWith(
               fontWeight: FontWeight.w500,
-              decoration: TextDecoration.underline,
-              color: AppColors.of(context).textSecondary,
+              color: AppColors.of(context).textPrimary,
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () => context.pushRoute(
@@ -31,10 +31,9 @@ class _SignInTermsView extends StatelessWidget {
           TextSpan(text: context.l10n.signIn_consentParts_and),
           TextSpan(
             text: context.l10n.signIn_consentParts_privacy,
-            style: AppTypography.metadata1Regular.copyWith(
+            style: AppTypography.sansTextNanoLausanne.copyWith(
               fontWeight: FontWeight.w500,
-              decoration: TextDecoration.underline,
-              color: AppColors.of(context).textSecondary,
+              color: AppColors.of(context).textPrimary,
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () => context.pushRoute(

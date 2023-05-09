@@ -1,7 +1,7 @@
 part of '../sign_in_page.dart';
 
 @visibleForTesting
-class EmailInput extends StatelessWidget {
+class EmailInput extends HookWidget {
   const EmailInput({
     required this.controller,
     required this.cubit,
@@ -15,7 +15,10 @@ class EmailInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final focusNode = useFocusNode();
+
     return TextField(
+      focusNode: focusNode,
       autocorrect: false,
       key: _emailInputKey,
       controller: controller,
@@ -33,6 +36,18 @@ class EmailInput extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),
+        suffixIcon: focusNode.hasFocus
+            ? GestureDetector(
+                onTap: () {
+                  controller.clear();
+                },
+                child: const InformedSvg(
+                  AppVectorGraphics.clearText,
+                  height: AppDimens.xs,
+                  fit: BoxFit.scaleDown,
+                ),
+              )
+            : null,
       ),
       maxLines: 1,
       textAlignVertical: TextAlignVertical.center,

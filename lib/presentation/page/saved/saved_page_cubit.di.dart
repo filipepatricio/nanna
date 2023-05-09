@@ -43,12 +43,12 @@ class SavedPageCubit extends Cubit<SavedPageState> {
 
       state.mapOrNull(
         idle: (state) {
-          emit(
-            state.copyWith(
-              version: state.version + 1,
-              hasActiveSubscription: _hasActiveSubscription,
-            ),
+          final newState = state.copyWith(
+            version: state.version + 1,
+            hasActiveSubscription: _hasActiveSubscription,
           );
+          emit(SavedPageState.initializing());
+          emit(newState);
         },
       );
     });

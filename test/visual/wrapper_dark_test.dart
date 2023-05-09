@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'tests/add_interests_page_visual_test.dart' as add_interests_page_visual_test;
 import 'tests/app_connectivity_dialog_visual_test.dart' as app_connectivity_dialog_visual_test;
 import 'tests/app_update_dialog_visual_test.dart' as app_update_dialog_visual_test;
 import 'tests/article_cover_visual_test.dart' as article_cover_visual_test;
@@ -11,7 +12,6 @@ import 'tests/article_text_scale_factor_selector_page_visual_test.dart'
 import 'tests/articles_see_all_page_visual_test.dart' as articles_see_all_page_visual_test;
 import 'tests/audio_page_visual_test.dart' as audio_page_visual_test;
 import 'tests/category_page_visual_test.dart' as category_page_visual_test;
-import 'tests/change_subscription_page_visual_test.dart' as change_subscription_page_visual_test;
 import 'tests/daily_brief_page_visual_test.dart' as daily_brief_page_visual_test;
 import 'tests/explore_page_visual_test.dart' as explore_page_visual_test;
 import 'tests/how_do_we_curate_content_page_visual_test.dart' as how_do_we_curate_content_page_visual_test;
@@ -35,6 +35,7 @@ import 'tests/share_topic_view_visual_test.dart' as share_topic_view_visual_test
 import 'tests/sign_in_page_visual_test.dart' as sign_in_page_visual_test;
 import 'tests/snackbar_view_visual_test.dart' as snackbar_view_visual_test;
 import 'tests/subscription_page_visual_test.dart' as subscription_page_visual_test;
+import 'tests/subscription_plan_cell_visual_test.dart' as subscription_plan_cell_visual_test;
 import 'tests/subscription_success_page_visual_test.dart' as subscription_success_page_visual_test;
 import 'tests/switch_audio_popup_visual_test.dart' as switch_audio_popup_visual_test;
 import 'tests/topic_owner_page_visual_test.dart' as topic_owner_page_visual_test;
@@ -84,11 +85,12 @@ void main() {
   group('release_note_popup_visual_test', release_note_popup_visual_test.main);
   group('snackbar_view_visual_test', snackbar_view_visual_test.main);
   group('subscription_page_visual_test', subscription_page_visual_test.main);
+  group('subscription_plan_cell_visual_test', subscription_plan_cell_visual_test.main);
   group('subscription_success_page_visual_test', subscription_success_page_visual_test.main);
   group('settings_subscription_page_visual_test', settings_subscription_page_visual_test.main);
-  group('change_subscription_page_visual_test', change_subscription_page_visual_test.main);
   group('audio_page_visual_test', audio_page_visual_test.main);
   group('settings_legal_page_visual_test', settings_legal_page_visual_test.main);
+  group('add_interests_page_visual_test', add_interests_page_visual_test.main);
 }
 
 ThemeMode themeModeFromString(String mode) {

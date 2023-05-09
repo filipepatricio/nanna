@@ -7,20 +7,24 @@ import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionBenefits extends StatelessWidget {
-  const SubscriptionBenefits({Key? key}) : super(key: key);
+  const SubscriptionBenefits({
+    this.dividerHeight = AppDimens.xs,
+  });
+
+  final double dividerHeight;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ...[
-          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_access),
-          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_fresh),
-          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_read),
+          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_one),
+          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_two),
+          _SubscriptionBenefitLine(text: context.l10n.subscription_benefit_three),
         ].withDividers(
-          divider: const SizedBox(height: AppDimens.m),
+          divider: SizedBox(height: dividerHeight),
         )
       ],
     );
@@ -38,13 +42,22 @@ class _SubscriptionBenefitLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const InformedSvg(AppVectorGraphics.checkmark),
+        const Padding(
+          padding: EdgeInsets.only(top: AppDimens.xxs),
+          child: InformedSvg(
+            AppVectorGraphics.checkmark,
+            height: AppDimens.ml,
+            width: AppDimens.ml,
+          ),
+        ),
         const SizedBox(width: AppDimens.s),
-        Text(
-          text,
-          style: AppTypography.subH1Medium,
+        Expanded(
+          child: Text(
+            text,
+            style: AppTypography.sansTextSmallLausanne,
+          ),
         ),
       ],
     );

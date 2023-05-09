@@ -15,8 +15,6 @@ class InitializePurchasesUseCase {
   Future<void> call() async {
     final tokenData = await _authStore.accessTokenData();
 
-    if (tokenData != null) {
-      await _purchasesRepository.initialize(tokenData.uuid);
-    }
+    await _purchasesRepository.initialize(tokenData?.uuid);
   }
 }

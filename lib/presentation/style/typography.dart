@@ -10,6 +10,10 @@ extension TextStyleExt on TextStyle {
   double get lineHeight => fontSize! * (height ?? 1);
 }
 
+extension FontWeightExt on FontWeight {
+  static final FontWeight w550 = FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5)!;
+}
+
 class AppTypography {
   // Serif Title
   static const TextStyle serifTitleSmallIvar = TextStyle(
@@ -27,28 +31,35 @@ class AppTypography {
   );
 
   // Sans Title
-  static const TextStyle sansTitleLargeLausanne = TextStyle(
-    fontWeight: FontWeight.w500,
+  static TextStyle sansTitleLargeLausanne = TextStyle(
+    fontWeight: FontWeightExt.w550,
     fontFamily: _fontFamilyLausanne,
     fontSize: 28,
     height: 1.1,
   );
 
-  static const TextStyle sansTitleMediumLausanne = TextStyle(
-    fontWeight: FontWeight.w500,
+  static TextStyle sansTitleMediumLausanne = TextStyle(
+    fontWeight: FontWeightExt.w550,
     fontFamily: _fontFamilyLausanne,
     fontSize: 24,
     height: 1.1,
   );
 
-  static const TextStyle sansTitleSmallLausanne = TextStyle(
-    fontWeight: FontWeight.w500,
+  static TextStyle sansTitleSmallLausanne = TextStyle(
+    fontWeight: FontWeightExt.w550,
     fontFamily: _fontFamilyLausanne,
     fontSize: 20,
     height: 1.1,
   );
 
   // Sans Text
+  static const TextStyle sansTextDefaultLausanne = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 16,
+    height: 1.5,
+  );
+
   static const TextStyle sansTextSmallLausanne = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,
@@ -63,18 +74,26 @@ class AppTypography {
     height: 1.5,
   );
 
+  static TextStyle sansTextDefaultLausanneBold = TextStyle(
+    fontWeight: FontWeightExt.w550,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 16,
+    height: 1.5,
+  );
+
+  static TextStyle sansTextSmallLausanneBold = TextStyle(
+    fontWeight: FontWeightExt.w550,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 14,
+    height: 1.5,
+  );
+
   // Deprecated
   static const TextStyle h1Headline = TextStyle(
     fontWeight: FontWeight.w600,
     fontFamily: _fontFamilyLausanne,
     fontSize: 38,
     height: 1.25,
-  );
-
-  static const TextStyle onBoardingHeader = TextStyle(
-    fontWeight: FontWeight.w500,
-    fontFamily: _fontFamilyLausanne,
-    fontSize: 36,
   );
 
   static const TextStyle h0Medium = TextStyle(
@@ -340,6 +359,13 @@ class AppTypography {
     fontSize: 14,
     height: 1.61,
     letterSpacing: 0.15,
+  );
+
+  static const TextStyle buttonSmallBold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 14,
+    height: 1,
   );
 
   static const TextStyle buttonBold = TextStyle(

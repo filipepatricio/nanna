@@ -27,8 +27,6 @@ class InformedDialog extends HookWidget {
   final Widget? action;
   final OnWillPopFunction? onWillPop;
 
-  static String get noConnectionDialogRouteName => 'NoConnectionDialog';
-
   static String get appUpdateDialogRouteName => 'AppUpdateDialog';
 
   static String get deleteAccountDialogRouteName => 'DeleteAccountDialog';
@@ -70,6 +68,7 @@ class InformedDialog extends HookWidget {
             flex: 6,
             child: InformedFilledButton.secondary(
               context: context,
+              withOutline: false,
               text: context.l10n.common_cancel,
               onTap: () => Navigator.of(context, rootNavigator: true).pop(false),
             ),

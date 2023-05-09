@@ -5,8 +5,6 @@ PODS:
   - AnalyticsConnector (1.0.1)
   - "app_settings (3.0.0+1)":
     - Flutter
-  - app_tracking_transparency (0.0.1):
-    - Flutter
   - AppAuth (1.6.1):
     - AppAuth/Core (= 1.6.1)
     - AppAuth/ExternalUserAgent (= 1.6.1)
@@ -159,6 +157,8 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - permission_handler_apple (9.0.4):
+    - Flutter
   - PromisesObjC (2.2.0)
   - purchases_flutter (4.8.0):
     - Flutter
@@ -205,7 +205,6 @@ PODS:
 
 DEPENDENCIES:
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
-  - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - audio_service (from `.symlinks/plugins/audio_service/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
@@ -232,6 +231,7 @@ DEPENDENCIES:
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - purchases_flutter (from `.symlinks/plugins/purchases_flutter/ios`)
   - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
@@ -282,8 +282,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   app_settings:
     :path: ".symlinks/plugins/app_settings/ios"
-  app_tracking_transparency:
-    :path: ".symlinks/plugins/app_tracking_transparency/ios"
   appsflyer_sdk:
     :path: ".symlinks/plugins/appsflyer_sdk/ios"
   audio_service:
@@ -334,6 +332,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   purchases_flutter:
     :path: ".symlinks/plugins/purchases_flutter/ios"
   sentry_flutter:
@@ -362,7 +362,6 @@ SPEC CHECKSUMS:
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AnalyticsConnector: eccd7e1cd3dd18e6bd09ac2506e37d4ed43ba3f4
   app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
-  app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
   AppAuth: e48b432bb4ba88b10cb2bcc50d7f3af21e78b9c2
   appsflyer_sdk: f420e5007d635511073ed8c63b2c6fcedefb4cba
   AppsFlyerFramework: dc9aa675faa8e1a2ed40fb295d3c5408ee2b972a
@@ -409,6 +408,7 @@ SPEC CHECKSUMS:
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
+  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   purchases_flutter: 68c500192f462e5e6c754cd93f8caa97668521aa
   PurchasesHybridCommon: 2c254caadc6b50238a79902c01abec67353b5334
@@ -429,6 +429,6 @@ SPEC CHECKSUMS:
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
 
-PODFILE CHECKSUM: 8604cf6743f7b070efc067514fce9c86aa706d4f
+PODFILE CHECKSUM: 6a662a3539d4876eb1e3f50458d0fdba1eef8494
 
 COCOAPODS: 1.11.3

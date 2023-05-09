@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:better_informed_mobile/domain/app_config/datocms_config.dart';
 import 'package:better_informed_mobile/domain/app_config/linkedin_config.dart';
 import 'package:better_informed_mobile/domain/app_config/phrase_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 const _environmentArgHost = 'host';
@@ -120,7 +121,7 @@ class AppConfig {
     revenueCatKeyAndroid: 'goog_KvJYjAuvczWsabJAOxFZeVCLRnA',
     revenueCatPremiumEntitlementId: 'premium',
     appsFlyerLinkPath: ['/tHNA'],
-    phraseConfig: PhraseConfig.dev(),
+    phraseConfig: kDebugMode ? PhraseConfig.dev() : PhraseConfig.staging(),
   );
 
   static const prod = AppConfig._(

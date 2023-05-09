@@ -9,7 +9,9 @@ class ShouldRefreshPageNotifier {
   Stream<bool> get stream => _changeStream.stream;
 
   void notify() {
-    _changeStream.sink.add(true);
+    if (!_changeStream.isClosed) {
+      _changeStream.sink.add(true);
+    }
   }
 
   @disposeMethod

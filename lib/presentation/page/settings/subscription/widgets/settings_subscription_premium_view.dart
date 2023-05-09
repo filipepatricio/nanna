@@ -23,7 +23,7 @@ class _SettingsSubscriptionPremiumView extends StatelessWidget {
               icon: AppVectorGraphics.informedLogoGreen,
               title: context.l10n.subscription_premium,
               subtitle: subscription.plan.title,
-              onTap: () => context.pushRoute(const ChangeSubscriptionPageRoute()),
+              onTap: () => context.pushRoute(const SubscriptionPageRoute()),
             ),
             const SizedBox(height: AppDimens.xl),
             Text(
@@ -33,7 +33,9 @@ class _SettingsSubscriptionPremiumView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppDimens.ml),
-            const SubscriptionBenefits(),
+            const SubscriptionBenefits(
+              dividerHeight: AppDimens.m,
+            ),
             if (subscription.expirationDate != null) ...[
               const SizedBox(height: AppDimens.xl),
               Text(

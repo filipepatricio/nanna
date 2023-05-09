@@ -2,7 +2,9 @@ import 'package:better_informed_mobile/domain/subscription/data/active_subscript
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 
 abstract class PurchasesRepository {
-  Future<void> initialize(String userId);
+  Future<void> initialize(String? userId);
+
+  Future<void> login(String userId);
 
   Future<void> linkWithExternalServices(
     String? appsflyerId,
@@ -25,7 +27,5 @@ abstract class PurchasesRepository {
 
   Future<void> collectAppleSearchAdsAttributionData();
 
-  Future<void> redeemOfferCode();
-
-  void dispose();
+  Future<void> dispose();
 }

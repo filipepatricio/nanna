@@ -112,7 +112,7 @@ void visualTest(
 }
 
 extension StartAppExtension on WidgetTester {
-  Future<void> startApp<T extends Object>({
+  Future<MainRouter> startApp<T extends Object>({
     PageRouteInfo initialRoute = defaultInitialRoute,
     DependencyOverrideCallback? dependencyOverride,
   }) async {
@@ -145,7 +145,7 @@ extension StartAppExtension on WidgetTester {
 
     await loadImages();
 
-    return;
+    return mainRouter;
   }
 
   Future<void> loadImages() async {

@@ -1,34 +1,19 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
-import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
-import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_plans_loading_view.dart';
+import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_plans_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
-import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
-import 'package:better_informed_mobile/presentation/util/platform_util.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/link_label.dart';
-import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
-import 'package:better_informed_mobile/presentation/widget/subscription/subscribe_button.dart';
-import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_card.dart';
-import 'package:better_informed_mobile/presentation/widget/subscription/subscrption_links_footer.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'widgets/paywall_background_fade.dart';
-part 'widgets/paywall_loading_view.dart';
-part 'widgets/paywall_multiple_options.dart';
-part 'widgets/paywall_trial_option.dart';
 
 class ArticlePaywallView extends HookWidget {
   const ArticlePaywallView({
@@ -42,8 +27,8 @@ class ArticlePaywallView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<ArticlePaywallCubit>();
-    final state = useCubitBuilder(cubit);
+    final cubit = useCubit<SubscriptionPageCubit>();
+    final state = useCubitBuilder<SubscriptionPageCubit, SubscriptionPageState>(cubit);
     final snackbarController = useSnackbarController();
     final shouldRestorePurchase = useValueNotifier(false);
 
@@ -54,12 +39,13 @@ class ArticlePaywallView extends HookWidget {
       }
     });
 
-    useCubitListener<ArticlePaywallCubit, ArticlePaywallState>(cubit, (cubit, state, context) {
+    useCubitListener<SubscriptionPageCubit, SubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
+        idle: (_, __, ___) {
+          InformedDialog.removeRestorePurchase(context);
+        },
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
-        purchaseSuccess: () => InformedDialog.removeRestorePurchase(context),
-        multiplePlans: (planGroup, processing) => InformedDialog.removeRestorePurchase(context),
-        trial: (plan, processing) => InformedDialog.removeRestorePurchase(context),
+        success: () => InformedDialog.removeRestorePurchase(context),
         redeemingCode: () => shouldRestorePurchase.value = true,
         generalError: (message) {
           snackbarController.showMessage(
@@ -83,9 +69,9 @@ class ArticlePaywallView extends HookWidget {
 
     useEffect(
       () {
-        cubit.initialize(article);
+        cubit.initialize();
       },
-      [cubit, article.metadata.availableInSubscription],
+      [cubit],
     );
 
     return Column(
@@ -95,7 +81,7 @@ class ArticlePaywallView extends HookWidget {
         Stack(
           children: [
             child,
-            if (state.showPaywall)
+            if (state.showPaywall(article.metadata.availableInSubscription))
               const Positioned(
                 left: 0,
                 right: 0,
@@ -104,27 +90,24 @@ class ArticlePaywallView extends HookWidget {
               ),
           ],
         ),
-        if (state.showPaywall) ...[
-          const SizedBox(height: AppDimens.c),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-            child: state.maybeMap(
-              trial: (state) => _PaywallTrialOption(
-                plan: state.plan,
-                onPurchasePressed: cubit.purchase,
-                onRedeemCodePressed: cubit.redeemOfferCode,
-                isProcessing: state.processing,
-              ),
-              multiplePlans: (state) => _PaywallMultipleOptions(
-                planGroup: state.planGroup,
-                onPurchasePressed: cubit.purchase,
-                onRestorePressed: cubit.restorePurchase,
-                onRedeemCodePressed: cubit.redeemOfferCode,
-                isProcessing: state.processing,
-              ),
-              loading: (_) => const _PaywallLoadingView(),
-              orElse: () => const SizedBox(),
+        if (state.showPaywall(article.metadata.availableInSubscription)) ...[
+          const SizedBox(height: AppDimens.xl),
+          state.maybeMap(
+            idle: (state) => SubscriptionPlansView(
+              cubit: cubit,
+              trialViewMode: state.group.hasTrial,
+              planGroup: state.group,
+              selectedPlan: state.selectedPlan,
+              isArticlePaywall: true,
             ),
+            processing: (state) => SubscriptionPlansView(
+              cubit: cubit,
+              trialViewMode: state.group.hasTrial,
+              planGroup: state.group,
+              selectedPlan: state.selectedPlan,
+              isArticlePaywall: true,
+            ),
+            orElse: () => const SubscriptionPlansLoadingView(),
           ),
         ],
       ],
@@ -132,12 +115,11 @@ class ArticlePaywallView extends HookWidget {
   }
 }
 
-extension on ArticlePaywallState {
-  bool get showPaywall {
+extension on SubscriptionPageState {
+  bool showPaywall(bool availableInSubscription) {
     return maybeMap(
-      multiplePlans: (_) => true,
-      trial: (_) => true,
-      loading: (_) => true,
+      idle: (_) => !availableInSubscription,
+      processing: (_) => !availableInSubscription,
       orElse: () => false,
     );
   }

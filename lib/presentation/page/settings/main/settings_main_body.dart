@@ -24,12 +24,10 @@ const _feedbackEmail = 'feedback@informed.so';
 class SettingsMainBody extends HookWidget {
   const SettingsMainBody({
     required this.cubit,
-    required this.useSubscriptions,
     Key? key,
   }) : super(key: key);
 
   final SettingsMainCubit cubit;
-  final bool useSubscriptions;
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +45,11 @@ class SettingsMainBody extends HookWidget {
       physics: getPlatformScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
       children: [
-        if (useSubscriptions) ...[
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppDimens.m),
-            child: SubscriptionCard(),
-          ),
-          const SizedBox(height: AppDimens.m),
-        ],
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppDimens.m),
+          child: SubscriptionCard(),
+        ),
+        const SizedBox(height: AppDimens.m),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: Text(

@@ -110,7 +110,7 @@ class ShareQuoteStickerView extends HookWidget implements BaseShareCompletable {
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: InformedSvg(
-                      AppVectorGraphics.launcherLogoInformed,
+                      AppVectorGraphics.informedLogo,
                       width: 140,
                       height: 32,
                       color: AppColors.categoriesTextPrimary,

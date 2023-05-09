@@ -1,7 +1,9 @@
-part of '../subscription_page.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
+import 'package:flutter/material.dart';
 
-class _SubscriptionPlansLoadingView extends StatelessWidget {
-  const _SubscriptionPlansLoadingView({
+class SubscriptionPlansLoadingView extends StatelessWidget {
+  const SubscriptionPlansLoadingView({
     Key? key,
   }) : super(key: key);
 

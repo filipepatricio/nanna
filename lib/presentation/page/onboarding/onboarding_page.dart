@@ -2,38 +2,47 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_categories_slide/onboarding_categories_slide.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_notifications_slide/onboarding_notifications_slide.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_publishers_slide.dart';
-import 'package:better_informed_mobile/presentation/style/app_animation.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
-import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
+import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
-final List<Widget> _pageList = [
-  const OnboardingPublishersSlide(),
-  const OnboardingCategoriesSlide(),
-  const OnboardingNotificationsSlide(),
-];
-
-const _notificationSlide = 2;
-const _trackingSlide = 2;
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pageList = [
+      OnboardingSlide(
+        imagePath: AppRasterGraphics.onboardingSlideOne,
+        title: context.l10n.onboarding_headerSlideOne,
+        body: context.l10n.onboarding_descriptionSlideOne,
+      ),
+      OnboardingSlide(
+        imagePath: AppRasterGraphics.onboardingSlideTwo,
+        title: context.l10n.onboarding_headerSlideTwo,
+        body: context.l10n.onboarding_descriptionSlideTwo,
+      ),
+      OnboardingSlide(
+        imagePath: AppRasterGraphics.onboardingSlideThree,
+        title: context.l10n.onboarding_headerSlideThree,
+        body: context.l10n.onboarding_descriptionSlideThree,
+      ),
+    ];
+
     final cubit = useCubit<OnboardingPageCubit>();
 
     final pageIndex = useState(0);
     final controller = usePageController();
-    final isLastPage = pageIndex.value == _pageList.length - 1;
+    final isLastPage = pageIndex.value == pageList.length - 1;
 
     useEffect(
       () {
@@ -42,75 +51,133 @@ class OnboardingPage extends HookWidget {
       [cubit],
     );
 
-    useCubitListener<OnboardingPageCubit, OnboardingPageState>(
-      cubit,
-      (cubit, state, context) {
-        state.mapOrNull(
-          jumpToTrackingPage: (_) {
-            controller.jumpToPage(_trackingSlide);
-          },
-        );
-      },
-    );
-
-    useOnAppLifecycleStateChange((previous, current) {
-      cubit.setUiActiveState(current == AppLifecycleState.resumed);
+    useCubitListener<OnboardingPageCubit, OnboardingPageState>(cubit, (cubit, state, context) {
+      state.whenOrNull(
+        signedIn: () => context.resetToMain(),
+        subscribed: () => context.resetToSignIn(),
+      );
     });
 
     return Scaffold(
       body: SafeArea(
-        top: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               flex: 20,
-              child: PageView(
-                controller: controller,
-                onPageChanged: (index) {
-                  cubit.trackOnboardingPage(index);
-                  pageIndex.value = index;
-                },
-                children: _pageList,
+              child: Stack(
+                children: [
+                  PageView(
+                    physics: const ClampingScrollPhysics(),
+                    controller: controller,
+                    onPageChanged: (index) {
+                      cubit.trackOnboardingPage(index);
+                      pageIndex.value = index;
+                    },
+                    children: pageList,
+                  ),
+                  Positioned(
+                    top: AppDimens.s,
+                    right: AppDimens.xl,
+                    child: Visibility.maintain(
+                      // TODO: Remove for Guest mode access
+                      visible: false,
+                      child: SkipButton(
+                        cubit: cubit,
+                        controller: controller,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: AppDimens.s,
+                    left: AppDimens.xl,
+                    child: Visibility.maintain(
+                      // TODO: Remove for Gift redemption feature
+                      visible: false,
+                      child: _GiftButton(
+                        cubit: cubit,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const Spacer(flex: 1),
+            const Spacer(),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: Row(
+                children: [
+                  SmoothPageIndicator(
+                    controller: controller,
+                    count: pageList.length,
+                    effect: ExpandingDotsEffect(
+                      expansionFactor: 4,
+                      activeDotColor: AppColors.of(context).iconPrimary,
+                      dotColor: AppColors.of(context).iconSecondary,
+                      spacing: AppDimens.xs,
+                      dotHeight: AppDimens.xs,
+                      dotWidth: AppDimens.xs,
+                      // strokeWidth: 5,
+                    ),
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    height: AppDimens.xxl,
+                    child: !isLastPage
+                        ? _NextPageButton(
+                            cubit: cubit,
+                            controller: controller,
+                            currentPage: pageIndex.value,
+                          )
+                        : const SizedBox.shrink(),
+                  )
+                ],
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  PageDotIndicator(
-                    pageCount: _pageList.length,
-                    controller: controller,
+                  InformedFilledButton.primary(
+                    context: context,
+                    text: context.l10n.onboarding_button_getStartedWithPremium,
+                    onTap: () {
+                      if (isLastPage) cubit.setOnboardingCompleted();
+                      context.navigateToSubscribe();
+                    },
                   ),
-                  const SizedBox(height: AppDimens.m),
+                  const SizedBox(height: AppDimens.s),
+                  InformedFilledButton.tertiary(
+                    context: context,
+                    text: context.l10n.onboarding_button_alreadyHaveAnAccount,
+                    onTap: () {
+                      if (isLastPage) cubit.setOnboardingCompleted();
+                      context.navigateToSignIn();
+                    },
+                  ),
+                  const SizedBox(height: AppDimens.ml),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AnimatedOpacity(
-                        duration: const Duration(milliseconds: AppAnimation.skipButton),
-                        opacity: pageIndex.value == _pageList.length - 1 ? 0 : 1,
-                        child: AbsorbPointer(
-                          absorbing: pageIndex.value == _pageList.length - 1,
-                          child: _SkipButton(
-                            cubit: cubit,
-                            controller: controller,
-                          ),
+                      LinkLabel(
+                        label: context.l10n.settings_termsAndConditions,
+                        style: AppTypography.sansTextNanoLausanne,
+                        decoration: TextDecoration.none,
+                        onTap: () => context.pushRoute(
+                          SettingsTermsOfServicePageRoute(fromRoute: context.l10n.onboarding),
                         ),
                       ),
-                      const Spacer(),
-                      if (isLastPage)
-                        InformedFilledButton.primary(
-                          context: context,
-                          text: context.l10n.common_continue,
-                          onTap: () => _navigateToMainPage(context, cubit),
-                        )
-                      else
-                        _NextPageButton(
-                          cubit: cubit,
-                          controller: controller,
-                          currentPage: pageIndex.value,
+                      const SizedBox(width: AppDimens.l),
+                      LinkLabel(
+                        label: context.l10n.settings_privacyPolicy,
+                        style: AppTypography.sansTextNanoLausanne,
+                        decoration: TextDecoration.none,
+                        onTap: () => context.pushRoute(
+                          SettingsPrivacyPolicyPageRoute(fromRoute: context.l10n.onboarding),
                         ),
+                      ),
                     ],
                   ),
                 ],
@@ -124,8 +191,8 @@ class OnboardingPage extends HookWidget {
   }
 }
 
-class _SkipButton extends StatelessWidget {
-  const _SkipButton({
+class SkipButton extends StatelessWidget {
+  const SkipButton({
     required this.controller,
     required this.cubit,
     Key? key,
@@ -137,19 +204,15 @@ class _SkipButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PaddingTapWidget(
-      alignment: AlignmentDirectional.centerStart,
+      alignment: AlignmentDirectional.centerEnd,
       tapPadding: const EdgeInsets.all(AppDimens.l),
       onTap: () {
-        controller.animateToPage(
-          _notificationSlide,
-          duration: const Duration(milliseconds: 400),
-          curve: Curves.easeIn,
-        );
-        cubit.trackOnboardingSkipped();
+        cubit.skip();
+        context.resetToMain();
       },
       child: Text(
         context.l10n.common_skip,
-        style: AppTypography.buttonBold,
+        style: AppTypography.buttonSmallBold.copyWith(color: AppColors.brandPrimary),
       ),
     );
   }
@@ -169,14 +232,16 @@ class _NextPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () async {
+    return PaddingTapWidget(
+      alignment: AlignmentDirectional.centerEnd,
+      tapPadding: const EdgeInsets.all(AppDimens.l),
+      onTap: () async {
         await controller.nextPage(
           duration: const Duration(milliseconds: 400),
           curve: Curves.easeIn,
         );
       },
-      icon: const InformedSvg(
+      child: const InformedSvg(
         AppVectorGraphics.fullArrowRight,
         fit: BoxFit.contain,
       ),
@@ -184,11 +249,43 @@ class _NextPageButton extends StatelessWidget {
   }
 }
 
-Future<void> _navigateToMainPage(BuildContext context, OnboardingPageCubit cubit) async {
-  await cubit.setOnboardingCompleted();
-  if (context.mounted) {
-    await context.router.replaceAll(
-      [const MainPageRoute()],
+class _GiftButton extends StatelessWidget {
+  const _GiftButton({
+    required this.cubit,
+    Key? key,
+  }) : super(key: key);
+
+  final OnboardingPageCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return PaddingTapWidget(
+      alignment: AlignmentDirectional.centerStart,
+      tapPadding: const EdgeInsets.all(AppDimens.l),
+      onTap: () {},
+      child: const InformedSvg(
+        AppVectorGraphics.gift,
+        fit: BoxFit.contain,
+        color: AppColors.brandPrimary,
+      ),
     );
+  }
+}
+
+extension on BuildContext {
+  void resetToMain() {
+    if (mounted) router.replaceAll([const MainPageRoute()]);
+  }
+
+  void resetToSignIn() {
+    if (mounted) router.pushAndPopUntil(const SignInPageRoute(), predicate: (_) => false);
+  }
+
+  void navigateToSignIn() {
+    if (mounted) router.push(const SignInPageModal());
+  }
+
+  void navigateToSubscribe() {
+    if (mounted) router.push(const SubscriptionPageRoute());
   }
 }

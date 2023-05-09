@@ -11,8 +11,6 @@ abstract class AnalyticsRepository {
 
   Future<String?> getFbAnonymousId();
 
-  Future<void> requestTrackingPermission();
-
   Future<void> identify(String userId, [String? method]);
 
   Future<void> logout();

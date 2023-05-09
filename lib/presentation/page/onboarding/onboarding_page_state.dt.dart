@@ -6,5 +6,9 @@ part 'onboarding_page_state.dt.freezed.dart';
 class OnboardingPageState with _$OnboardingPageState {
   factory OnboardingPageState.idle() = _OnboardingPageStateIdle;
 
-  factory OnboardingPageState.jumpToTrackingPage() = _OnboardingPageStateJumpToTrackingPage;
+  factory OnboardingPageState.skip() = _OnboardingPageStateSkip;
+
+  factory OnboardingPageState.subscribed() = _OnboardingPageStateSubscribed;
+
+  factory OnboardingPageState.signedIn() = _OnboardingPageStateSignedIn;
 }

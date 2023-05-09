@@ -33,12 +33,6 @@ class PushNotificationRepositoryMock implements PushNotificationRepository {
   Future<String> getCurrentToken() async => pushToken;
 
   @override
-  Future<bool> hasPermission() async => true;
-
-  @override
-  Future<bool> requestPermission() async => true;
-
-  @override
   Future<void> openNotificationsSettings() async {}
 
   @override

@@ -1,10 +1,11 @@
-import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
+import 'package:better_informed_mobile/domain/permissions/permissions_repository.dart';
 import 'package:injectable/injectable.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 @injectable
 class HasNotificationPermissionUseCase {
-  HasNotificationPermissionUseCase(this._pushNotificationRepository);
-  final PushNotificationRepository _pushNotificationRepository;
+  HasNotificationPermissionUseCase(this._permissionsRepository);
+  final PermissionsRepository _permissionsRepository;
 
-  Future<bool> call() => _pushNotificationRepository.hasPermission();
+  Future<bool> call() => _permissionsRepository.getPermissionStatus(Permission.notification).isGranted;
 }
