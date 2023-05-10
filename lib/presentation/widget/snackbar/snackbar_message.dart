@@ -41,8 +41,8 @@ class SnackbarMessage {
     SnackbarAction? action,
   }) =>
       SnackbarMessage._(
-        message: context.l10n.guest_signIn_error_message,
-        subMessage: context.l10n.guest_signIn_error_subMessage,
+        message: context.l10n.guest_signIn_snackbar_message,
+        subMessage: context.l10n.guest_signIn_snackbar_subMessage,
         type: SnackbarMessageType.info,
         action: action,
       );

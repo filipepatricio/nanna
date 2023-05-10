@@ -71,7 +71,7 @@ class _SearchBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final query = useState('');
-    final state = useCubitBuilder(searchViewCubit);
+    final exploreState = useCubitBuilder(explorePageCubit);
     final searchTextFieldFocusNode = useFocusNode();
     final snackbarController = useSnackbarController();
 
@@ -157,17 +157,15 @@ class _SearchBar extends HookWidget {
             explorePageCubit.search();
           }
         },
-        onTap: () {
-          state.maybeMap(
-            guest: (_) {
-              snackbarController.showMessage(
-                SnackbarMessage.guest(context),
-              );
-              searchTextFieldFocusNode.unfocus();
-            },
-            orElse: explorePageCubit.startTyping,
-          );
-        },
+        onTap: () => exploreState.maybeMap(
+          idleGuest: (_) {
+            searchTextFieldFocusNode.unfocus();
+            snackbarController.showMessage(
+              SnackbarMessage.guest(context),
+            );
+          },
+          orElse: explorePageCubit.startTyping,
+        ),
       ),
     );
   }

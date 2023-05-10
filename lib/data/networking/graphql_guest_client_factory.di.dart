@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:better_informed_mobile/data/exception/common_exception_mapper.di.dart';
@@ -42,10 +41,6 @@ class GraphQLGuestClientFactory {
       fetch: FetchPolicy.noCache,
       cacheReread: CacheRereadPolicy.ignoreAll,
     );
-
-    log(_appVersionLink.toString());
-    log(_timezoneLink.toString());
-    log(httpLink.toString());
 
     return CustomGraphQlClient(
       link: link,

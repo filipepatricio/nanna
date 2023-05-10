@@ -134,7 +134,7 @@ abstract class AudioControlButtonCubit extends Cubit<AudioControlButtonState> wi
 
   Future<void> initialize() async {
     if (!await _isSignedInUseCase()) {
-      emit(AudioControlButtonState.notSignedIn());
+      emit(AudioControlButtonState.guest());
       return;
     }
 

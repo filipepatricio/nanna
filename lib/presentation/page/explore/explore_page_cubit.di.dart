@@ -105,14 +105,14 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
 
   Future<ExplorePageState> _processAndEmitExploreContent(ExploreContent exploreContent) async {
     final categories = await _getFeaturedCategoriesUseCase();
-    _latestIdleState = ExplorePageState.idle(
-      [
-        ExploreItem.pills(
-          categories.map((category) => category.asCategoryWithItems()).toList(),
-        ),
-        ...exploreContent.areas.map(ExploreItem.stream).toList(),
-      ],
-    );
+    final content = [
+      ExploreItem.pills(
+        categories.map((category) => category.asCategoryWithItems()).toList(),
+      ),
+      ...exploreContent.areas.map(ExploreItem.stream).toList(),
+    ];
+
+    _latestIdleState = _isSignedIn ? ExplorePageState.idle(content) : ExplorePageState.idleGuest(content);
     return _latestIdleState;
   }
 
@@ -126,7 +126,6 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
 
   Future<void> startTyping() async {
     if (!_isSignedIn) {
-      emit(const ExplorePageState.guestError());
       return;
     }
 
@@ -139,7 +138,6 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
 
   Future<void> search() async {
     if (!_isSignedIn) {
-      emit(const ExplorePageState.guestError());
       return;
     }
 

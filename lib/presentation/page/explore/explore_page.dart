@@ -20,11 +20,9 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
-import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
@@ -42,7 +40,6 @@ class ExplorePage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final scrollControllerIdleOffset = useState(0.0);
-    final snackbarController = useSnackbarController();
 
     final searchViewCubit = useCubit<SearchViewCubit>();
     final searchTextEditingController = useTextEditingController();
@@ -69,9 +66,6 @@ class ExplorePage extends HookWidget {
             currentFocus.unfocus();
           }
         },
-        guestError: () => snackbarController.showMessage(
-          SnackbarMessage.guest(context),
-        ),
       );
     });
 
@@ -120,6 +114,9 @@ class ExplorePage extends HookWidget {
                       state.maybeMap(
                         initialLoading: (_) => const _LoadingSection(),
                         idle: (state) => _ItemList(
+                          items: state.items,
+                        ),
+                        idleGuest: (state) => _ItemList(
                           items: state.items,
                         ),
                         search: (_) => SearchView(

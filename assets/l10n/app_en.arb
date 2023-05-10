@@ -337,12 +337,20 @@
   "@guest_signIn_error_message": {
     "type": "text"
   },
-  "guest_signIn_error_subMessage": "You’ll need to sign in to do that",
+  "guest_signIn_error_subMessage": "You’ll need to sign in to use this feature",
   "@guest_signIn_error_subMessage": {
     "type": "text"
   },
   "guest_signIn_error_action": "Sign In",
   "@guest_signIn_error_action": {
+    "type": "text"
+  },
+  "guest_signIn_snackbar_message": "You're not signed in",
+  "@guest_signIn_error_message": {
+    "type": "text"
+  },
+  "guest_signIn_snackbar_subMessage": "You’ll need to sign in to do that",
+  "@guest_signIn_error_subMessage": {
     "type": "text"
   },
   "main_exploreTab": "Explore",

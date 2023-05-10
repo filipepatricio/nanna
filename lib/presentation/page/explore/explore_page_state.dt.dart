@@ -10,9 +10,10 @@ class ExplorePageState with _$ExplorePageState {
   const factory ExplorePageState.initialLoading() = _ExplorePageStateInitialLoading;
 
   @Implements<BuildState>()
-  const factory ExplorePageState.idle(
-    List<ExploreItem> items,
-  ) = _ExplorePageStateIdle;
+  const factory ExplorePageState.idle(List<ExploreItem> items) = _ExplorePageStateIdle;
+
+  @Implements<BuildState>()
+  const factory ExplorePageState.idleGuest(List<ExploreItem> items) = _ExplorePageStateIdleGuest;
 
   @Implements<BuildState>()
   const factory ExplorePageState.error() = _ExplorePageStateError;
@@ -37,6 +38,4 @@ class ExplorePageState with _$ExplorePageState {
   const factory ExplorePageState.startExploring() = _ExplorePageStateStartExploring;
 
   const factory ExplorePageState.showTutorialToast() = _ExplorePageStateShowTutorialToast;
-
-  const factory ExplorePageState.guestError() = _ExplorePageStateGuestError;
 }

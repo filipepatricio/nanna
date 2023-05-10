@@ -79,7 +79,7 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState>
 
   Future<void> initialize(BookmarkTypeData data) async {
     if (!await _isSignedInUseCase()) {
-      emit(BookmarkButtonState.notSignedIn());
+      emit(BookmarkButtonState.guest());
       return;
     }
 
