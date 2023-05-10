@@ -90,7 +90,7 @@ void main() {
           dependencyOverride: (getIt) async => getIt.registerFactory<GetActiveSubscriptionUseCase>(() => useCase),
         );
 
-        expect(find.byText(l10n.subscription_subscribeWithTrial), findsOneWidget);
+        expect(find.byText(l10n.subscription_button_trialText), findsOneWidget);
       },
     );
   });

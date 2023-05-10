@@ -88,10 +88,6 @@
   "@article_relatedContent_exploreMoreCategories": {
     "type": "text"
   },
-  "article_relatedContent_goToExplore": "Go to Explore",
-  "@article_relatedContent_goToExplore": {
-    "type": "text"
-  },
   "article_relatedContent_relatedReads": "Related reads you might enjoy",
   "@article_relatedContent_relatedReads": {
     "type": "text"
@@ -126,10 +122,6 @@
   },
   "audio_switchAudio_message": "Replace the current audio?",
   "@audio_switchAudio_message": {
-    "type": "text"
-  },
-  "article_textSize": "Text size",
-  "@article_textSize": {
     "type": "text"
   },
   "bookmark_addArticle": "Article added to your Profile",
@@ -196,10 +188,6 @@
   "@common_copyLink": {
     "type": "text"
   },
-  "common_done": "Done",
-  "@common_done": {
-    "type": "text"
-  },
   "common_error_body": "This error has been reported.",
   "@common_error_body": {
     "type": "text"
@@ -248,28 +236,8 @@
   "@common_new": {
     "type": "text"
   },
-  "common_next": "Next",
-  "@common_next": {
-    "type": "text"
-  },
-  "common_search": "Search",
-  "@common_search": {
-    "type": "text"
-  },
-  "common_seeAll": "See All",
-  "@common_seeAll": {
-    "type": "text"
-  },
   "common_share": "Share",
   "@common_share": {
-    "type": "text"
-  },
-  "common_shareImage": "Share image",
-  "@common_shareImage": {
-    "type": "text"
-  },
-  "common_shareText": "Share text",
-  "@common_shareText": {
     "type": "text"
   },
   "common_shareVia": "Share via",
@@ -345,14 +313,6 @@
       }
     }
   },
-  "date_daySuffix": "{count}-day",
-  "@date_daySuffix": {
-    "type": "text",
-    "placeholders": {
-      "count": {
-      }
-    }
-  },
   "date_month": "month",
   "@date_month": {
     "type": "text"
@@ -387,10 +347,6 @@
   },
   "noConnection_banner": "No internet connection",
   "@noConnection_banner": {
-    "type": "text"
-  },
-  "noConnection_errorView_action": "Retry",
-  "@noConnection_errorView_action": {
     "type": "text"
   },
   "noConnection_errorView_body": "Check your internet connection",
@@ -453,11 +409,7 @@
   "@onboarding_headerSlideOne": {
     "type": "text"
   },
-  "onboarding_headerSlideTwo": "Enjoy a concise, curated Daily Brief",
-  "@onboarding_headerSlideTwo": {
-    "type": "text"
-  },
-  "onboarding_headerSlideThree": "News to fit your schedule  ",
+  "onboarding_headerSlideThree": "News to fit your schedule",
   "@onboarding_headerSlideThree": {
     "type": "text"
   },
@@ -471,10 +423,6 @@
   },
   "onboarding_notifications_push": "Push",
   "@onboarding_notifications_push": {
-    "type": "text"
-  },
-  "onboarding_title": "How we use push notifications",
-  "@onboarding_title": {
     "type": "text"
   },
   "onboarding_tracking_info": "We track user behaviour to understand your needs better and make performance improvements. Please consider tapping ‘Allow’ for an enhanced experience.",
@@ -547,10 +495,6 @@
   },
   "releaseNotes_updateLabel": "Product update",
   "@releaseNotes_updateLabel": {
-    "type": "text"
-  },
-  "search_callToAction": "Check out our latest content",
-  "@search_callToAction": {
     "type": "text"
   },
   "search_emptyResults": "We couldn’t find any results matching \"{search}\"",
@@ -665,18 +609,6 @@
   "@settings_notifications_noPermissionAction": {
     "type": "text"
   },
-  "settings_notifications_badgeGroupTitle": "Badges",
-  "@settings_notifications_badgeGroupTitle": {
-    "type": "text"
-  },
-  "settings_notifications_badgeAction": "Indicate the number of new items in Today",
-  "@settings_notifications_badgeAction": {
-    "type": "text"
-  },
-  "settings_notifications_badgeActionInfo": "Unlock with Premium",
-  "@settings_notifications_badgeActionInfo": {
-    "type": "text"
-  },
   "settings_notifications_noPermissionContent": "Enable notifications to stay informed.",
   "@settings_notifications_noPermissionContent": {
     "type": "text"
@@ -770,7 +702,7 @@
   "@signIn_consentParts_and": {
     "type": "text"
   },
-  "signIn_consentParts_info": "By signing in, you agree to our ",
+  "signIn_consentParts_info": "By signing up, you agree to our ",
   "@signIn_consentParts_info": {
     "type": "text"
   },
@@ -814,10 +746,6 @@
   "@signIn_providerButton_linkedin": {
     "type": "text"
   },
-  "signIn_withEmailButton": "Get magic link",
-  "@signIn_withEmailButton": {
-    "type": "text"
-  },
   "signIn_subscribed_body": "Sign in so we can link your saved articles and preferences to your subscription",
   "@signIn_subscribed_body": {
     "type": "text"
@@ -851,19 +779,7 @@
     "type": "text"
   },
   "subscription_benefit_one": "Curated articles from premium publishers",
-  "@subscription_benefit_access": {
-    "type": "text"
-  },
-  "subscription_benefit_two": "Concise Daily Briefs with editorial commentary",
-  "@subscription_benefit_fresh": {
-    "type": "text"
-  },
-  "subscription_benefit_one": "Curated articles from premium publishers",
   "@subscription_benefit_one": {
-    "type": "text"
-  },
-  "subscription_benefit_read": "Read or listen to articles",
-  "@subscription_benefit_read": {
     "type": "text"
   },
   "subscription_benefit_three": "Read, listen, save for later, or enjoy offline",
@@ -874,56 +790,12 @@
   "@subscription_benefit_two": {
     "type": "text"
   },
-  "subscription_button_standard": "Subscribe",
+  "subscription_button_standard": "Get started with Premium",
   "@subscription_button_standard": {
     "type": "text"
   },
   "subscription_button_trialText": "Start your free trial now",
   "@subscription_button_trialText": {
-    "type": "text"
-  },
-  "subscription_button_tryForFree": "Try for free",
-  "@subscription_button_tryForFree": {
-    "type": "text"
-  },
-  "subscription_section_subscription": "Subscription",
-  "@subscription_section_subscription": {
-    "type": "text"
-  },
-  "subscription_manageSubscription": "Manage subscription",
-  "@subscription_manageSubscription": {
-    "type": "text"
-  },
-  "subscription_card_price": "{price} / {time}",
-  "@subscription_card_price": {
-    "type": "text",
-    "placeholders": {
-      "price": {
-      },
-      "time": {
-      }
-    }
-  },
-  "subscription_card_monthlyPrice": "(that's {price} / {time})",
-  "@subscription_card_monthlyPrice": {
-    "type": "text",
-    "placeholders": {
-      "price": {
-      },
-      "time": {
-      }
-    }
-  },
-  "subscription_card_trialDays": "with {days}-day free trial",
-  "@subscription_card_trialDays": {
-    "type": "text",
-    "placeholders": {
-      "days": {
-      }
-    }
-  },
-  "subscription_cancelSubscription": "Cancel subscription",
-  "@subscription_cancelSubscription": {
     "type": "text"
   },
   "subscription_card_monthlyPrice": "(that's {price} / {time})",
@@ -962,10 +834,6 @@
   "@subscription_change_confirm": {
     "type": "text"
   },
-  "subscription_change_currentPlan": "Current plan",
-  "@subscription_change_currentPlan": {
-    "type": "text"
-  },
   "subscription_change_footer": "Your new plan starts on {date}",
   "@subscription_change_footer": {
     "type": "text",
@@ -988,26 +856,8 @@
       }
     }
   },
-  "subscription_change_title": "Change _your plan_",
+  "subscription_change_title": "Change your plan",
   "@subscription_change_title": {
-    "type": "text"
-  },
-  "subscription_change_subtitle": "You currently have {currentPlan} payment plan, you can change it to {nextPlan} plan at any time.",
-  "@subscription_change_subtitle": {
-    "type": "text",
-    "placeholders": {
-      "currentPlan": {
-      },
-      "nextPlan": {
-      }
-    }
-  },
-  "subscription_change_annual": "an annual",
-  "@subscription_change_annual": {
-    "type": "text"
-  },
-  "subscription_change_monthly": "a monthly",
-  "@subscription_change_monthly": {
     "type": "text"
   },
   "subscription_endDate": "End date",
@@ -1046,16 +896,6 @@
   "@subscription_membership": {
     "type": "text"
   },
-  "subscription_monthlyPriceComparison": "({price1}/month instead of {price2})",
-  "@subscription_monthlyPriceComparison": {
-    "type": "text",
-    "placeholders": {
-      "price1": {
-      },
-      "price2": {
-      }
-    }
-  },
   "subscription_off": "Save {discount}%",
   "@subscription_off": {
     "type": "text",
@@ -1068,42 +908,8 @@
   "@subscription_planIncludes": {
     "type": "text"
   },
-  "subscription_planInfo_standard": "{price} / year",
-  "@subscription_planInfo_standard": {
-    "type": "text",
-    "placeholders": {
-      "price": {
-      }
-    }
-  },
-  "subscription_planInfo_trial": "Free {period} trial, then {price} / year",
-  "@subscription_planInfo_trial": {
-    "type": "text",
-    "placeholders": {
-      "period": {
-      },
-      "price": {
-      }
-    }
-  },
   "subscription_premium": "Premium",
   "@subscription_premium": {
-    "type": "text"
-  },
-  "subscription_receiveAnEmail": "In {days}: get an email reminder that your trial ends soon",
-  "@subscription_receiveAnEmail": {
-    "type": "text",
-    "placeholders": {
-      "days": {
-      }
-    }
-  },
-  "subscription_subscribeWithTrial": "Start your free trial now",
-  "@subscription_subscribeWithTrial": {
-    "type": "text"
-  },
-  "subscription_subscribeWithoutTrial": "Get started with Premium",
-  "@subscription_subscribeWithoutTrial": {
     "type": "text"
   },
   "subscription_redeemCode": "Redeem code",
@@ -1156,79 +962,8 @@
   "@subscription_snackbar_link": {
     "type": "text"
   },
-  "subscription_snackbar_action": "Upgrade",
-  "@subscription_snackbar_action": {
-    "type": "text"
-  },
-  "subscription_trialTimeline_title": "How your {trialDays}-day free trial works",
-  "@subscription_trialTimeline_title": {
-    "type": "text",
-    "placeholders": {
-      "trialDays": {
-      }
-    }
-  },
-  "subscription_trialTimeline_step1_title": "Now",
-  "@subscription_trialTimeline_step1_title": {
-    "type": "text"
-  },
-  "subscription_trialTimeline_step1_description": "Start your free trial of Premium. 0€ charged today.",
-  "@subscription_trialTimeline_step1_description": {
-    "type": "text"
-  },
-  "subscription_trialTimeline_step2_title": "Day {day}",
-  "@subscription_trialTimeline_step2_title": {
-    "type": "text",
-    "placeholders": {
-      "day": {
-      }
-    }
-  },
-  "subscription_trialTimeline_step2_description": "Get an email reminder that your trial ends soon.",
-  "@subscription_trialTimeline_step2_description": {
-    "type": "text"
-  },
-  "subscription_trialTimeline_step3_title": "Day {day}",
-  "@subscription_trialTimeline_step3_title": {
-    "type": "text",
-    "placeholders": {
-      "day": {
-      }
-    }
-  },
-  "subscription_trialTimeline_step3_description": "You'll be charged {price} on {date}. Cancel before and you won't be charged.",
-  "@subscription_trialTimeline_step3_description": {
-    "type": "text",
-    "placeholders": {
-      "price": {
-      },
-      "date": {
-
-      }
-    }
-  },
   "subscription_startReading": "Start reading",
   "@subscription_startReading": {
-    "type": "text"
-  },
-  "subscription_startYourTrial": "Now: start your free trial of Premium",
-  "@subscription_startYourTrial": {
-    "type": "text"
-  },
-  "subscription_subscribeWithoutTrial": "Get started with Premium",
-  "@subscription_subscribeWithoutTrial": {
-    "type": "text"
-  },
-  "subscription_subscribeWithTrial": "Start your free trial now",
-  "@subscription_subscribeWithTrial": {
-    "type": "text"
-  },
-  "subscription_subscriptionTypeName_annual": "yearly",
-  "@subscription_subscriptionTypeName_annual": {
-    "type": "text"
-  },
-  "subscription_subscriptionTypeName_monthly": "monthly",
-  "@subscription_subscriptionTypeName_monthly": {
     "type": "text"
   },
   "subscription_subtitle_noTrial": "Your trial has expired. Subscribe to Premium now to enjoy everything informed has to offer, including:",
@@ -1259,20 +994,8 @@
       }
     }
   },
-  "subscription_title_article": "Subscribe for _unlimited_ access",
-  "@subscription_title_article": {
-    "type": "text"
-  },
   "subscription_title_standard": "Subscribe to Premium",
   "@subscription_title_standard": {
-    "type": "text"
-  },
-  "subscription_subtitle_noTrial": "Your trial has expired. Subscribe to Premium now to enjoy everything informed has to offer, including:",
-  "@subscription_subtitle_noTrial": {
-    "type": "text"
-  },
-  "subscription_title_trial": "Subscribe now",
-  "@subscription_title_trial": {
     "type": "text"
   },
   "subscription_trial": "Trial",
@@ -1322,22 +1045,6 @@
     "type": "text",
     "placeholders": {
       "trialDays": {
-      }
-    }
-  },
-  "subscription_viewAllPlansAction": "View all plans",
-  "@subscription_viewAllPlansAction": {
-    "type": "text"
-  },
-  "subscription_youllBeCharged": "In {days}: you'll be charged {price} for a {period} subscription",
-  "@subscription_youllBeCharged": {
-    "type": "text",
-    "placeholders": {
-      "days": {
-      },
-      "price": {
-      },
-      "period": {
       }
     }
   },
@@ -1444,17 +1151,5 @@
       "version": {
       }
     }
-  },
-  "addInterests_title": "Add your interests",
-  "@addInterests_title": {
-    "type": "text"
-  },
-  "addInterests_description": "Get personalized suggestions alongside wider curations. Please choose at least 4 topics.",
-  "@addInterests_description": {
-    "type": "text"
-  },
-  "onboarding": "Onboarding",
-  "@onboarding": {
-    "type": "text"
   }
 }
