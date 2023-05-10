@@ -14,7 +14,7 @@ class BriefsWrapperDTO {
   factory BriefsWrapperDTO.withEmptyPastDays(Map<String, dynamic> json) {
     return BriefsWrapperDTO(
       BriefDTO.fromJson(json),
-      _emptyPastDates(),
+      _emptyPastDays(),
     );
   }
 
@@ -24,7 +24,8 @@ class BriefsWrapperDTO {
   final List<BriefPastDayDTO> pastDays;
 }
 
-List<BriefPastDayDTO> _emptyPastDates() {
+// So we can show calendar feature to guest users, we create an list of empty past days
+List<BriefPastDayDTO> _emptyPastDays() {
   return List.generate(
     6,
     (index) => BriefPastDayDTO.empty(

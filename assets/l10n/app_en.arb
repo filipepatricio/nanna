@@ -345,14 +345,6 @@
   "@guest_signIn_error_action": {
     "type": "text"
   },
-  "guest_subscribe_error_message": "You're not subscribed",
-  "@guest_subscribe_error_message": {
-    "type": "text"
-  },
-  "guest_subscribe_error_subMessage": "You’ll need to subscribe to do that",
-  "@guest_subscribe_error_subMessage": {
-    "type": "text"
-  },
   "main_exploreTab": "Explore",
   "@main_exploreTab": {
     "type": "text"
@@ -397,14 +389,6 @@
   "@onboarding_button_getStartedWithPremium": {
     "type": "text"
   },
-  "onboarding_categories_everything": "Show me everything",
-  "@onboarding_categories_everything": {
-    "type": "text"
-  },
-  "onboarding_descriptionSlideCategories": "Choose what matters to you and you’ll get personalised daily reading suggestions, alongside wider curated articles. Change your interests anytime in Profile → Settings.",
-  "@onboarding_descriptionSlideCategories": {
-    "type": "text"
-  },
   "onboarding_descriptionSlideOne": "Explore articles from diverse international publishers and read ad-free. You'll see names you already love and find new favorites.",
   "@onboarding_descriptionSlideOne": {
     "type": "text"
@@ -427,22 +411,6 @@
   },
   "onboarding_headerSlideTwo": "Enjoy a concise, curated Daily Brief",
   "@onboarding_headerSlideTwo": {
-    "type": "text"
-  },
-  "onboarding_notifications_email": "Email",
-  "@onboarding_notifications_email": {
-    "type": "text"
-  },
-  "onboarding_notifications_push": "Push",
-  "@onboarding_notifications_push": {
-    "type": "text"
-  },
-  "onboarding_tracking_info": "We track user behaviour to understand your needs better and make performance improvements. Please consider tapping ‘Allow’ for an enhanced experience.",
-  "@onboarding_tracking_info": {
-    "type": "text"
-  },
-  "onboarding_tracking_title": "Improve your experience",
-  "@onboarding_tracking_title": {
     "type": "text"
   },
   "profile_banner_action": "See plans",
@@ -760,6 +728,10 @@
   },
   "signIn_providerButton_linkedin": "Sign in with LinkedIn",
   "@signIn_providerButton_linkedin": {
+    "type": "text"
+  },
+  "signIn_subscribed_body": "Sign in so we can link your saved articles and preferences to your subscription",
+  "@signIn_subscribed_body": {
     "type": "text"
   },
   "signIn_subscribed_body": "Sign in so we can link your saved articles and preferences to your subscription",

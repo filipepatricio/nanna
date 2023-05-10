@@ -81,7 +81,7 @@ jobs:
           if_mention: 'failure'
           channel: 'C05606S3GJK'
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_MOBILE_PRS_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
       - name: Result
@@ -139,10 +139,16 @@ jobs:
       - name: Check unreferenced test files in wrappers
         run: make unreferenced_tests_check
 
-      - name: Build
+      - name: Get dependencies & l10n
         run: |
           make get
           make localization
+
+      - name: Check unreferenced ARB keys
+        run: make unreferenced_arb_keys_check
+
+      - name: Build
+        run: |
           make build_runner
 
       - name: Analyze & Test
@@ -162,7 +168,7 @@ jobs:
           if_mention: 'failure'
           channel: 'C05606S3GJK'
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_MOBILE_PRS_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
       - name: Result
@@ -219,7 +225,7 @@ jobs:
           if_mention: 'failure'
           channel: 'C05606S3GJK'
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_MOBILE_PRS_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
       - name: Result
@@ -280,7 +286,7 @@ jobs:
           if_mention: 'failure'
           channel: 'C05606S3GJK'
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_MOBILE_PRS_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
       - name: Result
