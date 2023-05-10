@@ -208,8 +208,8 @@
   "@common_follow": {
     "type": "text"
   },
-  "common_following": "Unfollow",
-  "@common_following": {
+  "common_unfollow": "Unfollow",
+  "@common_unfollow": {
     "type": "text"
   },
   "common_generalError": "Something went wrong.\nTry again later.",
@@ -357,10 +357,6 @@
   "@main_exploreTab": {
     "type": "text"
   },
-  "main_profileTab": "Profile",
-  "@main_profileTab": {
-    "type": "text"
-  },
   "main_savedTab": "Saved",
   "@main_savedTab": {
     "type": "text"
@@ -409,7 +405,7 @@
   "@onboarding_descriptionSlideCategories": {
     "type": "text"
   },
-  "onboarding_descriptionSlideOne": "Get a daily curation of must-read articles – all in one app.",
+  "onboarding_descriptionSlideOne": "Explore articles from diverse international publishers and read ad-free. You'll see names you already love and find new favorites.",
   "@onboarding_descriptionSlideOne": {
     "type": "text"
   },
@@ -419,14 +415,6 @@
   },
   "onboarding_descriptionSlideTwo": "Read less and know more with your Daily Brief, curated by our editors and updated throughout the day. Every Brief comes with a key summary and editorial commentary.",
   "@onboarding_descriptionSlideTwo": {
-    "type": "text"
-  },
-  "onboarding_headerSlideCategories": "Add your interests",
-  "@onboarding_headerSlideCategories": {
-    "type": "text"
-  },
-  "onboarding_headerSlideNotifications": "Notifications",
-  "@onboarding_headerSlideNotifications": {
     "type": "text"
   },
   "onboarding_headerSlideOne": "Access premium publishers, all in one app",
@@ -757,10 +745,6 @@
       "address": {
       }
     }
-  },
-  "signIn_header_signIn": "Sign up or log in below to access world-class journalism from premium publishers, curated by editors & experts.",
-  "@signIn_header_signIn": {
-    "type": "text"
   },
   "signIn_orContinue": "Or continue with",
   "@signIn_orContinue": {

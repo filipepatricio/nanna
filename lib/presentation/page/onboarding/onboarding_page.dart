@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_slide.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -162,7 +162,9 @@ class OnboardingPage extends HookWidget {
                         style: AppTypography.sansTextNanoLausanne,
                         decoration: TextDecoration.none,
                         onTap: () => context.pushRoute(
-                          SettingsTermsOfServicePageRoute(fromRoute: context.l10n.onboarding),
+                          SettingsTermsOfServicePageRoute(
+                            fromRoute: context.l10n.onboarding,
+                          ),
                         ),
                       ),
                       const SizedBox(width: AppDimens.l),
@@ -171,7 +173,9 @@ class OnboardingPage extends HookWidget {
                         style: AppTypography.sansTextNanoLausanne,
                         decoration: TextDecoration.none,
                         onTap: () => context.pushRoute(
-                          SettingsPrivacyPolicyPageRoute(fromRoute: context.l10n.onboarding),
+                          SettingsPrivacyPolicyPageRoute(
+                            fromRoute: context.l10n.onboarding,
+                          ),
                         ),
                       ),
                     ],

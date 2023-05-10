@@ -117,7 +117,7 @@ class _Button extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                isPreferred ? context.l10n.common_following : context.l10n.common_follow,
+                isPreferred ? context.l10n.common_unfollow : context.l10n.common_follow,
                 style: AppTypography.buttonBold.copyWith(
                   color:
                       isPreferred ? AppColors.of(context).buttonSecondaryText : AppColors.of(context).buttonPrimaryText,
