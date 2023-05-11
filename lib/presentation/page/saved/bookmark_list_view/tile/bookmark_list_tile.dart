@@ -60,7 +60,10 @@ extension on Bookmark {
         topic: data.topic.asPreview,
         onBookmarkTap: onRemoveBookmarkCallback,
         onTap: () => context.pushRoute(
-          TopicPage(topicSlug: data.topic.slug),
+          TopicPage(
+            topicSlug: data.topic.slug,
+            openedFrom: context.l10n.main_savedTab,
+          ),
         ),
       ),
       unknown: (_) => const SizedBox.shrink(),

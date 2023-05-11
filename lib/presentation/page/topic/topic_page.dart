@@ -36,12 +36,14 @@ class TopicPage extends HookWidget {
     @pathParam required this.topicSlug,
     this.topic,
     this.briefId,
+    this.openedFrom,
     Key? key,
   }) : super(key: key);
 
   final String topicSlug;
   final Topic? topic;
   final String? briefId;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +68,7 @@ class TopicPage extends HookWidget {
       cubit: cubit,
       topicSlug: topicSlug,
       briefId: briefId,
+      openedFrom: openedFrom,
     );
   }
 }
@@ -76,6 +79,7 @@ class _TopicPage extends StatelessWidget {
     required this.cubit,
     required this.topicSlug,
     required this.briefId,
+    this.openedFrom,
     Key? key,
   }) : super(key: key);
 
@@ -83,6 +87,7 @@ class _TopicPage extends StatelessWidget {
   final TopicPageCubit cubit;
   final String topicSlug;
   final String? briefId;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +97,7 @@ class _TopicPage extends StatelessWidget {
         idle: (_) => null,
         orElse: () => InformedAppBar(
           backgroundColor: state.maybeMap(loading: (_) => AppColors.transparent, orElse: () => null),
+          openedFrom: openedFrom,
         ),
       ),
       body: InformedAnimatedSwitcher(
@@ -99,6 +105,7 @@ class _TopicPage extends StatelessWidget {
           idle: (state) => _TopicIdleView(
             topic: state.topic,
             cubit: cubit,
+            openedFrom: openedFrom,
           ),
           loading: (_) => const TopicLoadingView(),
           error: (_) => Padding(
@@ -120,11 +127,13 @@ class _TopicIdleView extends HookWidget {
   const _TopicIdleView({
     required this.topic,
     required this.cubit,
+    this.openedFrom,
     Key? key,
   }) : super(key: key);
 
   final Topic topic;
   final TopicPageCubit cubit;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
@@ -197,6 +206,7 @@ class _TopicIdleView extends HookWidget {
                 topic: topic,
                 cubit: cubit,
                 isScrolled: isScrolled,
+                openedFrom: openedFrom,
               ),
             ),
             const Positioned(

@@ -171,7 +171,9 @@ class _TopicList extends StatelessWidget {
                   TopicCover.medium(
                     topic: topic,
                     onTap: () => context.pushRoute(
-                      TopicPage(topicSlug: topic.slug),
+                      TopicPage(
+                        topicSlug: topic.slug,
+                      ),
                     ),
                   ),
                   const CardDivider.cover()

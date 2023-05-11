@@ -252,8 +252,8 @@ class AppDimens {
   /// 48px
   static const actionsWidth = AppDimens.xxxl;
 
-  /// 96px
-  static const backButtonWidth = AppDimens.xc * 2;
+  /// 116.0
+  static const backButtonWidth = 116.0;
 
   /// 0.8
   static final minScaleFactor = DeviceType.small.scaleFactor;

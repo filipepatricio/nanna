@@ -187,11 +187,13 @@ extension on BuildContext {
   void navigateToTopic({
     required TopicPreview topic,
     String? briefId,
+    String? openedFrom,
   }) {
     router.popAndPush(
       TopicPage(
         topicSlug: topic.slug,
         briefId: briefId,
+        openedFrom: openedFrom,
       ),
     );
   }

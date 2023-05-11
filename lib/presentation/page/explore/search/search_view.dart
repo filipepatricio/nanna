@@ -97,6 +97,7 @@ extension on BuildContext {
     pushRoute(
       TopicPage(
         topicSlug: topicPreview.slug,
+        openedFrom: l10n.search_label,
       ),
     );
   }

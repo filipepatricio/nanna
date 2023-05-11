@@ -170,7 +170,7 @@ class _List extends StatelessWidget {
                     ),
                     topic: (data) => TopicCover.medium(
                       topic: data.topicPreview,
-                      onTap: () => context.navigateToTopic(data.topicPreview),
+                      onTap: () => context.navigateToTopic(data.topicPreview, categoryName),
                     ),
                     unknown: (_) => const SizedBox.shrink(),
                   ),
@@ -191,7 +191,10 @@ class _List extends StatelessWidget {
 }
 
 extension on BuildContext {
-  void navigateToArticle(MediaItemArticle article, String categoryName) {
+  void navigateToArticle(
+    MediaItemArticle article,
+    String categoryName,
+  ) {
     pushRoute(
       MediaItemPageRoute(
         article: article,
@@ -200,10 +203,14 @@ extension on BuildContext {
     );
   }
 
-  void navigateToTopic(TopicPreview topicPreview) {
+  void navigateToTopic(
+    TopicPreview topicPreview,
+    String categoryName,
+  ) {
     pushRoute(
       TopicPage(
         topicSlug: topicPreview.slug,
+        openedFrom: categoryName,
       ),
     );
   }

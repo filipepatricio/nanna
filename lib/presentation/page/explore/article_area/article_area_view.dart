@@ -65,7 +65,7 @@ extension on BuildContext {
     pushRoute(
       MediaItemPageRoute(
         article: article,
-        openedFrom: l10n.explore_title,
+        openedFrom: l10n.main_exploreTab,
       ),
     );
   }

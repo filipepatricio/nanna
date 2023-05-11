@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../fakes.dart';
+import '../../flutter_test_config.dart';
 import '../visual_test_utils.dart';
 
 void main() {
@@ -15,7 +16,14 @@ void main() {
     TopicPage,
     (tester) async {
       await tester.startApp(
-        initialRoute: e.MainPageRoute(children: [e.TopicPage(topicSlug: '')]),
+        initialRoute: e.MainPageRoute(
+          children: [
+            e.TopicPage(
+              topicSlug: '',
+              openedFrom: l10n.main_todayTab,
+            )
+          ],
+        ),
       );
       await tester.matchGoldenFile('topic_page_(header)');
 
@@ -33,7 +41,14 @@ void main() {
     TopicPage,
     (tester) async {
       await tester.startApp(
-        initialRoute: e.MainPageRoute(children: [e.TopicPage(topicSlug: '')]),
+        initialRoute: e.MainPageRoute(
+          children: [
+            e.TopicPage(
+              topicSlug: '',
+              openedFrom: l10n.main_todayTab,
+            )
+          ],
+        ),
         dependencyOverride: (getIt) async {
           getIt.registerSingleton<AudioPlayerBannerCubit>(
             FakeAudioPlayerBannerCubit(),
@@ -54,7 +69,14 @@ void main() {
       final cubit = FakeTopicPageCubit();
 
       await tester.startApp(
-        initialRoute: e.MainPageRoute(children: [e.TopicPage(topicSlug: '')]),
+        initialRoute: e.MainPageRoute(
+          children: [
+            e.TopicPage(
+              topicSlug: '',
+              openedFrom: l10n.main_exploreTab,
+            )
+          ],
+        ),
         dependencyOverride: (getIt) async {
           getIt.registerFactory<TopicPageCubit>(() => cubit);
         },
@@ -67,7 +89,14 @@ void main() {
     '${TopicPage}_(share)',
     (tester) async {
       await tester.startApp(
-        initialRoute: e.MainPageRoute(children: [e.TopicPage(topicSlug: '')]),
+        initialRoute: e.MainPageRoute(
+          children: [
+            e.TopicPage(
+              topicSlug: '',
+              openedFrom: l10n.main_exploreTab,
+            )
+          ],
+        ),
         dependencyOverride: (getIt) async {
           getIt.registerSingleton<AudioPlayerBannerCubit>(
             FakeAudioPlayerBannerCubit(),
