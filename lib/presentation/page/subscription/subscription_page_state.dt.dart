@@ -16,6 +16,8 @@ class SubscriptionPageState with _$SubscriptionPageState {
     required SubscriptionPlanGroup group,
     required SubscriptionPlan selectedPlan,
     required ActiveSubscription subscription,
+    //TODO: Remove this when we get availableInSubscription false for guest user from API
+    @Default(false) bool isGuest,
   }) = _SubscriptionPageStateIdle;
 
   @Implements<BuildState>()
@@ -23,6 +25,7 @@ class SubscriptionPageState with _$SubscriptionPageState {
     required SubscriptionPlanGroup group,
     required SubscriptionPlan selectedPlan,
     required ActiveSubscription subscription,
+    @Default(false) bool isGuest,
   }) = _SubscriptionPageStateProcessing;
 
   const factory SubscriptionPageState.success() = _SubscriptionPageStateSuccess;

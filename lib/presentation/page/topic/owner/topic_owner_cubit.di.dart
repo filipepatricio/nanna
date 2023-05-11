@@ -1,4 +1,6 @@
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/common/data/curator.dt.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topics_from_editor_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topics_from_expert_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page_state.dt.dart';
@@ -12,24 +14,31 @@ class TopicOwnerPageCubit extends Cubit<TopicOwnerPageState> {
   TopicOwnerPageCubit(
     this._getTopicsFromExpertUseCase,
     this._getTopicsFromEditorUseCase,
+    this._isSignedInUseCase,
   ) : super(TopicOwnerPageState.loading());
+
   final GetTopicsFromExpertUseCase _getTopicsFromExpertUseCase;
   final GetTopicsFromEditorUseCase _getTopicsFromEditorUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   Future<void> initialize(Curator curator, [String? fromTopicSlug]) async {
     emit(TopicOwnerPageState.loading());
 
     try {
+      final isSignedIn = await _isSignedInUseCase();
+
       await curator.map(
-        editor: (curator) async {
-          final topics = await _getTopicsFromEditorUseCase.call(curator.id, fromTopicSlug);
+        editor: (_) async {
+          final topics =
+              isSignedIn ? await _getTopicsFromEditorUseCase.call(curator.id, fromTopicSlug) : <TopicPreview>[];
           emit(TopicOwnerPageState.idleEditor(topics));
         },
-        expert: (curator) async {
-          final topics = await _getTopicsFromExpertUseCase.call(curator.id, fromTopicSlug);
+        expert: (_) async {
+          final topics =
+              isSignedIn ? await _getTopicsFromExpertUseCase.call(curator.id, fromTopicSlug) : <TopicPreview>[];
           emit(TopicOwnerPageState.idleExpert(topics));
         },
-        editorialTeam: (curator) async {
+        editorialTeam: (_) async {
           emit(TopicOwnerPageState.idleEditorialTeam());
         },
         unknown: (_) async => emit(TopicOwnerPageState.error()),

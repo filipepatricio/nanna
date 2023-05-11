@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/mark_topic_as_visited_use_case.di.dart';
@@ -21,6 +22,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     this._getTopicBySlugUseCase,
     this._trackActivityUseCase,
     this._markTopicAsVisitedUseCase,
+    this._isSignedInUseCase,
   ) : super(TopicPageState.loading());
 
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
@@ -28,6 +30,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   final GetTopicBySlugUseCase _getTopicBySlugUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final MarkTopicAsVisitedUseCase _markTopicAsVisitedUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   late Topic _topic;
   late String? _briefId;
@@ -42,19 +45,19 @@ class TopicPageCubit extends Cubit<TopicPageState> {
 
     try {
       final topic = await _getTopicBySlugUseCase(slug, true);
-      initialize(topic, briefId);
+      await initialize(topic, briefId);
     } catch (e, s) {
       Fimber.e('Topic loading failed', ex: e, stacktrace: s);
       emit(TopicPageState.error());
     }
   }
 
-  void initialize(Topic topic, String? briefId) {
+  Future<void> initialize(Topic topic, String? briefId) async {
     _topic = topic;
     _briefId = briefId;
-    if (!topic.visited) {
+    if (!topic.visited && await _isSignedInUseCase()) {
       try {
-        _markTopicAsVisitedUseCase(topic.slug);
+        await _markTopicAsVisitedUseCase(topic.slug);
       } catch (e, s) {
         Fimber.e('Marking topic as visited failed', ex: e, stacktrace: s);
       }

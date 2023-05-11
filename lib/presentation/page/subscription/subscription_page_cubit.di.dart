@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/core/util/app_link.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
@@ -20,6 +21,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
     this._restorePurchaseUseCase,
     this._purchaseSubscriptionUseCase,
     this._getActiveSubscriptionUseCase,
+    this._isSignedInUseCase,
   ) : super(const SubscriptionPageState.initializing());
 
   final GetSubscriptionPlansUseCase _getSubscriptionPlansUseCase;
@@ -27,10 +29,13 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
   final RestorePurchaseUseCase _restorePurchaseUseCase;
   final PurchaseSubscriptionUseCase _purchaseSubscriptionUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   late SubscriptionPlanGroup _planGroup;
   late SubscriptionPlan _selectedPlan;
   late ActiveSubscription _subscription;
+
+  late bool _isSignedIn;
 
   SubscriptionPlan? get currentPlan => _subscription.mapOrNull(
         trial: (data) => data.plan,
@@ -44,6 +49,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
 
   Future<void> initialize() async {
     try {
+      _isSignedIn = await _isSignedInUseCase();
       _planGroup = await _getSubscriptionPlansUseCase();
       _subscription = await _getActiveSubscriptionUseCase();
 
@@ -72,6 +78,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
           group: _planGroup,
           selectedPlan: _selectedPlan,
           subscription: _subscription,
+          isGuest: !_isSignedIn,
         ),
       );
     }
@@ -83,6 +90,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
         group: _planGroup,
         selectedPlan: _selectedPlan,
         subscription: _subscription,
+        isGuest: !_isSignedIn,
       ),
     );
 

@@ -4,8 +4,10 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart'
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
+import 'package:better_informed_mobile/domain/onboarding/should_show_skip_button_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/set_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -16,11 +18,17 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
     this._trackActivityUseCase,
     this._getActiveSubscriptionUseCase,
     this._isSignedInUseCase,
-  ) : super(OnboardingPageState.idle());
+    this._shouldShowSkipButtonUseCase,
+    this._setGuestModeUseCase,
+  ) : super(
+          OnboardingPageState.idle(shouldShowSkipButton: _shouldShowSkipButtonUseCase()),
+        );
 
   final TrackActivityUseCase _trackActivityUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
   final IsSignedInUseCase _isSignedInUseCase;
+  final ShouldShowSkipButtonUseCase _shouldShowSkipButtonUseCase;
+  final SetGuestModeUseCase _setGuestModeUseCase;
 
   StreamSubscription? _activeSubscriptionSub;
 
@@ -36,7 +44,10 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
     await _setupSubscriptionListener();
   }
 
-  void skip() => _trackActivityUseCase.trackEvent(AnalyticsEvent.onboardingSkipped());
+  void skip() {
+    _setGuestModeUseCase();
+    _trackActivityUseCase.trackEvent(AnalyticsEvent.onboardingSkipped());
+  }
 
   void setOnboardingCompleted() => _trackActivityUseCase.trackEvent(AnalyticsEvent.onboardingCompleted());
 
@@ -49,15 +60,15 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
 
     _activeSubscriptionSub = _getActiveSubscriptionUseCase.stream.distinct().listen((subscription) async {
       final signedIn = await _isSignedInUseCase();
-      emit(subscription.mapToState(signedIn));
+      emit(subscription.mapToState(signedIn, _shouldShowSkipButtonUseCase()));
     });
   }
 }
 
 extension on ActiveSubscription {
-  OnboardingPageState mapToState(bool signedIn) {
+  OnboardingPageState mapToState(bool signedIn, bool shouldShowSkipButton) {
     return maybeMap(
-      free: (_) => OnboardingPageState.idle(),
+      free: (_) => OnboardingPageState.idle(shouldShowSkipButton: shouldShowSkipButton),
       orElse: () => signedIn ? OnboardingPageState.signedIn() : OnboardingPageState.subscribed(),
     );
   }

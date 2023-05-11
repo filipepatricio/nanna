@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/send_magic_link_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/subscribe_for_magic_link_token_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/force_subscription_status_sync_use_case.di.dart';
@@ -14,7 +15,9 @@ import 'package:better_informed_mobile/domain/subscription/use_case/has_active_s
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/run_initial_bookmark_sync_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/clear_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -38,6 +41,9 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._getUserUseCase,
     this._hasActiveSubscriptionUseCase,
     this._forceSubscriptionStatusSyncUseCase,
+    this._isGuestModeUseCase,
+    this._clearGuestModeUseCase,
+    this._updateBriefNotifierUseCase,
   ) : super(SignInPageState.idle(false));
 
   final IsEmailValidUseCase _isEmailValidUseCase;
@@ -52,9 +58,14 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   final GetUserUseCase _getUserUseCase;
   final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
   final ForceSubscriptionStatusSyncUseCase _forceSubscriptionStatusSyncUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
+  final ClearGuestModeUseCase _clearGuestModeUseCase;
+  final UpdateBriefNotifierUseCase _updateBriefNotifierUseCase;
 
   StreamSubscription? _magicLinkSubscription;
   late String _email;
+
+  late bool _isGuestMode;
 
   @override
   Future<void> close() async {
@@ -64,6 +75,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
   Future<void> initialize() async {
     await _subscribeForMagicLink();
+    _isGuestMode = await _isGuestModeUseCase();
   }
 
   void updateEmail(String email) {
@@ -183,6 +195,12 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
     _initializeAttributionUseCase().ignore();
     _runIntitialBookmarkSyncUseCase().ignore();
+
+    if (_isGuestMode) {
+      await _clearGuestModeUseCase();
+      //TODO: This is not working
+      _updateBriefNotifierUseCase();
+    }
 
     emit(SignInPageState.success());
   }

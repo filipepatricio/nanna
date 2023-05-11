@@ -179,6 +179,11 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
 
     _shouldUpdateBriefSubscription ??= _getShouldUpdateBriefStreamUseCase().listen((_) => refetchBriefs());
 
+    if (!await _isSignedInUseCase()) {
+      await _requestPermissionsUseCase();
+      return;
+    }
+
     _itemPreviewTrackerSubscription ??= _itemPreviewTrackerStream.listen((item) {
       _markEntryAsSeen(item.entry);
       _trackActivityUseCase.trackEvent(item.event);
@@ -218,7 +223,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
       _briefsWrapper = await _getCurrentBrief();
       _selectedBrief ??= _briefsWrapper.currentBrief;
 
-      final todaysBriefSelected = _selectedBrief == _briefsWrapper.currentBrief;
+      final todaysBriefSelected = _selectedBrief?.id == _briefsWrapper.currentBrief.id;
 
       if (todaysBriefSelected) {
         _selectedBrief = _briefsWrapper.currentBrief;

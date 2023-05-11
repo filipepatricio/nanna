@@ -16,4 +16,6 @@ class EntryPageState with _$EntryPageState {
   factory EntryPageState.signedIn() = _EntryPageStateSignedIn;
 
   factory EntryPageState.notSignedIn() = _EntryPageStateNotSignedIn;
+
+  factory EntryPageState.guest() = _EntryPageStateGuest;
 }

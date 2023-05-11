@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/domain/release_notes/use_case/save_releas
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -26,6 +27,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     this._identifyAnalyticsUserUseCase,
     this._initializePurchasesUseCase,
     this._getActiveSubscriptionUseCase,
+    this._isGuestModeUseCase,
   ) : super(EntryPageState.idle());
 
   final IsSignedInUseCase _isSignedInUseCase;
@@ -35,6 +37,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
   final IdentifyAnalyticsUserUseCase _identifyAnalyticsUserUseCase;
   final InitializePurchasesUseCase _initializePurchasesUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   @override
   Future<void> close() async {
@@ -64,7 +67,8 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     }
 
     final activeSubscription = await _getActiveSubscriptionUseCase();
-    emit(activeSubscription.mapToState());
+    final isGuestMode = await _isGuestModeUseCase();
+    emit(activeSubscription.mapToState(isGuestMode));
   }
 
   Future<void> _initializeSignedInUser() async {
@@ -93,9 +97,9 @@ extension _FutureExtension<T> on Future<T> {
 }
 
 extension on ActiveSubscription {
-  EntryPageState mapToState() {
+  EntryPageState mapToState(bool isGuestMode) {
     return map(
-      free: (_) => EntryPageState.notSignedIn(),
+      free: (_) => isGuestMode ? EntryPageState.guest() : EntryPageState.notSignedIn(),
       trial: (_) => EntryPageState.subscribed(),
       premium: (_) => EntryPageState.subscribed(),
       manualPremium: (_) => EntryPageState.subscribed(),

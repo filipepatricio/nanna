@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -36,15 +37,14 @@ class SnackbarMessage {
         action: action,
       );
 
-  factory SnackbarMessage.guest(
-    BuildContext context, {
-    SnackbarAction? action,
-  }) =>
-      SnackbarMessage._(
+  factory SnackbarMessage.guest(BuildContext context) => SnackbarMessage._(
         message: context.l10n.guest_signIn_snackbar_message,
         subMessage: context.l10n.guest_signIn_snackbar_subMessage,
         type: SnackbarMessageType.info,
-        action: action,
+        action: SnackbarAction(
+          label: context.l10n.guest_signIn_error_action,
+          callback: () => context.pushRoute(const SignInPageModal()),
+        ),
       );
 
   factory SnackbarMessage.custom({

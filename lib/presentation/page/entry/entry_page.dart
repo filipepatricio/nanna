@@ -21,6 +21,7 @@ class EntryPage extends HookWidget {
         signedIn: () => context.resetToMain(),
         notSignedIn: () => context.resetToOnboarding(),
         subscribed: () => context.resetToSignIn(),
+        guest: () => context.resetToMain(),
       );
     });
 

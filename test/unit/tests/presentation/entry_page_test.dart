@@ -27,6 +27,7 @@ void main() {
     late MockIdentifyAnalyticsUserUseCase identifyAnalyticsUserUseCase;
     late MockInitializePurchasesUseCase initializePurchasesUseCase;
     late GetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
+    late MockIsGuestModeUseCase isGuestModeUseCase;
 
     late EntryPageCubit cubit;
 
@@ -38,6 +39,9 @@ void main() {
       identifyAnalyticsUserUseCase = MockIdentifyAnalyticsUserUseCase();
       initializePurchasesUseCase = MockInitializePurchasesUseCase();
       getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
+      isGuestModeUseCase = MockIsGuestModeUseCase();
+
+      when(isGuestModeUseCase()).thenAnswer((_) async => false);
 
       cubit = EntryPageCubit(
         isSignedInUseCase,
@@ -47,6 +51,7 @@ void main() {
         identifyAnalyticsUserUseCase,
         initializePurchasesUseCase,
         getActiveSubscriptionUseCase,
+        isGuestModeUseCase,
       );
     });
 

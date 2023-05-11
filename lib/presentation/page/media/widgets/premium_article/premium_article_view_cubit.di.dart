@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/domain/article/use_case/get_other_brief_e
 import 'package:better_informed_mobile/domain/article/use_case/get_other_topic_entries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_related_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_reading_progress_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
@@ -42,6 +43,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     this._getPreferredArticleTextScaleFactorUseCase,
     this._setPreferredArticleTextScaleFactorUseCase,
     this._shouldUseTextSizeSelectorUseCase,
+    this._isSignedInUseCase,
   ) : super(const PremiumArticleViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
@@ -56,6 +58,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetPreferredArticleTextScaleFactorUseCase _getPreferredArticleTextScaleFactorUseCase;
   final SetPreferredArticleTextScaleFactorUseCase _setPreferredArticleTextScaleFactorUseCase;
   final ShouldUseTextSizeSelectorUseCase _shouldUseTextSizeSelectorUseCase;
+  final IsSignedInUseCase _isSignedInUseCase;
 
   final _moreFromBriefItems = <BriefEntryItem>[];
   final _otherTopicItems = <MediaItem>[];
@@ -69,11 +72,11 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   late String? _topicId;
   late String? _briefId;
   late String? _topicTitle;
-  late NeatPeriodicTaskScheduler? _readingProgressTrackingScheduler;
 
   late bool _showTextScaleFactorSelector;
   late double _preferredTextScaleFactor;
 
+  NeatPeriodicTaskScheduler? _readingProgressTrackingScheduler;
   UpdateArticleProgressResponse? _updateArticleProgressResponse;
 
   UpdateArticleProgressResponse? get updateArticleProgressResponse => _updateArticleProgressResponse;
@@ -114,11 +117,15 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
 
     _emitIdleState();
 
-    _setupReadingProgressTracker();
-
     if (!_currentFullArticle.metadata.availableInSubscription) {
       await _precacheSubscriptionPlansUseCase();
     }
+
+    if (!await _isSignedInUseCase()) {
+      return;
+    }
+
+    _setupReadingProgressTracker();
 
     if (topicSlug != null) {
       _topicTitle = (await _getTopicBySlugUseCase.call(topicSlug)).strippedTitle;

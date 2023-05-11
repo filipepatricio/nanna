@@ -20,14 +20,10 @@ class DailyBriefRepositoryImpl implements DailyBriefRepository {
   final BriefDTOMapper _briefDTOMapper;
   final BriefsWrapperDTOMapper _briefsWrapperDTOMapper;
 
-  final BehaviorSubject<BriefsWrapper> _currentBriefStream = BehaviorSubject();
-
   @override
   Future<BriefsWrapper> getCurrentBrief() async {
     final dto = await _dailyBriefApiDataSource.currentBrief();
     final currentBrief = _briefsWrapperDTOMapper(dto);
-
-    _currentBriefStream.add(currentBrief);
 
     return currentBrief;
   }

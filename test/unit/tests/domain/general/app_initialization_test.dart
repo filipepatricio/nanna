@@ -70,6 +70,9 @@ void main() {
       getUserUseCase,
       hasActiveSubscriptionUseCase,
       forceSubscriptionStatusSyncUseCase,
+      MockIsGuestModeUseCase(),
+      MockClearGuestModeUseCase(),
+      MockUpdateBriefNotifierUseCase(),
     );
   });
 

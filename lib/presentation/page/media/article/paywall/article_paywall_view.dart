@@ -41,7 +41,7 @@ class ArticlePaywallView extends HookWidget {
 
     useCubitListener<SubscriptionPageCubit, SubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        idle: (_, __, ___) {
+        idle: (_, __, ___, ____) {
           InformedDialog.removeRestorePurchase(context);
         },
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
@@ -118,8 +118,8 @@ class ArticlePaywallView extends HookWidget {
 extension on SubscriptionPageState {
   bool showPaywall(bool availableInSubscription) {
     return maybeMap(
-      idle: (_) => !availableInSubscription,
-      processing: (_) => !availableInSubscription,
+      idle: (data) => data.isGuest || !availableInSubscription,
+      processing: (data) => data.isGuest || !availableInSubscription,
       orElse: () => false,
     );
   }
