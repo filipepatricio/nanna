@@ -15,6 +15,7 @@ class RelatedContentSection extends StatelessWidget {
     required this.topicId,
     this.onRelatedContentItemTap,
     this.onRelatedCategoryTap,
+    this.openedFrom,
     Key? key,
   }) : super(key: key);
 
@@ -25,6 +26,7 @@ class RelatedContentSection extends StatelessWidget {
   final String? topicId;
   final void Function(CategoryItem)? onRelatedContentItemTap;
   final void Function(Category)? onRelatedCategoryTap;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class RelatedContentSection extends StatelessWidget {
               relatedContentItems: relatedContentItems,
               briefId: briefId,
               topicId: topicId,
+              openedFrom: openedFrom,
             ),
         ],
       ),

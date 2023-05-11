@@ -21,10 +21,12 @@ class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
     required this.cubit,
     required this.mainController,
+    this.openedFrom,
   });
 
   final PremiumArticleViewCubit cubit;
   final ScrollController mainController;
+  final String? openedFrom;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articleHeaderKey = GlobalKey();
@@ -100,14 +102,18 @@ class PremiumArticleReadView extends HookWidget {
                         SliverToBoxAdapter(
                           child: ArticleMoreFromSection(
                             title: context.l10n.article_moreFromTopic(cubit.topicTitle),
-                            items: data.otherTopicItems.buildWidgets(context, cubit),
+                            items: data.otherTopicItems.buildWidgets(
+                              context,
+                              cubit,
+                              openedFrom,
+                            ),
                           ),
                         ),
                       if (data.moreFromBriefItems.isNotEmpty)
                         SliverToBoxAdapter(
                           child: ArticleMoreFromSection(
                             title: context.l10n.article_otherBriefs,
-                            items: data.moreFromBriefItems.buildWidgets(context, cubit),
+                            items: data.moreFromBriefItems.buildWidgets(context, cubit, openedFrom),
                           ),
                         ),
                       if (data.relatedContentItems.isNotEmpty || data.featuredCategories.isNotEmpty)
@@ -120,6 +126,7 @@ class PremiumArticleReadView extends HookWidget {
                             relatedContentItems: data.relatedContentItems,
                             onRelatedContentItemTap: cubit.onRelatedContentItemTap,
                             onRelatedCategoryTap: cubit.onRelatedCategoryTap,
+                            openedFrom: openedFrom,
                           ),
                         ),
                       SliverToBoxAdapter(
@@ -190,6 +197,7 @@ extension on BuildContext {
     required MediaItemArticle article,
     String? briefId,
     String? topicId,
+    String? openedFrom,
   }) {
     router.popAndPush(
       MediaItemPageRoute(
@@ -197,6 +205,7 @@ extension on BuildContext {
         briefId: briefId,
         topicId: topicId,
         slug: article.slug,
+        openedFrom: openedFrom,
       ),
     );
   }
@@ -218,6 +227,7 @@ extension on List<MediaItem> {
   List<Widget> buildWidgets(
     BuildContext context,
     PremiumArticleViewCubit cubit,
+    String? openedFrom,
   ) =>
       map<Widget>(
         (mediaItem) => mediaItem.map(
@@ -229,6 +239,7 @@ extension on List<MediaItem> {
                 article: mediaItemArticle,
                 briefId: cubit.briefId,
                 topicId: cubit.topicId,
+                openedFrom: openedFrom,
               );
             },
           ),
@@ -241,6 +252,7 @@ extension on List<BriefEntryItem> {
   List<Widget> buildWidgets(
     BuildContext context,
     PremiumArticleViewCubit cubit,
+    String? openedFrom,
   ) =>
       map<Widget>(
         (briefEntryItem) => briefEntryItem.map(
@@ -253,6 +265,7 @@ extension on List<BriefEntryItem> {
                   article: mediaItemArticle,
                   briefId: cubit.briefId,
                   topicId: cubit.topicId,
+                  openedFrom: openedFrom,
                 );
               },
             ),

@@ -16,6 +16,7 @@ class RelatedContent extends HookWidget {
     this.topicId,
     this.briefId,
     this.onItemTap,
+    this.openedFrom,
     Key? key,
   }) : super(key: key);
 
@@ -23,6 +24,7 @@ class RelatedContent extends HookWidget {
   final String? briefId;
   final String? topicId;
   final Function(CategoryItem)? onItemTap;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +73,7 @@ class RelatedContent extends HookWidget {
                                 briefId: briefId,
                                 topicId: topicId,
                                 width: tileWidth,
+                                openedFrom: openedFrom,
                               ),
                             ) ??
                             const SizedBox.shrink(),
@@ -101,12 +104,14 @@ class _Article extends StatelessWidget {
     required this.onItemTap,
     this.briefId,
     this.topicId,
+    this.openedFrom,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final String? briefId;
   final String? topicId;
+  final String? openedFrom;
   final double width;
   final VoidCallback onItemTap;
 
@@ -122,6 +127,7 @@ class _Article extends StatelessWidget {
             article: article,
             briefId: briefId,
             topicId: topicId,
+            openedFrom: openedFrom,
           );
         },
       ),
@@ -166,12 +172,14 @@ extension on BuildContext {
     required MediaItemArticle article,
     String? briefId,
     String? topicId,
+    String? openedFrom,
   }) {
     router.popAndPush(
       MediaItemPageRoute(
         article: article,
         briefId: briefId,
         topicId: topicId,
+        openedFrom: openedFrom,
       ),
     );
   }

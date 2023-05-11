@@ -3,7 +3,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart'
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
-import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover_cubit.di.dart';
@@ -139,6 +139,7 @@ extension on BuildContext {
       MediaItemPageRoute(
         article: article,
         briefId: briefId,
+        openedFrom: l10n.main_todayTab,
       ),
     );
   }

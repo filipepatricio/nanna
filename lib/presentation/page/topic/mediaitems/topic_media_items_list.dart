@@ -84,6 +84,7 @@ class TopicMediaItemsList extends HookWidget {
         topicId: topic.id,
         topicSlug: topic.slug,
         briefId: cubit.briefId,
+        openedFrom: context.l10n.topic_label,
       ),
     );
   }

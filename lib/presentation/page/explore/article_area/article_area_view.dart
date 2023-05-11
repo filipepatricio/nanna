@@ -63,7 +63,10 @@ class ArticleAreaView extends HookWidget {
 extension on BuildContext {
   void navigateToArticle(MediaItemArticle article) {
     pushRoute(
-      MediaItemPageRoute(article: article),
+      MediaItemPageRoute(
+        article: article,
+        openedFrom: l10n.explore_title,
+      ),
     );
   }
 

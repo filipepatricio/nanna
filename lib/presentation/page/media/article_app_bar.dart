@@ -23,6 +23,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
     this.isConnected = true,
     this.shouldShowTitle = false,
     this.showTextScaleFactorSelector,
+    this.openedFrom,
   });
 
   final MediaItemArticle article;
@@ -32,6 +33,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   final bool isConnected;
   final bool shouldShowTitle;
   final VoidCallback? showTextScaleFactorSelector;
+  final String? openedFrom;
 
   bool get fromTopic => topicId != null;
 
@@ -82,7 +84,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
           backgroundColor: backgroundColorAnimation.value,
           leading: BackTextButton(
             color: foregroundColorAnimation.value,
-            text: fromTopic ? context.l10n.topic_label : context.l10n.common_back,
+            text: fromTopic ? context.l10n.topic_label : openedFrom ?? context.l10n.common_back,
           ),
           title: shouldShowTitle ? article.publisher.name : null,
           titleColor: foregroundColorAnimation.value,

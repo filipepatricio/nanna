@@ -38,14 +38,20 @@ extension on Bookmark {
           ? ArticleCover.medium(
               article: data.article,
               onTap: () => context.pushRoute(
-                MediaItemPageRoute(article: data.article),
+                MediaItemPageRoute(
+                  article: data.article,
+                  openedFrom: context.l10n.main_savedTab,
+                ),
               ),
               onBookmarkTap: onRemoveBookmarkCallback,
             )
           : ArticleCover.large(
               article: data.article,
               onTap: () => context.pushRoute(
-                MediaItemPageRoute(article: data.article),
+                MediaItemPageRoute(
+                  article: data.article,
+                  openedFrom: context.l10n.main_savedTab,
+                ),
               ),
               showNote: true,
               showRecommendedBy: true,
