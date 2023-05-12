@@ -45,7 +45,7 @@ class ExplorePillsAreaView extends StatelessWidget {
             onTap: () => AutoRouter.of(context).push(
               CategoryPageRoute(
                 category: category,
-                openedFrom: context.l10n.explore_title,
+                openedFrom: context.l10n.main_exploreTab,
               ),
             ),
           );

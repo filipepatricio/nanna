@@ -24,6 +24,7 @@ class PremiumArticleView extends HookWidget {
     this.topicSlug,
     this.topicId,
     this.briefId,
+    this.openedFrom,
     Key? key,
   }) : super(key: key);
 
@@ -32,6 +33,7 @@ class PremiumArticleView extends HookWidget {
   final String? topicSlug;
   final String? topicId;
   final String? briefId;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +101,7 @@ class PremiumArticleView extends HookWidget {
             article: article.metadata,
             briefId: briefId,
             topicId: topicId,
+            openedFrom: openedFrom,
             shouldShowTitle: isScrolled,
             actionsBarColorModeNotifier: actionsBarColorModeNotifier,
             isConnected: context.watch<IsConnected>(),
@@ -116,10 +119,7 @@ class PremiumArticleView extends HookWidget {
         ),
         child: ScrollsToTop(
           onScrollsToTop: (_) => mainController.animateToStart(),
-          child: PremiumArticleReadView(
-            cubit: cubit,
-            mainController: mainController,
-          ),
+          child: PremiumArticleReadView(cubit: cubit, mainController: mainController, openedFrom: openedFrom),
         ),
       ),
     );

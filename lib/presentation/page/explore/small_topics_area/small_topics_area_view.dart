@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_area_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_header.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_item_carousel_view.dart';
-import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
@@ -73,6 +73,7 @@ extension on BuildContext {
     pushRoute(
       TopicPage(
         topicSlug: topicPreview.slug,
+        openedFrom: l10n.main_exploreTab,
       ),
     );
   }

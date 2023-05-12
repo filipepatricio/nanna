@@ -509,6 +509,10 @@
   "@search_hint": {
     "type": "text"
   },
+  "search_label": "Search",
+  "@search_label": {
+    "type": "text"
+  },
   "settings_aboutHeader": "About",
   "@settings_aboutHeader": {
     "type": "text"
