@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/run_initial_bookmark_sync_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -32,6 +33,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._restorePurchaseUseCase,
     this._signInUseCase,
     this._runIntitialBookmarkSyncUseCase,
+    this._getUserUseCase,
   ) : super(SignInPageState.idle(false));
 
   final IsEmailValidUseCase _isEmailValidUseCase;
@@ -43,6 +45,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   final RestorePurchaseUseCase _restorePurchaseUseCase;
   final SignInUseCase _signInUseCase;
   final RunIntitialBookmarkSyncUseCase _runIntitialBookmarkSyncUseCase;
+  final GetUserUseCase _getUserUseCase;
 
   StreamSubscription? _magicLinkSubscription;
   late String _email;
@@ -165,11 +168,10 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
   Future<void> _finishSignIn() async {
     await _initializeFeatureFlagsUseCase();
-
-    _initializePurchasesUseCase().ignore();
+    await _initializePurchasesUseCase();
+    await _getUserUseCase();
 
     _initializeAttributionUseCase().ignore();
-
     _runIntitialBookmarkSyncUseCase().ignore();
 
     emit(SignInPageState.success());
