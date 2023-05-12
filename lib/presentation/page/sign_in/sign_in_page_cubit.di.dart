@@ -9,6 +9,8 @@ import 'package:better_informed_mobile/domain/auth/use_case/sign_in_use_case.di.
 import 'package:better_informed_mobile/domain/auth/use_case/subscribe_for_magic_link_token_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/force_subscription_status_sync_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/run_initial_bookmark_sync_use_case.di.dart';
@@ -34,6 +36,8 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._signInUseCase,
     this._runIntitialBookmarkSyncUseCase,
     this._getUserUseCase,
+    this._hasActiveSubscriptionUseCase,
+    this._forceSubscriptionStatusSyncUseCase,
   ) : super(SignInPageState.idle(false));
 
   final IsEmailValidUseCase _isEmailValidUseCase;
@@ -46,6 +50,8 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   final SignInUseCase _signInUseCase;
   final RunIntitialBookmarkSyncUseCase _runIntitialBookmarkSyncUseCase;
   final GetUserUseCase _getUserUseCase;
+  final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
+  final ForceSubscriptionStatusSyncUseCase _forceSubscriptionStatusSyncUseCase;
 
   StreamSubscription? _magicLinkSubscription;
   late String _email;
@@ -170,6 +176,10 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     await _initializeFeatureFlagsUseCase();
     await _initializePurchasesUseCase();
     await _getUserUseCase();
+
+    if (await _hasActiveSubscriptionUseCase()) {
+      await _forceSubscriptionStatusSyncUseCase();
+    }
 
     _initializeAttributionUseCase().ignore();
     _runIntitialBookmarkSyncUseCase().ignore();

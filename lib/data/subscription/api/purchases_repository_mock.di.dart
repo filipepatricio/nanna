@@ -70,4 +70,7 @@ class PurchasesRepositoryMock implements PurchasesRepository {
 
   @override
   Future<void> login(String userId) async {}
+
+  @override
+  Future<bool> forceSubscriptionStatusSync() async => true;
 }
