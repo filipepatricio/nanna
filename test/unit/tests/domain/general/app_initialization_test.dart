@@ -8,7 +8,9 @@ import 'package:better_informed_mobile/domain/auth/use_case/sign_in_use_case.di.
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/use_case/save_release_note_if_first_run_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/force_subscription_status_sync_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/request_permissions_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_cubit.di.dart';
@@ -31,6 +33,8 @@ void main() {
   late MockGetUserUseCase getUserUseCase;
   late SignInPageCubit signInPageCubit;
   late MockRequestPermissionsUseCase requestPermissionsUseCase;
+  late HasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
+  late MockForceSubscriptionStatusSyncUseCase forceSubscriptionStatusSyncUseCase;
 
   setUp(() {
     isSignedInUseCase = MockIsSignedInUseCase();
@@ -43,6 +47,8 @@ void main() {
     authRepository = MockAuthRepository();
     getUserUseCase = MockGetUserUseCase();
     requestPermissionsUseCase = MockRequestPermissionsUseCase();
+    hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
+    forceSubscriptionStatusSyncUseCase = MockForceSubscriptionStatusSyncUseCase();
 
     final signInUseCase = SignInUseCase(
       authRepository,
@@ -62,6 +68,8 @@ void main() {
       signInUseCase,
       MockRunIntitialBookmarkSyncUseCase(),
       getUserUseCase,
+      hasActiveSubscriptionUseCase,
+      forceSubscriptionStatusSyncUseCase,
     );
   });
 
@@ -72,6 +80,8 @@ void main() {
         when(isSignedInUseCase()).thenAnswer((_) async => true);
         when(getActiveSubscriptionUseCase()).thenAnswer((_) async => TestData.activeSubscriptionTrial);
         when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(TestData.activeSubscriptionTrial));
+        when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => true);
+        when(forceSubscriptionStatusSyncUseCase()).thenAnswer((_) async => true);
 
         await tester.startApp(
           dependencyOverride: (getIt) async {
@@ -83,9 +93,12 @@ void main() {
             getIt.registerFactory<InitializePurchasesUseCase>(() => initializePurchasesUseCase);
             getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
             getIt.registerFactory<RequestPermissionsUseCase>(() => requestPermissionsUseCase);
+            getIt.registerFactory<HasActiveSubscriptionUseCase>(() => hasActiveSubscriptionUseCase);
+            getIt.registerFactory<ForceSubscriptionStatusSyncUseCase>(() => forceSubscriptionStatusSyncUseCase);
           },
         );
 
+        verifyNever(forceSubscriptionStatusSyncUseCase());
         verify(saveReleaseNoteIfFirstRunUseCase()).called(1);
         verify(initializePurchasesUseCase()).called(1);
         verify(initializeFeatureFlagsUseCase()).called(1);
@@ -100,6 +113,8 @@ void main() {
         when(isSignedInUseCase()).thenAnswer((_) async => true);
         when(getActiveSubscriptionUseCase()).thenAnswer((_) async => ActiveSubscription.free());
         when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(ActiveSubscription.free()));
+        when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => false);
+        when(forceSubscriptionStatusSyncUseCase()).thenAnswer((_) async => true);
 
         await tester.startApp(
           dependencyOverride: (getIt) async {
@@ -111,9 +126,12 @@ void main() {
             getIt.registerFactory<InitializePurchasesUseCase>(() => initializePurchasesUseCase);
             getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
             getIt.registerFactory<RequestPermissionsUseCase>(() => requestPermissionsUseCase);
+            getIt.registerFactory<HasActiveSubscriptionUseCase>(() => hasActiveSubscriptionUseCase);
+            getIt.registerFactory<ForceSubscriptionStatusSyncUseCase>(() => forceSubscriptionStatusSyncUseCase);
           },
         );
 
+        verifyNever(forceSubscriptionStatusSyncUseCase());
         verify(saveReleaseNoteIfFirstRunUseCase()).called(1);
         verify(initializePurchasesUseCase()).called(1);
         verify(initializeFeatureFlagsUseCase()).called(1);
@@ -130,6 +148,8 @@ void main() {
         when(getActiveSubscriptionUseCase()).thenAnswer((_) async => TestData.activeSubscriptionTrial);
         when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(TestData.activeSubscriptionTrial));
         when(getUserUseCase()).thenAnswer((_) async => TestData.user);
+        when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => true);
+        when(forceSubscriptionStatusSyncUseCase()).thenAnswer((_) async => true);
 
         await tester.startApp(
           dependencyOverride: (getIt) async {
@@ -142,6 +162,8 @@ void main() {
             getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
             getIt.registerFactory<AuthRepository>(() => authRepository);
             getIt.registerFactory<RequestPermissionsUseCase>(() => requestPermissionsUseCase);
+            getIt.registerFactory<HasActiveSubscriptionUseCase>(() => hasActiveSubscriptionUseCase);
+            getIt.registerFactory<ForceSubscriptionStatusSyncUseCase>(() => forceSubscriptionStatusSyncUseCase);
           },
         );
 
@@ -162,6 +184,7 @@ void main() {
 
         await signInPageCubit.signInWithMagicLink('token');
 
+        verify(forceSubscriptionStatusSyncUseCase()).called(1);
         verify(initializePurchasesUseCase()).called(1);
         verify(initializeFeatureFlagsUseCase()).called(1);
         verify(initializeAttributionUseCase()).called(1);
@@ -179,6 +202,8 @@ void main() {
         when(getActiveSubscriptionUseCase()).thenAnswer((_) async => ActiveSubscription.free());
         when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(ActiveSubscription.free()));
         when(getUserUseCase()).thenAnswer((_) async => TestData.user);
+        when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => false);
+        when(forceSubscriptionStatusSyncUseCase()).thenAnswer((_) async => true);
 
         await tester.startApp(
           dependencyOverride: (getIt) async {
@@ -191,12 +216,15 @@ void main() {
             getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
             getIt.registerFactory<SignInPageCubit>(() => signInPageCubit);
             getIt.registerFactory<RequestPermissionsUseCase>(() => requestPermissionsUseCase);
+            getIt.registerFactory<HasActiveSubscriptionUseCase>(() => hasActiveSubscriptionUseCase);
+            getIt.registerFactory<ForceSubscriptionStatusSyncUseCase>(() => forceSubscriptionStatusSyncUseCase);
           },
         );
 
         verify(saveReleaseNoteIfFirstRunUseCase()).called(1);
         verify(initializePurchasesUseCase()).called(1);
 
+        verifyNever(forceSubscriptionStatusSyncUseCase());
         verifyNever(initializeFeatureFlagsUseCase());
         verifyNever(identifyAnalyticsUserUseCase());
         verifyNever(initializeAttributionUseCase());
@@ -211,6 +239,8 @@ void main() {
 
         await signInPageCubit.signInWithMagicLink('token');
 
+        verifyNever(forceSubscriptionStatusSyncUseCase());
+        verify(initializePurchasesUseCase()).called(1);
         verify(initializeFeatureFlagsUseCase()).called(1);
         verify(initializeAttributionUseCase()).called(1);
         verify(identifyAnalyticsUserUseCase(any)).called(1);

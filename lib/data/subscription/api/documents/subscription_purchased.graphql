@@ -1,0 +1,5 @@
+mutation subscriptionPurchased($productId: String) {
+    subscriptionPurchased(productId: $productId) {
+        successful
+    }
+}

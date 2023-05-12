@@ -27,6 +27,7 @@ import 'package:better_informed_mobile/data/push_notification/push_notification_
 import 'package:better_informed_mobile/data/subscription/api/mapper/active_subscription_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_origin_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_plan_mapper.di.dart';
+import 'package:better_informed_mobile/data/subscription/api/purchase_api_data_source.dart';
 import 'package:better_informed_mobile/data/subscription/api/purchase_remote_data_source.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/app_info_data_source.di.dart';
@@ -100,6 +101,7 @@ import 'package:better_informed_mobile/domain/release_notes/release_notes_remote
 import 'package:better_informed_mobile/domain/release_notes/use_case/save_release_note_if_first_run_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/force_subscription_status_sync_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_preferred_subscription_plan_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
@@ -267,6 +269,8 @@ const _classes = [
   PermissionsRepository,
   RequestPermissionsUseCase,
   HasNotificationPermissionUseCase,
+  PurchaseApiDataSource,
+  ForceSubscriptionStatusSyncUseCase,
 ];
 
 @GenerateMocks(_classes)

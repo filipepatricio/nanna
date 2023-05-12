@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/data/subscription/api/dto/active_subscrip
 import 'package:better_informed_mobile/data/subscription/api/dto/offering_dto.dart';
 import 'package:better_informed_mobile/data/subscription/api/mapper/active_subscription_mapper.di.dart';
 import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_plan_mapper.di.dart';
+import 'package:better_informed_mobile/data/subscription/api/purchase_api_data_source.dart';
 import 'package:better_informed_mobile/data/subscription/api/purchase_remote_data_source.di.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
@@ -27,12 +28,14 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
     this._activeSubscriptionMapper,
     this._purchaseRemoteDataSource,
     this._analyticsFacade,
+    this._purchaseApiDataSource,
   );
 
   final AppConfig _config;
   final SubscriptionPlanMapper _subscriptionPlanMapper;
   final ActiveSubscriptionMapper _activeSubscriptionMapper;
   final PurchaseRemoteDataSource _purchaseRemoteDataSource;
+  final PurchaseApiDataSource _purchaseApiDataSource;
   final AnalyticsFacade _analyticsFacade;
 
   var _activeSubscriptionStream = StreamController<ActiveSubscription>.broadcast();
@@ -207,6 +210,12 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   @override
   Future<void> collectAppleSearchAdsAttributionData() async {
     await _purchaseRemoteDataSource.enableAdServicesAttributionTokenCollection();
+  }
+
+  @override
+  Future<bool> forceSubscriptionStatusSync() async {
+    final result = await _purchaseApiDataSource.forceSubscriptionStatusSync();
+    return result.successful;
   }
 
   Future<void> _updateActiveSubscriptionStream(CustomerInfo customerInfo) async {

@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/subscription/api/purchase_api_data_source.dart';
 import 'package:better_informed_mobile/data/subscription/api/purchases_repository_impl.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_origin.dart';
@@ -18,6 +19,7 @@ void main() {
   late MockActiveSubscriptionMapper activeSubscriptionMapper;
   late MockPurchaseRemoteDataSource purchaseRemoteDataSource;
   late MockAnalyticsFacade analyticsFacade;
+  late PurchaseApiDataSource purchaseApiDataSource;
 
   setUp(() {
     appConfig = MockAppConfig();
@@ -25,12 +27,15 @@ void main() {
     activeSubscriptionMapper = MockActiveSubscriptionMapper();
     purchaseRemoteDataSource = MockPurchaseRemoteDataSource();
     analyticsFacade = MockAnalyticsFacade();
+    purchaseApiDataSource = MockPurchaseApiDataSource();
+
     repository = PurchasesRepositoryImpl(
       appConfig,
       subscriptionPlanMapper,
       activeSubscriptionMapper,
       purchaseRemoteDataSource,
       analyticsFacade,
+      purchaseApiDataSource,
     );
 
     when(appConfig.revenueCatPremiumEntitlementId).thenReturn(_premiumEntitlementId);

@@ -27,5 +27,7 @@ abstract class PurchasesRepository {
 
   Future<void> collectAppleSearchAdsAttributionData();
 
+  Future<bool> forceSubscriptionStatusSync();
+
   Future<void> dispose();
 }
