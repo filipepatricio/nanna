@@ -48,8 +48,6 @@ void main() {
       authRepository,
       MockAuthStore(),
       MockUserStore(),
-      getUserUseCase,
-      initializePurchasesUseCase,
       identifyAnalyticsUserUseCase,
     );
 
@@ -63,6 +61,7 @@ void main() {
       MockRestorePurchaseUseCase(),
       signInUseCase,
       MockRunIntitialBookmarkSyncUseCase(),
+      getUserUseCase,
     );
   });
 
@@ -163,6 +162,7 @@ void main() {
 
         await signInPageCubit.signInWithMagicLink('token');
 
+        verify(initializePurchasesUseCase()).called(1);
         verify(initializeFeatureFlagsUseCase()).called(1);
         verify(initializeAttributionUseCase()).called(1);
         verify(identifyAnalyticsUserUseCase(any)).called(1);
