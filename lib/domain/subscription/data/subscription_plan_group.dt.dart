@@ -15,5 +15,5 @@ class SubscriptionPlanGroup with _$SubscriptionPlanGroup {
     return plans.reduce((value, element) => value.monthlyPrice > element.monthlyPrice ? value : element);
   }
 
-  bool get hasTrail => plans.every((element) => element.hasTrial);
+  bool get hasTrial => plans.every((element) => element.hasTrial);
 }

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
+import 'package:better_informed_mobile/domain/permissions/permissions_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/registered_push_token.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
@@ -16,6 +17,7 @@ import 'package:better_informed_mobile/presentation/widget/back_text_button.dart
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../finders.dart';
 import '../../../flutter_test_config.dart';
@@ -27,11 +29,13 @@ void main() {
   late MockPushNotificationRepository pushNotificationRepository;
   late MockAppLinkDataSource appLinkDataSource;
   late MockDeepLinkRepository deepLinkRepository;
+  late MockPermissionsRepository permissionsRepository;
 
   setUp(() {
     appLinkDataSource = MockAppLinkDataSource();
     deepLinkRepository = MockDeepLinkRepository();
     pushNotificationRepository = MockPushNotificationRepository();
+    permissionsRepository = MockPermissionsRepository();
 
     when(appLinkDataSource.listenForIncomingActions()).thenAnswer((_) => const Stream.empty());
     when(pushNotificationRepository.registerToken()).thenAnswer(
@@ -39,6 +43,8 @@ void main() {
     );
     when(pushNotificationRepository.pushNotificationMessageStream())
         .thenAnswer((realInvocation) => const Stream.empty());
+    when(permissionsRepository.requestPermission(Permission.notification))
+        .thenAnswer((realInvocation) => Future.value(PermissionStatus.denied));
   });
 
   group('handles applinks', () {
@@ -282,7 +288,14 @@ void main() {
     });
 
     testWidgets('settings notifications', (tester) async {
-      when(pushNotificationRepository.hasPermission()).thenAnswer((_) async => true);
+      when(permissionsRepository.requestPermissions(any)).thenAnswer(
+        (_) async => Future<Map<Permission, PermissionStatus>>.value({
+          Permission.notification: PermissionStatus.granted,
+          Permission.appTrackingTransparency: PermissionStatus.granted
+        }),
+      );
+      when(permissionsRepository.getPermissionStatus(Permission.notification))
+          .thenAnswer((_) async => PermissionStatus.granted);
       when(pushNotificationRepository.pushNotificationOpenStream()).thenAnswer(
         (_) => Stream.value(TestData.settingsNotificationsPushNotification),
       );
@@ -290,6 +303,7 @@ void main() {
       await tester.startApp(
         dependencyOverride: (getIt) async {
           getIt.registerFactory<PushNotificationRepository>(() => pushNotificationRepository);
+          getIt.registerFactory<PermissionsRepository>(() => permissionsRepository);
         },
       );
 

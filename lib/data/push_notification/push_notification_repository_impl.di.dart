@@ -74,18 +74,6 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   }
 
   @override
-  Future<bool> hasPermission() async {
-    final settings = await _firebaseMessaging.getNotificationSettings();
-    return _isAuthorized(settings);
-  }
-
-  @override
-  Future<bool> requestPermission() async {
-    final result = await _firebaseMessaging.requestPermission();
-    return _isAuthorized(result);
-  }
-
-  @override
   Future<bool> shouldOpenNotificationsSettings() async {
     final result = await _firebaseMessaging.getNotificationSettings();
     return _shouldOpenSettings(result);
@@ -121,8 +109,6 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
         .map<IncomingPush>(_incomingPushDTOMapper)
         .map<IncomingPush>(_logUnknownActions);
   }
-
-  bool _isAuthorized(NotificationSettings result) => result.authorizationStatus == AuthorizationStatus.authorized;
 
   bool _shouldOpenSettings(NotificationSettings result) =>
       result.authorizationStatus != AuthorizationStatus.authorized &&

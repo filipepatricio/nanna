@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/widget/informed_rich_text.da
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:provider/provider.dart';
 
 class ArticleContentMarkdown extends HookWidget {
   const ArticleContentMarkdown({

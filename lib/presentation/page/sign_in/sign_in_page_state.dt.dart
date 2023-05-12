@@ -17,7 +17,11 @@ class SignInPageState with _$SignInPageState {
   @Implements<BuildState>()
   factory SignInPageState.processingLinkedIn() = _SignInPageStateProcessingLinkedIn;
 
-  factory SignInPageState.success(bool isOnboardingSeen) = _SignInPageStateSuccess;
+  const factory SignInPageState.redeemingCode() = _SignInPageStateRedeemingCode;
+
+  const factory SignInPageState.restoringPurchase() = _SignInPageStateRestoringPurchase;
+
+  factory SignInPageState.success() = _SignInPageStateSuccess;
 
   factory SignInPageState.unauthorizedError() = _SignInPageStateUnauthorizedError;
 

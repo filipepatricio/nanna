@@ -11,9 +11,9 @@ class EntryPageState with _$EntryPageState {
   @Implements<BuildState>()
   factory EntryPageState.error() = _EntryPageStateError;
 
-  factory EntryPageState.alreadySignedIn() = _EntryPageStateAlreadySignedIn;
+  factory EntryPageState.subscribed() = _EntryPageStateSubscribed;
+
+  factory EntryPageState.signedIn() = _EntryPageStateSignedIn;
 
   factory EntryPageState.notSignedIn() = _EntryPageStateNotSignedIn;
-
-  factory EntryPageState.onboarding() = _EntryPageStateOnboarding;
 }

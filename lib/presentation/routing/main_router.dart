@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/empty_router_widgets.dart';
+import 'package:better_informed_mobile/presentation/page/add_interests/add_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/audio/audio_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/empty_page.dart';
@@ -21,7 +22,6 @@ import 'package:better_informed_mobile/presentation/page/settings/legal/settings
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
-import 'package:better_informed_mobile/presentation/page/settings/subscription/change_subscription/change_subscription_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/subscription/settings_subscription_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
@@ -63,6 +63,16 @@ const privacyPagePath = 'privacy';
     CustomRoute(page: EntryPage, initial: true, customRouteBuilder: fadePageRouteBuilder),
     AutoRoute(page: OnboardingPage),
     AutoRoute(page: SignInPage),
+    CustomRoute(
+      name: 'SignInPageModal',
+      page: SignInPage,
+      customRouteBuilder: modalBottomSheetPageRouteBuilder,
+    ),
+    CustomRoute(
+      path: subscribePath,
+      page: SubscriptionPage,
+      customRouteBuilder: modalBottomSheetPageRouteBuilder,
+    ),
     mainPageRoute,
     CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
     AutoRoute(page: EmptyPage),
@@ -84,12 +94,12 @@ const mainPageRoute = CustomRoute(
       page: TopicPage,
     ),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
+    CustomRoute(page: AddInterestsPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(
       path: subscribePath,
       page: SubscriptionPage,
       customRouteBuilder: modalBottomSheetPageRouteBuilder,
     ),
-    CustomRoute(page: ChangeSubscriptionPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: SubscriptionSuccessPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: PhotoCaptionPage, customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder),

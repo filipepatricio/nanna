@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/core/util/app_link.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_exception.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
@@ -8,11 +9,16 @@ import 'package:better_informed_mobile/domain/auth/use_case/sign_in_use_case.di.
 import 'package:better_informed_mobile/domain/auth/use_case/subscribe_for_magic_link_token_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di.dart';
-import 'package:better_informed_mobile/domain/onboarding/use_case/is_onboarding_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/force_subscription_status_sync_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/run_initial_bookmark_sync_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
 typedef _SignInFunction = Future<void> Function();
@@ -23,21 +29,29 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._isEmailValidUseCase,
     this._sendMagicLinkUseCase,
     this._subscribeForMagicLinkTokenUseCase,
-    this._isOnboardingSeenUseCase,
     this._initializeFeatureFlagsUseCase,
     this._initializeAttributionUseCase,
+    this._initializePurchasesUseCase,
+    this._restorePurchaseUseCase,
     this._signInUseCase,
     this._runIntitialBookmarkSyncUseCase,
+    this._getUserUseCase,
+    this._hasActiveSubscriptionUseCase,
+    this._forceSubscriptionStatusSyncUseCase,
   ) : super(SignInPageState.idle(false));
 
   final IsEmailValidUseCase _isEmailValidUseCase;
   final SendMagicLinkUseCase _sendMagicLinkUseCase;
   final SubscribeForMagicLinkTokenUseCase _subscribeForMagicLinkTokenUseCase;
-  final IsOnboardingSeenUseCase _isOnboardingSeenUseCase;
   final InitializeFeatureFlagsUseCase _initializeFeatureFlagsUseCase;
   final InitializeAttributionUseCase _initializeAttributionUseCase;
+  final InitializePurchasesUseCase _initializePurchasesUseCase;
+  final RestorePurchaseUseCase _restorePurchaseUseCase;
   final SignInUseCase _signInUseCase;
   final RunIntitialBookmarkSyncUseCase _runIntitialBookmarkSyncUseCase;
+  final GetUserUseCase _getUserUseCase;
+  final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
+  final ForceSubscriptionStatusSyncUseCase _forceSubscriptionStatusSyncUseCase;
 
   StreamSubscription? _magicLinkSubscription;
   late String _email;
@@ -105,6 +119,19 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     );
   }
 
+  Future<void> restorePurchase() async {
+    emit(const SignInPageState.restoringPurchase());
+    await _restorePurchaseUseCase();
+  }
+
+  Future<void> redeemOfferCode() async {
+    emit(const SignInPageState.redeemingCode());
+    await openUrlWithAnyApp(
+      appleCodeRedemptionLink,
+      (error, stackTrace) => Fimber.e('Error launching code redemption sheet', ex: error, stacktrace: stackTrace),
+    );
+  }
+
   Future<void> _signInWithOAuthProvider(_SignInFunction signIn) async {
     try {
       await signIn();
@@ -124,11 +151,12 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
   Future<void> _subscribeForMagicLink() async {
     _magicLinkSubscription = _subscribeForMagicLinkTokenUseCase().listen((token) async {
-      await _signInWithMagicLink(token);
+      await signInWithMagicLink(token);
     });
   }
 
-  Future<void> _signInWithMagicLink(String token) async {
+  @visibleForTesting
+  Future<void> signInWithMagicLink(String token) async {
     emit(SignInPageState.processing());
 
     try {
@@ -146,15 +174,17 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
   Future<void> _finishSignIn() async {
     await _initializeFeatureFlagsUseCase();
+    await _initializePurchasesUseCase();
+    await _getUserUseCase();
 
-    final isOnboardingSeen = await _isOnboardingSeenUseCase();
-    if (isOnboardingSeen) {
-      _initializeAttributionUseCase().ignore();
+    if (await _hasActiveSubscriptionUseCase()) {
+      await _forceSubscriptionStatusSyncUseCase();
     }
 
+    _initializeAttributionUseCase().ignore();
     _runIntitialBookmarkSyncUseCase().ignore();
 
-    emit(SignInPageState.success(isOnboardingSeen));
+    emit(SignInPageState.success());
   }
 
   void _resolveAuthException(AuthException authException, [String? magicLinkToken]) {

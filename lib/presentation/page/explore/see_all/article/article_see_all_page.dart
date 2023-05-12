@@ -238,7 +238,10 @@ class _AppBar extends StatelessWidget {
 extension on BuildContext {
   void navigateToArticle(MediaItemArticle article) {
     pushRoute(
-      MediaItemPageRoute(article: article),
+      MediaItemPageRoute(
+        article: article,
+        openedFrom: l10n.main_exploreTab,
+      ),
     );
   }
 }

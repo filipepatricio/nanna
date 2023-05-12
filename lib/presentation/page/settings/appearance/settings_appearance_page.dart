@@ -1,7 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/appearance/settings_appearance_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/settings/appearance/settings_appearance_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/settings/widgets/settings_main_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -21,27 +20,11 @@ class SettingsAppearancePage extends HookWidget {
     final cubit = useCubit<SettingsAppearanceCubit>();
     final state = useCubitBuilder(cubit);
 
-    final articleTextScaleFactorNotifier = useValueNotifier(
-      MediaQuery.of(context).textScaleFactor,
-      [MediaQuery.of(context).textScaleFactor],
-    );
-
     useEffect(
       () {
         cubit.initialize();
       },
       [],
-    );
-
-    useCubitListener<SettingsAppearanceCubit, SettingsAppearanceState>(
-      cubit,
-      (cubit, state, context) {
-        state.mapOrNull(
-          idle: (data) {
-            articleTextScaleFactorNotifier.value = data.preferredArticleTextScaleFactor;
-          },
-        );
-      },
     );
 
     return Scaffold(

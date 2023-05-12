@@ -139,10 +139,10 @@ class BriefDate extends StatelessWidget {
   Widget build(BuildContext context) {
     final shouldUseBottomPadding = !context.watch<IsConnected>() && !isTitle;
 
-    return Padding(
-      padding: shouldUseBottomPadding ? const EdgeInsets.only(bottom: AppDimens.s) : EdgeInsets.zero,
-      child: GestureDetector(
-        onTap: onTap,
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: shouldUseBottomPadding ? const EdgeInsets.only(bottom: AppDimens.s) : EdgeInsets.zero,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,

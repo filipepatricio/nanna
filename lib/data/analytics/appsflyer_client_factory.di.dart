@@ -1,6 +1,5 @@
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
@@ -18,7 +17,7 @@ class AppsflyerClientFactory {
     final apssFlyerOptions = AppsFlyerOptions(
       afDevKey: key,
       appId: _appConfig.appleStoreId,
-      showDebug: kDebugMode,
+      showDebug: false,
     );
     final sdk = AppsflyerSdk(apssFlyerOptions);
 

@@ -15,7 +15,9 @@ class AppVectorGraphics {
   static const String editorialTeamAvatarBig = 'assets/vector_graphics/editorial_team_avatar_big.svg';
 
   static const String launcherLogoInformed = 'assets/vector_graphics/launcher_logo_informed.svg';
+  static const String launcherLogoInformedDark = 'assets/vector_graphics/launcher_logo_informed_dark.svg';
   static const String informedLogoGreen = 'assets/vector_graphics/informed_logo_green.svg';
+  static const String informedLogo = 'assets/vector_graphics/informed_logo.svg';
 
   static const String share = 'assets/vector_graphics/share.svg';
   static const String instagram = 'assets/vector_graphics/instagram.svg';
@@ -50,6 +52,7 @@ class AppVectorGraphics {
 
   static const String openWeb = 'assets/vector_graphics/open_web_ic.svg';
 
+  static const String gift = 'assets/vector_graphics/gift.svg';
   static const String newspaper = 'assets/vector_graphics/newspaper.svg';
   static const String checkmark = 'assets/vector_graphics/checkmark.svg';
   static const String done = 'assets/vector_graphics/done.svg';
@@ -73,6 +76,7 @@ class AppVectorGraphics {
   static const String headphones = 'assets/vector_graphics/headphones.svg';
   static const String lines = 'assets/vector_graphics/lines.svg';
   static const String locker = 'assets/vector_graphics/locker.svg';
+  static const String alert = 'assets/vector_graphics/alert.svg';
 
   static const String playArrow = 'assets/vector_graphics/play_arrow.svg';
   static const String pause = 'assets/vector_graphics/pause.svg';

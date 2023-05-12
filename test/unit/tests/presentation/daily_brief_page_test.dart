@@ -1,13 +1,16 @@
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
-import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_observable_queries_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/util/use_case/request_permissions_use_case.di.dart';
+import 'package:better_informed_mobile/presentation/page/add_interests/add_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/widgets/daily_brief_calendar.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
-import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
+import 'package:better_informed_mobile/presentation/page/subscription/subscription_success_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
@@ -17,6 +20,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../finders.dart';
+import '../../../flutter_test_config.dart';
 import '../../../generated_mocks.mocks.dart';
 import '../../../test_data.dart';
 import '../../unit_test_utils.dart';
@@ -31,16 +35,17 @@ void main() {
   late MockIsTutorialStepSeenUseCase isTutorialStepSeenUseCase;
   late MockSetTutorialStepSeenUseCase setTutorialStepSeenUseCase;
   late MockGetShouldUpdateBriefStreamUseCase getShouldUpdateBriefStreamUseCase;
-  late MockShouldUsePaidSubscriptionsUseCase shouldUsePaidSubscriptionsUseCase;
-  late MockIsOnboardingPaywallSeenUseCase isOnboardingPaywallSeenUseCase;
-  late MockHasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
-  late MockSetOnboardingPaywallSeenUseCase setOnboardingPaywallSeenUseCase;
   late MockMarkEntryAsSeenUseCase mockMarkEntryAsSeenUseCase;
   late MockShouldRefreshDailyBriefUseCase shouldRefreshDailyBriefUseCase;
   late MockIncomingPushBriefEntriesUpdatedStreamUseCase incomingPushBriefEntriesUpdatedStreamUseCase;
   late MockIsInternetConnectionAvailableUseCase isInternetConnectionAvailableUseCase;
-  late ShouldUseObservableQueriesUseCase shouldUseObservableQueriesUseCase;
+  late MockShouldUseObservableQueriesUseCase shouldUseObservableQueriesUseCase;
   late MockSetNeedsRefreshDailyBriefUseCase setNeedsRefreshDailyBriefUseCase;
+  late MockIsAddInterestsPageSeenUseCase isAddInterestsPageSeenUseCase;
+  late MockSetAddInterestsPageSeenUseCase setAddInterestsPageSeenUseCase;
+  late MockGetCategoryPreferencesUseCase getCategoryPreferencesUseCase;
+  late MockGetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
+  late MockRequestPermissionsUseCase requestPermissionsUseCase;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(
@@ -59,16 +64,17 @@ void main() {
     isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
     setTutorialStepSeenUseCase = MockSetTutorialStepSeenUseCase();
     getShouldUpdateBriefStreamUseCase = MockGetShouldUpdateBriefStreamUseCase();
-    shouldUsePaidSubscriptionsUseCase = MockShouldUsePaidSubscriptionsUseCase();
-    isOnboardingPaywallSeenUseCase = MockIsOnboardingPaywallSeenUseCase();
-    hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
-    setOnboardingPaywallSeenUseCase = MockSetOnboardingPaywallSeenUseCase();
     mockMarkEntryAsSeenUseCase = MockMarkEntryAsSeenUseCase();
     shouldRefreshDailyBriefUseCase = MockShouldRefreshDailyBriefUseCase();
     incomingPushBriefEntriesUpdatedStreamUseCase = MockIncomingPushBriefEntriesUpdatedStreamUseCase();
     isInternetConnectionAvailableUseCase = MockIsInternetConnectionAvailableUseCase();
     shouldUseObservableQueriesUseCase = MockShouldUseObservableQueriesUseCase();
     setNeedsRefreshDailyBriefUseCase = MockSetNeedsRefreshDailyBriefUseCase();
+    isAddInterestsPageSeenUseCase = MockIsAddInterestsPageSeenUseCase();
+    setAddInterestsPageSeenUseCase = MockSetAddInterestsPageSeenUseCase();
+    getCategoryPreferencesUseCase = MockGetCategoryPreferencesUseCase();
+    getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
+    requestPermissionsUseCase = MockRequestPermissionsUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -79,16 +85,16 @@ void main() {
       incomingPushDataRefreshStreamUseCase,
       backgroundIncomingPushDataRefreshStreamUseCase,
       getShouldUpdateBriefStreamUseCase,
-      shouldUsePaidSubscriptionsUseCase,
-      isOnboardingPaywallSeenUseCase,
-      hasActiveSubscriptionUseCase,
-      setOnboardingPaywallSeenUseCase,
       mockMarkEntryAsSeenUseCase,
       shouldRefreshDailyBriefUseCase,
       incomingPushBriefEntriesUpdatedStreamUseCase,
       isInternetConnectionAvailableUseCase,
       shouldUseObservableQueriesUseCase,
       setNeedsRefreshDailyBriefUseCase,
+      getCategoryPreferencesUseCase,
+      isAddInterestsPageSeenUseCase,
+      setAddInterestsPageSeenUseCase,
+      requestPermissionsUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
@@ -101,10 +107,7 @@ void main() {
     when(isTutorialStepSeenUseCase.call(any)).thenAnswer((_) async => true);
     when(incomingPushDataRefreshStreamUseCase.call()).thenAnswer((_) async* {});
     when(backgroundIncomingPushDataRefreshStreamUseCase.call()).thenAnswer((_) async* {});
-    when(shouldUsePaidSubscriptionsUseCase.call()).thenAnswer((_) async => true);
-    when(hasActiveSubscriptionUseCase.call()).thenAnswer((_) async => true);
-    when(isOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async => true);
-    when(setOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async {});
+    when(getCategoryPreferencesUseCase.call()).thenAnswer((_) async => TestData.categoryPreferences);
     when(shouldRefreshDailyBriefUseCase.call()).thenAnswer((_) async => false);
     when(incomingPushBriefEntriesUpdatedStreamUseCase.call()).thenAnswer((_) async* {});
     when(isInternetConnectionAvailableUseCase.call()).thenAnswer((_) async => true);
@@ -304,10 +307,10 @@ void main() {
   );
 
   testWidgets(
-    'subscription page is shown when conditions are met',
+    'add interests page is shown when user has not set them',
     (tester) async {
-      when(hasActiveSubscriptionUseCase.call()).thenAnswer((_) async => false);
-      when(isOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async => false);
+      when(isAddInterestsPageSeenUseCase.call()).thenAnswer((_) async => false);
+      when(getCategoryPreferencesUseCase.call()).thenAnswer((_) async => []);
 
       await tester.startApp(
         dependencyOverride: (getIt) async {
@@ -315,16 +318,17 @@ void main() {
         },
       );
 
-      verify(setOnboardingPaywallSeenUseCase.call()).called(1);
-      expect(find.byType(SubscriptionPage), findsOneWidget);
+      verify(getCategoryPreferencesUseCase.call()).called(1);
+      verify(isAddInterestsPageSeenUseCase.call()).called(1);
+      verify(setAddInterestsPageSeenUseCase.call()).called(1);
+      expect(find.byType(AddInterestsPage), findsOneWidget);
     },
   );
 
   testWidgets(
-    'subscription page is not shown when user is subscribed',
+    'add interests page is not shown when user has already set them',
     (tester) async {
-      when(hasActiveSubscriptionUseCase.call()).thenAnswer((_) async => true);
-      when(isOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async => false);
+      when(isAddInterestsPageSeenUseCase.call()).thenAnswer((_) async => false);
 
       await tester.startApp(
         dependencyOverride: (getIt) async {
@@ -332,8 +336,62 @@ void main() {
         },
       );
 
-      verify(hasActiveSubscriptionUseCase.call()).called(1);
-      expect(find.byType(SubscriptionPage), findsNothing);
+      verify(getCategoryPreferencesUseCase.call()).called(1);
+      verifyNever(isAddInterestsPageSeenUseCase.call());
+      verify(setAddInterestsPageSeenUseCase.call()).called(1);
+      expect(find.byType(AddInterestsPage), findsNothing);
+    },
+  );
+  testWidgets(
+    'add interests page is not shown when user has already seen it',
+    (tester) async {
+      when(isAddInterestsPageSeenUseCase.call()).thenAnswer((_) async => true);
+      when(getCategoryPreferencesUseCase.call()).thenAnswer((_) async => []);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+        },
+      );
+
+      verify(getCategoryPreferencesUseCase.call()).called(1);
+      verify(isAddInterestsPageSeenUseCase.call()).called(1);
+      verifyNever(setAddInterestsPageSeenUseCase.call());
+      expect(find.byType(AddInterestsPage), findsNothing);
+    },
+  );
+
+  testWidgets(
+    'subscription success page is shown after add interests page if user is on trial',
+    (tester) async {
+      when(isAddInterestsPageSeenUseCase.call()).thenAnswer((_) async => false);
+      when(getCategoryPreferencesUseCase.call()).thenAnswer((_) async => []);
+      when(getActiveSubscriptionUseCase.call()).thenAnswer((_) async => TestData.activeSubscriptionTrial);
+      when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(TestData.activeSubscriptionTrial));
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+          getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+        },
+      );
+
+      verify(getCategoryPreferencesUseCase.call()).called(1);
+      verify(isAddInterestsPageSeenUseCase.call()).called(1);
+      verify(setAddInterestsPageSeenUseCase.call()).called(1);
+      expect(find.byType(AddInterestsPage), findsOneWidget);
+
+      for (var i = 0; i < 4; i++) {
+        await tester.ensureVisible(find.byType(InterestListItem).at(i));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(InterestListItem).at(i));
+        await tester.pumpAndSettle();
+      }
+
+      await tester.tap(find.byText(l10n.common_continue));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SubscriptionSuccessPage), findsOneWidget);
     },
   );
 
@@ -349,6 +407,68 @@ void main() {
       );
 
       verifyNever(getCurrentBriefUseCase.stream);
+    },
+  );
+
+  testWidgets(
+    'is requesting notification and tracking permission if has any category preferences',
+    (tester) async {
+      when(getCategoryPreferencesUseCase.call()).thenAnswer((_) async => TestData.categoryPreferences);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+          getIt.registerFactory<RequestPermissionsUseCase>(() => requestPermissionsUseCase);
+        },
+      );
+
+      verify(requestPermissionsUseCase.call()).called(1);
+    },
+  );
+
+  testWidgets(
+    'is only requesting notification and tracking permission after user sets category preferences',
+    (tester) async {
+      final updateBriefNotifierUseCase = MockUpdateBriefNotifierUseCase();
+
+      when(isAddInterestsPageSeenUseCase.call()).thenAnswer((_) async => false);
+      when(getCategoryPreferencesUseCase.call()).thenAnswer((_) async => []);
+      when(getActiveSubscriptionUseCase.call()).thenAnswer((_) async => TestData.activeSubscriptionTrial);
+      when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(TestData.activeSubscriptionTrial));
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+          getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+          getIt.registerFactory<UpdateBriefNotifierUseCase>(() => updateBriefNotifierUseCase);
+          getIt.registerFactory<RequestPermissionsUseCase>(() => requestPermissionsUseCase);
+        },
+      );
+
+      verifyNever(requestPermissionsUseCase.call());
+      verify(getCategoryPreferencesUseCase.call()).called(1);
+      verify(isAddInterestsPageSeenUseCase.call()).called(1);
+      verify(setAddInterestsPageSeenUseCase.call()).called(1);
+      expect(find.byType(AddInterestsPage), findsOneWidget);
+
+      for (var i = 0; i < 4; i++) {
+        await tester.ensureVisible(find.byType(InterestListItem).at(i));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(InterestListItem).at(i));
+        await tester.pumpAndSettle();
+      }
+
+      await tester.tap(find.byText(l10n.common_continue));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SubscriptionSuccessPage), findsOneWidget);
+
+      await tester.tap(find.byText(l10n.subscription_startReading));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DailyBriefPage), findsOneWidget);
+
+      verify(requestPermissionsUseCase.call()).called(1);
     },
   );
 }

@@ -5,12 +5,14 @@ class _TopicAppBar extends HookWidget {
     required this.isScrolled,
     required this.topic,
     required this.cubit,
+    this.openedFrom,
     Key? key,
   }) : super(key: key);
 
   final ValueNotifier<bool> isScrolled;
   final Topic topic;
   final TopicPageCubit cubit;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +53,11 @@ class _TopicAppBar extends HookWidget {
             centerTitle: true,
             titleSpacing: AppDimens.s,
             backgroundColor: backgroundColorAnimation.value,
-            leading: BackTextButton(color: isScrolled.value ? null : AppColors.stateTextSecondary),
-            leadingWidth: AppDimens.xxc,
+            leading: BackTextButton(
+              color: isScrolled.value ? null : AppColors.stateTextSecondary,
+              text: openedFrom,
+            ),
+            leadingWidth: AppDimens.backButtonWidth,
             title: Text(
               isScrolled.value ? topic.strippedTitle : title,
               style: AppTypography.h4Medium.w550.copyWith(

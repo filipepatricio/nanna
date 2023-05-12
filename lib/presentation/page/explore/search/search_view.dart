@@ -86,7 +86,10 @@ class SearchView extends HookWidget {
 extension on BuildContext {
   void navigateToArticle(MediaItemArticle article) {
     pushRoute(
-      MediaItemPageRoute(article: article),
+      MediaItemPageRoute(
+        article: article,
+        openedFrom: l10n.search_label,
+      ),
     );
   }
 
@@ -94,6 +97,7 @@ extension on BuildContext {
     pushRoute(
       TopicPage(
         topicSlug: topicPreview.slug,
+        openedFrom: l10n.search_label,
       ),
     );
   }

@@ -6,7 +6,7 @@ description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # Version handled in CD workflows - check out .github/workflows/cd_prod.yml and .github/workflows/cd_staging.yml
-version: 1.62.0+0
+version: 1.63.0+0
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
@@ -87,7 +87,6 @@ dependencies:
     git:
       url: https://github.com/minoesteban/appsflyer-flutter-plugin
       ref: bd2736e033930a4848220742f8120c276d6eab29
-  app_tracking_transparency: 2.0.3
   flutter_staggered_grid_view: 0.6.2
   sliver_tools: 0.2.8
   gql: 0.14.1-alpha+1672756470474
@@ -117,6 +116,8 @@ dependencies:
   phrase: 1.0.1
   intl: 0.17.0
   flutter_cache_manager: 3.3.0
+  smooth_page_indicator: 1.0.1
+  permission_handler: 10.2.0
 
 dev_dependencies:
   integration_test:

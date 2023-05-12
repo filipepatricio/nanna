@@ -14,6 +14,7 @@ class InformedAppBar extends HookWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.actions,
     this.isConnected = true,
+    this.openedFrom,
     super.key,
   });
 
@@ -23,6 +24,7 @@ class InformedAppBar extends HookWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final List<Widget>? actions;
   final bool isConnected;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,10 @@ class InformedAppBar extends HookWidget implements PreferredSizeWidget {
       backgroundColor: backgroundColor ?? AppColors.of(context).backgroundPrimary,
       leading: Container(
         margin: const EdgeInsets.only(left: AppDimens.xs),
-        child: leading ?? const BackTextButton(),
+        child: leading ??
+            BackTextButton(
+              text: openedFrom,
+            ),
       ),
       leadingWidth: leadingWidth,
       titleSpacing: AppDimens.zero,

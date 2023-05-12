@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/subscription/api/purchase_api_data_source.dart';
 import 'package:better_informed_mobile/data/subscription/api/purchases_repository_impl.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_origin.dart';
@@ -18,6 +19,7 @@ void main() {
   late MockActiveSubscriptionMapper activeSubscriptionMapper;
   late MockPurchaseRemoteDataSource purchaseRemoteDataSource;
   late MockAnalyticsFacade analyticsFacade;
+  late PurchaseApiDataSource purchaseApiDataSource;
 
   setUp(() {
     appConfig = MockAppConfig();
@@ -25,12 +27,15 @@ void main() {
     activeSubscriptionMapper = MockActiveSubscriptionMapper();
     purchaseRemoteDataSource = MockPurchaseRemoteDataSource();
     analyticsFacade = MockAnalyticsFacade();
+    purchaseApiDataSource = MockPurchaseApiDataSource();
+
     repository = PurchasesRepositoryImpl(
       appConfig,
       subscriptionPlanMapper,
       activeSubscriptionMapper,
       purchaseRemoteDataSource,
       analyticsFacade,
+      purchaseApiDataSource,
     );
 
     when(appConfig.revenueCatPremiumEntitlementId).thenReturn(_premiumEntitlementId);
@@ -40,13 +45,23 @@ void main() {
     const userId = 'userId';
 
     test('should call configure and prefetch customer and offerings (if configure was successful)', () async {
+      var configuredCalledWithUserId = false;
+
       when(appConfig.revenueCatKeyiOS).thenReturn('revenueCatKeyiOS');
       when(appConfig.revenueCatKeyAndroid).thenReturn('revenueCatKeyAndroid');
       when(purchaseRemoteDataSource.getCustomerInfo()).thenAnswer((_) async => _customerInfo());
       when(purchaseRemoteDataSource.getOfferings()).thenAnswer((_) async => const Offerings({}));
       when(purchaseRemoteDataSource.addCustomerInfoUpdateListener(any)).thenAnswer((_) async {});
-      when(purchaseRemoteDataSource.isConfigured).thenAnswer((_) async => true);
-      when(purchaseRemoteDataSource.configure(any, any)).thenAnswer((_) async {});
+      when(purchaseRemoteDataSource.isConfigured).thenAnswer((_) async {
+        return configuredCalledWithUserId;
+      });
+      when(purchaseRemoteDataSource.configure(any, userId)).thenAnswer((_) async {
+        if (userId == 'userId') {
+          configuredCalledWithUserId = true;
+        }
+      });
+      when(purchaseRemoteDataSource.userId).thenAnswer((_) async => 'anonymous');
+      when(purchaseRemoteDataSource.logIn(any)).thenAnswer((_) async {});
 
       await repository.initialize(userId);
 

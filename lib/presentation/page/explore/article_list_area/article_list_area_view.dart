@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_header.dart';
-import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
@@ -59,7 +59,10 @@ class ArticleListAreaView extends StatelessWidget {
 extension on BuildContext {
   void navigateToArticle(MediaItemArticle article) {
     pushRoute(
-      MediaItemPageRoute(article: article),
+      MediaItemPageRoute(
+        article: article,
+        openedFrom: l10n.main_exploreTab,
+      ),
     );
   }
 }

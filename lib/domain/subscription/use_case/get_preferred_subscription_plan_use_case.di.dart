@@ -5,8 +5,12 @@ import 'package:injectable/injectable.dart';
 class GetPreferredSubscriptionPlanUseCase {
   GetPreferredSubscriptionPlanUseCase();
 
-  SubscriptionPlan call(List<SubscriptionPlan> plans) => plans.firstWhere(
-        (plan) => plan.isAnnual,
+  SubscriptionPlan call(
+    List<SubscriptionPlan> plans, {
+    SubscriptionPlan? currentPlan,
+  }) =>
+      plans.firstWhere(
+        (plan) => currentPlan != null ? plan != currentPlan : plan.isAnnual,
         orElse: () => plans.first,
       );
 }

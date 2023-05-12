@@ -27,6 +27,7 @@ class MediaItemPage extends HookWidget {
     this.topicId,
     this.briefId,
     this.articleOutputMode = ArticleOutputMode.read,
+    this.openedFrom,
     Key? key,
   }) : super(key: key);
 
@@ -36,6 +37,7 @@ class MediaItemPage extends HookWidget {
   final String? topicId;
   final String? briefId;
   final ArticleOutputMode articleOutputMode;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +65,15 @@ class MediaItemPage extends HookWidget {
         audioPlayerResponsive: true,
         child: InformedAnimatedSwitcher(
           child: state.maybeMap(
-            loading: (data) => _LoadingContent(color: data.color),
+            loading: (data) => _LoadingContent(
+              color: data.color,
+              openedFrom: openedFrom,
+            ),
             idleFree: (data) => FreeArticleView(
               article: data.header,
               briefId: briefId,
               topicId: topicId,
+              openedFrom: openedFrom,
             ),
             idlePremium: (data) => PremiumArticleView(
               article: data.article,
@@ -75,25 +81,29 @@ class MediaItemPage extends HookWidget {
               briefId: briefId,
               topicId: topicId,
               topicSlug: topicSlug,
+              openedFrom: openedFrom,
             ),
             error: (data) => _ErrorContent(
               article: data.article,
+              openedFrom: openedFrom,
               onTryAgain: () {
                 cubit.initialize(article, slug, topicId, topicSlug, briefId);
               },
             ),
             emptyError: (_) => _ErrorContent(
+              openedFrom: openedFrom,
               onTryAgain: () {
                 cubit.initialize(article, slug, topicId, topicSlug, briefId);
               },
             ),
             offline: (data) => _ErrorNoConnection(
               article: data.article,
+              openedFrom: openedFrom,
               onTryAgain: () {
                 cubit.initialize(article, slug, topicId, topicSlug, briefId);
               },
             ),
-            geoblocked: (_) => const _ErrorGeoblocked(),
+            geoblocked: (_) => _ErrorGeoblocked(openedFrom: openedFrom),
             orElse: Container.new,
           ),
         ),
@@ -105,16 +115,19 @@ class MediaItemPage extends HookWidget {
 class _LoadingContent extends StatelessWidget {
   const _LoadingContent({
     this.color,
+    this.openedFrom,
   });
 
   final Color? color;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: const InformedAppBar(
+      appBar: InformedAppBar(
         backgroundColor: AppColors.transparent,
+        openedFrom: openedFrom,
       ),
       body: color != null
           ? LoadingShimmer(mainColor: color!.withOpacity(.8), baseColor: color!)
@@ -127,10 +140,12 @@ class _ErrorContent extends StatelessWidget {
   const _ErrorContent({
     required this.onTryAgain,
     this.article,
+    this.openedFrom,
   });
 
   final MediaItemArticle? article;
   final VoidCallback onTryAgain;
+  final String? openedFrom;
 
   Future<void> openUrl(String url) async {
     final uri = Uri.parse(url);
@@ -149,7 +164,9 @@ class _ErrorContent extends StatelessWidget {
     final article = this.article;
 
     return Scaffold(
-      appBar: const InformedAppBar(),
+      appBar: InformedAppBar(
+        openedFrom: openedFrom,
+      ),
       body: Padding(
         padding: const EdgeInsets.only(bottom: AppDimens.xxxc),
         child: Center(
@@ -168,12 +185,16 @@ class _ErrorContent extends StatelessWidget {
 }
 
 class _ErrorGeoblocked extends StatelessWidget {
-  const _ErrorGeoblocked();
+  const _ErrorGeoblocked({
+    this.openedFrom,
+  });
+
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const InformedAppBar(),
+      appBar: InformedAppBar(openedFrom: openedFrom),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
@@ -193,17 +214,26 @@ class _ErrorNoConnection extends StatelessWidget {
   const _ErrorNoConnection({
     required this.onTryAgain,
     this.article,
+    this.openedFrom,
   });
 
   final VoidCallback onTryAgain;
   final MediaItemArticle? article;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
     final article = this.article;
 
     return Scaffold(
-      appBar: article != null ? ArticleAppBar(article: article) : const InformedAppBar() as PreferredSizeWidget,
+      appBar: article != null
+          ? ArticleAppBar(
+              article: article,
+              openedFrom: openedFrom,
+            )
+          : InformedAppBar(
+              openedFrom: openedFrom,
+            ) as PreferredSizeWidget,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),

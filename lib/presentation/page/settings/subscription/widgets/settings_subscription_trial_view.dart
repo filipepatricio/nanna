@@ -23,7 +23,7 @@ class _SettingsSubscriptionTrialView extends StatelessWidget {
               icon: AppVectorGraphics.informedLogoGreen,
               title: context.l10n.subscription_trial,
               subtitle: subscription.plan.title,
-              onTap: () => context.pushRoute(const ChangeSubscriptionPageRoute()),
+              onTap: () => context.pushRoute(const SubscriptionPageRoute()),
             ),
             const SizedBox(height: AppDimens.xl),
             Text(

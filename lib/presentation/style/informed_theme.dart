@@ -14,13 +14,11 @@ class InformedTheme {
   static SystemUiOverlayStyle systemUIOverlayStyleDark = SystemUiOverlayStyle.dark.copyWith(
     systemNavigationBarColor: AppColors.dark.backgroundPrimary,
     systemNavigationBarDividerColor: AppColors.dark.backgroundPrimary,
-    systemNavigationBarIconBrightness: Brightness.dark,
   );
 
   static SystemUiOverlayStyle systemUIOverlayStyleLight = SystemUiOverlayStyle.light.copyWith(
     systemNavigationBarColor: AppColors.light.backgroundPrimary,
     systemNavigationBarDividerColor: AppColors.light.backgroundPrimary,
-    systemNavigationBarIconBrightness: Brightness.light,
   );
 
   static ThemeData _data(

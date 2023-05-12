@@ -1,6 +1,8 @@
 import 'package:better_informed_mobile/domain/auth/use_case/sign_out_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/use_case/reset_user_categories_store_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/reset_user_subscription_store_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/data/user.dart';
 import 'package:better_informed_mobile/domain/user/use_case/delete_account_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.di.dart';
@@ -20,6 +22,8 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     this._isEmailValidUseCase,
     this._signOutUseCase,
     this._deleteAccountUseCase,
+    this._resetUserCategoriesStoreUseCase,
+    this._resetUserSubscriptionStoreUseCase,
   ) : super(const SettingsAccountState.loading());
 
   final IsEmailValidUseCase _isEmailValidUseCase;
@@ -27,6 +31,8 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
   final UpdateUserUseCase _updateUserUseCase;
   final SignOutUseCase _signOutUseCase;
   final DeleteAccountUseCase _deleteAccountUseCase;
+  final ResetUserCategoriesStoreUseCase _resetUserCategoriesStoreUseCase;
+  final ResetUserSubscriptionStoreUseCase _resetUserSubscriptionStoreUseCase;
 
   late SettingsAccountData _originalData;
   SettingsAccountData _modifiedData = SettingsAccountData.empty();
@@ -65,6 +71,8 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
   Future<void> deleteAccount() async {
     try {
       if (await _deleteAccountUseCase()) {
+        await _resetUserCategoriesStoreUseCase();
+        await _resetUserSubscriptionStoreUseCase();
         return await _signOutUseCase();
       }
 

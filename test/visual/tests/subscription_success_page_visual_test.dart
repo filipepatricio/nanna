@@ -5,13 +5,13 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest('${SubscriptionSuccessPage}_(trial)', (tester) async {
-    await tester.startApp(initialRoute: SubscriptionSuccessPageRoute(trialMode: true));
+    await tester.startApp(initialRoute: SubscriptionSuccessPageRoute(trialDays: 7, reminderDays: 3));
     await tester.matchGoldenFile();
   });
 
   visualTest('${SubscriptionSuccessPage}_(no_trial)', (tester) async {
     await tester.startApp(
-      initialRoute: SubscriptionSuccessPageRoute(trialMode: false),
+      initialRoute: SubscriptionSuccessPageRoute(trialDays: 0, reminderDays: 0),
     );
     await tester.matchGoldenFile();
   });

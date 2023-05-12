@@ -28,7 +28,7 @@ class PurchasesRepositoryMock implements PurchasesRepository {
   }
 
   @override
-  Future<void> initialize(String userId) async {
+  Future<void> initialize(String? userId) async {
     return;
   }
 
@@ -53,9 +53,7 @@ class PurchasesRepositoryMock implements PurchasesRepository {
   }
 
   @override
-  void dispose() {
-    return;
-  }
+  Future<void> dispose() async {}
 
   @override
   Future<void> linkWithExternalServices(String? appsflyerId, String? facebookAnonymousId) async {}
@@ -71,5 +69,8 @@ class PurchasesRepositoryMock implements PurchasesRepository {
   }
 
   @override
-  Future<void> redeemOfferCode() async {}
+  Future<void> login(String userId) async {}
+
+  @override
+  Future<bool> forceSubscriptionStatusSync() async => true;
 }

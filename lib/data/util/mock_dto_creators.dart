@@ -51,6 +51,7 @@ import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/category_preference_dto.dt.dart';
+import 'package:better_informed_mobile/data/user/api/dto/user_dto.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
@@ -606,6 +607,15 @@ class MockDTO {
     'This article originally appeared here',
   );
 
+  static final articleContentMarkdownLocked = ArticleContentDTO(
+    ArticleContentTextDTO(
+      '# Novak Djokovic is no doubt _spending his time detained in an immigration hotel_ in Melbourne doing yoga and tai chi, stretching, meditating and adhering to every facet of the strict training regimen that has helped him become the world\'s No. 1 tennis player.\r\n\r\n> On the streets below, Serbian supporters are staging a candlelight vigil and serenading him amid visa-limbo while lawyers fight a deportation order that would deny Djokovic the chance to compete for a 10th Australian Open title and, with it, a men\'s-record 21st Grand Slam title."',
+      ArticleContentTypeDTO.markdown,
+    ),
+    // credits
+    'This article originally appeared here',
+  );
+
   /// Bookmarks
 
   static final bookmarkList = BookmarkListDTO(
@@ -633,7 +643,7 @@ class MockDTO {
   // CategoryDTO
   static const category = CategoryDTO(
     name: 'Politics',
-    id: 'id',
+    id: 'id-politics',
     slug: 'politics',
     icon: _mockedPillIcon,
     color: '#E3BEE9',
@@ -643,6 +653,22 @@ class MockDTO {
     name: 'Tech',
     id: 'id-tech',
     slug: 'tech',
+    icon: _mockedPillIcon,
+    color: '#F2E8E7',
+  );
+
+  static const category3 = CategoryDTO(
+    name: 'Politics 2',
+    id: 'id-politics-2',
+    slug: 'politics-2',
+    icon: _mockedPillIcon,
+    color: '#E3BEE9',
+  );
+
+  static const category4 = CategoryDTO(
+    name: 'Tech 2',
+    id: 'id-tech-2',
+    slug: 'tech-2',
     icon: _mockedPillIcon,
     color: '#F2E8E7',
   );
@@ -688,13 +714,13 @@ class MockDTO {
   static const categories = CategoriesDTO(
     [
       MockDTO.category,
+      MockDTO.category2,
+      MockDTO.category3,
+      MockDTO.category4,
       MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
+      MockDTO.category2,
+      MockDTO.category3,
+      MockDTO.category4,
     ],
   );
 
@@ -724,6 +750,8 @@ class MockDTO {
       _freeArticle.asMediaItem,
     ],
   );
+
+  static final user = UserDTO('1', 'User', 'Test', 'test@betterinformed.io');
 
   /// Internal
 

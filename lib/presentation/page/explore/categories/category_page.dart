@@ -90,13 +90,16 @@ class CategoryPage extends HookWidget {
                   loading: (_) => const SliverToBoxAdapter(child: Loader()),
                   withPagination: (state) => _List(
                     items: state.items,
+                    categoryName: category.name,
                   ),
                   loadingMore: (state) => _List(
                     items: state.items,
+                    categoryName: category.name,
                     withLoader: true,
                   ),
                   allLoaded: (state) => _List(
                     items: state.items,
+                    categoryName: category.name,
                   ),
                   error: (value) => SliverPadding(
                     padding: const EdgeInsets.symmetric(vertical: AppDimens.xl),
@@ -139,11 +142,13 @@ class CategoryPage extends HookWidget {
 class _List extends StatelessWidget {
   const _List({
     required this.items,
+    required this.categoryName,
     this.withLoader = false,
     Key? key,
   }) : super(key: key);
 
   final List<CategoryItem> items;
+  final String categoryName;
   final bool withLoader;
 
   @override
@@ -161,11 +166,11 @@ class _List extends StatelessWidget {
                   item.map(
                     article: (data) => ArticleCover.medium(
                       article: data.article,
-                      onTap: () => context.navigateToArticle(data.article),
+                      onTap: () => context.navigateToArticle(data.article, categoryName),
                     ),
                     topic: (data) => TopicCover.medium(
                       topic: data.topicPreview,
-                      onTap: () => context.navigateToTopic(data.topicPreview),
+                      onTap: () => context.navigateToTopic(data.topicPreview, categoryName),
                     ),
                     unknown: (_) => const SizedBox.shrink(),
                   ),
@@ -186,16 +191,26 @@ class _List extends StatelessWidget {
 }
 
 extension on BuildContext {
-  void navigateToArticle(MediaItemArticle article) {
+  void navigateToArticle(
+    MediaItemArticle article,
+    String categoryName,
+  ) {
     pushRoute(
-      MediaItemPageRoute(article: article),
+      MediaItemPageRoute(
+        article: article,
+        openedFrom: categoryName,
+      ),
     );
   }
 
-  void navigateToTopic(TopicPreview topicPreview) {
+  void navigateToTopic(
+    TopicPreview topicPreview,
+    String categoryName,
+  ) {
     pushRoute(
       TopicPage(
         topicSlug: topicPreview.slug,
+        openedFrom: categoryName,
       ),
     );
   }

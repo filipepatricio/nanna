@@ -14,6 +14,7 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../flutter_test_config.dart';
 import '../../generated_mocks.mocks.dart';
 import '../../test_data.dart';
 import '../visual_test_utils.dart';
@@ -23,7 +24,10 @@ void main() {
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [
-          MediaItemPageRoute(slug: TestData.premiumArticleWithoutImage.slug),
+          MediaItemPageRoute(
+            slug: TestData.premiumArticleWithoutImage.slug,
+            openedFrom: l10n.main_todayTab,
+          ),
         ],
       ),
     );
@@ -34,7 +38,10 @@ void main() {
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [
-          MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
+          MediaItemPageRoute(
+            slug: TestData.premiumArticleWithAudio.slug,
+            openedFrom: l10n.main_todayTab,
+          ),
         ],
       ),
     );
@@ -52,7 +59,10 @@ void main() {
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [
-          MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
+          MediaItemPageRoute(
+            slug: TestData.premiumArticleWithAudio.slug,
+            openedFrom: l10n.main_exploreTab,
+          ),
         ],
       ),
       dependencyOverride: (getIt) async {
@@ -64,7 +74,14 @@ void main() {
 
   visualTest('${MediaItemPage}_(geoblocked)', (tester) async {
     await tester.startApp(
-      initialRoute: MainPageRoute(children: [MediaItemPageRoute(slug: '')]),
+      initialRoute: MainPageRoute(
+        children: [
+          MediaItemPageRoute(
+            slug: '',
+            openedFrom: l10n.main_todayTab,
+          )
+        ],
+      ),
       dependencyOverride: (getIt) async {
         getIt.registerFactory<GetArticleUseCase>(() => FakeGetArticleUseCase());
       },
@@ -76,7 +93,10 @@ void main() {
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [
-          MediaItemPageRoute(slug: TestData.article.slug),
+          MediaItemPageRoute(
+            slug: TestData.article.slug,
+            openedFrom: l10n.main_todayTab,
+          ),
         ],
       ),
       dependencyOverride: (getIt) async {
@@ -90,7 +110,10 @@ void main() {
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [
-          MediaItemPageRoute(slug: TestData.article.slug),
+          MediaItemPageRoute(
+            slug: TestData.article.slug,
+            openedFrom: l10n.main_exploreTab,
+          ),
         ],
       ),
       dependencyOverride: (getIt) async {

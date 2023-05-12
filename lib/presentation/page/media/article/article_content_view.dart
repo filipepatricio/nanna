@@ -66,7 +66,7 @@ class ArticleContentView extends HookWidget {
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
                 child: _Credits(credits: article.content.credits),
               ),
-            const SizedBox(height: AppDimens.xxc),
+            const SizedBox(height: AppDimens.xl),
           ],
         ),
       ],

@@ -29,7 +29,7 @@ class OnboardingCategoriesSlide extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: AutoSizeText(
             context.l10n.onboarding_headerSlideCategories,
-            style: AppTypography.onBoardingHeader.copyWith(height: 1.14, fontSize: 34),
+            style: AppTypography.sansTitleLargeLausanne.copyWith(height: 1.14, fontSize: 34),
           ),
         ),
         const SizedBox(height: AppDimens.l),

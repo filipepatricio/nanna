@@ -11,11 +11,11 @@ class IdentifyAnalyticsUserUseCase {
   final AuthStore _authStore;
   final AnalyticsRepository _analyticsRepository;
 
-  Future<void> call() async {
+  Future<void> call([String? method]) async {
     final tokenData = await _authStore.accessTokenData();
 
     if (tokenData != null) {
-      await _analyticsRepository.identify(tokenData.uuid);
+      await _analyticsRepository.identify(tokenData.uuid, method);
     }
   }
 }

@@ -16,12 +16,14 @@ class FreeArticleView extends HookWidget {
     required this.article,
     required this.briefId,
     required this.topicId,
+    this.openedFrom,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final String? briefId;
   final String? topicId;
+  final String? openedFrom;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,7 @@ class FreeArticleView extends HookWidget {
         topicId: topicId,
         shouldShowTitle: true,
         isConnected: context.watch<IsConnected>(),
+        openedFrom: openedFrom,
       ),
       body: Stack(
         alignment: Alignment.bottomCenter,

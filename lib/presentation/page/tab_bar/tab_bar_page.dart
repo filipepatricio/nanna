@@ -21,7 +21,7 @@ class TabBarPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<TabBarCubit>();
+    final cubit = useCubit<TabBarCubit>(closeOnDispose: false);
     final getIt = useGetIt();
 
     useEffect(

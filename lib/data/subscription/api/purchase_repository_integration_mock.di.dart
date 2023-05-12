@@ -15,7 +15,7 @@ class PurchaseRepositoryIntegrationMock implements PurchasesRepository {
   }
 
   @override
-  void dispose() {}
+  Future<void> dispose() async {}
 
   @override
   Future<ActiveSubscription> getActiveSubscription() async {
@@ -48,7 +48,7 @@ class PurchaseRepositoryIntegrationMock implements PurchasesRepository {
   }
 
   @override
-  Future<void> initialize(String userId) {
+  Future<void> initialize(String? userId) {
     return Future.delayed(const Duration(milliseconds: 200));
   }
 
@@ -69,5 +69,8 @@ class PurchaseRepositoryIntegrationMock implements PurchasesRepository {
   }
 
   @override
-  Future<void> redeemOfferCode() async {}
+  Future<void> login(String userId) async {}
+
+  @override
+  Future<bool> forceSubscriptionStatusSync() async => true;
 }
