@@ -12,7 +12,6 @@ import 'package:better_informed_mobile/domain/article/use_case/get_other_brief_e
 import 'package:better_informed_mobile/domain/article/use_case/get_other_topic_entries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_related_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_reading_progress_use_case.di.dart';
-import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
@@ -21,6 +20,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_text_size_selector_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/precache_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -43,7 +43,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     this._getPreferredArticleTextScaleFactorUseCase,
     this._setPreferredArticleTextScaleFactorUseCase,
     this._shouldUseTextSizeSelectorUseCase,
-    this._isSignedInUseCase,
+    this._isGuestModeUseCase,
   ) : super(const PremiumArticleViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
@@ -58,7 +58,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetPreferredArticleTextScaleFactorUseCase _getPreferredArticleTextScaleFactorUseCase;
   final SetPreferredArticleTextScaleFactorUseCase _setPreferredArticleTextScaleFactorUseCase;
   final ShouldUseTextSizeSelectorUseCase _shouldUseTextSizeSelectorUseCase;
-  final IsSignedInUseCase _isSignedInUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   final _moreFromBriefItems = <BriefEntryItem>[];
   final _otherTopicItems = <MediaItem>[];
@@ -121,7 +121,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
       await _precacheSubscriptionPlansUseCase();
     }
 
-    if (!await _isSignedInUseCase()) {
+    if (await _isGuestModeUseCase()) {
       return;
     }
 

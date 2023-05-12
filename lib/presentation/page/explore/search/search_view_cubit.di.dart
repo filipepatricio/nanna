@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
 import 'package:better_informed_mobile/domain/search/use_case/add_search_history_query_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_loader.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
@@ -20,10 +20,10 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     this._searchPaginationEngineProvider,
     this._addSearchHistoryQueryUseCase,
     this._trackActivityUseCase,
-    this._isSignedInUseCase,
+    this._isGuestModeUseCase,
   ) : super(SearchViewState.initial());
 
-  final IsSignedInUseCase _isSignedInUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
   final AddSearchHistoryQueryUseCase _addSearchHistoryQueryUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final SearchPaginationEngineProvider _searchPaginationEngineProvider;
@@ -36,7 +36,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
   StreamSubscription? _nextPageSubscription;
 
   Future<void> initialize() async {
-    if (!await _isSignedInUseCase()) {
+    if (await _isGuestModeUseCase()) {
       emit(SearchViewState.guest());
       return;
     }

@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/get_token_expiration_stream_use_case.di.dart';
-import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/deep_link/use_case/subscribe_for_deep_link_use_case.di.dart';
 import 'package:better_informed_mobile/domain/language/language_code.dart';
@@ -12,6 +11,7 @@ import 'package:better_informed_mobile/domain/push_notification/use_case/maybe_r
 import 'package:better_informed_mobile/domain/release_notes/use_case/get_current_release_note_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/initialize_synchronization_engine_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/synchronize_on_connection_change_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dt.dart';
@@ -36,7 +36,7 @@ class MainCubit extends Cubit<MainState> {
     this._synchronizeOnConnectionChangeUseCase,
     this._updateBriefNotifierUseCase,
     this._shouldRefreshDailyBriefUseCase,
-    this._isSignedInUseCase,
+    this._isGuestModeUseCase,
   ) : super(const MainState.init());
 
   final GetTokenExpirationStreamUseCase _getTokenExpirationStreamUseCase;
@@ -48,7 +48,7 @@ class MainCubit extends Cubit<MainState> {
   final SynchronizeOnConnectionChangeUseCase _synchronizeOnConnectionChangeUseCase;
   final UpdateBriefNotifierUseCase _updateBriefNotifierUseCase;
   final ShouldRefreshDailyBriefUseCase _shouldRefreshDailyBriefUseCase;
-  final IsSignedInUseCase _isSignedInUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   StreamSubscription? _incomingPushNavigationSubscription;
   StreamSubscription? _tokenExpirationSubscription;
@@ -71,17 +71,22 @@ class MainCubit extends Cubit<MainState> {
   Future<void> initialize() async {
     await DateFormatUtil.setJiffyLocale(availableLocales.values.first);
 
-    if (await _isSignedInUseCase()) {
-      _tokenExpirationSubscription = _getTokenExpirationStreamUseCase().listen((event) {
-        emit(const MainState.tokenExpired());
-      });
-
-      _subscribeToPushNavigationStream();
+    if (await _isGuestModeUseCase()) {
       _subscribeToDeepLinkStream();
+      unawaited(_getReleaseNote());
 
-      unawaited(_maybeRegisterPushNotificationTokenUseCase());
-      unawaited(_initializeSynchronizationEngine());
+      return;
     }
+
+    _tokenExpirationSubscription = _getTokenExpirationStreamUseCase().listen((event) {
+      emit(const MainState.tokenExpired());
+    });
+
+    _subscribeToPushNavigationStream();
+    _subscribeToDeepLinkStream();
+
+    unawaited(_maybeRegisterPushNotificationTokenUseCase());
+    unawaited(_initializeSynchronizationEngine());
 
     unawaited(_getReleaseNote());
   }

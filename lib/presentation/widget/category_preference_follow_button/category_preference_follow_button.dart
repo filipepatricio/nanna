@@ -103,9 +103,8 @@ class _Button extends StatelessWidget {
           horizontal: AppDimens.m,
         ),
         decoration: BoxDecoration(
-          color: isPreferred || !enabled
-              ? AppColors.of(context).backgroundSecondary
-              : AppColors.of(context).buttonPrimaryBackground,
+          color:
+              isPreferred ? AppColors.of(context).backgroundSecondary : AppColors.of(context).buttonPrimaryBackground,
           borderRadius: const BorderRadius.all(
             Radius.circular(100),
           ),

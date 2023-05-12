@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_out_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/reset_user_categories_store_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
@@ -7,6 +6,7 @@ import 'package:better_informed_mobile/domain/subscription/use_case/reset_user_s
 import 'package:better_informed_mobile/domain/user/data/user.dart';
 import 'package:better_informed_mobile/domain/user/use_case/delete_account_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/update_user_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dt.dart';
@@ -25,10 +25,10 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     this._deleteAccountUseCase,
     this._resetUserCategoriesStoreUseCase,
     this._resetUserSubscriptionStoreUseCase,
-    this._isSignedInUseCase,
+    this._isGuestModeUseCase,
   ) : super(const SettingsAccountState.loading());
 
-  final IsSignedInUseCase _isSignedInUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
   final IsEmailValidUseCase _isEmailValidUseCase;
   final GetUserUseCase _getUserUseCase;
   final UpdateUserUseCase _updateUserUseCase;
@@ -44,8 +44,9 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
 
   Future<void> initialize(AppLocalizations l10n) async {
     try {
-      if (!await _isSignedInUseCase()) {
+      if (await _isGuestModeUseCase()) {
         emit(const SettingsAccountState.guest());
+
         return;
       }
 

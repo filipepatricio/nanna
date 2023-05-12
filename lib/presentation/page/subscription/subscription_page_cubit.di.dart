@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/core/util/app_link.dart';
-import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan_group.dt.dart';
@@ -8,6 +7,7 @@ import 'package:better_informed_mobile/domain/subscription/use_case/get_preferre
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -21,7 +21,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
     this._restorePurchaseUseCase,
     this._purchaseSubscriptionUseCase,
     this._getActiveSubscriptionUseCase,
-    this._isSignedInUseCase,
+    this._isGuestModeUseCase,
   ) : super(const SubscriptionPageState.initializing());
 
   final GetSubscriptionPlansUseCase _getSubscriptionPlansUseCase;
@@ -29,13 +29,13 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
   final RestorePurchaseUseCase _restorePurchaseUseCase;
   final PurchaseSubscriptionUseCase _purchaseSubscriptionUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
-  final IsSignedInUseCase _isSignedInUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   late SubscriptionPlanGroup _planGroup;
   late SubscriptionPlan _selectedPlan;
   late ActiveSubscription _subscription;
 
-  late bool _isSignedIn;
+  late bool _isGuestMode;
 
   SubscriptionPlan? get currentPlan => _subscription.mapOrNull(
         trial: (data) => data.plan,
@@ -49,7 +49,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
 
   Future<void> initialize() async {
     try {
-      _isSignedIn = await _isSignedInUseCase();
+      _isGuestMode = await _isGuestModeUseCase();
       _planGroup = await _getSubscriptionPlansUseCase();
       _subscription = await _getActiveSubscriptionUseCase();
 
@@ -78,7 +78,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
           group: _planGroup,
           selectedPlan: _selectedPlan,
           subscription: _subscription,
-          isGuest: !_isSignedIn,
+          isGuest: _isGuestMode,
         ),
       );
     }
@@ -90,7 +90,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
         group: _planGroup,
         selectedPlan: _selectedPlan,
         subscription: _subscription,
-        isGuest: !_isSignedIn,
+        isGuest: _isGuestMode,
       ),
     );
 

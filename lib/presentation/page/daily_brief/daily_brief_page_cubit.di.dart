@@ -3,7 +3,6 @@ import 'dart:collection';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/is_add_interests_page_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/set_add_interests_page_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
@@ -27,6 +26,7 @@ import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/data/category_preference.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_category_preferences_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/request_permissions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
@@ -54,7 +54,6 @@ final firstTopicKey = GlobalKey();
 class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     with ConnectionStateAwareCubitMixin<DailyBriefPageState, void> {
   DailyBriefPageCubit(
-    this._isSignedInUseCase,
     this._getCurrentBriefUseCase,
     this._getPastDaysBriefUseCase,
     this._isTutorialStepSeenUseCase,
@@ -73,9 +72,9 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._isAddInterestsPageSeenUseCase,
     this._setAddInterestsPageSeenUseCase,
     this._requestPermissionsUseCase,
+    this._isGuestModeUseCase,
   ) : super(DailyBriefPageState.loading());
 
-  final IsSignedInUseCase _isSignedInUseCase;
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
   final GetPastBriefUseCase _getPastDaysBriefUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
@@ -94,6 +93,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final IsAddInterestsPageSeenUseCase _isAddInterestsPageSeenUseCase;
   final SetAddInterestsPageSeenUseCase _setAddInterestsPageSeenUseCase;
   final RequestPermissionsUseCase _requestPermissionsUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -151,7 +151,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   Future<void> initialize() async {
     await initializeConnection(null);
 
-    if (await _shouldUseObservableQueriesUseCase() && await _isSignedInUseCase()) {
+    final isGuestMode = await _isGuestModeUseCase();
+    if (await _shouldUseObservableQueriesUseCase() && !isGuestMode) {
       _currentBriefSubscription ??= _getCurrentBriefUseCase.stream.listen((updatedBriefWrapper) {
         _briefsWrapper = updatedBriefWrapper;
         if (_selectedBrief?.id == updatedBriefWrapper.currentBrief.id) {
@@ -179,7 +180,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
 
     _shouldUpdateBriefSubscription ??= _getShouldUpdateBriefStreamUseCase().listen((_) => refetchBriefs());
 
-    if (!await _isSignedInUseCase()) {
+    if (await _isGuestModeUseCase()) {
       await _requestPermissionsUseCase();
       return;
     }
@@ -333,8 +334,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   }
 
   Future<BriefsWrapper> _getCurrentBrief() async {
-    final isSignedIn = await _isSignedInUseCase();
-    return isSignedIn ? await _getCurrentBriefUseCase() : await _getCurrentBriefUseCase.guest();
+    final isGuestMode = await _isGuestModeUseCase();
+    return isGuestMode ? await _getCurrentBriefUseCase.guest() : await _getCurrentBriefUseCase();
   }
 
   void _refreshCurrentState() {

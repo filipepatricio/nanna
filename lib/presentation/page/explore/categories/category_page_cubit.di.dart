@@ -1,9 +1,9 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_category_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/next_category_item_page_loader.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
@@ -18,12 +18,12 @@ class CategoryPageCubit extends Cubit<CategoryPageState> {
   CategoryPageCubit(
     this._getCategoryItemsUseCase,
     this._trackActivityUseCase,
-    this._isSignedInUseCase,
+    this._isGuestModeUseCase,
   ) : super(CategoryPageState.loading());
 
   final GetCategoryItemsUseCase _getCategoryItemsUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
-  final IsSignedInUseCase _isSignedInUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   late NextCategoryItemPageLoader _nextCategoryItemPageLoader;
   late PaginationEngine<CategoryItem> _paginationEngine;
@@ -33,7 +33,7 @@ class CategoryPageCubit extends Cubit<CategoryPageState> {
   bool _allLoaded = false;
 
   Future<void> initialize(String categorySlug, List<CategoryItem> items) async {
-    if (!await _isSignedInUseCase()) {
+    if (await _isGuestModeUseCase()) {
       emit(const CategoryPageState.guest());
       return;
     }

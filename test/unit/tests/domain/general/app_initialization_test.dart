@@ -28,13 +28,14 @@ void main() {
   late MockSaveReleaseNoteIfFirstRunUseCase saveReleaseNoteIfFirstRunUseCase;
   late MockIdentifyAnalyticsUserUseCase identifyAnalyticsUserUseCase;
   late MockInitializePurchasesUseCase initializePurchasesUseCase;
-  late GetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
+  late MockGetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
   late MockAuthRepository authRepository;
   late MockGetUserUseCase getUserUseCase;
   late SignInPageCubit signInPageCubit;
   late MockRequestPermissionsUseCase requestPermissionsUseCase;
-  late HasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
+  late MockHasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
   late MockForceSubscriptionStatusSyncUseCase forceSubscriptionStatusSyncUseCase;
+  late MockClearGuestModeUseCase clearGuestModeUseCase;
 
   setUp(() {
     isSignedInUseCase = MockIsSignedInUseCase();
@@ -49,6 +50,7 @@ void main() {
     requestPermissionsUseCase = MockRequestPermissionsUseCase();
     hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
     forceSubscriptionStatusSyncUseCase = MockForceSubscriptionStatusSyncUseCase();
+    clearGuestModeUseCase = MockClearGuestModeUseCase();
 
     final signInUseCase = SignInUseCase(
       authRepository,
@@ -70,9 +72,7 @@ void main() {
       getUserUseCase,
       hasActiveSubscriptionUseCase,
       forceSubscriptionStatusSyncUseCase,
-      MockIsGuestModeUseCase(),
-      MockClearGuestModeUseCase(),
-      MockUpdateBriefNotifierUseCase(),
+      clearGuestModeUseCase,
     );
   });
 
@@ -253,4 +253,6 @@ void main() {
       },
     );
   });
+
+  //TODO: Add tests for guest mode
 }
