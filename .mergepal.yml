@@ -1,0 +1,6 @@
+blacklist:
+  - hold
+  - wip
+  - dependencies
+whitelist:
+  - merge

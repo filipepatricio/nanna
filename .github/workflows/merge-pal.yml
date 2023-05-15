@@ -1,0 +1,22 @@
+name: Merge Pal
+
+on:
+  status: {} # try to merge when other checks are completed
+  pull_request_review: # try to merge after review
+    types:
+      - submitted
+      - edited
+      - dismissed
+  pull_request: # try to merge if labels have changed (white/black list)
+    types:
+      - labeled
+      - unlabeled
+
+jobs:
+  mergepal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: maxkomarychev/merge-pal-action@v0.5.1
+        with:
+          token: ${{ secrets.CI_TOKEN_GITHUB }}
