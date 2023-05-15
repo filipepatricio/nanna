@@ -10,7 +10,7 @@ class CategoryPreferenceFollowButtonState with _$CategoryPreferenceFollowButtonS
   const factory CategoryPreferenceFollowButtonState.loading() = _CategoryPreferenceFollowButtonStateLoading;
 
   @Implements<BuildState>()
-  const factory CategoryPreferenceFollowButtonState.disabled() = _CategoryPreferenceFollowButtonStateDisabled;
+  const factory CategoryPreferenceFollowButtonState.guest() = _CategoryPreferenceFollowButtonStateGuest;
 
   @Implements<BuildState>()
   factory CategoryPreferenceFollowButtonState.categoryPreferenceLoaded(

@@ -479,5 +479,24 @@ void main() {
     },
   );
 
-  //TODO: Add tests for guest mode
+  testWidgets(
+    'guest-specific calls are done if guest mode',
+    (tester) async {
+      when(isGuestModeUseCase.call()).thenAnswer((_) async => true);
+      when(getCurrentBriefUseCase.guest()).thenAnswer((_) async => TestData.briefWrapper);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+        },
+      );
+
+      verifyNever(getCurrentBriefUseCase.stream);
+      verifyNever(getCategoryPreferencesUseCase.call());
+      verifyNever(setAddInterestsPageSeenUseCase.call());
+      verifyNever(getCurrentBriefUseCase.call());
+
+      verify(getCurrentBriefUseCase.guest()).called(1);
+    },
+  );
 }

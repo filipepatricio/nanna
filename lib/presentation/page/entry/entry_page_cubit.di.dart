@@ -15,7 +15,7 @@ import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
-const _individualInitTimeout = Duration(seconds: 5);
+const _individualInitTimeout = Duration(seconds: 10);
 
 @injectable
 class EntryPageCubit extends Cubit<EntryPageState> {

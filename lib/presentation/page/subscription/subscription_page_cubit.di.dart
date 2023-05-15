@@ -116,13 +116,16 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
         _emitIdleState();
         return;
       }
-      emit(const SubscriptionPageState.success());
+      _emitSuccess();
     } catch (e) {
       Fimber.e('Error while trying to restore purchase', ex: e);
       emit(const SubscriptionPageState.restoringPurchaseError());
       _emitIdleState();
     }
   }
+
+  void _emitSuccess() =>
+      emit(_isGuestMode ? const SubscriptionPageState.successGuest() : const SubscriptionPageState.success());
 
   Future<void> redeemOfferCode() async {
     emit(const SubscriptionPageState.redeemingCode());

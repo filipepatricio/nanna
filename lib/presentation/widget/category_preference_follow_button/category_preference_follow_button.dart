@@ -28,6 +28,10 @@ class CategoryPreferenceFollowButton extends HookWidget {
     final state = useCubitBuilder<CategoryPreferenceFollowButtonCubit, CategoryPreferenceFollowButtonState>(cubit);
     final snackbarController = useSnackbarController();
 
+    void showGuestErrorMessage() {
+      snackbarController.showMessage(SnackbarMessage.guest(context));
+    }
+
     useCubitListener<CategoryPreferenceFollowButtonCubit, CategoryPreferenceFollowButtonState>(cubit,
         (cubit, state, context) {
       state.whenOrNull(
@@ -63,9 +67,9 @@ class CategoryPreferenceFollowButton extends HookWidget {
           ),
         ),
       ),
-      disabled: (_) => const _Button(
+      guest: (_) => _Button(
         isPreferred: false,
-        enabled: false,
+        onTap: showGuestErrorMessage,
       ),
       categoryPreferenceLoaded: (state) => GestureDetector(
         child: _Button(
@@ -83,11 +87,9 @@ class CategoryPreferenceFollowButton extends HookWidget {
 class _Button extends StatelessWidget {
   const _Button({
     required this.isPreferred,
-    this.enabled = true,
     this.onTap,
   });
 
-  final bool enabled;
   final bool isPreferred;
   final VoidCallback? onTap;
 

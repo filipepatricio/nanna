@@ -38,14 +38,7 @@ class AddInterestsPage extends HookWidget {
             SubscriptionSuccessPageRoute(trialDays: data.trialDays, reminderDays: data.reminderDays),
           );
         },
-        failure: (_) {
-          snackbarController.showMessage(
-            SnackbarMessage.simple(
-              message: context.l10n.common_error_tryAgainLater,
-              type: SnackbarMessageType.error,
-            ),
-          );
-        },
+        failure: (_) => snackbarController.showMessage(SnackbarMessage.error(context)),
       );
     });
 

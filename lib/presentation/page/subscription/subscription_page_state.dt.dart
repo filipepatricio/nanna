@@ -30,11 +30,13 @@ class SubscriptionPageState with _$SubscriptionPageState {
 
   const factory SubscriptionPageState.success() = _SubscriptionPageStateSuccess;
 
+  const factory SubscriptionPageState.successGuest() = _SubscriptionPageStateSuccessGuest;
+
   const factory SubscriptionPageState.redeemingCode() = _SubscriptionPageStateRedeemingCode;
 
   const factory SubscriptionPageState.restoringPurchase() = _SubscriptionPageStateRestoringPurchase;
 
   const factory SubscriptionPageState.restoringPurchaseError() = _SubscriptionPageStateRestoringPurchaseError;
 
-  const factory SubscriptionPageState.generalError([String? message]) = _SubscriptionPageStateGeneralError;
+  const factory SubscriptionPageState.generalError() = _SubscriptionPageStateGeneralError;
 }

@@ -46,15 +46,9 @@ class ArticlePaywallView extends HookWidget {
         },
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
         success: () => InformedDialog.removeRestorePurchase(context),
+        successGuest: context.resetToEntry,
         redeemingCode: () => shouldRestorePurchase.value = true,
-        generalError: (message) {
-          snackbarController.showMessage(
-            SnackbarMessage.simple(
-              message: message ?? context.l10n.common_error_tryAgainLater,
-              type: SnackbarMessageType.error,
-            ),
-          );
-        },
+        generalError: () => snackbarController.showMessage(SnackbarMessage.error(context)),
         restoringPurchaseError: () {
           InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(

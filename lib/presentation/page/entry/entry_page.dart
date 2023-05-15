@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dt.dart';
@@ -18,10 +17,10 @@ class EntryPage extends HookWidget {
 
     useCubitListener<EntryPageCubit, EntryPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        signedIn: () => context.resetToMain(),
-        notSignedIn: () => context.resetToOnboarding(),
-        subscribed: () => context.resetToSignIn(),
-        guest: () => context.resetToMain(),
+        signedIn: context.replaceToMain,
+        notSignedIn: context.resetToOnboarding,
+        subscribed: context.resetToSignIn,
+        guest: context.replaceToMain,
       );
     });
 
@@ -42,19 +41,5 @@ class EntryPage extends HookWidget {
         orElse: () => const LoaderLogo(),
       ),
     );
-  }
-}
-
-extension on BuildContext {
-  void resetToMain() {
-    if (mounted) router.replaceAll([const MainPageRoute()]);
-  }
-
-  void resetToSignIn() {
-    if (mounted) router.pushAndPopUntil(const SignInPageRoute(), predicate: (_) => false);
-  }
-
-  void resetToOnboarding() {
-    if (mounted) router.pushAndPopUntil(const OnboardingPageRoute(), predicate: (_) => false);
   }
 }

@@ -44,7 +44,7 @@ class CategoryPreferenceFollowButtonCubit extends Cubit<CategoryPreferenceFollow
 
   Future<void> initialize({Category? category, CategoryPreference? categoryPreference}) async {
     if (await _isGuestModeUseCase()) {
-      emit(const CategoryPreferenceFollowButtonState.disabled());
+      emit(const CategoryPreferenceFollowButtonState.guest());
       return;
     }
 

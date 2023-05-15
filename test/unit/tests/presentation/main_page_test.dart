@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/permissions/permissions_repository.dart';
@@ -11,7 +10,7 @@ import 'package:better_informed_mobile/presentation/page/settings/main/settings_
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
-import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_page.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:clock/clock.dart';
@@ -347,15 +346,22 @@ void main() {
       await tester.tap(find.byType(BackTextButton));
       await tester.pumpAndSettle();
       expect(find.byType(SettingsMainPage), findsOneWidget);
+
       expectProfileTabSelected();
     });
   });
 }
 
 void expectDailyBriefTabSelected() {
-  expect(tabBarScaffoldKey.currentContext?.tabsRouter.activeIndex, 0);
+  final element = find.byType(InformedTabBar, skipOffstage: false).evaluate().single;
+  final router = (element.widget as InformedTabBar).router;
+
+  expect(router?.activeIndex, 0);
 }
 
 void expectProfileTabSelected() {
-  expect(tabBarScaffoldKey.currentContext?.tabsRouter.activeIndex, 2);
+  final element = find.byType(InformedTabBar, skipOffstage: false).evaluate().single;
+  final router = (element.widget as InformedTabBar).router;
+
+  expect(router?.activeIndex, 2);
 }

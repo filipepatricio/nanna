@@ -37,6 +37,11 @@ class SnackbarMessage {
         action: action,
       );
 
+  factory SnackbarMessage.error(BuildContext context) => SnackbarMessage._(
+        message: context.l10n.common_error_tryAgainLater,
+        type: SnackbarMessageType.error,
+      );
+
   factory SnackbarMessage.guest(BuildContext context) => SnackbarMessage._(
         message: context.l10n.guest_signIn_snackbar_message,
         subMessage: context.l10n.guest_signIn_snackbar_subMessage,

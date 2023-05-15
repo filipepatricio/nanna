@@ -99,12 +99,7 @@ class NotificationSettingSwitch extends HookWidget {
       cubit,
       (cubit, state, context) {
         state.mapOrNull(
-          generalError: (_) => snackbarController.showMessage(
-            SnackbarMessage.simple(
-              message: context.l10n.common_error_tryAgainLater,
-              type: SnackbarMessageType.error,
-            ),
-          ),
+          generalError: (_) => snackbarController.showMessage(SnackbarMessage.error(context)),
           noPermissionError: (_) => snackbarController.showMessage(
             SnackbarMessage.simple(
               message: context.l10n.settings_notifications_noPermissionSnackbarError,

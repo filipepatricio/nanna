@@ -42,6 +42,13 @@ class SettingsMainBody extends HookWidget {
       );
     });
 
+    void tapIfNotGuest(VoidCallback onTap) {
+      state.maybeMap(
+        guest: (_) => snackbarController.showMessage(SnackbarMessage.guest(context)),
+        orElse: onTap,
+      );
+    }
+
     return ListView(
       physics: getPlatformScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
@@ -64,12 +71,12 @@ class SettingsMainBody extends HookWidget {
         SettingsMainItem(
           label: context.l10n.settings_account,
           icon: AppVectorGraphics.account,
-          onTap: () => context.pushRoute(const SettingsAccountPageRoute()),
+          onTap: () => tapIfNotGuest(() => context.pushRoute(const SettingsAccountPageRoute())),
         ),
         SettingsMainItem(
           label: context.l10n.settings_notifications_title,
           icon: AppVectorGraphics.notifications,
-          onTap: () => context.pushRoute(const SettingsNotificationsPageRoute()),
+          onTap: () => tapIfNotGuest(() => context.pushRoute(const SettingsNotificationsPageRoute())),
         ),
         SettingsMainItem(
           label: context.l10n.settings_appearance_title,
@@ -79,7 +86,7 @@ class SettingsMainBody extends HookWidget {
         SettingsMainItem(
           label: context.l10n.settings_manageMyInterests,
           icon: AppVectorGraphics.star,
-          onTap: () => context.pushRoute(const SettingsManageMyInterestsPageRoute()),
+          onTap: () => tapIfNotGuest(() => context.pushRoute(const SettingsManageMyInterestsPageRoute())),
         ),
         const SizedBox(height: AppDimens.xl),
         Padding(
@@ -118,12 +125,12 @@ class SettingsMainBody extends HookWidget {
           },
         ),
         state.maybeMap(
-          idle: (value) => SettingsMainItem(
+          guest: (_) => const SizedBox.shrink(),
+          orElse: () => SettingsMainItem(
             label: context.l10n.common_signOut,
             onTap: cubit.signOut,
             fontColor: AppColors.of(context).textTertiary,
           ),
-          orElse: SizedBox.shrink,
         ),
         const SizedBox(height: AppDimens.xl),
         const Padding(

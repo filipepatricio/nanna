@@ -64,9 +64,8 @@ class SignInPage extends HookWidget {
 
     useCubitListener<SignInPageCubit, SignInPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        success: () => context.router.replaceAll(
-          [const MainPageRoute()],
-        ),
+        success: context.replaceToMain,
+        successGuest: context.resetToEntry,
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
         redeemingCode: () => shouldRestorePurchase.value = true,
         unauthorizedError: () => showSnackbar(context.l10n.signIn_unauthorized),

@@ -16,6 +16,7 @@ import 'package:better_informed_mobile/domain/subscription/use_case/restore_purc
 import 'package:better_informed_mobile/domain/synchronization/use_case/run_initial_bookmark_sync_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/clear_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -39,6 +40,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._getUserUseCase,
     this._hasActiveSubscriptionUseCase,
     this._forceSubscriptionStatusSyncUseCase,
+    this._isGuestModeUseCase,
     this._clearGuestModeUseCase,
   ) : super(SignInPageState.idle(false));
 
@@ -54,6 +56,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   final GetUserUseCase _getUserUseCase;
   final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
   final ForceSubscriptionStatusSyncUseCase _forceSubscriptionStatusSyncUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
   final ClearGuestModeUseCase _clearGuestModeUseCase;
 
   StreamSubscription? _magicLinkSubscription;
@@ -184,14 +187,13 @@ class SignInPageCubit extends Cubit<SignInPageState> {
       await _forceSubscriptionStatusSyncUseCase();
     }
 
-    await _clearGuestModeUseCase();
-
     _initializeAttributionUseCase().ignore();
     _runIntitialBookmarkSyncUseCase().ignore();
 
-    //TODO: Need to do something to reset the whole navigation stack if user is coming from guest mode
+    final isGuestMode = await _isGuestModeUseCase();
+    await _clearGuestModeUseCase();
 
-    emit(SignInPageState.success());
+    emit(isGuestMode ? SignInPageState.successGuest() : SignInPageState.success());
   }
 
   void _resolveAuthException(AuthException authException, [String? magicLinkToken]) {

@@ -49,14 +49,8 @@ class SubscriptionPage extends HookWidget {
           InformedDialog.removeRestorePurchase(context);
           context.popRoute();
         },
-        generalError: (message) {
-          snackbarController.showMessage(
-            SnackbarMessage.simple(
-              message: message ?? context.l10n.common_error_tryAgainLater,
-              type: SnackbarMessageType.error,
-            ),
-          );
-        },
+        successGuest: context.resetToEntry,
+        generalError: () => snackbarController.showMessage(SnackbarMessage.error(context)),
         restoringPurchaseError: () {
           InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(

@@ -13,14 +13,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
 
-final tabBarPageKey = GlobalKey();
-final tabBarScaffoldKey = GlobalKey<ScaffoldState>();
-
 class TabBarPage extends HookWidget {
   const TabBarPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final tabBarPageKey = GlobalKey();
+    final tabBarScaffoldKey = GlobalKey<ScaffoldState>();
     final cubit = useCubit<TabBarCubit>(closeOnDispose: false);
     final getIt = useGetIt();
 
@@ -39,33 +38,33 @@ class TabBarPage extends HookWidget {
       [cubit],
     );
 
-    return CupertinoScaffold(
-      body: ScrollsToTop(
-        onScrollsToTop: (event) async => cubit.scrollToTop(),
-        child: AppUpdateChecker(
-          child: AutoTabsScaffold(
-            builder: (context, child, animation) {
-              return SnackbarParentView(
+    return AutoTabsScaffold(
+      key: tabBarPageKey,
+      scaffoldKey: tabBarScaffoldKey,
+      builder: (context, child, animation) {
+        return CupertinoScaffold(
+          body: ScrollsToTop(
+            onScrollsToTop: (event) async => cubit.scrollToTop(),
+            child: AppUpdateChecker(
+              child: SnackbarParentView(
                 audioPlayerResponsive: true,
                 child: AudioPlayerBannerWrapper(
                   layout: AudioPlayerBannerLayout.stack,
                   child: child,
                 ),
-              );
-            },
-            scaffoldKey: tabBarScaffoldKey,
-            key: tabBarPageKey,
-            animationDuration: Duration.zero,
-            routes: const [
-              DailyBriefTabGroupRouter(),
-              ExploreTabGroupRouter(),
-              ProfileTabGroupRouter(),
-            ],
-            bottomNavigationBuilder: (context, tabsRouter) => InformedTabBar.fixed(router: tabsRouter),
-            navigatorObservers: () => [getIt<TabsNavigationObserver>()],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
+      animationDuration: Duration.zero,
+      routes: const [
+        DailyBriefTabGroupRouter(),
+        ExploreTabGroupRouter(),
+        ProfileTabGroupRouter(),
+      ],
+      bottomNavigationBuilder: (context, tabsRouter) => InformedTabBar.fixed(router: tabsRouter),
+      navigatorObservers: () => [getIt<TabsNavigationObserver>()],
     );
   }
 }

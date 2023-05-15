@@ -54,8 +54,8 @@ class OnboardingPage extends HookWidget {
 
     useCubitListener<OnboardingPageCubit, OnboardingPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        signedIn: () => context.resetToMain(),
-        subscribed: () => context.resetToSignIn(),
+        signedIn: context.replaceToMain,
+        subscribed: context.resetToSignIn,
       );
     });
 
@@ -215,7 +215,7 @@ class SkipButton extends StatelessWidget {
       tapPadding: const EdgeInsets.all(AppDimens.l),
       onTap: () {
         cubit.skip();
-        context.resetToMain();
+        context.replaceToMain();
       },
       child: Text(
         context.l10n.common_skip,
@@ -280,14 +280,6 @@ class _GiftButton extends StatelessWidget {
 }
 
 extension on BuildContext {
-  void resetToMain() {
-    if (mounted) router.replaceAll([const MainPageRoute()]);
-  }
-
-  void resetToSignIn() {
-    if (mounted) router.pushAndPopUntil(const SignInPageRoute(), predicate: (_) => false);
-  }
-
   void navigateToSignIn() {
     if (mounted) router.push(const SignInPageModal());
   }
