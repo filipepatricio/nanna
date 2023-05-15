@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/exception/article_geoblocked_exception.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_header_use_case.di.dart';
@@ -11,14 +10,16 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/force_subscription_status_sync_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/trade_topid_id_for_slug_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
-const _maxRefreshTries = 5;
+const _maxRefreshTries = 2;
 
 @injectable
 class MediaItemCubit extends Cubit<MediaItemState> {
@@ -29,6 +30,8 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     this._tradeTopicIdForSlugUseCase,
     this._getActiveSubscriptionUseCase,
     this._isInternetConnectionAvailableUseCase,
+    this._isGuestModeUseCase,
+    this._forceSubscriptionStatusSyncUseCase,
   ) : super(const MediaItemState.initializing());
 
   final GetArticleUseCase _getArticleUseCase;
@@ -37,6 +40,8 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   final TradeTopicIdForSlugUseCase _tradeTopicIdForSlugUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
+  final ForceSubscriptionStatusSyncUseCase _forceSubscriptionStatusSyncUseCase;
 
   MediaItemArticle? _currentArticle;
   late String? _topicSlug;
@@ -80,6 +85,10 @@ class MediaItemCubit extends Cubit<MediaItemState> {
       await _initializeWithMetadata(article, topicId);
     } else if (slug != null) {
       await _initializeWithSlug(slug, _topicSlug);
+    }
+
+    if (await _isGuestModeUseCase()) {
+      return;
     }
 
     await _setupSubscriptionListener();
@@ -179,9 +188,10 @@ class MediaItemCubit extends Cubit<MediaItemState> {
         if (_doesSubscriptionMatchArticleState(fullArticle.metadata, subscription)) {
           shouldRefresh = false;
           emit(MediaItemState.idlePremium(fullArticle));
+          return;
         } else {
           counter++;
-          if (!kIsTest) await Future.delayed(const Duration(seconds: 2));
+          await _forceSubscriptionStatusSyncUseCase();
         }
       } on ArticleGeoblockedException {
         shouldRefresh = false;
@@ -194,6 +204,8 @@ class MediaItemCubit extends Cubit<MediaItemState> {
         emit(MediaItemState.error(article));
       }
     }
+
+    emit(MediaItemState.error(article));
   }
 
   bool _doesSubscriptionMatchArticleState(MediaItemArticle? article, ActiveSubscription subscription) {

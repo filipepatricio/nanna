@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/domain/categories/use_case/get_featured_c
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_view.dart';
 import 'package:flutter/foundation.dart';
@@ -25,6 +26,7 @@ void main() {
   late MockGetFeaturedCategoriesUseCase getFeaturedCategoriesUseCase;
   late MockGetRelatedContentUseCase getRelatedContentUseCase;
   late MockGetArticleUseCase getArticleUseCase;
+  late MockIsGuestModeUseCase isGuestModeUseCase;
 
   setUp(() {
     activeSubscriptionUseCase = FakeGetActiveSubscriptionUseCase(activeSubscription: ActiveSubscription.free());
@@ -33,6 +35,7 @@ void main() {
     getFeaturedCategoriesUseCase = MockGetFeaturedCategoriesUseCase();
     getRelatedContentUseCase = MockGetRelatedContentUseCase();
     getArticleUseCase = MockGetArticleUseCase();
+    isGuestModeUseCase = MockIsGuestModeUseCase();
 
     when(getOtherBriefEntriesUseCase(any, any)).thenAnswer((_) async => []);
     when(getOtherTopicEntriesUseCase(any, any)).thenAnswer((_) async => []);
@@ -44,6 +47,7 @@ void main() {
         content: TestData.lockedArticle.content,
       ),
     );
+    when(isGuestModeUseCase()).thenAnswer((_) async => false);
   });
 
   visualTest(
@@ -92,6 +96,42 @@ void main() {
         initialRoute: MainPageRoute(
           children: [
             MediaItemPageRoute(slug: TestData.premiumArticleWithAudioAndLocked.slug),
+          ],
+        ),
+      );
+
+      await tester.matchGoldenFile();
+      debugDefaultTargetPlatformOverride = null;
+    },
+    testConfig: TestConfig.autoHeight(),
+  );
+
+  visualTest(
+    '${ArticlePaywallView}_(guest)',
+    (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      when(isGuestModeUseCase()).thenAnswer((_) async => true);
+
+      when(getArticleUseCase.single(any)).thenAnswer(
+        (_) async => Article(
+          metadata: TestData.article,
+          content: TestData.lockedArticle.content,
+        ),
+      );
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<IsGuestModeUseCase>(() => isGuestModeUseCase);
+          getIt.registerFactory<GetArticleUseCase>(() => getArticleUseCase);
+          getIt.registerFactory<GetActiveSubscriptionUseCase>(() => activeSubscriptionUseCase);
+          getIt.registerFactory<GetOtherBriefEntriesUseCase>(() => getOtherBriefEntriesUseCase);
+          getIt.registerFactory<GetOtherTopicEntriesUseCase>(() => getOtherTopicEntriesUseCase);
+          getIt.registerFactory<GetFeaturedCategoriesUseCase>(() => getFeaturedCategoriesUseCase);
+          getIt.registerFactory<GetRelatedContentUseCase>(() => getRelatedContentUseCase);
+        },
+        initialRoute: MainPageRoute(
+          children: [
+            MediaItemPageRoute(slug: TestData.article.slug),
           ],
         ),
       );
