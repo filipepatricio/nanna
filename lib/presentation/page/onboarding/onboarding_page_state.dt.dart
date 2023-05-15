@@ -4,7 +4,7 @@ part 'onboarding_page_state.dt.freezed.dart';
 
 @Freezed(toJson: false)
 class OnboardingPageState with _$OnboardingPageState {
-  factory OnboardingPageState.idle({@Default(false) bool shouldShowSkipButton}) = _OnboardingPageStateIdle;
+  factory OnboardingPageState.idle() = _OnboardingPageStateIdle;
 
   factory OnboardingPageState.skip() = _OnboardingPageStateSkip;
 

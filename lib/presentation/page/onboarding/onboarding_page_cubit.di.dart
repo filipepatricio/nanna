@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart'
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
-import 'package:better_informed_mobile/domain/onboarding/should_show_skip_button_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/set_guest_mode_use_case.di.dart';
@@ -18,16 +17,12 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
     this._trackActivityUseCase,
     this._getActiveSubscriptionUseCase,
     this._isSignedInUseCase,
-    this._shouldShowSkipButtonUseCase,
     this._setGuestModeUseCase,
-  ) : super(
-          OnboardingPageState.idle(shouldShowSkipButton: _shouldShowSkipButtonUseCase()),
-        );
+  ) : super(OnboardingPageState.idle());
 
   final TrackActivityUseCase _trackActivityUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
   final IsSignedInUseCase _isSignedInUseCase;
-  final ShouldShowSkipButtonUseCase _shouldShowSkipButtonUseCase;
   final SetGuestModeUseCase _setGuestModeUseCase;
 
   StreamSubscription? _activeSubscriptionSub;
@@ -60,15 +55,15 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
 
     _activeSubscriptionSub = _getActiveSubscriptionUseCase.stream.distinct().listen((subscription) async {
       final signedIn = await _isSignedInUseCase();
-      emit(subscription.mapToState(signedIn, _shouldShowSkipButtonUseCase()));
+      emit(subscription.mapToState(signedIn));
     });
   }
 }
 
 extension on ActiveSubscription {
-  OnboardingPageState mapToState(bool signedIn, bool shouldShowSkipButton) {
+  OnboardingPageState mapToState(bool signedIn) {
     return maybeMap(
-      free: (_) => OnboardingPageState.idle(shouldShowSkipButton: shouldShowSkipButton),
+      free: (_) => OnboardingPageState.idle(),
       orElse: () => signedIn ? OnboardingPageState.signedIn() : OnboardingPageState.subscribed(),
     );
   }

@@ -39,7 +39,6 @@ class OnboardingPage extends HookWidget {
     ];
 
     final cubit = useCubit<OnboardingPageCubit>();
-    final state = useCubitBuilder(cubit);
 
     final pageIndex = useState(0);
     final controller = usePageController();
@@ -80,15 +79,9 @@ class OnboardingPage extends HookWidget {
                   Positioned(
                     top: AppDimens.s,
                     right: AppDimens.xl,
-                    child: Visibility.maintain(
-                      visible: state.maybeMap(
-                        idle: (data) => data.shouldShowSkipButton,
-                        orElse: () => false,
-                      ),
-                      child: SkipButton(
-                        cubit: cubit,
-                        controller: controller,
-                      ),
+                    child: SkipButton(
+                      cubit: cubit,
+                      controller: controller,
                     ),
                   ),
                   Positioned(

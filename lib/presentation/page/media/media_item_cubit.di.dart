@@ -19,7 +19,7 @@ import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
-const _maxRefreshTries = 2;
+const _maxRefreshTries = 3;
 
 @injectable
 class MediaItemCubit extends Cubit<MediaItemState> {
