@@ -141,4 +141,8 @@ void main() {
     },
     testConfig: TestConfig.autoHeight(),
   );
+
+  tearDownAll(() {
+    debugDefaultTargetPlatformOverride = null;
+  });
 }

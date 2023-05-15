@@ -206,8 +206,9 @@ class SkipButton extends StatelessWidget {
     return PaddingTapWidget(
       alignment: AlignmentDirectional.centerEnd,
       tapPadding: const EdgeInsets.all(AppDimens.l),
-      onTap: () {
-        cubit.skip();
+      onTap: () async {
+        await cubit.skip();
+        // ignore: use_build_context_synchronously
         context.replaceToMain();
       },
       child: Text(

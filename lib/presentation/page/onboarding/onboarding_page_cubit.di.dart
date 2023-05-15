@@ -39,8 +39,8 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
     await _setupSubscriptionListener();
   }
 
-  void skip() {
-    _setGuestModeUseCase();
+  Future<void> skip() async {
+    await _setGuestModeUseCase();
     _trackActivityUseCase.trackEvent(AnalyticsEvent.onboardingSkipped());
   }
 

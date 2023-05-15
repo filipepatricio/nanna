@@ -11,11 +11,6 @@ class UserStoreImpl implements UserStore {
 
   final UserDatabase _database;
 
-  // final StreamController<bool> _isGuestModeStream = StreamController.broadcast();
-
-  // @override
-  // Stream<bool> get isGuestModeStream => _isGuestModeStream.stream.distinct();
-
   @override
   Future<String> getCurrentUserUuid() async {
     return await _database.getCurrentUserUuid();
@@ -33,7 +28,6 @@ class UserStoreImpl implements UserStore {
 
   @override
   Future<void> clearGuestMode() async {
-    // _isGuestModeStream.sink.add(false);
     await _database.clearGuestMode();
   }
 
@@ -44,12 +38,6 @@ class UserStoreImpl implements UserStore {
 
   @override
   Future<void> setGuestMode() async {
-    // _isGuestModeStream.sink.add(true);
     await _database.setGuestMode();
   }
-
-  // @override
-  // Future<void> dispose() async {
-  //   await _isGuestModeStream.close();
-  // }
 }

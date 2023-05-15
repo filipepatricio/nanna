@@ -25,10 +25,4 @@ class UserStoreMock implements UserStore {
 
   @override
   Future<void> setGuestMode() async {}
-
-  // @override
-  // Stream<bool> get isGuestModeStream => Stream.value(false);
-
-  // @override
-  // Future<void> dispose() async {}
 }

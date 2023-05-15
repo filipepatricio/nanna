@@ -10,8 +10,4 @@ abstract class UserStore {
   Future<bool> isGuestMode();
 
   Future<void> clearGuestMode();
-
-  // Stream<bool> get isGuestModeStream;
-
-  // Future<void> dispose();
 }
