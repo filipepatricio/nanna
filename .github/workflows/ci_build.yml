@@ -316,3 +316,16 @@ jobs:
       - name: iOS app building failed
         if: ${{ (needs.changes.outputs.app == 'true' || needs.changes.outputs.ios == 'true') && needs.build_ios.outputs.succeeded != 'true' }}
         run: exit 1
+
+  mergepal_merge:
+    runs-on: ubuntu-20.04
+    needs:
+      - all_jobs_succeeded
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: maxkomarychev/merge-pal-action@v0.5.1
+        with:
+          token: ${{ secrets.CI_TOKEN_GITHUB }}
