@@ -34,25 +34,21 @@ class GetCurrentBriefUseCase {
       await _saveLocally(briefsWrapper);
       return briefsWrapper;
     } on NoInternetConnectionException {
-      final calendar = await _dailyBriefCalendarLocalRepository.load();
+      final briefsWrapper = await _getLocally();
+      if (briefsWrapper != null) return briefsWrapper;
 
-      if (calendar != null) {
-        final briefSynchrinizable = await _dailyBriefLocalRepository.load(calendar.current.toIso8601String());
-        final brief = briefSynchrinizable?.data;
+      rethrow;
+    }
+  }
 
-        if (brief != null) {
-          final storedBriefs = await _dailyBriefLocalRepository.getAllIds();
-
-          return BriefsWrapper(
-            brief,
-            BriefPastDays(
-              calendar.pastItems
-                  .map((item) => BriefPastDay(item, storedBriefs.contains(item.toIso8601String())))
-                  .toList(),
-            ),
-          );
-        }
-      }
+  Future<BriefsWrapper> guest() async {
+    try {
+      final briefsWrapper = await _dailyBriefRepository.getCurrentBriefGuest();
+      _updateBriefUnseenCountStateNotifierUseCase.call(briefsWrapper.currentBrief.unseenCount);
+      return briefsWrapper;
+    } on NoInternetConnectionException {
+      final briefsWrapper = await _getLocally();
+      if (briefsWrapper != null) return briefsWrapper;
 
       rethrow;
     }
@@ -75,6 +71,28 @@ class GetCurrentBriefUseCase {
       await _dailyBriefCalendarLocalRepository.save(calendar);
     } catch (e, s) {
       Fimber.e('Error while saving brief locally', ex: e, stacktrace: s);
+    }
+  }
+
+  Future<BriefsWrapper?> _getLocally() async {
+    final calendar = await _dailyBriefCalendarLocalRepository.load();
+
+    if (calendar != null) {
+      final briefSynchrinizable = await _dailyBriefLocalRepository.load(calendar.current.toIso8601String());
+      final brief = briefSynchrinizable?.data;
+
+      if (brief != null) {
+        final storedBriefs = await _dailyBriefLocalRepository.getAllIds();
+
+        return BriefsWrapper(
+          brief,
+          BriefPastDays(
+            calendar.pastItems
+                .map((item) => BriefPastDay(item, storedBriefs.contains(item.toIso8601String())))
+                .toList(),
+          ),
+        );
+      }
     }
   }
 }

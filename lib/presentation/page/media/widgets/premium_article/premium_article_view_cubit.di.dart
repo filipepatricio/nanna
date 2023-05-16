@@ -20,6 +20,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_text_size_selector_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/precache_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -42,6 +43,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     this._getPreferredArticleTextScaleFactorUseCase,
     this._setPreferredArticleTextScaleFactorUseCase,
     this._shouldUseTextSizeSelectorUseCase,
+    this._isGuestModeUseCase,
   ) : super(const PremiumArticleViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
@@ -56,6 +58,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetPreferredArticleTextScaleFactorUseCase _getPreferredArticleTextScaleFactorUseCase;
   final SetPreferredArticleTextScaleFactorUseCase _setPreferredArticleTextScaleFactorUseCase;
   final ShouldUseTextSizeSelectorUseCase _shouldUseTextSizeSelectorUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   final _moreFromBriefItems = <BriefEntryItem>[];
   final _otherTopicItems = <MediaItem>[];
@@ -69,11 +72,11 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   late String? _topicId;
   late String? _briefId;
   late String? _topicTitle;
-  late NeatPeriodicTaskScheduler? _readingProgressTrackingScheduler;
 
   late bool _showTextScaleFactorSelector;
   late double _preferredTextScaleFactor;
 
+  NeatPeriodicTaskScheduler? _readingProgressTrackingScheduler;
   UpdateArticleProgressResponse? _updateArticleProgressResponse;
 
   UpdateArticleProgressResponse? get updateArticleProgressResponse => _updateArticleProgressResponse;
@@ -114,11 +117,15 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
 
     _emitIdleState();
 
-    _setupReadingProgressTracker();
-
     if (!_currentFullArticle.metadata.availableInSubscription) {
       await _precacheSubscriptionPlansUseCase();
     }
+
+    if (await _isGuestModeUseCase()) {
+      return;
+    }
+
+    _setupReadingProgressTracker();
 
     if (topicSlug != null) {
       _topicTitle = (await _getTopicBySlugUseCase.call(topicSlug)).strippedTitle;

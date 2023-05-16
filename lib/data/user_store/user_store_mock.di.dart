@@ -14,4 +14,15 @@ class UserStoreMock implements UserStore {
 
   @override
   Future<void> setCurrentUserUuid(String userUuid) async {}
+
+  @override
+  Future<void> clearGuestMode() async {}
+
+  @override
+  Future<bool> isGuestMode() async {
+    return false;
+  }
+
+  @override
+  Future<void> setGuestMode() async {}
 }

@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/domain/push_notification/use_case/maybe_r
 import 'package:better_informed_mobile/domain/release_notes/use_case/get_current_release_note_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/initialize_synchronization_engine_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/synchronize_on_connection_change_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dt.dart';
@@ -35,6 +36,7 @@ class MainCubit extends Cubit<MainState> {
     this._synchronizeOnConnectionChangeUseCase,
     this._updateBriefNotifierUseCase,
     this._shouldRefreshDailyBriefUseCase,
+    this._isGuestModeUseCase,
   ) : super(const MainState.init());
 
   final GetTokenExpirationStreamUseCase _getTokenExpirationStreamUseCase;
@@ -46,6 +48,7 @@ class MainCubit extends Cubit<MainState> {
   final SynchronizeOnConnectionChangeUseCase _synchronizeOnConnectionChangeUseCase;
   final UpdateBriefNotifierUseCase _updateBriefNotifierUseCase;
   final ShouldRefreshDailyBriefUseCase _shouldRefreshDailyBriefUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   StreamSubscription? _incomingPushNavigationSubscription;
   StreamSubscription? _tokenExpirationSubscription;
@@ -67,6 +70,14 @@ class MainCubit extends Cubit<MainState> {
 
   Future<void> initialize() async {
     await DateFormatUtil.setJiffyLocale(availableLocales.values.first);
+
+    if (await _isGuestModeUseCase()) {
+      _subscribeToDeepLinkStream();
+      unawaited(_getReleaseNote());
+
+      return;
+    }
+
     _tokenExpirationSubscription = _getTokenExpirationStreamUseCase().listen((event) {
       emit(const MainState.tokenExpired());
     });
@@ -75,8 +86,9 @@ class MainCubit extends Cubit<MainState> {
     _subscribeToDeepLinkStream();
 
     unawaited(_maybeRegisterPushNotificationTokenUseCase());
-    unawaited(_getReleaseNote());
     unawaited(_initializeSynchronizationEngine());
+
+    unawaited(_getReleaseNote());
   }
 
   void appMovedToBackground() {

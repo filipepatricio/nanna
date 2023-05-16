@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_body.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_cubit.di.dart';
@@ -57,6 +58,11 @@ class SettingsAccountPage extends HookWidget {
           offline: (value) => Center(
             child: ErrorView.offline(
               retryCallback: () => cubit.initialize(context.l10n),
+            ),
+          ),
+          guest: (value) => Center(
+            child: ErrorView.guest(
+              retryCallback: () => context.pushRoute(const SignInPageModal()),
             ),
           ),
           orElse: () => const SizedBox.shrink(),

@@ -32,7 +32,7 @@ class DailyBriefAppBar extends HookWidget {
           scrollController: scrollController,
           cubit: cubit,
           briefDate: DateTime.now(),
-          pastDays: BriefPastDays([]),
+          pastDays: BriefPastDays.empty(),
           showAppBarTitle: true,
           showCalendar: false,
           enabled: false,

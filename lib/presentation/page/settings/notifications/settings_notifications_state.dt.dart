@@ -22,4 +22,7 @@ class SettingsNotificationsState with _$SettingsNotificationsState {
 
   @Implements<BuildState>()
   factory SettingsNotificationsState.offline() = _SettingsNotificationsStateOffline;
+
+  @Implements<BuildState>()
+  factory SettingsNotificationsState.guest() = _SettingsNotificationsStateGuest;
 }

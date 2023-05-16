@@ -12,6 +12,9 @@ class SettingsMainState with _$SettingsMainState {
   const factory SettingsMainState.idle() = _SettingsMainStateIdle;
 
   @Implements<BuildState>()
+  const factory SettingsMainState.guest() = _SettingsMainStateGuest;
+
+  @Implements<BuildState>()
   const factory SettingsMainState.loading() = _SettingsMainStateLoading;
 
   factory SettingsMainState.sendingEmailError() = _SettingsMainStateSendingEmailError;

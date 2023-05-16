@@ -4,4 +4,10 @@ abstract class UserStore {
   Future<void> setCurrentUserUuid(String userUuid);
 
   Future<void> clearCurrentUserUuid();
+
+  Future<void> setGuestMode();
+
+  Future<bool> isGuestMode();
+
+  Future<void> clearGuestMode();
 }

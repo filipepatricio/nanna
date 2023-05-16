@@ -26,6 +26,9 @@ class BookmarkButtonState with _$BookmarkButtonState {
     BookmarkState state,
   ) = _BookmarkButtonStateOffline;
 
+  @Implements<BuildState>()
+  factory BookmarkButtonState.guest() = _BookmarkButtonStateGuest;
+
   factory BookmarkButtonState.bookmarkAdded(String message) = _BookmarkButtonStateBookmarkAdded;
 
   factory BookmarkButtonState.bookmarkRemoved(String message) = _BookmarkButtonStateBookmarkedRemoved;

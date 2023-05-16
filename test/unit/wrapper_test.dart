@@ -65,6 +65,7 @@ import 'tests/presentation/entry_page_test.dart' as entry_page_test;
 import 'tests/presentation/explore_page_test.dart' as explore_page_test;
 import 'tests/presentation/main_page_test.dart' as main_page_test;
 import 'tests/presentation/media_item_page_test.dart' as media_item_page_test;
+import 'tests/presentation/onboarding_page_test.dart' as onboarding_page_test;
 import 'tests/presentation/profile_page_test.dart' as profile_page_test;
 import 'tests/presentation/settings_appearance_page_test.dart' as settings_appearance_page_test;
 import 'tests/presentation/sign_in_page_test.dart' as sign_in_page_test;
@@ -149,6 +150,7 @@ void main() {
   group('audio_banner_test', audio_banner_test.main);
   group('subscription_card_cubit_test', subscription_card_cubit_test.main);
   group('settings_subscription_page_cubit_test', settings_subscription_page_cubit_test.main);
+  group('onboarding_page_test', onboarding_page_test.main);
   group('profile_page_test', profile_page_test.main);
   group('should_show_daily_brief_badge_use_case_test', should_show_daily_brief_badge_use_case_test.main);
   group('settings_appearance_page_test', settings_appearance_page_test.main);

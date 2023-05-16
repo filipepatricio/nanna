@@ -8,6 +8,8 @@ class BriefPastDayDTO {
 
   factory BriefPastDayDTO.fromJson(Map<String, dynamic> json) => _$BriefPastDayDTOFromJson(json);
 
+  factory BriefPastDayDTO.empty(String date) => BriefPastDayDTO(date, false);
+
   final String date;
   final bool hasBrief;
 }

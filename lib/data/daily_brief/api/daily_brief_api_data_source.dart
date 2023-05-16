@@ -6,6 +6,8 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/briefs_wrapper_d
 abstract class DailyBriefApiDataSource {
   Future<BriefsWrapperDTO> currentBrief();
 
+  Future<BriefsWrapperDTO> currentBriefGuest();
+
   Future<BriefDTO> pastBrief(DateTime dateTime);
 
   Stream<BriefsWrapperDTO?> currentBriefStream();

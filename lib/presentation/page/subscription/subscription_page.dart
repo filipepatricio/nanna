@@ -42,21 +42,15 @@ class SubscriptionPage extends HookWidget {
 
     useCubitListener<SubscriptionPageCubit, SubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        idle: (_, __, ___) => InformedDialog.removeRestorePurchase(context),
+        idle: (_, __, ___, ____) => InformedDialog.removeRestorePurchase(context),
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
         redeemingCode: () => shouldRestorePurchase.value = true,
         success: () {
           InformedDialog.removeRestorePurchase(context);
           context.popRoute();
         },
-        generalError: (message) {
-          snackbarController.showMessage(
-            SnackbarMessage.simple(
-              message: message ?? context.l10n.common_error_tryAgainLater,
-              type: SnackbarMessageType.error,
-            ),
-          );
-        },
+        successGuest: context.resetToEntry,
+        generalError: () => snackbarController.showMessage(SnackbarMessage.error(context)),
         restoringPurchaseError: () {
           InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(

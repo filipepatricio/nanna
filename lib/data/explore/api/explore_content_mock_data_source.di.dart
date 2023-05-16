@@ -13,6 +13,11 @@ class ExploreMockDataSource implements ExploreContentApiDataSource {
   }
 
   @override
+  Future<ExploreContentDTO> getExploreContentGuest() async {
+    return MockDTO.exploreContent;
+  }
+
+  @override
   Future<ExploreContentAreaDTO> getPaginatedExploreArea(String id, int limit, int offset) async {
     return MockDTO.exploreContent.highlightedSection.firstWhere(
       (area) => area.id == id,

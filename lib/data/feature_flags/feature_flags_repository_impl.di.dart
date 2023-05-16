@@ -55,34 +55,22 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
 
   @override
   Future<String> initialTab() async {
-    if (!LDClient.isInitialized()) {
-      return _rootRouteFlagDefaultValue;
-    }
-
-    return await LDClient.stringVariation(_rootRouteFlag, _rootRouteFlagDefaultValue);
+    return await _fetchFlag<String>(_rootRouteFlag, _rootRouteFlagDefaultValue);
   }
 
   @override
   Future<String> defaultPaywall() async {
-    if (!LDClient.isInitialized()) {
-      return _paywallFlagDefaultValue;
-    }
-
-    return await LDClient.stringVariation(_paywallFlag, _paywallFlagDefaultValue);
+    return await _fetchFlag<String>(_paywallFlag, _paywallFlagDefaultValue);
   }
 
   @override
   Future<bool> useObservableQueries() async {
-    if (!LDClient.isInitialized()) {
-      return true;
-    }
-
-    return LDClient.boolVariation(_useObservableQueriesFlag, true);
+    return await _fetchFlag<bool>(_useObservableQueriesFlag, true);
   }
 
   @override
   Future<bool> useTextSizeSelector() async {
-    return LDClient.boolVariation(_useTextSizeSelectorFlag, true);
+    return await _fetchFlag<bool>(_useTextSizeSelectorFlag, true);
   }
 
   @override
@@ -124,5 +112,22 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
     }
 
     return builder.build();
+  }
+
+  Future<T> _fetchFlag<T>(String flagKey, T defaultValue) async {
+    if (!LDClient.isInitialized()) {
+      return defaultValue;
+    }
+
+    switch (T) {
+      case String:
+        final flagValue = await LDClient.stringVariation(flagKey, defaultValue as String);
+        return flagValue as T;
+      case bool:
+        final flagValue = await LDClient.boolVariation(flagKey, defaultValue as bool);
+        return flagValue as T;
+      default:
+        throw Exception('Unsupported flag type $T');
+    }
   }
 }

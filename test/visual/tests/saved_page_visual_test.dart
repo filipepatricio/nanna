@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/domain/bookmark/use_case/get_paginated_bo
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/saved/saved_page.dart';
 import 'package:mockito/mockito.dart';
@@ -47,6 +48,23 @@ void main() {
           getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
         },
       );
+      await tester.matchGoldenFile();
+    },
+  );
+
+  visualTest(
+    '${SavedPage}_(guest)',
+    (tester) async {
+      final isGuestModeUseCase = MockIsGuestModeUseCase();
+      when(isGuestModeUseCase.call()).thenAnswer((_) async => true);
+
+      await tester.startApp(
+        initialRoute: const ProfileTabGroupRouter(),
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<IsGuestModeUseCase>(() => isGuestModeUseCase);
+        },
+      );
+
       await tester.matchGoldenFile();
     },
   );

@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/subscription/use_case/get_active_s
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_plans_view.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscribe_button.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_cell.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -90,7 +91,13 @@ void main() {
           dependencyOverride: (getIt) async => getIt.registerFactory<GetActiveSubscriptionUseCase>(() => useCase),
         );
 
-        expect(find.byText(l10n.subscription_button_trialText), findsOneWidget);
+        expect(find.byText(l10n.subscription_title_standard), findsOneWidget);
+        expect(
+          find.byWidgetPredicate(
+            (widget) => widget is InformedFilledButton && widget.text == l10n.subscription_button_trialText,
+          ),
+          findsOneWidget,
+        );
       },
     );
   });

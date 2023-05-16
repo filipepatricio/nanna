@@ -22,5 +22,8 @@ class CategoryPageState with _$CategoryPageState {
   const factory CategoryPageState.error() = _CategoryPageStateError;
 
   @Implements<BuildState>()
+  const factory CategoryPageState.guest() = _CategoryPageStateGuest;
+
+  @Implements<BuildState>()
   const factory CategoryPageState.offline() = _CategoryPageStateOffline;
 }

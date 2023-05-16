@@ -34,6 +34,7 @@ class SettingsMainPage extends HookWidget {
         audioPlayerResponsive: true,
         child: state.maybeWhen(
           idle: () => SettingsMainBody(cubit: cubit),
+          guest: () => SettingsMainBody(cubit: cubit),
           loading: Loader.new,
           orElse: Container.new,
         ),

@@ -20,6 +20,7 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
       playing: (_) => () => cubit.pause(),
       paused: (_) => () => cubit.play(),
       offline: (_) => () => snackbarController.showMessage(SnackbarMessage.offline(context)),
+      guest: (_) => () => snackbarController.showMessage(SnackbarMessage.guest(context)),
       orElse: () => throw Exception('Unhandled type'),
     );
   }
@@ -32,6 +33,7 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
       playing: (_) => 0.0,
       paused: (_) => 0.0,
       offline: (_) => 0.0,
+      guest: (_) => 0.0,
       orElse: () => throw Exception('Unhandled type'),
     );
   }
@@ -44,6 +46,7 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
       playing: (_) => AudioProgressType.current,
       paused: (_) => AudioProgressType.current,
       offline: (_) => AudioProgressType.other,
+      guest: (_) => AudioProgressType.other,
       orElse: () => throw Exception('Unhandled type'),
     );
   }
@@ -56,6 +59,7 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
       playing: (_) => AppVectorGraphics.pause,
       paused: (_) => AppVectorGraphics.playArrow,
       offline: (_) => AppVectorGraphics.playArrow,
+      guest: (_) => AppVectorGraphics.playArrow,
       orElse: () => throw Exception('Unhandled type'),
     );
   }
@@ -68,6 +72,7 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
       playing: (_) => 255,
       paused: (_) => 255,
       offline: (_) => 255,
+      guest: (_) => 255,
       orElse: () => throw Exception('Unhandled type'),
     );
   }

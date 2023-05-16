@@ -121,9 +121,9 @@ jobs:
           fields: repo,author,job,took,workflow,pullRequest
           mention: 'here'
           if_mention: failure
-          channel: 'C05606S3GJK'
+          channel: 'C03HLNW54EN'
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_MOBILE_RELEASES_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
   deploy_ios_staging:
@@ -205,7 +205,7 @@ jobs:
           fields: repo,author,job,took,workflow,pullRequest
           mention: 'here'
           if_mention: failure
-          channel: 'C05606S3GJK'
+          channel: 'C03HLNW54EN'
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_MOBILE_RELEASES_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}

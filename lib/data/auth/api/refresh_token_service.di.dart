@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/core/di/network_module.di.dart';
 import 'package:better_informed_mobile/data/auth/api/documents/__generated__/refresh.ast.gql.dart' as refresh;
 import 'package:better_informed_mobile/data/auth/api/dto/auth_token_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
@@ -10,7 +11,7 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 class RefreshTokenService {
   RefreshTokenService(
-    @Named('unauthorized') this._unauthorizedClient,
+    @Named(unauthorizedGQLClientName) this._unauthorizedClient,
     this._responseResolver,
     this._refreshTokenServiceCache,
   );

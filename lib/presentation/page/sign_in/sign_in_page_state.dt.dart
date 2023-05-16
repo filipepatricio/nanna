@@ -23,6 +23,8 @@ class SignInPageState with _$SignInPageState {
 
   factory SignInPageState.success() = _SignInPageStateSuccess;
 
+  factory SignInPageState.successGuest() = _SignInPageStateSuccessGuest;
+
   factory SignInPageState.unauthorizedError() = _SignInPageStateUnauthorizedError;
 
   factory SignInPageState.generalError() = _SignInPageStateGeneralError;

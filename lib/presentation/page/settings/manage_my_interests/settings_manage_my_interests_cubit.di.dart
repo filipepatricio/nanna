@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_category_preferences_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -16,10 +17,12 @@ class SettingsManageMyInterestsCubit extends Cubit<SettingsManageMyInterestsStat
   SettingsManageMyInterestsCubit(
     this._getCategoryPreferencesUseCase,
     this._updateBriefNotifierUseCase,
+    this._isGuestModeUseCase,
   ) : super(const SettingsManageMyInterestsState.loading());
 
   final GetCategoryPreferencesUseCase _getCategoryPreferencesUseCase;
   final UpdateBriefNotifierUseCase _updateBriefNotifierUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   final StreamController<bool> _updateBriefStreamController = StreamController();
   StreamSubscription? _shouldNotifyBriefUpdateSubscription;
@@ -34,6 +37,11 @@ class SettingsManageMyInterestsCubit extends Cubit<SettingsManageMyInterestsStat
 
   Future<void> initialize() async {
     emit(const SettingsManageMyInterestsState.loading());
+
+    if (await _isGuestModeUseCase()) {
+      emit(const SettingsManageMyInterestsState.guest());
+      return;
+    }
 
     await _shouldNotifyBriefUpdateSubscription?.cancel();
     _shouldNotifyBriefUpdateSubscription = _updateBriefStreamController.stream

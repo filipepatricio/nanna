@@ -66,7 +66,7 @@ jobs:
           if_mention: 'failure'
           channel: 'C05606S3GJK'
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_MOBILE_PRS_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
   build_ios_test:
@@ -163,7 +163,7 @@ jobs:
           if_mention: 'failure'
           channel: 'C05606S3GJK'
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_MOBILE_PRS_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
   test_ios:

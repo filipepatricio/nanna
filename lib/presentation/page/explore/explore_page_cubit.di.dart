@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/domain/search/use_case/remove_search_hist
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -28,6 +29,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     this._removeSearchHistoryQueryUseCase,
     this._getShouldUpdateExploreStreamUseCase,
     this._shouldUseObservableQueriesUseCase,
+    this._isGuestModeUseCase,
   ) : super(const ExplorePageState.initialLoading());
 
   final GetExploreContentUseCase _getExploreContentUseCase;
@@ -38,7 +40,9 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   final ShouldUseObservableQueriesUseCase _shouldUseObservableQueriesUseCase;
   final GetSearchHistoryUseCase _getSearchHistoryUseCase;
   final RemoveSearchHistoryQueryUseCase _removeSearchHistoryQueryUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
+  late bool _isGuestMode;
   late bool _isExploreTutorialStepSeen;
   late ExplorePageState _latestIdleState;
 
@@ -55,11 +59,13 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   Future<void> initialize() async {
     emit(const ExplorePageState.initialLoading());
 
+    _isGuestMode = await _isGuestModeUseCase();
+
     await _exploreContentSubscription?.cancel();
     await _shouldUpdateExploreSubscription?.cancel();
 
-    if (await _shouldUseObservableQueriesUseCase()) {
-      _exploreContentSubscription = _getExploreContentUseCase.highlightedContentStream.listen((content) async {
+    if (await _shouldUseObservableQueriesUseCase() && !_isGuestMode) {
+      _exploreContentSubscription = _getExploreContentUseCase.exploreContentStream.listen((content) async {
         final idleState = await _processAndEmitExploreContent(content);
         state.maybeMap(
           search: (_) => {},
@@ -92,21 +98,21 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   }
 
   Future<void> _fetchExploreContent() async {
-    final exploreContent = await _getExploreContentUseCase();
+    final exploreContent = _isGuestMode ? await _getExploreContentUseCase.guest() : await _getExploreContentUseCase();
     final idleState = await _processAndEmitExploreContent(exploreContent);
     emit(idleState);
   }
 
   Future<ExplorePageState> _processAndEmitExploreContent(ExploreContent exploreContent) async {
     final categories = await _getFeaturedCategoriesUseCase();
-    _latestIdleState = ExplorePageState.idle(
-      [
-        ExploreItem.pills(
-          categories.map((category) => category.asCategoryWithItems()).toList(),
-        ),
-        ...exploreContent.areas.map(ExploreItem.stream).toList(),
-      ],
-    );
+    final content = [
+      ExploreItem.pills(
+        categories.map((category) => category.asCategoryWithItems()).toList(),
+      ),
+      ...exploreContent.areas.map(ExploreItem.stream).toList(),
+    ];
+
+    _latestIdleState = _isGuestMode ? ExplorePageState.idleGuest(content) : ExplorePageState.idle(content);
     return _latestIdleState;
   }
 
@@ -119,6 +125,10 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   }
 
   Future<void> startTyping() async {
+    if (_isGuestMode) {
+      return;
+    }
+
     emit(const ExplorePageState.startTyping());
     final searchHistory = await _getSearchHistoryUseCase.call();
     if (searchHistory.isNotEmpty) {
@@ -127,6 +137,10 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   }
 
   Future<void> search() async {
+    if (_isGuestMode) {
+      return;
+    }
+
     emit(const ExplorePageState.startSearching());
     emit(const ExplorePageState.search());
   }

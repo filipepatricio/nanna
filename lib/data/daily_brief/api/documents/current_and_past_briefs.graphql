@@ -1,7 +1,11 @@
 # import 'package:better_informed_mobile/data/gql/common/brief_fragment.graphql';
 
-query currentBrief {
+query currentAndPastBriefs {
     currentBrief {
         ...briefFragment
+    }
+    getPastDaysBriefs {
+        date
+        hasBrief
     }
 }

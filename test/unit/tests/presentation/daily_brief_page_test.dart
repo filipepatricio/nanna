@@ -46,6 +46,8 @@ void main() {
   late MockGetCategoryPreferencesUseCase getCategoryPreferencesUseCase;
   late MockGetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
   late MockRequestPermissionsUseCase requestPermissionsUseCase;
+  late MockIsSignedInUseCase isSignedInUseCase;
+  late MockIsGuestModeUseCase isGuestModeUseCase;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(
@@ -56,6 +58,7 @@ void main() {
   );
 
   setUp(() {
+    isSignedInUseCase = MockIsSignedInUseCase();
     trackActivityUseCase = MockTrackActivityUseCase();
     getCurrentBriefUseCase = MockGetCurrentBriefUseCase();
     getPastBriefUseCase = MockGetPastBriefUseCase();
@@ -75,6 +78,7 @@ void main() {
     getCategoryPreferencesUseCase = MockGetCategoryPreferencesUseCase();
     getActiveSubscriptionUseCase = MockGetActiveSubscriptionUseCase();
     requestPermissionsUseCase = MockRequestPermissionsUseCase();
+    isGuestModeUseCase = MockIsGuestModeUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -95,6 +99,7 @@ void main() {
       isAddInterestsPageSeenUseCase,
       setAddInterestsPageSeenUseCase,
       requestPermissionsUseCase,
+      isGuestModeUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
@@ -114,6 +119,8 @@ void main() {
     when(isInternetConnectionAvailableUseCase.stream).thenAnswer((_) async* {});
     when(shouldUseObservableQueriesUseCase.call()).thenAnswer((_) async => true);
     when(setNeedsRefreshDailyBriefUseCase.call(any)).thenAnswer((_) async => false);
+    when(isSignedInUseCase.call()).thenAnswer((_) async => true);
+    when(isGuestModeUseCase.call()).thenAnswer((_) async => false);
   });
 
   test('brief entry preview is being tracked correctly', () async {
@@ -396,7 +403,7 @@ void main() {
   );
 
   testWidgets(
-    'current brief stream is not called if feature flag is off',
+    'current brief stream is not listened to if feature flag is off',
     (tester) async {
       when(shouldUseObservableQueriesUseCase.call()).thenAnswer((_) async => false);
 
@@ -469,6 +476,27 @@ void main() {
       expect(find.byType(DailyBriefPage), findsOneWidget);
 
       verify(requestPermissionsUseCase.call()).called(1);
+    },
+  );
+
+  testWidgets(
+    'guest-specific calls are done if guest mode',
+    (tester) async {
+      when(isGuestModeUseCase.call()).thenAnswer((_) async => true);
+      when(getCurrentBriefUseCase.guest()).thenAnswer((_) async => TestData.briefWrapper);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+        },
+      );
+
+      verifyNever(getCurrentBriefUseCase.stream);
+      verifyNever(getCategoryPreferencesUseCase.call());
+      verifyNever(setAddInterestsPageSeenUseCase.call());
+      verifyNever(getCurrentBriefUseCase.call());
+
+      verify(getCurrentBriefUseCase.guest()).called(1);
     },
   );
 }

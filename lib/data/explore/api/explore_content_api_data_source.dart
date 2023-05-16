@@ -4,6 +4,8 @@ import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.
 abstract class ExploreContentApiDataSource {
   Future<ExploreContentDTO> getExploreContent();
 
+  Future<ExploreContentDTO> getExploreContentGuest();
+
   Future<ExploreContentAreaDTO> getPaginatedExploreArea(String id, int limit, int offset);
 
   Stream<ExploreContentDTO?> exploreContentStream();

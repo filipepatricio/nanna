@@ -23,6 +23,12 @@ class ErrorView extends StatelessWidget {
         svgPath: AppVectorGraphics.error,
       );
 
+  factory ErrorView.guest({required VoidCallback retryCallback}) => ErrorView(
+        type: ErrorViewType.guest,
+        retryCallback: retryCallback,
+        svgPath: AppVectorGraphics.error,
+      );
+
   final ErrorViewType type;
   final String? title;
   final String? content;
@@ -76,13 +82,15 @@ class ErrorView extends StatelessWidget {
   }
 }
 
-enum ErrorViewType { offline, general }
+enum ErrorViewType { offline, guest, general }
 
 extension on ErrorViewType {
   String title(BuildContext context) {
     switch (this) {
       case ErrorViewType.offline:
         return context.l10n.noConnection_errorView_title;
+      case ErrorViewType.guest:
+        return context.l10n.guest_signIn_error_message;
       default:
         return context.l10n.common_error_title;
     }
@@ -92,6 +100,8 @@ extension on ErrorViewType {
     switch (this) {
       case ErrorViewType.offline:
         return context.l10n.noConnection_errorView_body;
+      case ErrorViewType.guest:
+        return context.l10n.guest_signIn_error_subMessage;
       default:
         return context.l10n.common_error_body;
     }
@@ -99,6 +109,8 @@ extension on ErrorViewType {
 
   String action(BuildContext context) {
     switch (this) {
+      case ErrorViewType.guest:
+        return context.l10n.guest_signIn_error_action;
       default:
         return context.l10n.common_tryAgain;
     }

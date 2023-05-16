@@ -31,15 +31,23 @@ class SettingsMainBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = useCubitBuilder(cubit);
     final snackbarController = useSnackbarController();
 
     useCubitListener<SettingsMainCubit, SettingsMainState>(cubit, (cubit, state, context) {
-      state.mapOrNull(
-        sendingEmailError: (error) {
+      state.whenOrNull(
+        sendingEmailError: () {
           showEmailErrorMessage(context, snackbarController);
         },
       );
     });
+
+    void tapIfNotGuest(VoidCallback onTap) {
+      state.maybeMap(
+        guest: (_) => snackbarController.showMessage(SnackbarMessage.guest(context)),
+        orElse: onTap,
+      );
+    }
 
     return ListView(
       physics: getPlatformScrollPhysics(),
@@ -63,12 +71,12 @@ class SettingsMainBody extends HookWidget {
         SettingsMainItem(
           label: context.l10n.settings_account,
           icon: AppVectorGraphics.account,
-          onTap: () => context.pushRoute(const SettingsAccountPageRoute()),
+          onTap: () => tapIfNotGuest(() => context.pushRoute(const SettingsAccountPageRoute())),
         ),
         SettingsMainItem(
           label: context.l10n.settings_notifications_title,
           icon: AppVectorGraphics.notifications,
-          onTap: () => context.pushRoute(const SettingsNotificationsPageRoute()),
+          onTap: () => tapIfNotGuest(() => context.pushRoute(const SettingsNotificationsPageRoute())),
         ),
         SettingsMainItem(
           label: context.l10n.settings_appearance_title,
@@ -78,7 +86,7 @@ class SettingsMainBody extends HookWidget {
         SettingsMainItem(
           label: context.l10n.settings_manageMyInterests,
           icon: AppVectorGraphics.star,
-          onTap: () => context.pushRoute(const SettingsManageMyInterestsPageRoute()),
+          onTap: () => tapIfNotGuest(() => context.pushRoute(const SettingsManageMyInterestsPageRoute())),
         ),
         const SizedBox(height: AppDimens.xl),
         Padding(
@@ -116,10 +124,13 @@ class SettingsMainBody extends HookWidget {
             );
           },
         ),
-        SettingsMainItem(
-          label: context.l10n.common_signOut,
-          onTap: cubit.signOut,
-          fontColor: AppColors.of(context).textTertiary,
+        state.maybeMap(
+          guest: (_) => const SizedBox.shrink(),
+          orElse: () => SettingsMainItem(
+            label: context.l10n.common_signOut,
+            onTap: cubit.signOut,
+            fontColor: AppColors.of(context).textTertiary,
+          ),
         ),
         const SizedBox(height: AppDimens.xl),
         const Padding(

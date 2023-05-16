@@ -14,7 +14,12 @@ class GetExploreContentUseCase {
     return _filterOutEmptyAreas(content);
   }
 
-  Stream<ExploreContent> get highlightedContentStream =>
+  Future<ExploreContent> guest() async {
+    final content = await _exploreContentRepository.getExploreContentGuest();
+    return _filterOutEmptyAreas(content);
+  }
+
+  Stream<ExploreContent> get exploreContentStream =>
       _exploreContentRepository.exploreContentStream().map(_filterOutEmptyAreas);
 
   ExploreContent _filterOutEmptyAreas(ExploreContent content) {

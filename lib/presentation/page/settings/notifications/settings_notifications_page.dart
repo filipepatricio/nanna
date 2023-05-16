@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_body.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_cubit.di.dart';
@@ -59,6 +60,11 @@ class SettingsNotificationsPage extends HookWidget {
           offline: () => Center(
             child: ErrorView.offline(
               retryCallback: cubit.initialize,
+            ),
+          ),
+          guest: () => Center(
+            child: ErrorView.guest(
+              retryCallback: () => context.pushRoute(const SignInPageModal()),
             ),
           ),
           orElse: SizedBox.shrink,

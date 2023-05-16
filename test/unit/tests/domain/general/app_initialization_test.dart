@@ -12,7 +12,12 @@ import 'package:better_informed_mobile/domain/subscription/use_case/force_subscr
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/request_permissions_use_case.di.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
+import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
+import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_cubit.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -28,13 +33,15 @@ void main() {
   late MockSaveReleaseNoteIfFirstRunUseCase saveReleaseNoteIfFirstRunUseCase;
   late MockIdentifyAnalyticsUserUseCase identifyAnalyticsUserUseCase;
   late MockInitializePurchasesUseCase initializePurchasesUseCase;
-  late GetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
+  late MockGetActiveSubscriptionUseCase getActiveSubscriptionUseCase;
   late MockAuthRepository authRepository;
   late MockGetUserUseCase getUserUseCase;
   late SignInPageCubit signInPageCubit;
   late MockRequestPermissionsUseCase requestPermissionsUseCase;
-  late HasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
+  late MockHasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
   late MockForceSubscriptionStatusSyncUseCase forceSubscriptionStatusSyncUseCase;
+  late MockIsGuestModeUseCase isGuestModeUseCase;
+  late MockClearGuestModeUseCase clearGuestModeUseCase;
 
   setUp(() {
     isSignedInUseCase = MockIsSignedInUseCase();
@@ -49,6 +56,8 @@ void main() {
     requestPermissionsUseCase = MockRequestPermissionsUseCase();
     hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
     forceSubscriptionStatusSyncUseCase = MockForceSubscriptionStatusSyncUseCase();
+    isGuestModeUseCase = MockIsGuestModeUseCase();
+    clearGuestModeUseCase = MockClearGuestModeUseCase();
 
     final signInUseCase = SignInUseCase(
       authRepository,
@@ -70,6 +79,8 @@ void main() {
       getUserUseCase,
       hasActiveSubscriptionUseCase,
       forceSubscriptionStatusSyncUseCase,
+      isGuestModeUseCase,
+      clearGuestModeUseCase,
     );
   });
 
@@ -105,6 +116,8 @@ void main() {
         verify(identifyAnalyticsUserUseCase()).called(1);
         verify(initializeAttributionUseCase()).called(1);
         verify(requestPermissionsUseCase()).called(1);
+
+        expect(find.byType(DailyBriefPage), findsOneWidget);
       },
     );
     testWidgets(
@@ -138,6 +151,8 @@ void main() {
         verify(identifyAnalyticsUserUseCase()).called(1);
         verify(initializeAttributionUseCase()).called(1);
         verify(requestPermissionsUseCase()).called(1);
+
+        expect(find.byType(DailyBriefPage), findsOneWidget);
       },
     );
 
@@ -181,6 +196,8 @@ void main() {
             'userUuid',
           ),
         );
+
+        expect(find.byType(SignInPage), findsOneWidget);
 
         await signInPageCubit.signInWithMagicLink('token');
 
@@ -237,6 +254,8 @@ void main() {
           ),
         );
 
+        expect(find.byType(OnboardingPage), findsOneWidget);
+
         await signInPageCubit.signInWithMagicLink('token');
 
         verifyNever(forceSubscriptionStatusSyncUseCase());
@@ -246,8 +265,88 @@ void main() {
         verify(identifyAnalyticsUserUseCase(any)).called(1);
         verify(getUserUseCase()).called(1);
 
+        // Because no navigation is done, the OnboardingPage is still visible
+        // and this is called in DailyBriefCubit
         verifyNever(requestPermissionsUseCase());
       },
     );
   });
+
+  testWidgets(
+    'user is guest, subscribed',
+    (tester) async {
+      when(isSignedInUseCase()).thenAnswer((_) async => false);
+      when(isGuestModeUseCase()).thenAnswer((_) async => true);
+      when(getActiveSubscriptionUseCase()).thenAnswer((_) async => TestData.activeSubscriptionTrial);
+      when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(TestData.activeSubscriptionTrial));
+      when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => true);
+      when(forceSubscriptionStatusSyncUseCase()).thenAnswer((_) async => true);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<IsSignedInUseCase>(() => isSignedInUseCase);
+          getIt.registerFactory<IsGuestModeUseCase>(() => isGuestModeUseCase);
+          getIt.registerFactory<InitializeFeatureFlagsUseCase>(() => initializeFeatureFlagsUseCase);
+          getIt.registerFactory<InitializeAttributionUseCase>(() => initializeAttributionUseCase);
+          getIt.registerFactory<SaveReleaseNoteIfFirstRunUseCase>(() => saveReleaseNoteIfFirstRunUseCase);
+          getIt.registerFactory<IdentifyAnalyticsUserUseCase>(() => identifyAnalyticsUserUseCase);
+          getIt.registerFactory<InitializePurchasesUseCase>(() => initializePurchasesUseCase);
+          getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+          getIt.registerFactory<RequestPermissionsUseCase>(() => requestPermissionsUseCase);
+          getIt.registerFactory<HasActiveSubscriptionUseCase>(() => hasActiveSubscriptionUseCase);
+          getIt.registerFactory<ForceSubscriptionStatusSyncUseCase>(() => forceSubscriptionStatusSyncUseCase);
+        },
+      );
+
+      verifyNever(forceSubscriptionStatusSyncUseCase());
+      verifyNever(initializeFeatureFlagsUseCase());
+      verifyNever(initializeAttributionUseCase());
+      verifyNever(identifyAnalyticsUserUseCase());
+      verifyNever(requestPermissionsUseCase());
+
+      verify(saveReleaseNoteIfFirstRunUseCase()).called(1);
+      verify(initializePurchasesUseCase()).called(1);
+
+      expect(find.byType(SignInPage), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'user is guest, not subscribed',
+    (tester) async {
+      when(isSignedInUseCase()).thenAnswer((_) async => false);
+      when(isGuestModeUseCase()).thenAnswer((_) async => true);
+      when(getActiveSubscriptionUseCase()).thenAnswer((_) async => ActiveSubscription.free());
+      when(getActiveSubscriptionUseCase.stream).thenAnswer((_) => Stream.value(ActiveSubscription.free()));
+      when(hasActiveSubscriptionUseCase()).thenAnswer((_) async => false);
+      when(forceSubscriptionStatusSyncUseCase()).thenAnswer((_) async => true);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<IsSignedInUseCase>(() => isSignedInUseCase);
+          getIt.registerFactory<IsGuestModeUseCase>(() => isGuestModeUseCase);
+          getIt.registerFactory<InitializeFeatureFlagsUseCase>(() => initializeFeatureFlagsUseCase);
+          getIt.registerFactory<InitializeAttributionUseCase>(() => initializeAttributionUseCase);
+          getIt.registerFactory<SaveReleaseNoteIfFirstRunUseCase>(() => saveReleaseNoteIfFirstRunUseCase);
+          getIt.registerFactory<IdentifyAnalyticsUserUseCase>(() => identifyAnalyticsUserUseCase);
+          getIt.registerFactory<InitializePurchasesUseCase>(() => initializePurchasesUseCase);
+          getIt.registerFactory<GetActiveSubscriptionUseCase>(() => getActiveSubscriptionUseCase);
+          getIt.registerFactory<RequestPermissionsUseCase>(() => requestPermissionsUseCase);
+          getIt.registerFactory<HasActiveSubscriptionUseCase>(() => hasActiveSubscriptionUseCase);
+          getIt.registerFactory<ForceSubscriptionStatusSyncUseCase>(() => forceSubscriptionStatusSyncUseCase);
+        },
+      );
+
+      verifyNever(forceSubscriptionStatusSyncUseCase());
+      verifyNever(initializeFeatureFlagsUseCase());
+      verifyNever(initializeAttributionUseCase());
+      verifyNever(identifyAnalyticsUserUseCase());
+
+      verify(requestPermissionsUseCase()).called(1);
+      verify(saveReleaseNoteIfFirstRunUseCase()).called(1);
+      verify(initializePurchasesUseCase()).called(1);
+
+      expect(find.byType(MainPage), findsOneWidget);
+    },
+  );
 }
