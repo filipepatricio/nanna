@@ -26,6 +26,7 @@ import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/data/category_preference.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_category_preferences_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/request_permissions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/set_needs_refresh_daily_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/use_case/should_refresh_daily_brief_use_case.di.dart';
@@ -71,6 +72,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     this._isAddInterestsPageSeenUseCase,
     this._setAddInterestsPageSeenUseCase,
     this._requestPermissionsUseCase,
+    this._isGuestModeUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
@@ -91,6 +93,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   final IsAddInterestsPageSeenUseCase _isAddInterestsPageSeenUseCase;
   final SetAddInterestsPageSeenUseCase _setAddInterestsPageSeenUseCase;
   final RequestPermissionsUseCase _requestPermissionsUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -148,7 +151,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
   Future<void> initialize() async {
     await initializeConnection(null);
 
-    if (await _shouldUseObservableQueriesUseCase()) {
+    final isGuestMode = await _isGuestModeUseCase();
+    if (await _shouldUseObservableQueriesUseCase() && !isGuestMode) {
       _currentBriefSubscription ??= _getCurrentBriefUseCase.stream.listen((updatedBriefWrapper) {
         _briefsWrapper = updatedBriefWrapper;
         if (_selectedBrief?.id == updatedBriefWrapper.currentBrief.id) {
@@ -175,6 +179,11 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     });
 
     _shouldUpdateBriefSubscription ??= _getShouldUpdateBriefStreamUseCase().listen((_) => refetchBriefs());
+
+    if (await _isGuestModeUseCase()) {
+      await _requestPermissionsUseCase();
+      return;
+    }
 
     _itemPreviewTrackerSubscription ??= _itemPreviewTrackerStream.listen((item) {
       _markEntryAsSeen(item.entry);
@@ -212,10 +221,10 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
 
   Future<void> refetchBriefs() async {
     try {
-      _briefsWrapper = await _getCurrentBriefUseCase();
+      _briefsWrapper = await _getCurrentBrief();
       _selectedBrief ??= _briefsWrapper.currentBrief;
 
-      final todaysBriefSelected = _selectedBrief == _briefsWrapper.currentBrief;
+      final todaysBriefSelected = _selectedBrief?.id == _briefsWrapper.currentBrief.id;
 
       if (todaysBriefSelected) {
         _selectedBrief = _briefsWrapper.currentBrief;
@@ -235,7 +244,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     emit(DailyBriefPageState.loading());
 
     try {
-      _briefsWrapper = await _getCurrentBriefUseCase();
+      _briefsWrapper = await _getCurrentBrief();
       _selectedBrief = _briefsWrapper.currentBrief;
       _updateIdleState(preCacheImages: true);
     } on NoInternetConnectionException {
@@ -322,6 +331,11 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState>
     }
 
     throw BriefNotInitializedException();
+  }
+
+  Future<BriefsWrapper> _getCurrentBrief() async {
+    final isGuestMode = await _isGuestModeUseCase();
+    return isGuestMode ? await _getCurrentBriefUseCase.guest() : await _getCurrentBriefUseCase();
   }
 
   void _refreshCurrentState() {

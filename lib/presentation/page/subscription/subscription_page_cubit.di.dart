@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/domain/subscription/use_case/get_preferre
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -20,6 +21,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
     this._restorePurchaseUseCase,
     this._purchaseSubscriptionUseCase,
     this._getActiveSubscriptionUseCase,
+    this._isGuestModeUseCase,
   ) : super(const SubscriptionPageState.initializing());
 
   final GetSubscriptionPlansUseCase _getSubscriptionPlansUseCase;
@@ -27,10 +29,13 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
   final RestorePurchaseUseCase _restorePurchaseUseCase;
   final PurchaseSubscriptionUseCase _purchaseSubscriptionUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   late SubscriptionPlanGroup _planGroup;
   late SubscriptionPlan _selectedPlan;
   late ActiveSubscription _subscription;
+
+  late bool _isGuestMode;
 
   SubscriptionPlan? get currentPlan => _subscription.mapOrNull(
         trial: (data) => data.plan,
@@ -44,6 +49,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
 
   Future<void> initialize() async {
     try {
+      _isGuestMode = await _isGuestModeUseCase();
       _planGroup = await _getSubscriptionPlansUseCase();
       _subscription = await _getActiveSubscriptionUseCase();
 
@@ -72,6 +78,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
           group: _planGroup,
           selectedPlan: _selectedPlan,
           subscription: _subscription,
+          isGuest: _isGuestMode,
         ),
       );
     }
@@ -83,6 +90,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
         group: _planGroup,
         selectedPlan: _selectedPlan,
         subscription: _subscription,
+        isGuest: _isGuestMode,
       ),
     );
 
@@ -108,13 +116,16 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
         _emitIdleState();
         return;
       }
-      emit(const SubscriptionPageState.success());
+      _emitSuccess();
     } catch (e) {
       Fimber.e('Error while trying to restore purchase', ex: e);
       emit(const SubscriptionPageState.restoringPurchaseError());
       _emitIdleState();
     }
   }
+
+  void _emitSuccess() =>
+      emit(_isGuestMode ? const SubscriptionPageState.successGuest() : const SubscriptionPageState.success());
 
   Future<void> redeemOfferCode() async {
     emit(const SubscriptionPageState.redeemingCode());

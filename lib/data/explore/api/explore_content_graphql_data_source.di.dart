@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:better_informed_mobile/core/di/network_module.di.dart';
 import 'package:better_informed_mobile/data/explore/api/documents/__generated__/get_explore_area.ast.gql.dart'
     as get_explore_area;
 import 'package:better_informed_mobile/data/explore/api/documents/__generated__/get_explore_section.ast.gql.dart'
@@ -16,10 +17,12 @@ import 'package:injectable/injectable.dart';
 class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   ExploreContentGraphqlDataSource(
     this._client,
+    @Named(guestGQLClientName) this._guestClient,
     this._responseResolver,
   );
 
   final GraphQLClient _client;
+  final GraphQLClient _guestClient;
   final GraphQLResponseResolver _responseResolver;
 
   ObservableQuery<Object>? _exploreContentObservable;
@@ -41,7 +44,25 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
       (raw) => ExploreContentDTO.fromJson(raw),
     );
 
-    return dto ?? (throw Exception('Explore highlighted content can not be null'));
+    return dto ?? (throw Exception('Explore content can not be null'));
+  }
+
+  @override
+  Future<ExploreContentDTO> getExploreContentGuest() async {
+    final result = await _guestClient.query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
+        document: get_explore_section.document,
+        operationName: get_explore_section.getExploreSection.name?.value,
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => ExploreContentDTO.fromJson(raw),
+    );
+
+    return dto ?? (throw Exception('Explore content can not be null'));
   }
 
   @override

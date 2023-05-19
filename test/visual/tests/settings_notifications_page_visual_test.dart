@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/push_notification/use_case/has_notification_permission_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_setting_switch.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_setting_switch_cubit.di.dart';
@@ -62,6 +63,24 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.matchGoldenFile('settings_notifications_page_(no_permission_snackbar)');
+  });
+
+  visualTest('${SettingsNotificationsPage}_(guest)', (tester) async {
+    final isGuestModeUseCase = MockIsGuestModeUseCase();
+    when(isGuestModeUseCase.call()).thenAnswer((_) async => true);
+
+    await tester.startApp(
+      initialRoute: const ProfileTabGroupRouter(
+        children: [
+          SettingsNotificationsPageRoute(),
+        ],
+      ),
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<IsGuestModeUseCase>(() => isGuestModeUseCase);
+      },
+    );
+
+    await tester.matchGoldenFile();
   });
 }
 

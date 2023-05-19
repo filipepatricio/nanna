@@ -67,6 +67,8 @@ class AppConfig {
   final List<String> appsFlyerLinkPath;
   final PhraseConfig? phraseConfig;
 
+  bool get isProd => name == Environment.prod;
+
   static const dev = AppConfig._(
     name: Environment.dev,
     apiUrl: String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),

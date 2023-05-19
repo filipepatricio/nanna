@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart' hide TopicPage;
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
@@ -15,7 +17,10 @@ import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
+import '../../../generated_mocks.mocks.dart';
+import '../../../test_data.dart';
 import '../../unit_test_utils.dart';
 
 void main() {
@@ -23,6 +28,7 @@ void main() {
     'can navigate from explore to article',
     (tester) async {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
+
       await tester.drag(find.byType(ExplorePage), const Offset(0, -1000));
 
       await tester.pumpAndSettle();
@@ -64,9 +70,12 @@ void main() {
     'can navigate from explore to pill',
     (tester) async {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
+
       expect(find.byType(InformedPill), findsAtLeastNWidgets(8));
+
       await tester.tap(find.byType(InformedPill).last);
       await tester.pumpAndSettle();
+
       expect(find.byType(CategoryPage), findsOneWidget);
     },
   );
@@ -99,15 +108,23 @@ void main() {
     'can see search results and search history',
     (tester) async {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
+
       expect(find.byType(SearchHistoryView), findsNothing);
+
       await tester.enterText(find.byType(TextFormField), 'world');
       await tester.pumpAndSettle();
+
       await tester.testTextInput.receiveAction(TextInputAction.search);
       await tester.pumpAndSettle();
+
       expect(find.byType(SearchView), findsOneWidget);
+
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
+
       await tester.tap(find.byType(TextFormField));
+      await tester.pumpAndSettle();
+
       expect(find.byType(ExplorePage), findsOneWidget);
     },
   );
@@ -116,21 +133,52 @@ void main() {
     'can search results, enter article, go back and see search view',
     (tester) async {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
+
       expect(find.byType(SearchHistoryView), findsNothing);
+
       await tester.enterText(find.byType(TextFormField), 'world');
       await tester.pumpAndSettle();
+
       await tester.testTextInput.receiveAction(TextInputAction.search);
       await tester.pumpAndSettle();
+
       expect(find.byType(SearchView), findsOneWidget);
+
       final articleCoverFinder = find.descendant(
         of: find.byType(SearchView),
         matching: find.bySubtype<ArticleCover>(),
       );
       await tester.tap(articleCoverFinder.first);
       await tester.pumpAndSettle();
+
       await tester.tap(find.byType(BackTextButton));
       await tester.pumpAndSettle();
+
       expect(find.byType(SearchView), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'guest-specific calls are done if guest mode',
+    (tester) async {
+      final isGuestModeUseCase = MockIsGuestModeUseCase();
+      when(isGuestModeUseCase.call()).thenAnswer((_) async => true);
+
+      final getExploreContentUseCase = MockGetExploreContentUseCase();
+      when(getExploreContentUseCase.guest()).thenAnswer((_) async => TestData.exploreContent);
+
+      await tester.startApp(
+        initialRoute: const ExploreTabGroupRouter(),
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<IsGuestModeUseCase>(() => isGuestModeUseCase);
+          getIt.registerFactory<GetExploreContentUseCase>(() => getExploreContentUseCase);
+        },
+      );
+
+      verifyNever(getExploreContentUseCase.exploreContentStream);
+      verifyNever(getExploreContentUseCase.call());
+
+      verify(getExploreContentUseCase.guest()).called(1);
     },
   );
 }

@@ -32,6 +32,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const _environmentArgKey = 'env';
 const shouldRefreshBriefKey = 'shouldRefreshBrief';
 
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   final remoteMessageToIncomingPushDTOMapper = RemoteMessageToIncomingPushDTOMapper();
   final incomingPushActionDTOMapper = IncomingPushActionDTOMapper();

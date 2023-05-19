@@ -12,7 +12,10 @@ class ArticleTextScaleFactorSelectorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
     return SafeArea(
+      bottom: false,
       child: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(AppDimens.bottomSheetRadius),
@@ -20,9 +23,9 @@ class ArticleTextScaleFactorSelectorPage extends StatelessWidget {
         ),
         child: Material(
           child: Padding(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
               top: AppDimens.m,
-              bottom: AppDimens.xl,
+              bottom: AppDimens.xl + bottomPadding,
             ),
             child: ArticleTextScaleFactorSelector(
               labelStyle: AppTypography.b2Medium,

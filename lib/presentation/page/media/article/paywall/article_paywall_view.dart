@@ -41,20 +41,14 @@ class ArticlePaywallView extends HookWidget {
 
     useCubitListener<SubscriptionPageCubit, SubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        idle: (_, __, ___) {
+        idle: (_, __, ___, ____) {
           InformedDialog.removeRestorePurchase(context);
         },
         restoringPurchase: () => InformedDialog.showRestorePurchase(context),
         success: () => InformedDialog.removeRestorePurchase(context),
+        successGuest: context.resetToEntry,
         redeemingCode: () => shouldRestorePurchase.value = true,
-        generalError: (message) {
-          snackbarController.showMessage(
-            SnackbarMessage.simple(
-              message: message ?? context.l10n.common_error_tryAgainLater,
-              type: SnackbarMessageType.error,
-            ),
-          );
-        },
+        generalError: () => snackbarController.showMessage(SnackbarMessage.error(context)),
         restoringPurchaseError: () {
           InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(
@@ -118,8 +112,8 @@ class ArticlePaywallView extends HookWidget {
 extension on SubscriptionPageState {
   bool showPaywall(bool availableInSubscription) {
     return maybeMap(
-      idle: (_) => !availableInSubscription,
-      processing: (_) => !availableInSubscription,
+      idle: (data) => data.isGuest || !availableInSubscription,
+      processing: (data) => data.isGuest || !availableInSubscription,
       orElse: () => false,
     );
   }

@@ -26,10 +26,9 @@ void main() {
           type: SnackbarMessageType.warning,
         ),
       );
-      final snackbarError = SnackbarView(
-        message: SnackbarMessage.simple(
-          message: 'This is an error snackbar',
-          type: SnackbarMessageType.error,
+      final snackbarError = Builder(
+        builder: (context) => SnackbarView(
+          message: SnackbarMessage.error(context),
         ),
       );
       final snackbarSubscription = SnackbarView(
@@ -156,6 +155,11 @@ void main() {
           message: SnackbarMessage.offline(context),
         ),
       );
+      final snackbarGuest = Builder(
+        builder: (context) => SnackbarView(
+          message: SnackbarMessage.guest(context),
+        ),
+      );
 
       await tester.startApp(
         initialRoute: placeholderRouteWrapper(
@@ -181,6 +185,7 @@ void main() {
             snackbarErrorSubAction,
             snackbarSubscriptionSubAction,
             snackbarOffline,
+            snackbarGuest,
           ],
         ),
       );

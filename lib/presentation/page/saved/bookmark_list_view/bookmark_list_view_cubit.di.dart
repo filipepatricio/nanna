@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/domain/bookmark/use_case/add_bookmark_use
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/remove_bookmark_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/saved/bookmark_list_view/bookmark_list_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/saved/bookmark_list_view/bookmark_page_loader.di.dart';
 import 'package:better_informed_mobile/presentation/util/connection_state_aware_cubit_mixin.dart';
@@ -30,6 +31,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState>
     this._addBookmarkUseCase,
     this._trackActivityUseCase,
     this._isInternetConnectionAvailableUseCase,
+    this._isGuestModeUseCase,
   ) : super(BookmarkListViewState.initial());
 
   final BookmarkPaginationEngineProvider _bookmarkPaginationEngineProvider;
@@ -38,6 +40,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState>
   final AddBookmarkUseCase _addBookmarkUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   late PaginationEngine<Bookmark> _paginationEngine;
 
@@ -155,6 +158,11 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState>
   }
 
   Future<void> _freshInitialization(BookmarkListOptions initialData, bool remote) async {
+    if (await _isGuestModeUseCase()) {
+      emit(BookmarkListViewState.guest(initialData.filter));
+      return;
+    }
+
     emit(BookmarkListViewState.loading(initialData.filter));
 
     try {

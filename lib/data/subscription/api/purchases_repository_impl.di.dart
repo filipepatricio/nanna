@@ -52,7 +52,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
       if (userId != null) {
         await _purchaseRemoteDataSource.logIn(userId);
-        _preCachePurchaseData();
+        await _preCachePurchaseData();
         return;
       }
     }
@@ -73,15 +73,15 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
     } on PurchaseConfigurationException catch (_) {}
 
     if (await _purchaseRemoteDataSource.isConfigured) {
-      _preCachePurchaseData();
+      await _preCachePurchaseData();
     }
   }
 
-  void _preCachePurchaseData() {
+  Future<void> _preCachePurchaseData() async {
     try {
       // Prefetches and caches available customer info and offerings
-      unawaited(_purchaseRemoteDataSource.getCustomerInfo());
-      unawaited(_purchaseRemoteDataSource.getOfferings());
+      await _purchaseRemoteDataSource.getCustomerInfo();
+      await _purchaseRemoteDataSource.getOfferings();
       _purchaseRemoteDataSource.addCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
     } on PurchaseConfigurationException catch (_) {}
   }

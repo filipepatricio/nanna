@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_
 import 'package:better_informed_mobile/domain/user/data/category_preference.dart';
 import 'package:better_informed_mobile/domain/user/use_case/follow_category_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_category_preference_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/unfollow_category_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/widget/category_preference_follow_button/category_preference_follow_button_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -21,12 +22,14 @@ class CategoryPreferenceFollowButtonCubit extends Cubit<CategoryPreferenceFollow
     this._followCategoryUseCase,
     this._unfollowCategoryUseCase,
     this._updateBriefNotifierUseCase,
+    this._isGuestModeUseCase,
   ) : super(const CategoryPreferenceFollowButtonState.loading());
 
   final UpdateBriefNotifierUseCase _updateBriefNotifierUseCase;
   final GetCategoryPreferenceUseCase _getCategoryPreferenceUseCase;
   final FollowCategoryUseCase _followCategoryUseCase;
   final UnfollowCategoryUseCase _unfollowCategoryUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   final StreamController<bool> _updateBriefStreamController = StreamController();
   StreamSubscription? _shouldNotifyBriefUpdateSubscription;
@@ -40,6 +43,11 @@ class CategoryPreferenceFollowButtonCubit extends Cubit<CategoryPreferenceFollow
   }
 
   Future<void> initialize({Category? category, CategoryPreference? categoryPreference}) async {
+    if (await _isGuestModeUseCase()) {
+      emit(const CategoryPreferenceFollowButtonState.guest());
+      return;
+    }
+
     _shouldNotifyBriefUpdateSubscription = _updateBriefStreamController.stream
         .debounceTime(_briefNotifierDebounceDuration)
         .listen((_) => _updateBriefNotifierUseCase());

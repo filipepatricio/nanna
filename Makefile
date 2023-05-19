@@ -59,6 +59,9 @@ fvm_update_goldens:
 screens_report:
 	dart scripts/screens_report.dart
 
+unreferenced_arb_keys_check:
+	dart scripts/unreferenced_arb_keys_check.dart
+
 unreferenced_tests_check:
 	dart scripts/unreferenced_tests_check.dart
 

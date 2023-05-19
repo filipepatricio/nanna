@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/push_notification/use_case/has_not
 import 'package:better_informed_mobile/domain/push_notification/use_case/open_notifications_settings_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/request_notification_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/should_open_notifications_settings_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -17,6 +18,7 @@ class SettingsNotificationCubit extends Cubit<SettingsNotificationsState> {
     this._requestNotificationPermissionUseCase,
     this._shouldOpenNotificationsSettingsUseCase,
     this._openNotificationsSettingsUseCase,
+    this._isGuestModeUseCase,
   ) : super(SettingsNotificationsState.loading());
 
   final GetNotificationPreferencesUseCase _getNotificationPreferencesUseCase;
@@ -24,9 +26,15 @@ class SettingsNotificationCubit extends Cubit<SettingsNotificationsState> {
   final RequestNotificationPermissionUseCase _requestNotificationPermissionUseCase;
   final ShouldOpenNotificationsSettingsUseCase _shouldOpenNotificationsSettingsUseCase;
   final OpenNotificationsSettingsUseCase _openNotificationsSettingsUseCase;
+  final IsGuestModeUseCase _isGuestModeUseCase;
 
   Future<void> initialize() async {
     emit(SettingsNotificationsState.loading());
+
+    if (await _isGuestModeUseCase()) {
+      emit(SettingsNotificationsState.guest());
+      return;
+    }
 
     try {
       final hasPermission = await _hasNotificationPermissionUseCase();

@@ -28,6 +28,12 @@ class ExploreContentApiRepository implements ExploreContentRepository {
   }
 
   @override
+  Future<ExploreContent> getExploreContentGuest() async {
+    final dto = await _exploreContentApiDataSource.getExploreContentGuest();
+    return _exploreContentDTOMapper(dto);
+  }
+
+  @override
   Future<List<MediaItemArticle>> getPaginatedArticles(String areaId, int limit, int offset) async {
     final dto = await _exploreContentApiDataSource.getPaginatedExploreArea(areaId, limit, offset);
     final area = _exploreContentAreaDTOMapper(dto);

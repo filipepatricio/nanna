@@ -40,7 +40,7 @@ class MainPage extends HookWidget {
 
     useCubitListener<MainCubit, MainState>(cubit, (cubit, state, context) {
       state.maybeMap(
-        tokenExpired: (_) => _onTokenExpiredEvent(context),
+        tokenExpired: (_) => context.resetToEntry(),
         navigate: (navigate) async {
           if (previousAppState.value == null) {
             await Future.delayed(const Duration(milliseconds: 250));
@@ -103,10 +103,6 @@ class MainPage extends HookWidget {
         navigatorKey: _navigatorKey,
       ),
     );
-  }
-
-  void _onTokenExpiredEvent(BuildContext context) {
-    context.router.replaceAll([const EntryPageRoute()]);
   }
 
   void _resetNestedRouters() {

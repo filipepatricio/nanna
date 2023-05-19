@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_slide.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -53,8 +53,8 @@ class OnboardingPage extends HookWidget {
 
     useCubitListener<OnboardingPageCubit, OnboardingPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        signedIn: () => context.resetToMain(),
-        subscribed: () => context.resetToSignIn(),
+        signedIn: context.replaceToMain,
+        subscribed: context.resetToSignIn,
       );
     });
 
@@ -79,13 +79,9 @@ class OnboardingPage extends HookWidget {
                   Positioned(
                     top: AppDimens.s,
                     right: AppDimens.xl,
-                    child: Visibility.maintain(
-                      // TODO: Remove for Guest mode access
-                      visible: false,
-                      child: SkipButton(
-                        cubit: cubit,
-                        controller: controller,
-                      ),
+                    child: SkipButton(
+                      cubit: cubit,
+                      controller: controller,
                     ),
                   ),
                   Positioned(
@@ -166,7 +162,9 @@ class OnboardingPage extends HookWidget {
                         style: AppTypography.sansTextNanoLausanne,
                         decoration: TextDecoration.none,
                         onTap: () => context.pushRoute(
-                          SettingsTermsOfServicePageRoute(fromRoute: context.l10n.onboarding),
+                          SettingsTermsOfServicePageRoute(
+                            fromRoute: context.l10n.onboarding,
+                          ),
                         ),
                       ),
                       const SizedBox(width: AppDimens.l),
@@ -175,7 +173,9 @@ class OnboardingPage extends HookWidget {
                         style: AppTypography.sansTextNanoLausanne,
                         decoration: TextDecoration.none,
                         onTap: () => context.pushRoute(
-                          SettingsPrivacyPolicyPageRoute(fromRoute: context.l10n.onboarding),
+                          SettingsPrivacyPolicyPageRoute(
+                            fromRoute: context.l10n.onboarding,
+                          ),
                         ),
                       ),
                     ],
@@ -206,9 +206,10 @@ class SkipButton extends StatelessWidget {
     return PaddingTapWidget(
       alignment: AlignmentDirectional.centerEnd,
       tapPadding: const EdgeInsets.all(AppDimens.l),
-      onTap: () {
-        cubit.skip();
-        context.resetToMain();
+      onTap: () async {
+        await cubit.skip();
+        // ignore: use_build_context_synchronously
+        context.replaceToMain();
       },
       child: Text(
         context.l10n.common_skip,
@@ -273,14 +274,6 @@ class _GiftButton extends StatelessWidget {
 }
 
 extension on BuildContext {
-  void resetToMain() {
-    if (mounted) router.replaceAll([const MainPageRoute()]);
-  }
-
-  void resetToSignIn() {
-    if (mounted) router.pushAndPopUntil(const SignInPageRoute(), predicate: (_) => false);
-  }
-
   void navigateToSignIn() {
     if (mounted) router.push(const SignInPageModal());
   }

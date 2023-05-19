@@ -82,6 +82,7 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/save_seen_ent
 import 'package:better_informed_mobile/domain/daily_brief_badge/badge_info_repository.dart';
 import 'package:better_informed_mobile/domain/daily_brief_badge/use_case/should_show_daily_brief_badge_use_case.di.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
+import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_observable_queries_use_case.di.dart';
@@ -117,8 +118,11 @@ import 'package:better_informed_mobile/domain/topic/topics_repository.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/save_topic_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/clear_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_category_preferences_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/is_guest_mode_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/set_guest_mode_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
 import 'package:better_informed_mobile/domain/util/network_cache_manager.dart';
@@ -271,6 +275,10 @@ const _classes = [
   HasNotificationPermissionUseCase,
   PurchaseApiDataSource,
   ForceSubscriptionStatusSyncUseCase,
+  IsGuestModeUseCase,
+  ClearGuestModeUseCase,
+  SetGuestModeUseCase,
+  GetExploreContentUseCase,
 ];
 
 @GenerateMocks(_classes)

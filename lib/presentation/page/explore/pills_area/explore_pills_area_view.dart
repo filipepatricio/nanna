@@ -14,8 +14,7 @@ const _pillsBottomPadding = AppDimens.zero;
 class ExplorePillsAreaView extends StatelessWidget {
   const ExplorePillsAreaView({
     required this.categories,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final List<CategoryWithItems> categories;
 

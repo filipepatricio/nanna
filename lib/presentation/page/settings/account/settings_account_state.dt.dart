@@ -18,6 +18,9 @@ class SettingsAccountState with _$SettingsAccountState {
       SettingsAccountStateUpdating;
 
   @Implements<BuildState>()
+  const factory SettingsAccountState.guest() = SettingsAccountStateGuest;
+
+  @Implements<BuildState>()
   const factory SettingsAccountState.error() = SettingsAccountStateError;
 
   @Implements<BuildState>()
