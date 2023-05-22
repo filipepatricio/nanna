@@ -8,7 +8,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import com.ryanheise.audioservice.AudioServicePlugin
 
 class MainActivity : FlutterActivity() {
-    override fun provideFlutterEngine(context: Context): FlutterEngine {
+    override fun provideFlutterEngine(context: Context): FlutterEngine? {
         return AudioServicePlugin.getFlutterEngine(context)
     }
 
