@@ -208,10 +208,6 @@
   "@common_follow": {
     "type": "text"
   },
-  "common_unfollow": "Unfollow",
-  "@common_unfollow": {
-    "type": "text"
-  },
   "common_generalError": "Something went wrong.\nTry again later.",
   "@common_generalError": {
     "type": "text"
@@ -258,6 +254,10 @@
   },
   "common_undo": "Undo",
   "@common_undo": {
+    "type": "text"
+  },
+  "common_unfollow": "Unfollow",
+  "@common_unfollow": {
     "type": "text"
   },
   "dailyBrief_dummyEditorialTeamCurationInfo_bio": "We are a group of dedicated journalists who have written for a variety of respected publications and bring decades of combined experience. Although we have different backgrounds, we believe in a common cause: breaking through filter bubbles and providing readers with the facts and variety of perspectives they need to understand a complex world.",
@@ -333,6 +333,10 @@
   "@explore_viewAll": {
     "type": "text"
   },
+  "guest_signIn_error_action": "Sign In",
+  "@guest_signIn_error_action": {
+    "type": "text"
+  },
   "guest_signIn_error_message": "You're not signed in",
   "@guest_signIn_error_message": {
     "type": "text"
@@ -341,16 +345,12 @@
   "@guest_signIn_error_subMessage": {
     "type": "text"
   },
-  "guest_signIn_error_action": "Sign In",
-  "@guest_signIn_error_action": {
-    "type": "text"
-  },
   "guest_signIn_snackbar_message": "You're not signed in",
-  "@guest_signIn_error_message": {
+  "@guest_signIn_snackbar_message": {
     "type": "text"
   },
   "guest_signIn_snackbar_subMessage": "You’ll need to sign in to do that",
-  "@guest_signIn_error_subMessage": {
+  "@guest_signIn_snackbar_subMessage": {
     "type": "text"
   },
   "main_exploreTab": "Explore",
@@ -736,10 +736,6 @@
   },
   "signIn_providerButton_linkedin": "Sign in with LinkedIn",
   "@signIn_providerButton_linkedin": {
-    "type": "text"
-  },
-  "signIn_subscribed_body": "Sign in so we can link your saved articles and preferences to your subscription",
-  "@signIn_subscribed_body": {
     "type": "text"
   },
   "signIn_subscribed_body": "Sign in so we can link your saved articles and preferences to your subscription",
