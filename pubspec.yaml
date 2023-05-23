@@ -6,7 +6,7 @@ description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # Version handled in CD workflows - check out .github/workflows/cd_prod.yml and .github/workflows/cd_staging.yml
-version: 1.64.0+0
+version: 1.65.0+0
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
@@ -38,8 +38,8 @@ dependencies:
       path: modal_bottom_sheet
   uni_links: 0.5.1
   flutter_secure_storage: 7.0.1
-  firebase_core: 2.4.1
-  firebase_messaging: 14.2.1
+  firebase_core: 2.13.0
+  firebase_messaging: 14.6.1
   sign_in_with_apple: 4.3.0
   google_sign_in: 5.4.3
   flutter_keyboard_visibility: 5.4.0
@@ -57,7 +57,11 @@ dependencies:
   sentry_flutter: 6.19.0
   shimmer: 2.0.0
   jiffy: 5.0.0
-  flutter_segment: 3.13.0
+  flutter_segment:
+    # Remove when flutter_segment updates its dependency to 6.10.1 or higher
+    git:
+      url: https://github.com/minoesteban/flutter-segment.git
+      ref: c527f037369c9cbafab2ef5f648d52c1c2372072
   fluttertoast: 8.1.2
   flutter_email_sender: 5.2.0
   share_plus: 6.3.0
@@ -79,14 +83,14 @@ dependencies:
   audio_video_progress_bar: 0.11.0
   upgrader: 6.0.1
   just_audio: 0.9.31
-  audio_service: 0.18.9
+  audio_service: # Applied fix mentioned here: https://github.com/ryanheise/audio_service/issues/875#issuecomment-971556961
+    git:
+      url: https://github.com/minoesteban/audio_service.git
+      path: audio_service
   audio_session: 0.1.13
   launchdarkly_flutter_client_sdk: 1.2.0
   jwt_decoder: 2.0.1
-  appsflyer_sdk:
-    git:
-      url: https://github.com/minoesteban/appsflyer-flutter-plugin
-      ref: bd2736e033930a4848220742f8120c276d6eab29
+  appsflyer_sdk: 6.10.3
   flutter_staggered_grid_view: 0.6.2
   sliver_tools: 0.2.8
   gql: 0.14.1-alpha+1672756470474
