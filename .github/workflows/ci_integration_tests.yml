@@ -113,7 +113,7 @@ jobs:
           make build_runner
 
       - name: Prepare iOS profiles
-        uses: maierj/fastlane-action@v3.0.0
+        uses: maierj/fastlane-action@v3.1.0
         with:
           lane: 'setup_profiles'
           subdirectory: 'ios'
@@ -138,7 +138,7 @@ jobs:
 
       - name: Clean iOS profiles
         if: always()
-        uses: maierj/fastlane-action@v3.0.0
+        uses: maierj/fastlane-action@v3.1.0
         with:
           lane: 'clean_profiles'
           subdirectory: 'ios'
