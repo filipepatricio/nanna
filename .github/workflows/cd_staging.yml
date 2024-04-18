@@ -60,7 +60,7 @@ jobs:
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
         id: get-flutter-version
-        uses: zgosalvez/github-actions-get-flutter-version-env@v2
+        uses: zgosalvez/github-actions-get-flutter-version-env@v3
 
       - name: Sets Flutter environment
         uses: subosito/flutter-action@v2.10.0
@@ -155,7 +155,7 @@ jobs:
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
         id: get-flutter-version
-        uses: zgosalvez/github-actions-get-flutter-version-env@v2
+        uses: zgosalvez/github-actions-get-flutter-version-env@v3
 
       - name: Sets up a Flutter environment for use in actions
         uses: subosito/flutter-action@v2.10.0
